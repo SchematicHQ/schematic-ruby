@@ -47,6 +47,9 @@ module Schematic
     # List of attributes with nullable: true
     def self.openapi_nullable
       Set.new([
+        :'environment_type',
+        :'name',
+        :'skip_webhooks'
       ])
     end
 

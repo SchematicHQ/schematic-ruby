@@ -56,6 +56,7 @@ module Schematic
     def self.openapi_nullable
       Set.new([
         :'ended_at',
+        :'id',
         :'started_at'
       ])
     end

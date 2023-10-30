@@ -66,7 +66,9 @@ module Schematic
     # List of attributes with nullable: true
     def self.openapi_nullable
       Set.new([
+        :'company_id',
         :'last_seen_at',
+        :'name',
       ])
     end
 

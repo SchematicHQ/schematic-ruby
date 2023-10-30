@@ -72,6 +72,8 @@ module Schematic
     # List of attributes with nullable: true
     def self.openapi_nullable
       Set.new([
+        :'event_subtype',
+        :'lifecycle_phase',
       ])
     end
 
