@@ -14,47 +14,38 @@ require 'date'
 require 'time'
 
 module Schematic
-  class CreateOrUpdateConditionRequestBody
-    # Optionally provide a trait ID to compare a metric or trait value against instead of a value
-    attr_accessor :comparison_trait_id
+  # Input parameters
+  class ListMetricCountsHourlyParams
+    attr_accessor :company_id
 
-    attr_accessor :condition_type
+    attr_accessor :dir
 
-    # Name of track event type used to measure this condition
+    attr_accessor :end_time
+
     attr_accessor :event_subtype
 
-    attr_accessor :id
+    attr_accessor :limit
 
-    # Period of time over which to measure the track event metric
-    attr_accessor :metric_period
+    attr_accessor :offset
 
-    # Value to compare the track event metric against
-    attr_accessor :metric_value
+    attr_accessor :order
 
-    attr_accessor :operator
+    attr_accessor :start_time
 
-    # List of resource IDs (companise, users, or plans) targeted by this condition
-    attr_accessor :resource_ids
-
-    # ID of trait to use to measure this condition
-    attr_accessor :trait_id
-
-    # Value to compare the trait value against
-    attr_accessor :trait_value
+    attr_accessor :user_id
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'comparison_trait_id' => :'comparison_trait_id',
-        :'condition_type' => :'condition_type',
+        :'company_id' => :'company_id',
+        :'dir' => :'dir',
+        :'end_time' => :'end_time',
         :'event_subtype' => :'event_subtype',
-        :'id' => :'id',
-        :'metric_period' => :'metric_period',
-        :'metric_value' => :'metric_value',
-        :'operator' => :'operator',
-        :'resource_ids' => :'resource_ids',
-        :'trait_id' => :'trait_id',
-        :'trait_value' => :'trait_value'
+        :'limit' => :'limit',
+        :'offset' => :'offset',
+        :'order' => :'order',
+        :'start_time' => :'start_time',
+        :'user_id' => :'user_id'
       }
     end
 
@@ -66,28 +57,21 @@ module Schematic
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'comparison_trait_id' => :'String',
-        :'condition_type' => :'String',
+        :'company_id' => :'String',
+        :'dir' => :'String',
+        :'end_time' => :'Time',
         :'event_subtype' => :'String',
-        :'id' => :'String',
-        :'metric_period' => :'String',
-        :'metric_value' => :'Integer',
-        :'operator' => :'String',
-        :'resource_ids' => :'Array<String>',
-        :'trait_id' => :'String',
-        :'trait_value' => :'String'
+        :'limit' => :'Integer',
+        :'offset' => :'Integer',
+        :'order' => :'String',
+        :'start_time' => :'Time',
+        :'user_id' => :'String'
       }
     end
 
     # List of attributes with nullable: true
     def self.openapi_nullable
       Set.new([
-        :'comparison_trait_id',
-        :'event_subtype',
-        :'id',
-        :'metric_period',
-        :'trait_id',
-        :'trait_value'
       ])
     end
 
@@ -95,57 +79,51 @@ module Schematic
     # @param [Hash] attributes Model attributes in the form of hash
     def initialize(attributes = {})
       if (!attributes.is_a?(Hash))
-        fail ArgumentError, "The input argument (attributes) must be a hash in `Schematic::CreateOrUpdateConditionRequestBody` initialize method"
+        fail ArgumentError, "The input argument (attributes) must be a hash in `Schematic::ListMetricCountsHourlyParams` initialize method"
       end
 
       # check to see if the attribute exists and convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h|
         if (!self.class.attribute_map.key?(k.to_sym))
-          fail ArgumentError, "`#{k}` is not a valid attribute in `Schematic::CreateOrUpdateConditionRequestBody`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
+          fail ArgumentError, "`#{k}` is not a valid attribute in `Schematic::ListMetricCountsHourlyParams`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
         end
         h[k.to_sym] = v
       }
 
-      if attributes.key?(:'comparison_trait_id')
-        self.comparison_trait_id = attributes[:'comparison_trait_id']
+      if attributes.key?(:'company_id')
+        self.company_id = attributes[:'company_id']
       end
 
-      if attributes.key?(:'condition_type')
-        self.condition_type = attributes[:'condition_type']
+      if attributes.key?(:'dir')
+        self.dir = attributes[:'dir']
+      end
+
+      if attributes.key?(:'end_time')
+        self.end_time = attributes[:'end_time']
       end
 
       if attributes.key?(:'event_subtype')
         self.event_subtype = attributes[:'event_subtype']
       end
 
-      if attributes.key?(:'id')
-        self.id = attributes[:'id']
+      if attributes.key?(:'limit')
+        self.limit = attributes[:'limit']
       end
 
-      if attributes.key?(:'metric_period')
-        self.metric_period = attributes[:'metric_period']
+      if attributes.key?(:'offset')
+        self.offset = attributes[:'offset']
       end
 
-      if attributes.key?(:'metric_value')
-        self.metric_value = attributes[:'metric_value']
+      if attributes.key?(:'order')
+        self.order = attributes[:'order']
       end
 
-      if attributes.key?(:'operator')
-        self.operator = attributes[:'operator']
+      if attributes.key?(:'start_time')
+        self.start_time = attributes[:'start_time']
       end
 
-      if attributes.key?(:'resource_ids')
-        if (value = attributes[:'resource_ids']).is_a?(Array)
-          self.resource_ids = value
-        end
-      end
-
-      if attributes.key?(:'trait_id')
-        self.trait_id = attributes[:'trait_id']
-      end
-
-      if attributes.key?(:'trait_value')
-        self.trait_value = attributes[:'trait_value']
+      if attributes.key?(:'user_id')
+        self.user_id = attributes[:'user_id']
       end
     end
 
@@ -153,32 +131,12 @@ module Schematic
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
-      if @condition_type.nil?
-        invalid_properties.push('invalid value for "condition_type", condition_type cannot be nil.')
-      end
-
-      if @metric_value.nil?
-        invalid_properties.push('invalid value for "metric_value", metric_value cannot be nil.')
-      end
-
-      if @operator.nil?
-        invalid_properties.push('invalid value for "operator", operator cannot be nil.')
-      end
-
-      if @resource_ids.nil?
-        invalid_properties.push('invalid value for "resource_ids", resource_ids cannot be nil.')
-      end
-
       invalid_properties
     end
 
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
-      return false if @condition_type.nil?
-      return false if @metric_value.nil?
-      return false if @operator.nil?
-      return false if @resource_ids.nil?
       true
     end
 
@@ -187,16 +145,15 @@ module Schematic
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          comparison_trait_id == o.comparison_trait_id &&
-          condition_type == o.condition_type &&
+          company_id == o.company_id &&
+          dir == o.dir &&
+          end_time == o.end_time &&
           event_subtype == o.event_subtype &&
-          id == o.id &&
-          metric_period == o.metric_period &&
-          metric_value == o.metric_value &&
-          operator == o.operator &&
-          resource_ids == o.resource_ids &&
-          trait_id == o.trait_id &&
-          trait_value == o.trait_value
+          limit == o.limit &&
+          offset == o.offset &&
+          order == o.order &&
+          start_time == o.start_time &&
+          user_id == o.user_id
     end
 
     # @see the `==` method
@@ -208,7 +165,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [comparison_trait_id, condition_type, event_subtype, id, metric_period, metric_value, operator, resource_ids, trait_id, trait_value].hash
+      [company_id, dir, end_time, event_subtype, limit, offset, order, start_time, user_id].hash
     end
 
     # Builds the object from hash

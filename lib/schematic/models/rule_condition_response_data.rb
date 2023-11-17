@@ -99,7 +99,6 @@ module Schematic
         :'metric_period',
         :'trait_entity_type',
         :'trait_id',
-        :'trait_value',
       ])
     end
 
@@ -221,6 +220,10 @@ module Schematic
         invalid_properties.push('invalid value for "rule_id", rule_id cannot be nil.')
       end
 
+      if @trait_value.nil?
+        invalid_properties.push('invalid value for "trait_value", trait_value cannot be nil.')
+      end
+
       if @updated_at.nil?
         invalid_properties.push('invalid value for "updated_at", updated_at cannot be nil.')
       end
@@ -240,6 +243,7 @@ module Schematic
       return false if @operator.nil?
       return false if @resource_ids.nil?
       return false if @rule_id.nil?
+      return false if @trait_value.nil?
       return false if @updated_at.nil?
       true
     end

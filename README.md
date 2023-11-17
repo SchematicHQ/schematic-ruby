@@ -109,6 +109,7 @@ Class | Method | HTTP request | Description
 *Schematic::CompaniesApi* | [**list_companies**](docs/CompaniesApi.md#list_companies) | **GET** /companies | List companies
 *Schematic::CompaniesApi* | [**list_company_memberships**](docs/CompaniesApi.md#list_company_memberships) | **GET** /company-memberships | List company memberships
 *Schematic::CompaniesApi* | [**list_users**](docs/CompaniesApi.md#list_users) | **GET** /users | List users
+*Schematic::CompaniesApi* | [**update_entity_trait_definition**](docs/CompaniesApi.md#update_entity_trait_definition) | **PUT** /entity-trait-definitions/{entity_trait_definition_id} | Update entity trait definition
 *Schematic::EventsApi* | [**count_event_types**](docs/EventsApi.md#count_event_types) | **GET** /event-types/count | Count event types
 *Schematic::EventsApi* | [**count_events**](docs/EventsApi.md#count_events) | **GET** /events/count | Count events
 *Schematic::EventsApi* | [**create_event**](docs/EventsApi.md#create_event) | **POST** /events | Create event
@@ -116,6 +117,8 @@ Class | Method | HTTP request | Description
 *Schematic::EventsApi* | [**get_event_type**](docs/EventsApi.md#get_event_type) | **GET** /event-types/{key} | Get event type
 *Schematic::EventsApi* | [**list_event_types**](docs/EventsApi.md#list_event_types) | **GET** /event-types | List event types
 *Schematic::EventsApi* | [**list_events**](docs/EventsApi.md#list_events) | **GET** /events | List events
+*Schematic::EventsApi* | [**list_metric_counts**](docs/EventsApi.md#list_metric_counts) | **GET** /metric-counts | List metric counts
+*Schematic::EventsApi* | [**list_metric_counts_hourly**](docs/EventsApi.md#list_metric_counts_hourly) | **GET** /metric-counts-hourly | List metric counts hourly
 *Schematic::FeaturesApi* | [**check_flag**](docs/FeaturesApi.md#check_flag) | **POST** /flags/{key}/check | Check flag
 *Schematic::FeaturesApi* | [**check_flags**](docs/FeaturesApi.md#check_flags) | **POST** /flags/check | Check flags
 *Schematic::FeaturesApi* | [**count_flag_values**](docs/FeaturesApi.md#count_flag_values) | **GET** /flag-values/count | Count flag values
@@ -196,6 +199,7 @@ Class | Method | HTTP request | Description
  - [Schematic::DeleteResponse](docs/DeleteResponse.md)
  - [Schematic::EntityFlagValueResponseData](docs/EntityFlagValueResponseData.md)
  - [Schematic::EntityKeyResponseData](docs/EntityKeyResponseData.md)
+ - [Schematic::EntityTraitDefinitionResponseData](docs/EntityTraitDefinitionResponseData.md)
  - [Schematic::EnvironmentDetailResponseData](docs/EnvironmentDetailResponseData.md)
  - [Schematic::EnvironmentResponseData](docs/EnvironmentResponseData.md)
  - [Schematic::EventBody](docs/EventBody.md)
@@ -240,10 +244,15 @@ Class | Method | HTTP request | Description
  - [Schematic::ListFlagValuesResponse](docs/ListFlagValuesResponse.md)
  - [Schematic::ListFlagsParams](docs/ListFlagsParams.md)
  - [Schematic::ListFlagsResponse](docs/ListFlagsResponse.md)
+ - [Schematic::ListMetricCountsHourlyParams](docs/ListMetricCountsHourlyParams.md)
+ - [Schematic::ListMetricCountsHourlyResponse](docs/ListMetricCountsHourlyResponse.md)
+ - [Schematic::ListMetricCountsParams](docs/ListMetricCountsParams.md)
+ - [Schematic::ListMetricCountsResponse](docs/ListMetricCountsResponse.md)
  - [Schematic::ListPlansParams](docs/ListPlansParams.md)
  - [Schematic::ListPlansResponse](docs/ListPlansResponse.md)
  - [Schematic::ListUsersParams](docs/ListUsersParams.md)
  - [Schematic::ListUsersResponse](docs/ListUsersResponse.md)
+ - [Schematic::MetricCountsHourlyResponseData](docs/MetricCountsHourlyResponseData.md)
  - [Schematic::PlanResponseData](docs/PlanResponseData.md)
  - [Schematic::RuleConditionResponseData](docs/RuleConditionResponseData.md)
  - [Schematic::SyncCompanyPlansRequestBody](docs/SyncCompanyPlansRequestBody.md)
@@ -251,6 +260,8 @@ Class | Method | HTTP request | Description
  - [Schematic::SyncCompanyPlansResponseData](docs/SyncCompanyPlansResponseData.md)
  - [Schematic::UpdateApiKeyRequestBody](docs/UpdateApiKeyRequestBody.md)
  - [Schematic::UpdateApiKeyResponse](docs/UpdateApiKeyResponse.md)
+ - [Schematic::UpdateEntityTraitDefinitionRequestBody](docs/UpdateEntityTraitDefinitionRequestBody.md)
+ - [Schematic::UpdateEntityTraitDefinitionResponse](docs/UpdateEntityTraitDefinitionResponse.md)
  - [Schematic::UpdateEnvironmentRequestBody](docs/UpdateEnvironmentRequestBody.md)
  - [Schematic::UpdateEnvironmentResponse](docs/UpdateEnvironmentResponse.md)
  - [Schematic::UpdateFeatureRequestBody](docs/UpdateFeatureRequestBody.md)

@@ -697,7 +697,7 @@ end
 
 ## latest_flag_checks
 
-> <LatestFlagChecksResponse> latest_flag_checks(flag_ids, opts)
+> <LatestFlagChecksResponse> latest_flag_checks(opts)
 
 Latest flag checks
 
@@ -715,10 +715,10 @@ Schematic.configure do |config|
 end
 
 api_instance = Schematic::FeaturesApi.new
-flag_ids = ['inner_example'] # Array<String> | 
 opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example', # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
   flag_id: 'flag_id_example', # String | 
+  flag_ids: ['inner_example'], # Array<String> | 
   limit: 56, # Integer | Page limit (default 100)
   offset: 56, # Integer | Page offset (default 0)
   order: 'order_example', # String | Order by column
@@ -727,7 +727,7 @@ opts = {
 
 begin
   # Latest flag checks
-  result = api_instance.latest_flag_checks(flag_ids, opts)
+  result = api_instance.latest_flag_checks(opts)
   p result
 rescue Schematic::ApiError => e
   puts "Error when calling FeaturesApi->latest_flag_checks: #{e}"
@@ -738,12 +738,12 @@ end
 
 This returns an Array which contains the response data, status code and headers.
 
-> <Array(<LatestFlagChecksResponse>, Integer, Hash)> latest_flag_checks_with_http_info(flag_ids, opts)
+> <Array(<LatestFlagChecksResponse>, Integer, Hash)> latest_flag_checks_with_http_info(opts)
 
 ```ruby
 begin
   # Latest flag checks
-  data, status_code, headers = api_instance.latest_flag_checks_with_http_info(flag_ids, opts)
+  data, status_code, headers = api_instance.latest_flag_checks_with_http_info(opts)
   p status_code # => 2xx
   p headers # => { ... }
   p data # => <LatestFlagChecksResponse>
@@ -756,9 +756,9 @@ end
 
 | Name | Type | Description | Notes |
 | ---- | ---- | ----------- | ----- |
-| **flag_ids** | [**Array&lt;String&gt;**](String.md) |  |  |
 | **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
 | **flag_id** | **String** |  | [optional] |
+| **flag_ids** | [**Array&lt;String&gt;**](String.md) |  | [optional] |
 | **limit** | **Integer** | Page limit (default 100) | [optional] |
 | **offset** | **Integer** | Page offset (default 0) | [optional] |
 | **order** | **String** | Order by column | [optional] |
@@ -859,7 +859,7 @@ end
 
 ## list_flag_checks
 
-> <ListFlagChecksResponse> list_flag_checks(flag_ids, opts)
+> <ListFlagChecksResponse> list_flag_checks(opts)
 
 List flag checks
 
@@ -877,10 +877,10 @@ Schematic.configure do |config|
 end
 
 api_instance = Schematic::FeaturesApi.new
-flag_ids = ['inner_example'] # Array<String> | 
 opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example', # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
   flag_id: 'flag_id_example', # String | 
+  flag_ids: ['inner_example'], # Array<String> | 
   limit: 56, # Integer | Page limit (default 100)
   offset: 56, # Integer | Page offset (default 0)
   order: 'order_example', # String | Order by column
@@ -889,7 +889,7 @@ opts = {
 
 begin
   # List flag checks
-  result = api_instance.list_flag_checks(flag_ids, opts)
+  result = api_instance.list_flag_checks(opts)
   p result
 rescue Schematic::ApiError => e
   puts "Error when calling FeaturesApi->list_flag_checks: #{e}"
@@ -900,12 +900,12 @@ end
 
 This returns an Array which contains the response data, status code and headers.
 
-> <Array(<ListFlagChecksResponse>, Integer, Hash)> list_flag_checks_with_http_info(flag_ids, opts)
+> <Array(<ListFlagChecksResponse>, Integer, Hash)> list_flag_checks_with_http_info(opts)
 
 ```ruby
 begin
   # List flag checks
-  data, status_code, headers = api_instance.list_flag_checks_with_http_info(flag_ids, opts)
+  data, status_code, headers = api_instance.list_flag_checks_with_http_info(opts)
   p status_code # => 2xx
   p headers # => { ... }
   p data # => <ListFlagChecksResponse>
@@ -918,9 +918,9 @@ end
 
 | Name | Type | Description | Notes |
 | ---- | ---- | ----------- | ----- |
-| **flag_ids** | [**Array&lt;String&gt;**](String.md) |  |  |
 | **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
 | **flag_id** | **String** |  | [optional] |
+| **flag_ids** | [**Array&lt;String&gt;**](String.md) |  | [optional] |
 | **limit** | **Integer** | Page limit (default 100) | [optional] |
 | **offset** | **Integer** | Page offset (default 0) | [optional] |
 | **order** | **String** | Order by column | [optional] |

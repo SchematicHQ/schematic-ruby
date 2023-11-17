@@ -23,6 +23,8 @@ module Schematic
 
     attr_accessor :priority
 
+    attr_accessor :priority_group
+
     attr_accessor :value
 
     # Attribute mapping from ruby-style variable name to JSON key.
@@ -32,6 +34,7 @@ module Schematic
         :'id' => :'id',
         :'name' => :'name',
         :'priority' => :'priority',
+        :'priority_group' => :'priority_group',
         :'value' => :'value'
       }
     end
@@ -48,6 +51,7 @@ module Schematic
         :'id' => :'String',
         :'name' => :'String',
         :'priority' => :'Integer',
+        :'priority_group' => :'Integer',
         :'value' => :'Boolean'
       }
     end
@@ -56,6 +60,7 @@ module Schematic
     def self.openapi_nullable
       Set.new([
         :'id',
+        :'priority_group',
       ])
     end
 
@@ -90,6 +95,10 @@ module Schematic
 
       if attributes.key?(:'priority')
         self.priority = attributes[:'priority']
+      end
+
+      if attributes.key?(:'priority_group')
+        self.priority_group = attributes[:'priority_group']
       end
 
       if attributes.key?(:'value')
@@ -139,6 +148,7 @@ module Schematic
           id == o.id &&
           name == o.name &&
           priority == o.priority &&
+          priority_group == o.priority_group &&
           value == o.value
     end
 
@@ -151,7 +161,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [conditions, id, name, priority, value].hash
+      [conditions, id, name, priority, priority_group, value].hash
     end
 
     # Builds the object from hash

@@ -525,5 +525,186 @@ module Schematic
       end
       return data, status_code, headers
     end
+
+    # List metric counts
+    # @param event_subtype [String] 
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @option opts [Time] :start_time 
+    # @option opts [Time] :end_time 
+    # @option opts [String] :company_id 
+    # @option opts [String] :user_id 
+    # @option opts [Integer] :limit Page limit (default 100)
+    # @option opts [Integer] :offset Page offset (default 0)
+    # @option opts [String] :order Order by column
+    # @option opts [String] :dir Order direction
+    # @option opts [String] :grouping 
+    # @return [ListMetricCountsResponse]
+    def list_metric_counts(event_subtype, opts = {})
+      data, _status_code, _headers = list_metric_counts_with_http_info(event_subtype, opts)
+      data
+    end
+
+    # List metric counts
+    # @param event_subtype [String] 
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @option opts [Time] :start_time 
+    # @option opts [Time] :end_time 
+    # @option opts [String] :company_id 
+    # @option opts [String] :user_id 
+    # @option opts [Integer] :limit Page limit (default 100)
+    # @option opts [Integer] :offset Page offset (default 0)
+    # @option opts [String] :order Order by column
+    # @option opts [String] :dir Order direction
+    # @option opts [String] :grouping 
+    # @return [Array<(ListMetricCountsResponse, Integer, Hash)>] ListMetricCountsResponse data, response status code and response headers
+    def list_metric_counts_with_http_info(event_subtype, opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: EventsApi.list_metric_counts ...'
+      end
+      # verify the required parameter 'event_subtype' is set
+      if @api_client.config.client_side_validation && event_subtype.nil?
+        fail ArgumentError, "Missing the required parameter 'event_subtype' when calling EventsApi.list_metric_counts"
+      end
+      # resource path
+      local_var_path = '/metric-counts'
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+      query_params[:'event_subtype'] = event_subtype
+      query_params[:'start_time'] = opts[:'start_time'] if !opts[:'start_time'].nil?
+      query_params[:'end_time'] = opts[:'end_time'] if !opts[:'end_time'].nil?
+      query_params[:'company_id'] = opts[:'company_id'] if !opts[:'company_id'].nil?
+      query_params[:'user_id'] = opts[:'user_id'] if !opts[:'user_id'].nil?
+      query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
+      query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
+      query_params[:'order'] = opts[:'order'] if !opts[:'order'].nil?
+      query_params[:'dir'] = opts[:'dir'] if !opts[:'dir'].nil?
+      query_params[:'grouping'] = opts[:'grouping'] if !opts[:'grouping'].nil?
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json'])
+      header_params[:'X-Schematic-Environment-Id'] = opts[:'x_schematic_environment_id'] if !opts[:'x_schematic_environment_id'].nil?
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body]
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'ListMetricCountsResponse'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['ApiKeyAuth']
+
+      new_options = opts.merge(
+        :operation => :"EventsApi.list_metric_counts",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: EventsApi#list_metric_counts\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
+    # List metric counts hourly
+    # @param event_subtype [String] 
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @option opts [Time] :start_time 
+    # @option opts [Time] :end_time 
+    # @option opts [String] :company_id 
+    # @option opts [String] :user_id 
+    # @option opts [Integer] :limit Page limit (default 100)
+    # @option opts [Integer] :offset Page offset (default 0)
+    # @option opts [String] :order Order by column
+    # @option opts [String] :dir Order direction
+    # @return [ListMetricCountsHourlyResponse]
+    def list_metric_counts_hourly(event_subtype, opts = {})
+      data, _status_code, _headers = list_metric_counts_hourly_with_http_info(event_subtype, opts)
+      data
+    end
+
+    # List metric counts hourly
+    # @param event_subtype [String] 
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @option opts [Time] :start_time 
+    # @option opts [Time] :end_time 
+    # @option opts [String] :company_id 
+    # @option opts [String] :user_id 
+    # @option opts [Integer] :limit Page limit (default 100)
+    # @option opts [Integer] :offset Page offset (default 0)
+    # @option opts [String] :order Order by column
+    # @option opts [String] :dir Order direction
+    # @return [Array<(ListMetricCountsHourlyResponse, Integer, Hash)>] ListMetricCountsHourlyResponse data, response status code and response headers
+    def list_metric_counts_hourly_with_http_info(event_subtype, opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: EventsApi.list_metric_counts_hourly ...'
+      end
+      # verify the required parameter 'event_subtype' is set
+      if @api_client.config.client_side_validation && event_subtype.nil?
+        fail ArgumentError, "Missing the required parameter 'event_subtype' when calling EventsApi.list_metric_counts_hourly"
+      end
+      # resource path
+      local_var_path = '/metric-counts-hourly'
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+      query_params[:'event_subtype'] = event_subtype
+      query_params[:'start_time'] = opts[:'start_time'] if !opts[:'start_time'].nil?
+      query_params[:'end_time'] = opts[:'end_time'] if !opts[:'end_time'].nil?
+      query_params[:'company_id'] = opts[:'company_id'] if !opts[:'company_id'].nil?
+      query_params[:'user_id'] = opts[:'user_id'] if !opts[:'user_id'].nil?
+      query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
+      query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
+      query_params[:'order'] = opts[:'order'] if !opts[:'order'].nil?
+      query_params[:'dir'] = opts[:'dir'] if !opts[:'dir'].nil?
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json'])
+      header_params[:'X-Schematic-Environment-Id'] = opts[:'x_schematic_environment_id'] if !opts[:'x_schematic_environment_id'].nil?
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body]
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'ListMetricCountsHourlyResponse'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['ApiKeyAuth']
+
+      new_options = opts.merge(
+        :operation => :"EventsApi.list_metric_counts_hourly",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: EventsApi#list_metric_counts_hourly\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
   end
 end

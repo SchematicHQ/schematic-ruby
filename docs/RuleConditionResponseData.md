@@ -17,7 +17,7 @@
 | **rule_id** | **String** |  |  |
 | **trait_entity_type** | **String** |  | [optional] |
 | **trait_id** | **String** |  | [optional] |
-| **trait_value** | **String** |  | [optional] |
+| **trait_value** | **String** |  |  |
 | **updated_at** | **Time** |  |  |
 
 ## Example

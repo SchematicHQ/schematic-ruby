@@ -644,45 +644,41 @@ module Schematic
     end
 
     # Latest flag checks
-    # @param flag_ids [Array<String>] 
     # @param [Hash] opts the optional parameters
     # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
     # @option opts [String] :flag_id 
+    # @option opts [Array<String>] :flag_ids 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
     # @option opts [String] :order Order by column
     # @option opts [String] :dir Order direction
     # @return [LatestFlagChecksResponse]
-    def latest_flag_checks(flag_ids, opts = {})
-      data, _status_code, _headers = latest_flag_checks_with_http_info(flag_ids, opts)
+    def latest_flag_checks(opts = {})
+      data, _status_code, _headers = latest_flag_checks_with_http_info(opts)
       data
     end
 
     # Latest flag checks
-    # @param flag_ids [Array<String>] 
     # @param [Hash] opts the optional parameters
     # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
     # @option opts [String] :flag_id 
+    # @option opts [Array<String>] :flag_ids 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
     # @option opts [String] :order Order by column
     # @option opts [String] :dir Order direction
     # @return [Array<(LatestFlagChecksResponse, Integer, Hash)>] LatestFlagChecksResponse data, response status code and response headers
-    def latest_flag_checks_with_http_info(flag_ids, opts = {})
+    def latest_flag_checks_with_http_info(opts = {})
       if @api_client.config.debugging
         @api_client.config.logger.debug 'Calling API: FeaturesApi.latest_flag_checks ...'
-      end
-      # verify the required parameter 'flag_ids' is set
-      if @api_client.config.client_side_validation && flag_ids.nil?
-        fail ArgumentError, "Missing the required parameter 'flag_ids' when calling FeaturesApi.latest_flag_checks"
       end
       # resource path
       local_var_path = '/flag-checks/latest'
 
       # query parameters
       query_params = opts[:query_params] || {}
-      query_params[:'flag_ids'] = @api_client.build_collection_param(flag_ids, :multi)
       query_params[:'flag_id'] = opts[:'flag_id'] if !opts[:'flag_id'].nil?
+      query_params[:'flag_ids'] = @api_client.build_collection_param(opts[:'flag_ids'], :multi) if !opts[:'flag_ids'].nil?
       query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
       query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
       query_params[:'order'] = opts[:'order'] if !opts[:'order'].nil?
@@ -794,45 +790,41 @@ module Schematic
     end
 
     # List flag checks
-    # @param flag_ids [Array<String>] 
     # @param [Hash] opts the optional parameters
     # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
     # @option opts [String] :flag_id 
+    # @option opts [Array<String>] :flag_ids 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
     # @option opts [String] :order Order by column
     # @option opts [String] :dir Order direction
     # @return [ListFlagChecksResponse]
-    def list_flag_checks(flag_ids, opts = {})
-      data, _status_code, _headers = list_flag_checks_with_http_info(flag_ids, opts)
+    def list_flag_checks(opts = {})
+      data, _status_code, _headers = list_flag_checks_with_http_info(opts)
       data
     end
 
     # List flag checks
-    # @param flag_ids [Array<String>] 
     # @param [Hash] opts the optional parameters
     # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
     # @option opts [String] :flag_id 
+    # @option opts [Array<String>] :flag_ids 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
     # @option opts [String] :order Order by column
     # @option opts [String] :dir Order direction
     # @return [Array<(ListFlagChecksResponse, Integer, Hash)>] ListFlagChecksResponse data, response status code and response headers
-    def list_flag_checks_with_http_info(flag_ids, opts = {})
+    def list_flag_checks_with_http_info(opts = {})
       if @api_client.config.debugging
         @api_client.config.logger.debug 'Calling API: FeaturesApi.list_flag_checks ...'
-      end
-      # verify the required parameter 'flag_ids' is set
-      if @api_client.config.client_side_validation && flag_ids.nil?
-        fail ArgumentError, "Missing the required parameter 'flag_ids' when calling FeaturesApi.list_flag_checks"
       end
       # resource path
       local_var_path = '/flag-checks'
 
       # query parameters
       query_params = opts[:query_params] || {}
-      query_params[:'flag_ids'] = @api_client.build_collection_param(flag_ids, :multi)
       query_params[:'flag_id'] = opts[:'flag_id'] if !opts[:'flag_id'].nil?
+      query_params[:'flag_ids'] = @api_client.build_collection_param(opts[:'flag_ids'], :multi) if !opts[:'flag_ids'].nil?
       query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
       query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
       query_params[:'order'] = opts[:'order'] if !opts[:'order'].nil?

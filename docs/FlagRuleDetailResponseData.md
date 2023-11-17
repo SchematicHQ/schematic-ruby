@@ -11,6 +11,7 @@
 | **id** | **String** |  |  |
 | **name** | **String** |  |  |
 | **priority** | **Integer** |  |  |
+| **priority_group** | **Integer** |  | [optional] |
 | **updated_at** | **Time** |  |  |
 | **value** | **Boolean** |  |  |
 
@@ -27,6 +28,7 @@ instance = Schematic::FlagRuleDetailResponseData.new(
   id: null,
   name: null,
   priority: null,
+  priority_group: null,
   updated_at: null,
   value: null
 )

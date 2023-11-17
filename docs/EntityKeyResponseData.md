@@ -5,12 +5,12 @@
 | Name | Type | Description | Notes |
 | ---- | ---- | ----------- | ----- |
 | **created_at** | **Time** |  |  |
+| **definition_id** | **String** |  |  |
 | **entity_id** | **String** |  |  |
 | **entity_type** | **String** |  |  |
 | **environment_id** | **String** |  |  |
 | **id** | **String** |  |  |
-| **key_type** | **String** |  |  |
-| **key_type_id** | **String** |  |  |
+| **key** | **String** |  |  |
 | **updated_at** | **Time** |  |  |
 | **value** | **String** |  |  |
 
@@ -21,12 +21,12 @@ require 'schematic'
 
 instance = Schematic::EntityKeyResponseData.new(
   created_at: null,
+  definition_id: null,
   entity_id: null,
   entity_type: null,
   environment_id: null,
   id: null,
-  key_type: null,
-  key_type_id: null,
+  key: null,
   updated_at: null,
   value: null
 )

@@ -14,47 +14,17 @@ require 'date'
 require 'time'
 
 module Schematic
-  class CreateOrUpdateConditionRequestBody
-    # Optionally provide a trait ID to compare a metric or trait value against instead of a value
-    attr_accessor :comparison_trait_id
+  class ListMetricCountsHourlyResponse
+    # The returned resources
+    attr_accessor :data
 
-    attr_accessor :condition_type
-
-    # Name of track event type used to measure this condition
-    attr_accessor :event_subtype
-
-    attr_accessor :id
-
-    # Period of time over which to measure the track event metric
-    attr_accessor :metric_period
-
-    # Value to compare the track event metric against
-    attr_accessor :metric_value
-
-    attr_accessor :operator
-
-    # List of resource IDs (companise, users, or plans) targeted by this condition
-    attr_accessor :resource_ids
-
-    # ID of trait to use to measure this condition
-    attr_accessor :trait_id
-
-    # Value to compare the trait value against
-    attr_accessor :trait_value
+    attr_accessor :params
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'comparison_trait_id' => :'comparison_trait_id',
-        :'condition_type' => :'condition_type',
-        :'event_subtype' => :'event_subtype',
-        :'id' => :'id',
-        :'metric_period' => :'metric_period',
-        :'metric_value' => :'metric_value',
-        :'operator' => :'operator',
-        :'resource_ids' => :'resource_ids',
-        :'trait_id' => :'trait_id',
-        :'trait_value' => :'trait_value'
+        :'data' => :'data',
+        :'params' => :'params'
       }
     end
 
@@ -66,28 +36,14 @@ module Schematic
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'comparison_trait_id' => :'String',
-        :'condition_type' => :'String',
-        :'event_subtype' => :'String',
-        :'id' => :'String',
-        :'metric_period' => :'String',
-        :'metric_value' => :'Integer',
-        :'operator' => :'String',
-        :'resource_ids' => :'Array<String>',
-        :'trait_id' => :'String',
-        :'trait_value' => :'String'
+        :'data' => :'Array<MetricCountsHourlyResponseData>',
+        :'params' => :'ListMetricCountsHourlyParams'
       }
     end
 
     # List of attributes with nullable: true
     def self.openapi_nullable
       Set.new([
-        :'comparison_trait_id',
-        :'event_subtype',
-        :'id',
-        :'metric_period',
-        :'trait_id',
-        :'trait_value'
       ])
     end
 
@@ -95,57 +51,25 @@ module Schematic
     # @param [Hash] attributes Model attributes in the form of hash
     def initialize(attributes = {})
       if (!attributes.is_a?(Hash))
-        fail ArgumentError, "The input argument (attributes) must be a hash in `Schematic::CreateOrUpdateConditionRequestBody` initialize method"
+        fail ArgumentError, "The input argument (attributes) must be a hash in `Schematic::ListMetricCountsHourlyResponse` initialize method"
       end
 
       # check to see if the attribute exists and convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h|
         if (!self.class.attribute_map.key?(k.to_sym))
-          fail ArgumentError, "`#{k}` is not a valid attribute in `Schematic::CreateOrUpdateConditionRequestBody`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
+          fail ArgumentError, "`#{k}` is not a valid attribute in `Schematic::ListMetricCountsHourlyResponse`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
         end
         h[k.to_sym] = v
       }
 
-      if attributes.key?(:'comparison_trait_id')
-        self.comparison_trait_id = attributes[:'comparison_trait_id']
-      end
-
-      if attributes.key?(:'condition_type')
-        self.condition_type = attributes[:'condition_type']
-      end
-
-      if attributes.key?(:'event_subtype')
-        self.event_subtype = attributes[:'event_subtype']
-      end
-
-      if attributes.key?(:'id')
-        self.id = attributes[:'id']
-      end
-
-      if attributes.key?(:'metric_period')
-        self.metric_period = attributes[:'metric_period']
-      end
-
-      if attributes.key?(:'metric_value')
-        self.metric_value = attributes[:'metric_value']
-      end
-
-      if attributes.key?(:'operator')
-        self.operator = attributes[:'operator']
-      end
-
-      if attributes.key?(:'resource_ids')
-        if (value = attributes[:'resource_ids']).is_a?(Array)
-          self.resource_ids = value
+      if attributes.key?(:'data')
+        if (value = attributes[:'data']).is_a?(Array)
+          self.data = value
         end
       end
 
-      if attributes.key?(:'trait_id')
-        self.trait_id = attributes[:'trait_id']
-      end
-
-      if attributes.key?(:'trait_value')
-        self.trait_value = attributes[:'trait_value']
+      if attributes.key?(:'params')
+        self.params = attributes[:'params']
       end
     end
 
@@ -153,20 +77,12 @@ module Schematic
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
-      if @condition_type.nil?
-        invalid_properties.push('invalid value for "condition_type", condition_type cannot be nil.')
+      if @data.nil?
+        invalid_properties.push('invalid value for "data", data cannot be nil.')
       end
 
-      if @metric_value.nil?
-        invalid_properties.push('invalid value for "metric_value", metric_value cannot be nil.')
-      end
-
-      if @operator.nil?
-        invalid_properties.push('invalid value for "operator", operator cannot be nil.')
-      end
-
-      if @resource_ids.nil?
-        invalid_properties.push('invalid value for "resource_ids", resource_ids cannot be nil.')
+      if @params.nil?
+        invalid_properties.push('invalid value for "params", params cannot be nil.')
       end
 
       invalid_properties
@@ -175,10 +91,8 @@ module Schematic
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
-      return false if @condition_type.nil?
-      return false if @metric_value.nil?
-      return false if @operator.nil?
-      return false if @resource_ids.nil?
+      return false if @data.nil?
+      return false if @params.nil?
       true
     end
 
@@ -187,16 +101,8 @@ module Schematic
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          comparison_trait_id == o.comparison_trait_id &&
-          condition_type == o.condition_type &&
-          event_subtype == o.event_subtype &&
-          id == o.id &&
-          metric_period == o.metric_period &&
-          metric_value == o.metric_value &&
-          operator == o.operator &&
-          resource_ids == o.resource_ids &&
-          trait_id == o.trait_id &&
-          trait_value == o.trait_value
+          data == o.data &&
+          params == o.params
     end
 
     # @see the `==` method
@@ -208,7 +114,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [comparison_trait_id, condition_type, event_subtype, id, metric_period, metric_value, operator, resource_ids, trait_id, trait_value].hash
+      [data, params].hash
     end
 
     # Builds the object from hash

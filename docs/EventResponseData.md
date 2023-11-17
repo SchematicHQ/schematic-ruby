@@ -4,7 +4,7 @@
 
 | Name | Type | Description | Notes |
 | ---- | ---- | ----------- | ----- |
-| **api_key** | **String** |  |  |
+| **api_key** | **String** |  | [optional] |
 | **body** | **Object** |  |  |
 | **captured_at** | **Time** |  |  |
 | **company_id** | **String** |  | [optional] |

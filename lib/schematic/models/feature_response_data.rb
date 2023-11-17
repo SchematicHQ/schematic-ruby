@@ -21,11 +21,15 @@ module Schematic
 
     attr_accessor :event_subtype
 
+    attr_accessor :feature_type
+
     attr_accessor :id
 
     attr_accessor :lifecycle_phase
 
     attr_accessor :name
+
+    attr_accessor :trait_id
 
     attr_accessor :updated_at
 
@@ -35,9 +39,11 @@ module Schematic
         :'created_at' => :'created_at',
         :'description' => :'description',
         :'event_subtype' => :'event_subtype',
+        :'feature_type' => :'feature_type',
         :'id' => :'id',
         :'lifecycle_phase' => :'lifecycle_phase',
         :'name' => :'name',
+        :'trait_id' => :'trait_id',
         :'updated_at' => :'updated_at'
       }
     end
@@ -53,9 +59,11 @@ module Schematic
         :'created_at' => :'Time',
         :'description' => :'String',
         :'event_subtype' => :'String',
+        :'feature_type' => :'String',
         :'id' => :'String',
         :'lifecycle_phase' => :'String',
         :'name' => :'String',
+        :'trait_id' => :'String',
         :'updated_at' => :'Time'
       }
     end
@@ -65,6 +73,7 @@ module Schematic
       Set.new([
         :'event_subtype',
         :'lifecycle_phase',
+        :'trait_id',
       ])
     end
 
@@ -95,6 +104,10 @@ module Schematic
         self.event_subtype = attributes[:'event_subtype']
       end
 
+      if attributes.key?(:'feature_type')
+        self.feature_type = attributes[:'feature_type']
+      end
+
       if attributes.key?(:'id')
         self.id = attributes[:'id']
       end
@@ -105,6 +118,10 @@ module Schematic
 
       if attributes.key?(:'name')
         self.name = attributes[:'name']
+      end
+
+      if attributes.key?(:'trait_id')
+        self.trait_id = attributes[:'trait_id']
       end
 
       if attributes.key?(:'updated_at')
@@ -122,6 +139,10 @@ module Schematic
 
       if @description.nil?
         invalid_properties.push('invalid value for "description", description cannot be nil.')
+      end
+
+      if @feature_type.nil?
+        invalid_properties.push('invalid value for "feature_type", feature_type cannot be nil.')
       end
 
       if @id.nil?
@@ -144,6 +165,7 @@ module Schematic
     def valid?
       return false if @created_at.nil?
       return false if @description.nil?
+      return false if @feature_type.nil?
       return false if @id.nil?
       return false if @name.nil?
       return false if @updated_at.nil?
@@ -158,9 +180,11 @@ module Schematic
           created_at == o.created_at &&
           description == o.description &&
           event_subtype == o.event_subtype &&
+          feature_type == o.feature_type &&
           id == o.id &&
           lifecycle_phase == o.lifecycle_phase &&
           name == o.name &&
+          trait_id == o.trait_id &&
           updated_at == o.updated_at
     end
 
@@ -173,7 +197,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [created_at, description, event_subtype, id, lifecycle_phase, name, updated_at].hash
+      [created_at, description, event_subtype, feature_type, id, lifecycle_phase, name, trait_id, updated_at].hash
     end
 
     # Builds the object from hash

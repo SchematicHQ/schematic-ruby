@@ -17,6 +17,8 @@ module Schematic
   class EntityKeyResponseData
     attr_accessor :created_at
 
+    attr_accessor :definition_id
+
     attr_accessor :entity_id
 
     attr_accessor :entity_type
@@ -25,9 +27,7 @@ module Schematic
 
     attr_accessor :id
 
-    attr_accessor :key_type
-
-    attr_accessor :key_type_id
+    attr_accessor :key
 
     attr_accessor :updated_at
 
@@ -37,12 +37,12 @@ module Schematic
     def self.attribute_map
       {
         :'created_at' => :'created_at',
+        :'definition_id' => :'definition_id',
         :'entity_id' => :'entity_id',
         :'entity_type' => :'entity_type',
         :'environment_id' => :'environment_id',
         :'id' => :'id',
-        :'key_type' => :'key_type',
-        :'key_type_id' => :'key_type_id',
+        :'key' => :'key',
         :'updated_at' => :'updated_at',
         :'value' => :'value'
       }
@@ -57,12 +57,12 @@ module Schematic
     def self.openapi_types
       {
         :'created_at' => :'Time',
+        :'definition_id' => :'String',
         :'entity_id' => :'String',
         :'entity_type' => :'String',
         :'environment_id' => :'String',
         :'id' => :'String',
-        :'key_type' => :'String',
-        :'key_type_id' => :'String',
+        :'key' => :'String',
         :'updated_at' => :'Time',
         :'value' => :'String'
       }
@@ -93,6 +93,10 @@ module Schematic
         self.created_at = attributes[:'created_at']
       end
 
+      if attributes.key?(:'definition_id')
+        self.definition_id = attributes[:'definition_id']
+      end
+
       if attributes.key?(:'entity_id')
         self.entity_id = attributes[:'entity_id']
       end
@@ -109,12 +113,8 @@ module Schematic
         self.id = attributes[:'id']
       end
 
-      if attributes.key?(:'key_type')
-        self.key_type = attributes[:'key_type']
-      end
-
-      if attributes.key?(:'key_type_id')
-        self.key_type_id = attributes[:'key_type_id']
+      if attributes.key?(:'key')
+        self.key = attributes[:'key']
       end
 
       if attributes.key?(:'updated_at')
@@ -134,6 +134,10 @@ module Schematic
         invalid_properties.push('invalid value for "created_at", created_at cannot be nil.')
       end
 
+      if @definition_id.nil?
+        invalid_properties.push('invalid value for "definition_id", definition_id cannot be nil.')
+      end
+
       if @entity_id.nil?
         invalid_properties.push('invalid value for "entity_id", entity_id cannot be nil.')
       end
@@ -150,12 +154,8 @@ module Schematic
         invalid_properties.push('invalid value for "id", id cannot be nil.')
       end
 
-      if @key_type.nil?
-        invalid_properties.push('invalid value for "key_type", key_type cannot be nil.')
-      end
-
-      if @key_type_id.nil?
-        invalid_properties.push('invalid value for "key_type_id", key_type_id cannot be nil.')
+      if @key.nil?
+        invalid_properties.push('invalid value for "key", key cannot be nil.')
       end
 
       if @updated_at.nil?
@@ -173,12 +173,12 @@ module Schematic
     # @return true if the model is valid
     def valid?
       return false if @created_at.nil?
+      return false if @definition_id.nil?
       return false if @entity_id.nil?
       return false if @entity_type.nil?
       return false if @environment_id.nil?
       return false if @id.nil?
-      return false if @key_type.nil?
-      return false if @key_type_id.nil?
+      return false if @key.nil?
       return false if @updated_at.nil?
       return false if @value.nil?
       true
@@ -190,12 +190,12 @@ module Schematic
       return true if self.equal?(o)
       self.class == o.class &&
           created_at == o.created_at &&
+          definition_id == o.definition_id &&
           entity_id == o.entity_id &&
           entity_type == o.entity_type &&
           environment_id == o.environment_id &&
           id == o.id &&
-          key_type == o.key_type &&
-          key_type_id == o.key_type_id &&
+          key == o.key &&
           updated_at == o.updated_at &&
           value == o.value
     end
@@ -209,7 +209,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [created_at, entity_id, entity_type, environment_id, id, key_type, key_type_id, updated_at, value].hash
+      [created_at, definition_id, entity_id, entity_type, environment_id, id, key, updated_at, value].hash
     end
 
     # Builds the object from hash

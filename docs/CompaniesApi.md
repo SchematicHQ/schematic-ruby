@@ -13,6 +13,7 @@ All URIs are relative to *https://api.schematichq.com*
 | [**list_companies**](CompaniesApi.md#list_companies) | **GET** /companies | List companies |
 | [**list_company_memberships**](CompaniesApi.md#list_company_memberships) | **GET** /company-memberships | List company memberships |
 | [**list_users**](CompaniesApi.md#list_users) | **GET** /users | List users |
+| [**update_entity_trait_definition**](CompaniesApi.md#update_entity_trait_definition) | **PUT** /entity-trait-definitions/{entity_trait_definition_id} | Update entity trait definition |
 
 
 ## create_company
@@ -695,5 +696,80 @@ end
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## update_entity_trait_definition
+
+> <UpdateEntityTraitDefinitionResponse> update_entity_trait_definition(entity_trait_definition_id, update_entity_trait_definition_request_body, opts)
+
+Update entity trait definition
+
+### Examples
+
+```ruby
+require 'time'
+require 'schematic'
+# setup authorization
+Schematic.configure do |config|
+  # Configure API key authorization: ApiKeyAuth
+  config.api_key['ApiKeyAuth'] = 'YOUR API KEY'
+  # Uncomment the following line to set a prefix for the API key, e.g. 'Bearer' (defaults to nil)
+  # config.api_key_prefix['ApiKeyAuth'] = 'Bearer'
+end
+
+api_instance = Schematic::CompaniesApi.new
+entity_trait_definition_id = 'entity_trait_definition_id_example' # String | entity_trait_definition_id
+update_entity_trait_definition_request_body = Schematic::UpdateEntityTraitDefinitionRequestBody.new({trait_type: 'trait_type_example'}) # UpdateEntityTraitDefinitionRequestBody | 
+opts = {
+  x_schematic_environment_id: 'x_schematic_environment_id_example' # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
+}
+
+begin
+  # Update entity trait definition
+  result = api_instance.update_entity_trait_definition(entity_trait_definition_id, update_entity_trait_definition_request_body, opts)
+  p result
+rescue Schematic::ApiError => e
+  puts "Error when calling CompaniesApi->update_entity_trait_definition: #{e}"
+end
+```
+
+#### Using the update_entity_trait_definition_with_http_info variant
+
+This returns an Array which contains the response data, status code and headers.
+
+> <Array(<UpdateEntityTraitDefinitionResponse>, Integer, Hash)> update_entity_trait_definition_with_http_info(entity_trait_definition_id, update_entity_trait_definition_request_body, opts)
+
+```ruby
+begin
+  # Update entity trait definition
+  data, status_code, headers = api_instance.update_entity_trait_definition_with_http_info(entity_trait_definition_id, update_entity_trait_definition_request_body, opts)
+  p status_code # => 2xx
+  p headers # => { ... }
+  p data # => <UpdateEntityTraitDefinitionResponse>
+rescue Schematic::ApiError => e
+  puts "Error when calling CompaniesApi->update_entity_trait_definition_with_http_info: #{e}"
+end
+```
+
+### Parameters
+
+| Name | Type | Description | Notes |
+| ---- | ---- | ----------- | ----- |
+| **entity_trait_definition_id** | **String** | entity_trait_definition_id |  |
+| **update_entity_trait_definition_request_body** | [**UpdateEntityTraitDefinitionRequestBody**](UpdateEntityTraitDefinitionRequestBody.md) |  |  |
+| **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
+
+### Return type
+
+[**UpdateEntityTraitDefinitionResponse**](UpdateEntityTraitDefinitionResponse.md)
+
+### Authorization
+
+[ApiKeyAuth](../README.md#ApiKeyAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 

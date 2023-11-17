@@ -639,5 +639,80 @@ module Schematic
       end
       return data, status_code, headers
     end
+
+    # Update entity trait definition
+    # @param entity_trait_definition_id [String] entity_trait_definition_id
+    # @param update_entity_trait_definition_request_body [UpdateEntityTraitDefinitionRequestBody] 
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @return [UpdateEntityTraitDefinitionResponse]
+    def update_entity_trait_definition(entity_trait_definition_id, update_entity_trait_definition_request_body, opts = {})
+      data, _status_code, _headers = update_entity_trait_definition_with_http_info(entity_trait_definition_id, update_entity_trait_definition_request_body, opts)
+      data
+    end
+
+    # Update entity trait definition
+    # @param entity_trait_definition_id [String] entity_trait_definition_id
+    # @param update_entity_trait_definition_request_body [UpdateEntityTraitDefinitionRequestBody] 
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @return [Array<(UpdateEntityTraitDefinitionResponse, Integer, Hash)>] UpdateEntityTraitDefinitionResponse data, response status code and response headers
+    def update_entity_trait_definition_with_http_info(entity_trait_definition_id, update_entity_trait_definition_request_body, opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: CompaniesApi.update_entity_trait_definition ...'
+      end
+      # verify the required parameter 'entity_trait_definition_id' is set
+      if @api_client.config.client_side_validation && entity_trait_definition_id.nil?
+        fail ArgumentError, "Missing the required parameter 'entity_trait_definition_id' when calling CompaniesApi.update_entity_trait_definition"
+      end
+      # verify the required parameter 'update_entity_trait_definition_request_body' is set
+      if @api_client.config.client_side_validation && update_entity_trait_definition_request_body.nil?
+        fail ArgumentError, "Missing the required parameter 'update_entity_trait_definition_request_body' when calling CompaniesApi.update_entity_trait_definition"
+      end
+      # resource path
+      local_var_path = '/entity-trait-definitions/{entity_trait_definition_id}'.sub('{' + 'entity_trait_definition_id' + '}', CGI.escape(entity_trait_definition_id.to_s))
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json'])
+      # HTTP header 'Content-Type'
+      content_type = @api_client.select_header_content_type(['application/json'])
+      if !content_type.nil?
+          header_params['Content-Type'] = content_type
+      end
+      header_params[:'X-Schematic-Environment-Id'] = opts[:'x_schematic_environment_id'] if !opts[:'x_schematic_environment_id'].nil?
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body] || @api_client.object_to_http_body(update_entity_trait_definition_request_body)
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'UpdateEntityTraitDefinitionResponse'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['ApiKeyAuth']
+
+      new_options = opts.merge(
+        :operation => :"CompaniesApi.update_entity_trait_definition",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:PUT, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: CompaniesApi#update_entity_trait_definition\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
   end
 end

@@ -100,6 +100,7 @@ module Schematic
     # List of attributes with nullable: true
     def self.openapi_nullable
       Set.new([
+        :'api_key',
         :'company_id',
         :'enriched_at',
         :'environment_id',
@@ -196,10 +197,6 @@ module Schematic
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
-      if @api_key.nil?
-        invalid_properties.push('invalid value for "api_key", api_key cannot be nil.')
-      end
-
       if @body.nil?
         invalid_properties.push('invalid value for "body", body cannot be nil.')
       end
@@ -230,7 +227,6 @@ module Schematic
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
-      return false if @api_key.nil?
       return false if @body.nil?
       return false if @captured_at.nil?
       return false if @id.nil?

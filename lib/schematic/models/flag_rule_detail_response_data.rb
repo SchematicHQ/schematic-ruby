@@ -29,6 +29,8 @@ module Schematic
 
     attr_accessor :priority
 
+    attr_accessor :priority_group
+
     attr_accessor :updated_at
 
     attr_accessor :value
@@ -43,6 +45,7 @@ module Schematic
         :'id' => :'id',
         :'name' => :'name',
         :'priority' => :'priority',
+        :'priority_group' => :'priority_group',
         :'updated_at' => :'updated_at',
         :'value' => :'value'
       }
@@ -63,6 +66,7 @@ module Schematic
         :'id' => :'String',
         :'name' => :'String',
         :'priority' => :'Integer',
+        :'priority_group' => :'Integer',
         :'updated_at' => :'Time',
         :'value' => :'Boolean'
       }
@@ -71,6 +75,7 @@ module Schematic
     # List of attributes with nullable: true
     def self.openapi_nullable
       Set.new([
+        :'priority_group',
       ])
     end
 
@@ -117,6 +122,10 @@ module Schematic
 
       if attributes.key?(:'priority')
         self.priority = attributes[:'priority']
+      end
+
+      if attributes.key?(:'priority_group')
+        self.priority_group = attributes[:'priority_group']
       end
 
       if attributes.key?(:'updated_at')
@@ -198,6 +207,7 @@ module Schematic
           id == o.id &&
           name == o.name &&
           priority == o.priority &&
+          priority_group == o.priority_group &&
           updated_at == o.updated_at &&
           value == o.value
     end
@@ -211,7 +221,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [conditions, created_at, environment_id, flag_id, id, name, priority, updated_at, value].hash
+      [conditions, created_at, environment_id, flag_id, id, name, priority, priority_group, updated_at, value].hash
     end
 
     # Builds the object from hash

@@ -8,6 +8,7 @@
 | **id** | **String** |  | [optional] |
 | **name** | **String** |  |  |
 | **priority** | **Integer** |  |  |
+| **priority_group** | **Integer** |  | [optional] |
 | **value** | **Boolean** |  |  |
 
 ## Example
@@ -20,6 +21,7 @@ instance = Schematic::CreateOrUpdateRuleRequestBody.new(
   id: null,
   name: null,
   priority: null,
+  priority_group: null,
   value: null
 )
 ```
