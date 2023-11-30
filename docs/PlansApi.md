@@ -10,6 +10,7 @@ All URIs are relative to *https://api.schematichq.com*
 | [**list_plans**](PlansApi.md#list_plans) | **GET** /plans | List plans |
 | [**sync_company_plans**](PlansApi.md#sync_company_plans) | **POST** /company-plans/sync | Sync company plans |
 | [**update_plan**](PlansApi.md#update_plan) | **PUT** /plans/{plan_id} | Update plan |
+| [**update_plan_audience**](PlansApi.md#update_plan_audience) | **PUT** /plan-audiences/{plan_audience_id} | Update plan audience |
 | [**upsert_billing_period**](PlansApi.md#upsert_billing_period) | **POST** /billing-periods/{key}/upsert | Upsert billing period |
 
 
@@ -33,7 +34,7 @@ Schematic.configure do |config|
 end
 
 api_instance = Schematic::PlansApi.new
-create_plan_request_body = Schematic::CreatePlanRequestBody.new({name: 'name_example', skip_webhooks: false}) # CreatePlanRequestBody | 
+create_plan_request_body = Schematic::CreatePlanRequestBody.new({name: 'name_example'}) # CreatePlanRequestBody | 
 opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example' # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
 }
@@ -405,7 +406,7 @@ end
 
 api_instance = Schematic::PlansApi.new
 plan_id = 'plan_id_example' # String | plan_id
-update_plan_request_body = Schematic::UpdatePlanRequestBody.new({name: 'name_example', skip_webhooks: false}) # UpdatePlanRequestBody | 
+update_plan_request_body = Schematic::UpdatePlanRequestBody.new({name: 'name_example'}) # UpdatePlanRequestBody | 
 opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example' # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
 }
@@ -448,6 +449,81 @@ end
 ### Return type
 
 [**UpdatePlanResponse**](UpdatePlanResponse.md)
+
+### Authorization
+
+[ApiKeyAuth](../README.md#ApiKeyAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+
+## update_plan_audience
+
+> <UpdatePlanAudienceResponse> update_plan_audience(plan_audience_id, update_audience_request_body, opts)
+
+Update plan audience
+
+### Examples
+
+```ruby
+require 'time'
+require 'schematic'
+# setup authorization
+Schematic.configure do |config|
+  # Configure API key authorization: ApiKeyAuth
+  config.api_key['ApiKeyAuth'] = 'YOUR API KEY'
+  # Uncomment the following line to set a prefix for the API key, e.g. 'Bearer' (defaults to nil)
+  # config.api_key_prefix['ApiKeyAuth'] = 'Bearer'
+end
+
+api_instance = Schematic::PlansApi.new
+plan_audience_id = 'plan_audience_id_example' # String | plan_audience_id
+update_audience_request_body = Schematic::UpdateAudienceRequestBody.new({condition_groups: [Schematic::CreateOrUpdateConditionGroupRequestBody.new({conditions: [Schematic::CreateOrUpdateConditionRequestBody.new({condition_type: 'condition_type_example', metric_value: 37, operator: 'operator_example', resource_ids: ['resource_ids_example']})]})], conditions: [Schematic::CreateOrUpdateConditionRequestBody.new({condition_type: 'condition_type_example', metric_value: 37, operator: 'operator_example', resource_ids: ['resource_ids_example']})]}) # UpdateAudienceRequestBody | 
+opts = {
+  x_schematic_environment_id: 'x_schematic_environment_id_example' # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
+}
+
+begin
+  # Update plan audience
+  result = api_instance.update_plan_audience(plan_audience_id, update_audience_request_body, opts)
+  p result
+rescue Schematic::ApiError => e
+  puts "Error when calling PlansApi->update_plan_audience: #{e}"
+end
+```
+
+#### Using the update_plan_audience_with_http_info variant
+
+This returns an Array which contains the response data, status code and headers.
+
+> <Array(<UpdatePlanAudienceResponse>, Integer, Hash)> update_plan_audience_with_http_info(plan_audience_id, update_audience_request_body, opts)
+
+```ruby
+begin
+  # Update plan audience
+  data, status_code, headers = api_instance.update_plan_audience_with_http_info(plan_audience_id, update_audience_request_body, opts)
+  p status_code # => 2xx
+  p headers # => { ... }
+  p data # => <UpdatePlanAudienceResponse>
+rescue Schematic::ApiError => e
+  puts "Error when calling PlansApi->update_plan_audience_with_http_info: #{e}"
+end
+```
+
+### Parameters
+
+| Name | Type | Description | Notes |
+| ---- | ---- | ----------- | ----- |
+| **plan_audience_id** | **String** | plan_audience_id |  |
+| **update_audience_request_body** | [**UpdateAudienceRequestBody**](UpdateAudienceRequestBody.md) |  |  |
+| **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
+
+### Return type
+
+[**UpdatePlanAudienceResponse**](UpdatePlanAudienceResponse.md)
 
 ### Authorization
 

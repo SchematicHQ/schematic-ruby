@@ -15,6 +15,8 @@ require 'time'
 
 module Schematic
   class RuleConditionResponseData
+    attr_accessor :condition_group_id
+
     attr_accessor :condition_type
 
     attr_accessor :created_at
@@ -48,6 +50,7 @@ module Schematic
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
+        :'condition_group_id' => :'condition_group_id',
         :'condition_type' => :'condition_type',
         :'created_at' => :'created_at',
         :'environment_id' => :'environment_id',
@@ -74,6 +77,7 @@ module Schematic
     # Attribute type mapping.
     def self.openapi_types
       {
+        :'condition_group_id' => :'String',
         :'condition_type' => :'String',
         :'created_at' => :'Time',
         :'environment_id' => :'String',
@@ -95,7 +99,9 @@ module Schematic
     # List of attributes with nullable: true
     def self.openapi_nullable
       Set.new([
+        :'condition_group_id',
         :'event_subtype',
+        :'flag_id',
         :'metric_period',
         :'trait_entity_type',
         :'trait_id',
@@ -116,6 +122,10 @@ module Schematic
         end
         h[k.to_sym] = v
       }
+
+      if attributes.key?(:'condition_group_id')
+        self.condition_group_id = attributes[:'condition_group_id']
+      end
 
       if attributes.key?(:'condition_type')
         self.condition_type = attributes[:'condition_type']
@@ -196,10 +206,6 @@ module Schematic
         invalid_properties.push('invalid value for "environment_id", environment_id cannot be nil.')
       end
 
-      if @flag_id.nil?
-        invalid_properties.push('invalid value for "flag_id", flag_id cannot be nil.')
-      end
-
       if @id.nil?
         invalid_properties.push('invalid value for "id", id cannot be nil.')
       end
@@ -237,7 +243,6 @@ module Schematic
       return false if @condition_type.nil?
       return false if @created_at.nil?
       return false if @environment_id.nil?
-      return false if @flag_id.nil?
       return false if @id.nil?
       return false if @metric_value.nil?
       return false if @operator.nil?
@@ -253,6 +258,7 @@ module Schematic
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
+          condition_group_id == o.condition_group_id &&
           condition_type == o.condition_type &&
           created_at == o.created_at &&
           environment_id == o.environment_id &&
@@ -279,7 +285,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [condition_type, created_at, environment_id, event_subtype, flag_id, id, metric_period, metric_value, operator, resource_ids, rule_id, trait_entity_type, trait_id, trait_value, updated_at].hash
+      [condition_group_id, condition_type, created_at, environment_id, event_subtype, flag_id, id, metric_period, metric_value, operator, resource_ids, rule_id, trait_entity_type, trait_id, trait_value, updated_at].hash
     end
 
     # Builds the object from hash

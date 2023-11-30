@@ -72,6 +72,7 @@ module Schematic
         :'feature_type',
         :'lifecycle_phase',
         :'name',
+        :'skip_webhooks',
         :'trait_id'
       ])
     end
@@ -128,17 +129,12 @@ module Schematic
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
-      if @skip_webhooks.nil?
-        invalid_properties.push('invalid value for "skip_webhooks", skip_webhooks cannot be nil.')
-      end
-
       invalid_properties
     end
 
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
-      return false if @skip_webhooks.nil?
       true
     end
 

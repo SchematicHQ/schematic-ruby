@@ -8,7 +8,7 @@
 | **keys** | **Object** |  |  |
 | **last_seen_at** | **Time** |  | [optional] |
 | **name** | **String** |  | [optional] |
-| **skip_webhooks** | **Boolean** |  |  |
+| **skip_webhooks** | **Boolean** |  | [optional] |
 | **traits** | **Object** | A map of trait names to trait values | [optional] |
 
 ## Example

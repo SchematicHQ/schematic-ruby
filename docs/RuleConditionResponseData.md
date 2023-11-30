@@ -4,11 +4,12 @@
 
 | Name | Type | Description | Notes |
 | ---- | ---- | ----------- | ----- |
+| **condition_group_id** | **String** |  | [optional] |
 | **condition_type** | **String** |  |  |
 | **created_at** | **Time** |  |  |
 | **environment_id** | **String** |  |  |
 | **event_subtype** | **String** |  | [optional] |
-| **flag_id** | **String** |  |  |
+| **flag_id** | **String** |  | [optional] |
 | **id** | **String** |  |  |
 | **metric_period** | **String** |  | [optional] |
 | **metric_value** | **Integer** |  |  |
@@ -26,6 +27,7 @@
 require 'schematic'
 
 instance = Schematic::RuleConditionResponseData.new(
+  condition_group_id: null,
   condition_type: null,
   created_at: null,
   environment_id: null,

@@ -36,7 +36,7 @@ Schematic.configure do |config|
 end
 
 api_instance = Schematic::CompaniesApi.new
-upsert_company_request_body = Schematic::UpsertCompanyRequestBody.new({keys: 3.56, skip_webhooks: false}) # UpsertCompanyRequestBody | 
+upsert_company_request_body = Schematic::UpsertCompanyRequestBody.new({keys: 3.56}) # UpsertCompanyRequestBody | 
 opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example' # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
 }
@@ -182,7 +182,7 @@ Schematic.configure do |config|
 end
 
 api_instance = Schematic::CompaniesApi.new
-upsert_user_request_body = Schematic::UpsertUserRequestBody.new({company: 3.56, keys: 3.56, skip_webhooks: false}) # UpsertUserRequestBody | 
+upsert_user_request_body = Schematic::UpsertUserRequestBody.new({company: 3.56, keys: 3.56}) # UpsertUserRequestBody | 
 opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example' # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
 }

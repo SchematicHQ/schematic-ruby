@@ -9,10 +9,12 @@ All URIs are relative to *https://api.schematichq.com*
 | [**count_flag_values**](FeaturesApi.md#count_flag_values) | **GET** /flag-values/count | Count flag values |
 | [**create_feature**](FeaturesApi.md#create_feature) | **POST** /features | Create feature |
 | [**create_flag**](FeaturesApi.md#create_flag) | **POST** /flags | Create flag |
+| [**create_rule**](FeaturesApi.md#create_rule) | **POST** /rules | Create rule |
 | [**delete_feature**](FeaturesApi.md#delete_feature) | **DELETE** /features/{feature_id} | Delete feature |
 | [**delete_flag**](FeaturesApi.md#delete_flag) | **DELETE** /flags/{flag_id} | Delete flag |
 | [**get_feature**](FeaturesApi.md#get_feature) | **GET** /features/{feature_id} | Get feature |
 | [**get_flag**](FeaturesApi.md#get_flag) | **GET** /flags/{flag_id} | Get flag |
+| [**get_rule**](FeaturesApi.md#get_rule) | **GET** /rules/{rule_id} | Get rule |
 | [**latest_flag_checks**](FeaturesApi.md#latest_flag_checks) | **GET** /flag-checks/latest | Latest flag checks |
 | [**list_features**](FeaturesApi.md#list_features) | **GET** /features | List features |
 | [**list_flag_checks**](FeaturesApi.md#list_flag_checks) | **GET** /flag-checks | List flag checks |
@@ -20,6 +22,7 @@ All URIs are relative to *https://api.schematichq.com*
 | [**list_flags**](FeaturesApi.md#list_flags) | **GET** /flags | List flags |
 | [**update_feature**](FeaturesApi.md#update_feature) | **PUT** /features/{feature_id} | Update feature |
 | [**update_flag**](FeaturesApi.md#update_flag) | **PUT** /flags/{flag_id} | Update flag |
+| [**update_rule**](FeaturesApi.md#update_rule) | **PUT** /rules/{rule_id} | Update rule |
 
 
 ## check_flag
@@ -99,7 +102,7 @@ end
 
 ## check_flags
 
-> <CheckFlagsResponse> check_flags(check_flags_request_body, opts)
+> <CheckFlagsResponse> check_flags(check_flag_request_body, opts)
 
 Check flags
 
@@ -117,14 +120,14 @@ Schematic.configure do |config|
 end
 
 api_instance = Schematic::FeaturesApi.new
-check_flags_request_body = Schematic::CheckFlagsRequestBody.new({company: 3.56, flags: ['flags_example']}) # CheckFlagsRequestBody | 
+check_flag_request_body = Schematic::CheckFlagRequestBody.new({company: 3.56}) # CheckFlagRequestBody | 
 opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example' # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
 }
 
 begin
   # Check flags
-  result = api_instance.check_flags(check_flags_request_body, opts)
+  result = api_instance.check_flags(check_flag_request_body, opts)
   p result
 rescue Schematic::ApiError => e
   puts "Error when calling FeaturesApi->check_flags: #{e}"
@@ -135,12 +138,12 @@ end
 
 This returns an Array which contains the response data, status code and headers.
 
-> <Array(<CheckFlagsResponse>, Integer, Hash)> check_flags_with_http_info(check_flags_request_body, opts)
+> <Array(<CheckFlagsResponse>, Integer, Hash)> check_flags_with_http_info(check_flag_request_body, opts)
 
 ```ruby
 begin
   # Check flags
-  data, status_code, headers = api_instance.check_flags_with_http_info(check_flags_request_body, opts)
+  data, status_code, headers = api_instance.check_flags_with_http_info(check_flag_request_body, opts)
   p status_code # => 2xx
   p headers # => { ... }
   p data # => <CheckFlagsResponse>
@@ -153,7 +156,7 @@ end
 
 | Name | Type | Description | Notes |
 | ---- | ---- | ----------- | ----- |
-| **check_flags_request_body** | [**CheckFlagsRequestBody**](CheckFlagsRequestBody.md) |  |  |
+| **check_flag_request_body** | [**CheckFlagRequestBody**](CheckFlagRequestBody.md) |  |  |
 | **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
 
 ### Return type
@@ -277,7 +280,7 @@ Schematic.configure do |config|
 end
 
 api_instance = Schematic::FeaturesApi.new
-create_feature_request_body = Schematic::CreateFeatureRequestBody.new({description: 'description_example', feature_type: 'feature_type_example', name: 'name_example', skip_webhooks: false}) # CreateFeatureRequestBody | 
+create_feature_request_body = Schematic::CreateFeatureRequestBody.new({description: 'description_example', feature_type: 'feature_type_example', name: 'name_example'}) # CreateFeatureRequestBody | 
 opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example' # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
 }
@@ -350,7 +353,7 @@ Schematic.configure do |config|
 end
 
 api_instance = Schematic::FeaturesApi.new
-create_flag_request_body = Schematic::CreateFlagRequestBody.new({default_value: false, description: 'description_example', flag_type: 'flag_type_example', key: 'key_example', name: 'name_example', rules: [Schematic::CreateOrUpdateRuleRequestBody.new({conditions: [Schematic::CreateOrUpdateConditionRequestBody.new({condition_type: 'condition_type_example', metric_value: 37, operator: 'operator_example', resource_ids: ['resource_ids_example']})], name: 'name_example', priority: 37, value: false})]}) # CreateFlagRequestBody | 
+create_flag_request_body = Schematic::CreateFlagRequestBody.new({default_value: false, description: 'description_example', flag_type: 'flag_type_example', key: 'key_example', name: 'name_example', rules: [Schematic::CreateOrUpdateRuleRequestBody.new({condition_groups: [Schematic::CreateOrUpdateConditionGroupRequestBody.new({conditions: [Schematic::CreateOrUpdateConditionRequestBody.new({condition_type: 'condition_type_example', metric_value: 37, operator: 'operator_example', resource_ids: ['resource_ids_example']})]})], conditions: [Schematic::CreateOrUpdateConditionRequestBody.new({condition_type: 'condition_type_example', metric_value: 37, operator: 'operator_example', resource_ids: ['resource_ids_example']})], name: 'name_example', priority: 37, value: false})]}) # CreateFlagRequestBody | 
 opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example' # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
 }
@@ -392,6 +395,79 @@ end
 ### Return type
 
 [**CreateFlagResponse**](CreateFlagResponse.md)
+
+### Authorization
+
+[ApiKeyAuth](../README.md#ApiKeyAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+
+## create_rule
+
+> <CreateRuleResponse> create_rule(create_rule_request_body, opts)
+
+Create rule
+
+### Examples
+
+```ruby
+require 'time'
+require 'schematic'
+# setup authorization
+Schematic.configure do |config|
+  # Configure API key authorization: ApiKeyAuth
+  config.api_key['ApiKeyAuth'] = 'YOUR API KEY'
+  # Uncomment the following line to set a prefix for the API key, e.g. 'Bearer' (defaults to nil)
+  # config.api_key_prefix['ApiKeyAuth'] = 'Bearer'
+end
+
+api_instance = Schematic::FeaturesApi.new
+create_rule_request_body = Schematic::CreateRuleRequestBody.new({condition_groups: [Schematic::CreateOrUpdateConditionGroupRequestBody.new({conditions: [Schematic::CreateOrUpdateConditionRequestBody.new({condition_type: 'condition_type_example', metric_value: 37, operator: 'operator_example', resource_ids: ['resource_ids_example']})]})], conditions: [Schematic::CreateOrUpdateConditionRequestBody.new({condition_type: 'condition_type_example', metric_value: 37, operator: 'operator_example', resource_ids: ['resource_ids_example']})], name: 'name_example', priority: 37, value: false}) # CreateRuleRequestBody | 
+opts = {
+  x_schematic_environment_id: 'x_schematic_environment_id_example' # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
+}
+
+begin
+  # Create rule
+  result = api_instance.create_rule(create_rule_request_body, opts)
+  p result
+rescue Schematic::ApiError => e
+  puts "Error when calling FeaturesApi->create_rule: #{e}"
+end
+```
+
+#### Using the create_rule_with_http_info variant
+
+This returns an Array which contains the response data, status code and headers.
+
+> <Array(<CreateRuleResponse>, Integer, Hash)> create_rule_with_http_info(create_rule_request_body, opts)
+
+```ruby
+begin
+  # Create rule
+  data, status_code, headers = api_instance.create_rule_with_http_info(create_rule_request_body, opts)
+  p status_code # => 2xx
+  p headers # => { ... }
+  p data # => <CreateRuleResponse>
+rescue Schematic::ApiError => e
+  puts "Error when calling FeaturesApi->create_rule_with_http_info: #{e}"
+end
+```
+
+### Parameters
+
+| Name | Type | Description | Notes |
+| ---- | ---- | ----------- | ----- |
+| **create_rule_request_body** | [**CreateRuleRequestBody**](CreateRuleRequestBody.md) |  |  |
+| **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
+
+### Return type
+
+[**CreateRuleResponse**](CreateRuleResponse.md)
 
 ### Authorization
 
@@ -684,6 +760,79 @@ end
 ### Return type
 
 [**GetFlagResponse**](GetFlagResponse.md)
+
+### Authorization
+
+[ApiKeyAuth](../README.md#ApiKeyAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## get_rule
+
+> <GetRuleResponse> get_rule(rule_id, opts)
+
+Get rule
+
+### Examples
+
+```ruby
+require 'time'
+require 'schematic'
+# setup authorization
+Schematic.configure do |config|
+  # Configure API key authorization: ApiKeyAuth
+  config.api_key['ApiKeyAuth'] = 'YOUR API KEY'
+  # Uncomment the following line to set a prefix for the API key, e.g. 'Bearer' (defaults to nil)
+  # config.api_key_prefix['ApiKeyAuth'] = 'Bearer'
+end
+
+api_instance = Schematic::FeaturesApi.new
+rule_id = 'rule_id_example' # String | rule_id
+opts = {
+  x_schematic_environment_id: 'x_schematic_environment_id_example' # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
+}
+
+begin
+  # Get rule
+  result = api_instance.get_rule(rule_id, opts)
+  p result
+rescue Schematic::ApiError => e
+  puts "Error when calling FeaturesApi->get_rule: #{e}"
+end
+```
+
+#### Using the get_rule_with_http_info variant
+
+This returns an Array which contains the response data, status code and headers.
+
+> <Array(<GetRuleResponse>, Integer, Hash)> get_rule_with_http_info(rule_id, opts)
+
+```ruby
+begin
+  # Get rule
+  data, status_code, headers = api_instance.get_rule_with_http_info(rule_id, opts)
+  p status_code # => 2xx
+  p headers # => { ... }
+  p data # => <GetRuleResponse>
+rescue Schematic::ApiError => e
+  puts "Error when calling FeaturesApi->get_rule_with_http_info: #{e}"
+end
+```
+
+### Parameters
+
+| Name | Type | Description | Notes |
+| ---- | ---- | ----------- | ----- |
+| **rule_id** | **String** | rule_id |  |
+| **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
+
+### Return type
+
+[**GetRuleResponse**](GetRuleResponse.md)
 
 ### Authorization
 
@@ -1050,6 +1199,7 @@ api_instance = Schematic::FeaturesApi.new
 opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example', # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
   feature_id: 'feature_id_example', # String | 
+  flag_ids: ['inner_example'], # Array<String> | 
   limit: 56, # Integer | Page limit (default 100)
   offset: 56, # Integer | Page offset (default 0)
   order: 'order_example', # String | Order by column
@@ -1089,6 +1239,7 @@ end
 | ---- | ---- | ----------- | ----- |
 | **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
 | **feature_id** | **String** |  | [optional] |
+| **flag_ids** | [**Array&lt;String&gt;**](String.md) |  | [optional] |
 | **limit** | **Integer** | Page limit (default 100) | [optional] |
 | **offset** | **Integer** | Page offset (default 0) | [optional] |
 | **order** | **String** | Order by column | [optional] |
@@ -1129,7 +1280,7 @@ end
 
 api_instance = Schematic::FeaturesApi.new
 feature_id = 'feature_id_example' # String | feature_id
-update_feature_request_body = Schematic::UpdateFeatureRequestBody.new({skip_webhooks: false}) # UpdateFeatureRequestBody | 
+update_feature_request_body = Schematic::UpdateFeatureRequestBody.new # UpdateFeatureRequestBody | 
 opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example' # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
 }
@@ -1204,7 +1355,7 @@ end
 
 api_instance = Schematic::FeaturesApi.new
 flag_id = 'flag_id_example' # String | flag_id
-create_flag_request_body = Schematic::CreateFlagRequestBody.new({default_value: false, description: 'description_example', flag_type: 'flag_type_example', key: 'key_example', name: 'name_example', rules: [Schematic::CreateOrUpdateRuleRequestBody.new({conditions: [Schematic::CreateOrUpdateConditionRequestBody.new({condition_type: 'condition_type_example', metric_value: 37, operator: 'operator_example', resource_ids: ['resource_ids_example']})], name: 'name_example', priority: 37, value: false})]}) # CreateFlagRequestBody | 
+create_flag_request_body = Schematic::CreateFlagRequestBody.new({default_value: false, description: 'description_example', flag_type: 'flag_type_example', key: 'key_example', name: 'name_example', rules: [Schematic::CreateOrUpdateRuleRequestBody.new({condition_groups: [Schematic::CreateOrUpdateConditionGroupRequestBody.new({conditions: [Schematic::CreateOrUpdateConditionRequestBody.new({condition_type: 'condition_type_example', metric_value: 37, operator: 'operator_example', resource_ids: ['resource_ids_example']})]})], conditions: [Schematic::CreateOrUpdateConditionRequestBody.new({condition_type: 'condition_type_example', metric_value: 37, operator: 'operator_example', resource_ids: ['resource_ids_example']})], name: 'name_example', priority: 37, value: false})]}) # CreateFlagRequestBody | 
 opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example' # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
 }
@@ -1247,6 +1398,81 @@ end
 ### Return type
 
 [**UpdateFlagResponse**](UpdateFlagResponse.md)
+
+### Authorization
+
+[ApiKeyAuth](../README.md#ApiKeyAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+
+## update_rule
+
+> <UpdateRuleResponse> update_rule(rule_id, update_rule_request_body, opts)
+
+Update rule
+
+### Examples
+
+```ruby
+require 'time'
+require 'schematic'
+# setup authorization
+Schematic.configure do |config|
+  # Configure API key authorization: ApiKeyAuth
+  config.api_key['ApiKeyAuth'] = 'YOUR API KEY'
+  # Uncomment the following line to set a prefix for the API key, e.g. 'Bearer' (defaults to nil)
+  # config.api_key_prefix['ApiKeyAuth'] = 'Bearer'
+end
+
+api_instance = Schematic::FeaturesApi.new
+rule_id = 'rule_id_example' # String | rule_id
+update_rule_request_body = Schematic::UpdateRuleRequestBody.new({condition_groups: [Schematic::CreateOrUpdateConditionGroupRequestBody.new({conditions: [Schematic::CreateOrUpdateConditionRequestBody.new({condition_type: 'condition_type_example', metric_value: 37, operator: 'operator_example', resource_ids: ['resource_ids_example']})]})], conditions: [Schematic::CreateOrUpdateConditionRequestBody.new({condition_type: 'condition_type_example', metric_value: 37, operator: 'operator_example', resource_ids: ['resource_ids_example']})], name: 'name_example', priority: 37, value: false}) # UpdateRuleRequestBody | 
+opts = {
+  x_schematic_environment_id: 'x_schematic_environment_id_example' # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
+}
+
+begin
+  # Update rule
+  result = api_instance.update_rule(rule_id, update_rule_request_body, opts)
+  p result
+rescue Schematic::ApiError => e
+  puts "Error when calling FeaturesApi->update_rule: #{e}"
+end
+```
+
+#### Using the update_rule_with_http_info variant
+
+This returns an Array which contains the response data, status code and headers.
+
+> <Array(<UpdateRuleResponse>, Integer, Hash)> update_rule_with_http_info(rule_id, update_rule_request_body, opts)
+
+```ruby
+begin
+  # Update rule
+  data, status_code, headers = api_instance.update_rule_with_http_info(rule_id, update_rule_request_body, opts)
+  p status_code # => 2xx
+  p headers # => { ... }
+  p data # => <UpdateRuleResponse>
+rescue Schematic::ApiError => e
+  puts "Error when calling FeaturesApi->update_rule_with_http_info: #{e}"
+end
+```
+
+### Parameters
+
+| Name | Type | Description | Notes |
+| ---- | ---- | ----------- | ----- |
+| **rule_id** | **String** | rule_id |  |
+| **update_rule_request_body** | [**UpdateRuleRequestBody**](UpdateRuleRequestBody.md) |  |  |
+| **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
+
+### Return type
+
+[**UpdateRuleResponse**](UpdateRuleResponse.md)
 
 ### Authorization
 

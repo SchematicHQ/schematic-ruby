@@ -20,6 +20,8 @@ module Schematic
 
     attr_accessor :feature_id
 
+    attr_accessor :flag_ids
+
     attr_accessor :limit
 
     attr_accessor :offset
@@ -31,6 +33,7 @@ module Schematic
       {
         :'dir' => :'dir',
         :'feature_id' => :'feature_id',
+        :'flag_ids' => :'flag_ids',
         :'limit' => :'limit',
         :'offset' => :'offset',
         :'order' => :'order'
@@ -47,6 +50,7 @@ module Schematic
       {
         :'dir' => :'String',
         :'feature_id' => :'String',
+        :'flag_ids' => :'Array<String>',
         :'limit' => :'Integer',
         :'offset' => :'Integer',
         :'order' => :'String'
@@ -82,6 +86,12 @@ module Schematic
         self.feature_id = attributes[:'feature_id']
       end
 
+      if attributes.key?(:'flag_ids')
+        if (value = attributes[:'flag_ids']).is_a?(Array)
+          self.flag_ids = value
+        end
+      end
+
       if attributes.key?(:'limit')
         self.limit = attributes[:'limit']
       end
@@ -115,6 +125,7 @@ module Schematic
       self.class == o.class &&
           dir == o.dir &&
           feature_id == o.feature_id &&
+          flag_ids == o.flag_ids &&
           limit == o.limit &&
           offset == o.offset &&
           order == o.order
@@ -129,7 +140,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [dir, feature_id, limit, offset, order].hash
+      [dir, feature_id, flag_ids, limit, offset, order].hash
     end
 
     # Builds the object from hash

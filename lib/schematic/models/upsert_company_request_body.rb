@@ -63,6 +63,7 @@ module Schematic
         :'id',
         :'last_seen_at',
         :'name',
+        :'skip_webhooks',
       ])
     end
 
@@ -114,10 +115,6 @@ module Schematic
         invalid_properties.push('invalid value for "keys", keys cannot be nil.')
       end
 
-      if @skip_webhooks.nil?
-        invalid_properties.push('invalid value for "skip_webhooks", skip_webhooks cannot be nil.')
-      end
-
       invalid_properties
     end
 
@@ -125,7 +122,6 @@ module Schematic
     # @return true if the model is valid
     def valid?
       return false if @keys.nil?
-      return false if @skip_webhooks.nil?
       true
     end
 

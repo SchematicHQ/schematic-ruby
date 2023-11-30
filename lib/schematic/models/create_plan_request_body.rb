@@ -43,6 +43,7 @@ module Schematic
     # List of attributes with nullable: true
     def self.openapi_nullable
       Set.new([
+        :'skip_webhooks'
       ])
     end
 
@@ -78,10 +79,6 @@ module Schematic
         invalid_properties.push('invalid value for "name", name cannot be nil.')
       end
 
-      if @skip_webhooks.nil?
-        invalid_properties.push('invalid value for "skip_webhooks", skip_webhooks cannot be nil.')
-      end
-
       invalid_properties
     end
 
@@ -89,7 +86,6 @@ module Schematic
     # @return true if the model is valid
     def valid?
       return false if @name.nil?
-      return false if @skip_webhooks.nil?
       true
     end
 

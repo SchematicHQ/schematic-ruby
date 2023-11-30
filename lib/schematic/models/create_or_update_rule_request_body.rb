@@ -15,6 +15,8 @@ require 'time'
 
 module Schematic
   class CreateOrUpdateRuleRequestBody
+    attr_accessor :condition_groups
+
     attr_accessor :conditions
 
     attr_accessor :id
@@ -30,6 +32,7 @@ module Schematic
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
+        :'condition_groups' => :'condition_groups',
         :'conditions' => :'conditions',
         :'id' => :'id',
         :'name' => :'name',
@@ -47,6 +50,7 @@ module Schematic
     # Attribute type mapping.
     def self.openapi_types
       {
+        :'condition_groups' => :'Array<CreateOrUpdateConditionGroupRequestBody>',
         :'conditions' => :'Array<CreateOrUpdateConditionRequestBody>',
         :'id' => :'String',
         :'name' => :'String',
@@ -79,6 +83,12 @@ module Schematic
         h[k.to_sym] = v
       }
 
+      if attributes.key?(:'condition_groups')
+        if (value = attributes[:'condition_groups']).is_a?(Array)
+          self.condition_groups = value
+        end
+      end
+
       if attributes.key?(:'conditions')
         if (value = attributes[:'conditions']).is_a?(Array)
           self.conditions = value
@@ -110,6 +120,10 @@ module Schematic
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
+      if @condition_groups.nil?
+        invalid_properties.push('invalid value for "condition_groups", condition_groups cannot be nil.')
+      end
+
       if @conditions.nil?
         invalid_properties.push('invalid value for "conditions", conditions cannot be nil.')
       end
@@ -132,6 +146,7 @@ module Schematic
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
+      return false if @condition_groups.nil?
       return false if @conditions.nil?
       return false if @name.nil?
       return false if @priority.nil?
@@ -144,6 +159,7 @@ module Schematic
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
+          condition_groups == o.condition_groups &&
           conditions == o.conditions &&
           id == o.id &&
           name == o.name &&
@@ -161,7 +177,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [conditions, id, name, priority, priority_group, value].hash
+      [condition_groups, conditions, id, name, priority, priority_group, value].hash
     end
 
     # Builds the object from hash

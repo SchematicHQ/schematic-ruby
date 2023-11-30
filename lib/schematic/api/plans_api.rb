@@ -430,6 +430,81 @@ module Schematic
       return data, status_code, headers
     end
 
+    # Update plan audience
+    # @param plan_audience_id [String] plan_audience_id
+    # @param update_audience_request_body [UpdateAudienceRequestBody] 
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @return [UpdatePlanAudienceResponse]
+    def update_plan_audience(plan_audience_id, update_audience_request_body, opts = {})
+      data, _status_code, _headers = update_plan_audience_with_http_info(plan_audience_id, update_audience_request_body, opts)
+      data
+    end
+
+    # Update plan audience
+    # @param plan_audience_id [String] plan_audience_id
+    # @param update_audience_request_body [UpdateAudienceRequestBody] 
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @return [Array<(UpdatePlanAudienceResponse, Integer, Hash)>] UpdatePlanAudienceResponse data, response status code and response headers
+    def update_plan_audience_with_http_info(plan_audience_id, update_audience_request_body, opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: PlansApi.update_plan_audience ...'
+      end
+      # verify the required parameter 'plan_audience_id' is set
+      if @api_client.config.client_side_validation && plan_audience_id.nil?
+        fail ArgumentError, "Missing the required parameter 'plan_audience_id' when calling PlansApi.update_plan_audience"
+      end
+      # verify the required parameter 'update_audience_request_body' is set
+      if @api_client.config.client_side_validation && update_audience_request_body.nil?
+        fail ArgumentError, "Missing the required parameter 'update_audience_request_body' when calling PlansApi.update_plan_audience"
+      end
+      # resource path
+      local_var_path = '/plan-audiences/{plan_audience_id}'.sub('{' + 'plan_audience_id' + '}', CGI.escape(plan_audience_id.to_s))
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json'])
+      # HTTP header 'Content-Type'
+      content_type = @api_client.select_header_content_type(['application/json'])
+      if !content_type.nil?
+          header_params['Content-Type'] = content_type
+      end
+      header_params[:'X-Schematic-Environment-Id'] = opts[:'x_schematic_environment_id'] if !opts[:'x_schematic_environment_id'].nil?
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body] || @api_client.object_to_http_body(update_audience_request_body)
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'UpdatePlanAudienceResponse'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['ApiKeyAuth']
+
+      new_options = opts.merge(
+        :operation => :"PlansApi.update_plan_audience",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:PUT, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: PlansApi#update_plan_audience\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
     # Upsert billing period
     # @param key [String] key
     # @param upsert_billing_period_request_body [UpsertBillingPeriodRequestBody] 

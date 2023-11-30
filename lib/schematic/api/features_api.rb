@@ -95,27 +95,27 @@ module Schematic
     end
 
     # Check flags
-    # @param check_flags_request_body [CheckFlagsRequestBody] 
+    # @param check_flag_request_body [CheckFlagRequestBody] 
     # @param [Hash] opts the optional parameters
     # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
     # @return [CheckFlagsResponse]
-    def check_flags(check_flags_request_body, opts = {})
-      data, _status_code, _headers = check_flags_with_http_info(check_flags_request_body, opts)
+    def check_flags(check_flag_request_body, opts = {})
+      data, _status_code, _headers = check_flags_with_http_info(check_flag_request_body, opts)
       data
     end
 
     # Check flags
-    # @param check_flags_request_body [CheckFlagsRequestBody] 
+    # @param check_flag_request_body [CheckFlagRequestBody] 
     # @param [Hash] opts the optional parameters
     # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
     # @return [Array<(CheckFlagsResponse, Integer, Hash)>] CheckFlagsResponse data, response status code and response headers
-    def check_flags_with_http_info(check_flags_request_body, opts = {})
+    def check_flags_with_http_info(check_flag_request_body, opts = {})
       if @api_client.config.debugging
         @api_client.config.logger.debug 'Calling API: FeaturesApi.check_flags ...'
       end
-      # verify the required parameter 'check_flags_request_body' is set
-      if @api_client.config.client_side_validation && check_flags_request_body.nil?
-        fail ArgumentError, "Missing the required parameter 'check_flags_request_body' when calling FeaturesApi.check_flags"
+      # verify the required parameter 'check_flag_request_body' is set
+      if @api_client.config.client_side_validation && check_flag_request_body.nil?
+        fail ArgumentError, "Missing the required parameter 'check_flag_request_body' when calling FeaturesApi.check_flags"
       end
       # resource path
       local_var_path = '/flags/check'
@@ -138,7 +138,7 @@ module Schematic
       form_params = opts[:form_params] || {}
 
       # http body (model)
-      post_body = opts[:debug_body] || @api_client.object_to_http_body(check_flags_request_body)
+      post_body = opts[:debug_body] || @api_client.object_to_http_body(check_flag_request_body)
 
       # return_type
       return_type = opts[:debug_return_type] || 'CheckFlagsResponse'
@@ -383,6 +383,75 @@ module Schematic
       data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
       if @api_client.config.debugging
         @api_client.config.logger.debug "API called: FeaturesApi#create_flag\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
+    # Create rule
+    # @param create_rule_request_body [CreateRuleRequestBody] 
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @return [CreateRuleResponse]
+    def create_rule(create_rule_request_body, opts = {})
+      data, _status_code, _headers = create_rule_with_http_info(create_rule_request_body, opts)
+      data
+    end
+
+    # Create rule
+    # @param create_rule_request_body [CreateRuleRequestBody] 
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @return [Array<(CreateRuleResponse, Integer, Hash)>] CreateRuleResponse data, response status code and response headers
+    def create_rule_with_http_info(create_rule_request_body, opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: FeaturesApi.create_rule ...'
+      end
+      # verify the required parameter 'create_rule_request_body' is set
+      if @api_client.config.client_side_validation && create_rule_request_body.nil?
+        fail ArgumentError, "Missing the required parameter 'create_rule_request_body' when calling FeaturesApi.create_rule"
+      end
+      # resource path
+      local_var_path = '/rules'
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json'])
+      # HTTP header 'Content-Type'
+      content_type = @api_client.select_header_content_type(['application/json'])
+      if !content_type.nil?
+          header_params['Content-Type'] = content_type
+      end
+      header_params[:'X-Schematic-Environment-Id'] = opts[:'x_schematic_environment_id'] if !opts[:'x_schematic_environment_id'].nil?
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body] || @api_client.object_to_http_body(create_rule_request_body)
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'CreateRuleResponse'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['ApiKeyAuth']
+
+      new_options = opts.merge(
+        :operation => :"FeaturesApi.create_rule",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: FeaturesApi#create_rule\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
       end
       return data, status_code, headers
     end
@@ -639,6 +708,70 @@ module Schematic
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
       if @api_client.config.debugging
         @api_client.config.logger.debug "API called: FeaturesApi#get_flag\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
+    # Get rule
+    # @param rule_id [String] rule_id
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @return [GetRuleResponse]
+    def get_rule(rule_id, opts = {})
+      data, _status_code, _headers = get_rule_with_http_info(rule_id, opts)
+      data
+    end
+
+    # Get rule
+    # @param rule_id [String] rule_id
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @return [Array<(GetRuleResponse, Integer, Hash)>] GetRuleResponse data, response status code and response headers
+    def get_rule_with_http_info(rule_id, opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: FeaturesApi.get_rule ...'
+      end
+      # verify the required parameter 'rule_id' is set
+      if @api_client.config.client_side_validation && rule_id.nil?
+        fail ArgumentError, "Missing the required parameter 'rule_id' when calling FeaturesApi.get_rule"
+      end
+      # resource path
+      local_var_path = '/rules/{rule_id}'.sub('{' + 'rule_id' + '}', CGI.escape(rule_id.to_s))
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json'])
+      header_params[:'X-Schematic-Environment-Id'] = opts[:'x_schematic_environment_id'] if !opts[:'x_schematic_environment_id'].nil?
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body]
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'GetRuleResponse'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['ApiKeyAuth']
+
+      new_options = opts.merge(
+        :operation => :"FeaturesApi.get_rule",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: FeaturesApi#get_rule\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
       end
       return data, status_code, headers
     end
@@ -955,6 +1088,7 @@ module Schematic
     # @param [Hash] opts the optional parameters
     # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
     # @option opts [String] :feature_id 
+    # @option opts [Array<String>] :flag_ids 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
     # @option opts [String] :order Order by column
@@ -969,6 +1103,7 @@ module Schematic
     # @param [Hash] opts the optional parameters
     # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
     # @option opts [String] :feature_id 
+    # @option opts [Array<String>] :flag_ids 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
     # @option opts [String] :order Order by column
@@ -984,6 +1119,7 @@ module Schematic
       # query parameters
       query_params = opts[:query_params] || {}
       query_params[:'feature_id'] = opts[:'feature_id'] if !opts[:'feature_id'].nil?
+      query_params[:'flag_ids'] = @api_client.build_collection_param(opts[:'flag_ids'], :multi) if !opts[:'flag_ids'].nil?
       query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
       query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
       query_params[:'order'] = opts[:'order'] if !opts[:'order'].nil?
@@ -1170,6 +1306,81 @@ module Schematic
       data, status_code, headers = @api_client.call_api(:PUT, local_var_path, new_options)
       if @api_client.config.debugging
         @api_client.config.logger.debug "API called: FeaturesApi#update_flag\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
+    # Update rule
+    # @param rule_id [String] rule_id
+    # @param update_rule_request_body [UpdateRuleRequestBody] 
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @return [UpdateRuleResponse]
+    def update_rule(rule_id, update_rule_request_body, opts = {})
+      data, _status_code, _headers = update_rule_with_http_info(rule_id, update_rule_request_body, opts)
+      data
+    end
+
+    # Update rule
+    # @param rule_id [String] rule_id
+    # @param update_rule_request_body [UpdateRuleRequestBody] 
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @return [Array<(UpdateRuleResponse, Integer, Hash)>] UpdateRuleResponse data, response status code and response headers
+    def update_rule_with_http_info(rule_id, update_rule_request_body, opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: FeaturesApi.update_rule ...'
+      end
+      # verify the required parameter 'rule_id' is set
+      if @api_client.config.client_side_validation && rule_id.nil?
+        fail ArgumentError, "Missing the required parameter 'rule_id' when calling FeaturesApi.update_rule"
+      end
+      # verify the required parameter 'update_rule_request_body' is set
+      if @api_client.config.client_side_validation && update_rule_request_body.nil?
+        fail ArgumentError, "Missing the required parameter 'update_rule_request_body' when calling FeaturesApi.update_rule"
+      end
+      # resource path
+      local_var_path = '/rules/{rule_id}'.sub('{' + 'rule_id' + '}', CGI.escape(rule_id.to_s))
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json'])
+      # HTTP header 'Content-Type'
+      content_type = @api_client.select_header_content_type(['application/json'])
+      if !content_type.nil?
+          header_params['Content-Type'] = content_type
+      end
+      header_params[:'X-Schematic-Environment-Id'] = opts[:'x_schematic_environment_id'] if !opts[:'x_schematic_environment_id'].nil?
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body] || @api_client.object_to_http_body(update_rule_request_body)
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'UpdateRuleResponse'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['ApiKeyAuth']
+
+      new_options = opts.merge(
+        :operation => :"FeaturesApi.update_rule",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:PUT, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: FeaturesApi#update_rule\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
       end
       return data, status_code, headers
     end

@@ -10,7 +10,7 @@
 | **flag** | [**CreateOrUpdateFlagRequestBody**](CreateOrUpdateFlagRequestBody.md) |  | [optional] |
 | **lifecycle_phase** | **String** |  | [optional] |
 | **name** | **String** |  |  |
-| **skip_webhooks** | **Boolean** |  |  |
+| **skip_webhooks** | **Boolean** |  | [optional] |
 | **trait_id** | **String** |  | [optional] |
 
 ## Example

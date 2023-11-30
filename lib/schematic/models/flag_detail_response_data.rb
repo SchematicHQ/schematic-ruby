@@ -68,7 +68,7 @@ module Schematic
         :'id' => :'String',
         :'key' => :'String',
         :'name' => :'String',
-        :'rules' => :'Array<FlagRuleDetailResponseData>',
+        :'rules' => :'Array<RuleDetailResponseData>',
         :'updated_at' => :'Time'
       }
     end

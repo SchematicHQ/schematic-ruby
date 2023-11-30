@@ -191,7 +191,7 @@ Schematic.configure do |config|
 end
 
 api_instance = Schematic::AccountsApi.new
-create_environment_request_body = Schematic::CreateEnvironmentRequestBody.new({environment_type: 'environment_type_example', name: 'name_example', skip_webhooks: false}) # CreateEnvironmentRequestBody | 
+create_environment_request_body = Schematic::CreateEnvironmentRequestBody.new({environment_type: 'environment_type_example', name: 'name_example'}) # CreateEnvironmentRequestBody | 
 opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example' # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
 }

@@ -6,7 +6,7 @@
 | ---- | ---- | ----------- | ----- |
 | **environment_type** | **String** |  |  |
 | **name** | **String** |  |  |
-| **skip_webhooks** | **Boolean** |  |  |
+| **skip_webhooks** | **Boolean** |  | [optional] |
 
 ## Example
 

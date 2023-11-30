@@ -12,7 +12,7 @@
 | **id** | **String** |  |  |
 | **key** | **String** |  |  |
 | **name** | **String** |  |  |
-| **rules** | [**Array&lt;FlagRuleDetailResponseData&gt;**](FlagRuleDetailResponseData.md) |  |  |
+| **rules** | [**Array&lt;RuleDetailResponseData&gt;**](RuleDetailResponseData.md) |  |  |
 | **updated_at** | **Time** |  |  |
 
 ## Example

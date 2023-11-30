@@ -5,7 +5,7 @@
 | Name | Type | Description | Notes |
 | ---- | ---- | ----------- | ----- |
 | **name** | **String** |  |  |
-| **skip_webhooks** | **Boolean** |  |  |
+| **skip_webhooks** | **Boolean** |  | [optional] |
 
 ## Example
 

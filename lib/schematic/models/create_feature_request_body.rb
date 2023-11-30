@@ -69,6 +69,7 @@ module Schematic
       Set.new([
         :'event_subtype',
         :'lifecycle_phase',
+        :'skip_webhooks',
         :'trait_id'
       ])
     end
@@ -137,10 +138,6 @@ module Schematic
         invalid_properties.push('invalid value for "name", name cannot be nil.')
       end
 
-      if @skip_webhooks.nil?
-        invalid_properties.push('invalid value for "skip_webhooks", skip_webhooks cannot be nil.')
-      end
-
       invalid_properties
     end
 
@@ -150,7 +147,6 @@ module Schematic
       return false if @description.nil?
       return false if @feature_type.nil?
       return false if @name.nil?
-      return false if @skip_webhooks.nil?
       true
     end
 
