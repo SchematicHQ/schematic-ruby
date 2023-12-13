@@ -15,6 +15,8 @@ require 'time'
 
 module Schematic
   class RuleConditionResponseData
+    attr_accessor :comparison_trait_id
+
     attr_accessor :condition_group_id
 
     attr_accessor :condition_type
@@ -35,6 +37,8 @@ module Schematic
 
     attr_accessor :operator
 
+    attr_accessor :plan_id
+
     attr_accessor :resource_ids
 
     attr_accessor :rule_id
@@ -50,6 +54,7 @@ module Schematic
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
+        :'comparison_trait_id' => :'comparison_trait_id',
         :'condition_group_id' => :'condition_group_id',
         :'condition_type' => :'condition_type',
         :'created_at' => :'created_at',
@@ -60,6 +65,7 @@ module Schematic
         :'metric_period' => :'metric_period',
         :'metric_value' => :'metric_value',
         :'operator' => :'operator',
+        :'plan_id' => :'plan_id',
         :'resource_ids' => :'resource_ids',
         :'rule_id' => :'rule_id',
         :'trait_entity_type' => :'trait_entity_type',
@@ -77,6 +83,7 @@ module Schematic
     # Attribute type mapping.
     def self.openapi_types
       {
+        :'comparison_trait_id' => :'String',
         :'condition_group_id' => :'String',
         :'condition_type' => :'String',
         :'created_at' => :'Time',
@@ -87,6 +94,7 @@ module Schematic
         :'metric_period' => :'String',
         :'metric_value' => :'Integer',
         :'operator' => :'String',
+        :'plan_id' => :'String',
         :'resource_ids' => :'Array<String>',
         :'rule_id' => :'String',
         :'trait_entity_type' => :'String',
@@ -99,10 +107,12 @@ module Schematic
     # List of attributes with nullable: true
     def self.openapi_nullable
       Set.new([
+        :'comparison_trait_id',
         :'condition_group_id',
         :'event_subtype',
         :'flag_id',
         :'metric_period',
+        :'plan_id',
         :'trait_entity_type',
         :'trait_id',
       ])
@@ -122,6 +132,10 @@ module Schematic
         end
         h[k.to_sym] = v
       }
+
+      if attributes.key?(:'comparison_trait_id')
+        self.comparison_trait_id = attributes[:'comparison_trait_id']
+      end
 
       if attributes.key?(:'condition_group_id')
         self.condition_group_id = attributes[:'condition_group_id']
@@ -161,6 +175,10 @@ module Schematic
 
       if attributes.key?(:'operator')
         self.operator = attributes[:'operator']
+      end
+
+      if attributes.key?(:'plan_id')
+        self.plan_id = attributes[:'plan_id']
       end
 
       if attributes.key?(:'resource_ids')
@@ -258,6 +276,7 @@ module Schematic
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
+          comparison_trait_id == o.comparison_trait_id &&
           condition_group_id == o.condition_group_id &&
           condition_type == o.condition_type &&
           created_at == o.created_at &&
@@ -268,6 +287,7 @@ module Schematic
           metric_period == o.metric_period &&
           metric_value == o.metric_value &&
           operator == o.operator &&
+          plan_id == o.plan_id &&
           resource_ids == o.resource_ids &&
           rule_id == o.rule_id &&
           trait_entity_type == o.trait_entity_type &&
@@ -285,7 +305,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [condition_group_id, condition_type, created_at, environment_id, event_subtype, flag_id, id, metric_period, metric_value, operator, resource_ids, rule_id, trait_entity_type, trait_id, trait_value, updated_at].hash
+      [comparison_trait_id, condition_group_id, condition_type, created_at, environment_id, event_subtype, flag_id, id, metric_period, metric_value, operator, plan_id, resource_ids, rule_id, trait_entity_type, trait_id, trait_value, updated_at].hash
     end
 
     # Builds the object from hash

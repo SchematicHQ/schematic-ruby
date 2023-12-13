@@ -6,15 +6,19 @@ All URIs are relative to *https://api.schematichq.com*
 | ------ | ------------ | ----------- |
 | [**check_flag**](FeaturesApi.md#check_flag) | **POST** /flags/{key}/check | Check flag |
 | [**check_flags**](FeaturesApi.md#check_flags) | **POST** /flags/check | Check flags |
+| [**count_companies_audience**](FeaturesApi.md#count_companies_audience) | **POST** /audience/count-companies | Count Companies audience |
 | [**count_flag_values**](FeaturesApi.md#count_flag_values) | **GET** /flag-values/count | Count flag values |
+| [**count_users_audience**](FeaturesApi.md#count_users_audience) | **POST** /audience/count-users | Count Users audience |
 | [**create_feature**](FeaturesApi.md#create_feature) | **POST** /features | Create feature |
 | [**create_flag**](FeaturesApi.md#create_flag) | **POST** /flags | Create flag |
 | [**create_rule**](FeaturesApi.md#create_rule) | **POST** /rules | Create rule |
 | [**delete_feature**](FeaturesApi.md#delete_feature) | **DELETE** /features/{feature_id} | Delete feature |
 | [**delete_flag**](FeaturesApi.md#delete_flag) | **DELETE** /flags/{flag_id} | Delete flag |
+| [**get_companies_audience**](FeaturesApi.md#get_companies_audience) | **POST** /audience/get-companies | Get Companies audience |
 | [**get_feature**](FeaturesApi.md#get_feature) | **GET** /features/{feature_id} | Get feature |
 | [**get_flag**](FeaturesApi.md#get_flag) | **GET** /flags/{flag_id} | Get flag |
 | [**get_rule**](FeaturesApi.md#get_rule) | **GET** /rules/{rule_id} | Get rule |
+| [**get_users_audience**](FeaturesApi.md#get_users_audience) | **POST** /audience/get-users | Get Users audience |
 | [**latest_flag_checks**](FeaturesApi.md#latest_flag_checks) | **GET** /flag-checks/latest | Latest flag checks |
 | [**list_features**](FeaturesApi.md#list_features) | **GET** /features | List features |
 | [**list_flag_checks**](FeaturesApi.md#list_flag_checks) | **GET** /flag-checks | List flag checks |
@@ -173,6 +177,79 @@ end
 - **Accept**: application/json
 
 
+## count_companies_audience
+
+> <CountCompaniesAudienceResponse> count_companies_audience(audience_request_body, opts)
+
+Count Companies audience
+
+### Examples
+
+```ruby
+require 'time'
+require 'schematic'
+# setup authorization
+Schematic.configure do |config|
+  # Configure API key authorization: ApiKeyAuth
+  config.api_key['ApiKeyAuth'] = 'YOUR API KEY'
+  # Uncomment the following line to set a prefix for the API key, e.g. 'Bearer' (defaults to nil)
+  # config.api_key_prefix['ApiKeyAuth'] = 'Bearer'
+end
+
+api_instance = Schematic::FeaturesApi.new
+audience_request_body = Schematic::AudienceRequestBody.new({condition_groups: [Schematic::CreateOrUpdateConditionGroupRequestBody.new({conditions: [Schematic::CreateOrUpdateConditionRequestBody.new({condition_type: 'condition_type_example', metric_value: 37, operator: 'operator_example', resource_ids: ['resource_ids_example']})]})], conditions: [Schematic::CreateOrUpdateConditionRequestBody.new({condition_type: 'condition_type_example', metric_value: 37, operator: 'operator_example', resource_ids: ['resource_ids_example']})]}) # AudienceRequestBody | 
+opts = {
+  x_schematic_environment_id: 'x_schematic_environment_id_example' # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
+}
+
+begin
+  # Count Companies audience
+  result = api_instance.count_companies_audience(audience_request_body, opts)
+  p result
+rescue Schematic::ApiError => e
+  puts "Error when calling FeaturesApi->count_companies_audience: #{e}"
+end
+```
+
+#### Using the count_companies_audience_with_http_info variant
+
+This returns an Array which contains the response data, status code and headers.
+
+> <Array(<CountCompaniesAudienceResponse>, Integer, Hash)> count_companies_audience_with_http_info(audience_request_body, opts)
+
+```ruby
+begin
+  # Count Companies audience
+  data, status_code, headers = api_instance.count_companies_audience_with_http_info(audience_request_body, opts)
+  p status_code # => 2xx
+  p headers # => { ... }
+  p data # => <CountCompaniesAudienceResponse>
+rescue Schematic::ApiError => e
+  puts "Error when calling FeaturesApi->count_companies_audience_with_http_info: #{e}"
+end
+```
+
+### Parameters
+
+| Name | Type | Description | Notes |
+| ---- | ---- | ----------- | ----- |
+| **audience_request_body** | [**AudienceRequestBody**](AudienceRequestBody.md) |  |  |
+| **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
+
+### Return type
+
+[**CountCompaniesAudienceResponse**](CountCompaniesAudienceResponse.md)
+
+### Authorization
+
+[ApiKeyAuth](../README.md#ApiKeyAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+
 ## count_flag_values
 
 > <CountFlagValuesResponse> count_flag_values(entity_type, opts)
@@ -257,6 +334,79 @@ end
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## count_users_audience
+
+> <CountUsersAudienceResponse> count_users_audience(audience_request_body, opts)
+
+Count Users audience
+
+### Examples
+
+```ruby
+require 'time'
+require 'schematic'
+# setup authorization
+Schematic.configure do |config|
+  # Configure API key authorization: ApiKeyAuth
+  config.api_key['ApiKeyAuth'] = 'YOUR API KEY'
+  # Uncomment the following line to set a prefix for the API key, e.g. 'Bearer' (defaults to nil)
+  # config.api_key_prefix['ApiKeyAuth'] = 'Bearer'
+end
+
+api_instance = Schematic::FeaturesApi.new
+audience_request_body = Schematic::AudienceRequestBody.new({condition_groups: [Schematic::CreateOrUpdateConditionGroupRequestBody.new({conditions: [Schematic::CreateOrUpdateConditionRequestBody.new({condition_type: 'condition_type_example', metric_value: 37, operator: 'operator_example', resource_ids: ['resource_ids_example']})]})], conditions: [Schematic::CreateOrUpdateConditionRequestBody.new({condition_type: 'condition_type_example', metric_value: 37, operator: 'operator_example', resource_ids: ['resource_ids_example']})]}) # AudienceRequestBody | 
+opts = {
+  x_schematic_environment_id: 'x_schematic_environment_id_example' # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
+}
+
+begin
+  # Count Users audience
+  result = api_instance.count_users_audience(audience_request_body, opts)
+  p result
+rescue Schematic::ApiError => e
+  puts "Error when calling FeaturesApi->count_users_audience: #{e}"
+end
+```
+
+#### Using the count_users_audience_with_http_info variant
+
+This returns an Array which contains the response data, status code and headers.
+
+> <Array(<CountUsersAudienceResponse>, Integer, Hash)> count_users_audience_with_http_info(audience_request_body, opts)
+
+```ruby
+begin
+  # Count Users audience
+  data, status_code, headers = api_instance.count_users_audience_with_http_info(audience_request_body, opts)
+  p status_code # => 2xx
+  p headers # => { ... }
+  p data # => <CountUsersAudienceResponse>
+rescue Schematic::ApiError => e
+  puts "Error when calling FeaturesApi->count_users_audience_with_http_info: #{e}"
+end
+```
+
+### Parameters
+
+| Name | Type | Description | Notes |
+| ---- | ---- | ----------- | ----- |
+| **audience_request_body** | [**AudienceRequestBody**](AudienceRequestBody.md) |  |  |
+| **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
+
+### Return type
+
+[**CountUsersAudienceResponse**](CountUsersAudienceResponse.md)
+
+### Authorization
+
+[ApiKeyAuth](../README.md#ApiKeyAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 
@@ -625,6 +775,79 @@ end
 - **Accept**: application/json
 
 
+## get_companies_audience
+
+> <GetCompaniesAudienceResponse> get_companies_audience(audience_request_body, opts)
+
+Get Companies audience
+
+### Examples
+
+```ruby
+require 'time'
+require 'schematic'
+# setup authorization
+Schematic.configure do |config|
+  # Configure API key authorization: ApiKeyAuth
+  config.api_key['ApiKeyAuth'] = 'YOUR API KEY'
+  # Uncomment the following line to set a prefix for the API key, e.g. 'Bearer' (defaults to nil)
+  # config.api_key_prefix['ApiKeyAuth'] = 'Bearer'
+end
+
+api_instance = Schematic::FeaturesApi.new
+audience_request_body = Schematic::AudienceRequestBody.new({condition_groups: [Schematic::CreateOrUpdateConditionGroupRequestBody.new({conditions: [Schematic::CreateOrUpdateConditionRequestBody.new({condition_type: 'condition_type_example', metric_value: 37, operator: 'operator_example', resource_ids: ['resource_ids_example']})]})], conditions: [Schematic::CreateOrUpdateConditionRequestBody.new({condition_type: 'condition_type_example', metric_value: 37, operator: 'operator_example', resource_ids: ['resource_ids_example']})]}) # AudienceRequestBody | 
+opts = {
+  x_schematic_environment_id: 'x_schematic_environment_id_example' # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
+}
+
+begin
+  # Get Companies audience
+  result = api_instance.get_companies_audience(audience_request_body, opts)
+  p result
+rescue Schematic::ApiError => e
+  puts "Error when calling FeaturesApi->get_companies_audience: #{e}"
+end
+```
+
+#### Using the get_companies_audience_with_http_info variant
+
+This returns an Array which contains the response data, status code and headers.
+
+> <Array(<GetCompaniesAudienceResponse>, Integer, Hash)> get_companies_audience_with_http_info(audience_request_body, opts)
+
+```ruby
+begin
+  # Get Companies audience
+  data, status_code, headers = api_instance.get_companies_audience_with_http_info(audience_request_body, opts)
+  p status_code # => 2xx
+  p headers # => { ... }
+  p data # => <GetCompaniesAudienceResponse>
+rescue Schematic::ApiError => e
+  puts "Error when calling FeaturesApi->get_companies_audience_with_http_info: #{e}"
+end
+```
+
+### Parameters
+
+| Name | Type | Description | Notes |
+| ---- | ---- | ----------- | ----- |
+| **audience_request_body** | [**AudienceRequestBody**](AudienceRequestBody.md) |  |  |
+| **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
+
+### Return type
+
+[**GetCompaniesAudienceResponse**](GetCompaniesAudienceResponse.md)
+
+### Authorization
+
+[ApiKeyAuth](../README.md#ApiKeyAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+
 ## get_feature
 
 > <GetFeatureResponse> get_feature(feature_id, opts)
@@ -841,6 +1064,79 @@ end
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## get_users_audience
+
+> <GetUsersAudienceResponse> get_users_audience(audience_request_body, opts)
+
+Get Users audience
+
+### Examples
+
+```ruby
+require 'time'
+require 'schematic'
+# setup authorization
+Schematic.configure do |config|
+  # Configure API key authorization: ApiKeyAuth
+  config.api_key['ApiKeyAuth'] = 'YOUR API KEY'
+  # Uncomment the following line to set a prefix for the API key, e.g. 'Bearer' (defaults to nil)
+  # config.api_key_prefix['ApiKeyAuth'] = 'Bearer'
+end
+
+api_instance = Schematic::FeaturesApi.new
+audience_request_body = Schematic::AudienceRequestBody.new({condition_groups: [Schematic::CreateOrUpdateConditionGroupRequestBody.new({conditions: [Schematic::CreateOrUpdateConditionRequestBody.new({condition_type: 'condition_type_example', metric_value: 37, operator: 'operator_example', resource_ids: ['resource_ids_example']})]})], conditions: [Schematic::CreateOrUpdateConditionRequestBody.new({condition_type: 'condition_type_example', metric_value: 37, operator: 'operator_example', resource_ids: ['resource_ids_example']})]}) # AudienceRequestBody | 
+opts = {
+  x_schematic_environment_id: 'x_schematic_environment_id_example' # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
+}
+
+begin
+  # Get Users audience
+  result = api_instance.get_users_audience(audience_request_body, opts)
+  p result
+rescue Schematic::ApiError => e
+  puts "Error when calling FeaturesApi->get_users_audience: #{e}"
+end
+```
+
+#### Using the get_users_audience_with_http_info variant
+
+This returns an Array which contains the response data, status code and headers.
+
+> <Array(<GetUsersAudienceResponse>, Integer, Hash)> get_users_audience_with_http_info(audience_request_body, opts)
+
+```ruby
+begin
+  # Get Users audience
+  data, status_code, headers = api_instance.get_users_audience_with_http_info(audience_request_body, opts)
+  p status_code # => 2xx
+  p headers # => { ... }
+  p data # => <GetUsersAudienceResponse>
+rescue Schematic::ApiError => e
+  puts "Error when calling FeaturesApi->get_users_audience_with_http_info: #{e}"
+end
+```
+
+### Parameters
+
+| Name | Type | Description | Notes |
+| ---- | ---- | ----------- | ----- |
+| **audience_request_body** | [**AudienceRequestBody**](AudienceRequestBody.md) |  |  |
+| **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
+
+### Return type
+
+[**GetUsersAudienceResponse**](GetUsersAudienceResponse.md)
+
+### Authorization
+
+[ApiKeyAuth](../README.md#ApiKeyAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 

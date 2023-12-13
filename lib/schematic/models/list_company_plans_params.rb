@@ -14,47 +14,32 @@ require 'date'
 require 'time'
 
 module Schematic
-  # The updated resource
-  class RuleDetailResponseData
-    attr_accessor :condition_groups
+  # Input parameters
+  class ListCompanyPlansParams
+    attr_accessor :active
 
-    attr_accessor :conditions
+    attr_accessor :company_id
 
-    attr_accessor :created_at
+    attr_accessor :dir
 
-    attr_accessor :environment_id
+    attr_accessor :limit
 
-    attr_accessor :flag_id
+    attr_accessor :offset
 
-    attr_accessor :id
-
-    attr_accessor :name
+    attr_accessor :order
 
     attr_accessor :plan_id
-
-    attr_accessor :priority
-
-    attr_accessor :priority_group
-
-    attr_accessor :updated_at
-
-    attr_accessor :value
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'condition_groups' => :'condition_groups',
-        :'conditions' => :'conditions',
-        :'created_at' => :'created_at',
-        :'environment_id' => :'environment_id',
-        :'flag_id' => :'flag_id',
-        :'id' => :'id',
-        :'name' => :'name',
-        :'plan_id' => :'plan_id',
-        :'priority' => :'priority',
-        :'priority_group' => :'priority_group',
-        :'updated_at' => :'updated_at',
-        :'value' => :'value'
+        :'active' => :'active',
+        :'company_id' => :'company_id',
+        :'dir' => :'dir',
+        :'limit' => :'limit',
+        :'offset' => :'offset',
+        :'order' => :'order',
+        :'plan_id' => :'plan_id'
       }
     end
 
@@ -66,27 +51,19 @@ module Schematic
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'condition_groups' => :'Array<RuleConditionGroupDetailResponseData>',
-        :'conditions' => :'Array<RuleConditionResponseData>',
-        :'created_at' => :'Time',
-        :'environment_id' => :'String',
-        :'flag_id' => :'String',
-        :'id' => :'String',
-        :'name' => :'String',
-        :'plan_id' => :'String',
-        :'priority' => :'Integer',
-        :'priority_group' => :'Integer',
-        :'updated_at' => :'Time',
-        :'value' => :'Boolean'
+        :'active' => :'Boolean',
+        :'company_id' => :'String',
+        :'dir' => :'String',
+        :'limit' => :'Integer',
+        :'offset' => :'Integer',
+        :'order' => :'String',
+        :'plan_id' => :'String'
       }
     end
 
     # List of attributes with nullable: true
     def self.openapi_nullable
       Set.new([
-        :'flag_id',
-        :'plan_id',
-        :'priority_group',
       ])
     end
 
@@ -94,67 +71,43 @@ module Schematic
     # @param [Hash] attributes Model attributes in the form of hash
     def initialize(attributes = {})
       if (!attributes.is_a?(Hash))
-        fail ArgumentError, "The input argument (attributes) must be a hash in `Schematic::RuleDetailResponseData` initialize method"
+        fail ArgumentError, "The input argument (attributes) must be a hash in `Schematic::ListCompanyPlansParams` initialize method"
       end
 
       # check to see if the attribute exists and convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h|
         if (!self.class.attribute_map.key?(k.to_sym))
-          fail ArgumentError, "`#{k}` is not a valid attribute in `Schematic::RuleDetailResponseData`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
+          fail ArgumentError, "`#{k}` is not a valid attribute in `Schematic::ListCompanyPlansParams`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
         end
         h[k.to_sym] = v
       }
 
-      if attributes.key?(:'condition_groups')
-        if (value = attributes[:'condition_groups']).is_a?(Array)
-          self.condition_groups = value
-        end
+      if attributes.key?(:'active')
+        self.active = attributes[:'active']
       end
 
-      if attributes.key?(:'conditions')
-        if (value = attributes[:'conditions']).is_a?(Array)
-          self.conditions = value
-        end
+      if attributes.key?(:'company_id')
+        self.company_id = attributes[:'company_id']
       end
 
-      if attributes.key?(:'created_at')
-        self.created_at = attributes[:'created_at']
+      if attributes.key?(:'dir')
+        self.dir = attributes[:'dir']
       end
 
-      if attributes.key?(:'environment_id')
-        self.environment_id = attributes[:'environment_id']
+      if attributes.key?(:'limit')
+        self.limit = attributes[:'limit']
       end
 
-      if attributes.key?(:'flag_id')
-        self.flag_id = attributes[:'flag_id']
+      if attributes.key?(:'offset')
+        self.offset = attributes[:'offset']
       end
 
-      if attributes.key?(:'id')
-        self.id = attributes[:'id']
-      end
-
-      if attributes.key?(:'name')
-        self.name = attributes[:'name']
+      if attributes.key?(:'order')
+        self.order = attributes[:'order']
       end
 
       if attributes.key?(:'plan_id')
         self.plan_id = attributes[:'plan_id']
-      end
-
-      if attributes.key?(:'priority')
-        self.priority = attributes[:'priority']
-      end
-
-      if attributes.key?(:'priority_group')
-        self.priority_group = attributes[:'priority_group']
-      end
-
-      if attributes.key?(:'updated_at')
-        self.updated_at = attributes[:'updated_at']
-      end
-
-      if attributes.key?(:'value')
-        self.value = attributes[:'value']
       end
     end
 
@@ -162,57 +115,12 @@ module Schematic
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
-      if @condition_groups.nil?
-        invalid_properties.push('invalid value for "condition_groups", condition_groups cannot be nil.')
-      end
-
-      if @conditions.nil?
-        invalid_properties.push('invalid value for "conditions", conditions cannot be nil.')
-      end
-
-      if @created_at.nil?
-        invalid_properties.push('invalid value for "created_at", created_at cannot be nil.')
-      end
-
-      if @environment_id.nil?
-        invalid_properties.push('invalid value for "environment_id", environment_id cannot be nil.')
-      end
-
-      if @id.nil?
-        invalid_properties.push('invalid value for "id", id cannot be nil.')
-      end
-
-      if @name.nil?
-        invalid_properties.push('invalid value for "name", name cannot be nil.')
-      end
-
-      if @priority.nil?
-        invalid_properties.push('invalid value for "priority", priority cannot be nil.')
-      end
-
-      if @updated_at.nil?
-        invalid_properties.push('invalid value for "updated_at", updated_at cannot be nil.')
-      end
-
-      if @value.nil?
-        invalid_properties.push('invalid value for "value", value cannot be nil.')
-      end
-
       invalid_properties
     end
 
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
-      return false if @condition_groups.nil?
-      return false if @conditions.nil?
-      return false if @created_at.nil?
-      return false if @environment_id.nil?
-      return false if @id.nil?
-      return false if @name.nil?
-      return false if @priority.nil?
-      return false if @updated_at.nil?
-      return false if @value.nil?
       true
     end
 
@@ -221,18 +129,13 @@ module Schematic
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          condition_groups == o.condition_groups &&
-          conditions == o.conditions &&
-          created_at == o.created_at &&
-          environment_id == o.environment_id &&
-          flag_id == o.flag_id &&
-          id == o.id &&
-          name == o.name &&
-          plan_id == o.plan_id &&
-          priority == o.priority &&
-          priority_group == o.priority_group &&
-          updated_at == o.updated_at &&
-          value == o.value
+          active == o.active &&
+          company_id == o.company_id &&
+          dir == o.dir &&
+          limit == o.limit &&
+          offset == o.offset &&
+          order == o.order &&
+          plan_id == o.plan_id
     end
 
     # @see the `==` method
@@ -244,7 +147,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [condition_groups, conditions, created_at, environment_id, flag_id, id, name, plan_id, priority, priority_group, updated_at, value].hash
+      [active, company_id, dir, limit, offset, order, plan_id].hash
     end
 
     # Builds the object from hash

@@ -14,47 +14,35 @@ require 'date'
 require 'time'
 
 module Schematic
-  # The updated resource
-  class RuleDetailResponseData
+  class AudienceRequestBody
     attr_accessor :condition_groups
 
     attr_accessor :conditions
 
-    attr_accessor :created_at
+    # Order direction
+    attr_accessor :dir
 
-    attr_accessor :environment_id
+    # Page limit (default 100)
+    attr_accessor :limit
 
-    attr_accessor :flag_id
+    # Page offset (default 0)
+    attr_accessor :offset
 
-    attr_accessor :id
+    # Order by column
+    attr_accessor :order
 
-    attr_accessor :name
-
-    attr_accessor :plan_id
-
-    attr_accessor :priority
-
-    attr_accessor :priority_group
-
-    attr_accessor :updated_at
-
-    attr_accessor :value
+    attr_accessor :q
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
         :'condition_groups' => :'condition_groups',
         :'conditions' => :'conditions',
-        :'created_at' => :'created_at',
-        :'environment_id' => :'environment_id',
-        :'flag_id' => :'flag_id',
-        :'id' => :'id',
-        :'name' => :'name',
-        :'plan_id' => :'plan_id',
-        :'priority' => :'priority',
-        :'priority_group' => :'priority_group',
-        :'updated_at' => :'updated_at',
-        :'value' => :'value'
+        :'dir' => :'dir',
+        :'limit' => :'limit',
+        :'offset' => :'offset',
+        :'order' => :'order',
+        :'q' => :'q'
       }
     end
 
@@ -66,27 +54,24 @@ module Schematic
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'condition_groups' => :'Array<RuleConditionGroupDetailResponseData>',
-        :'conditions' => :'Array<RuleConditionResponseData>',
-        :'created_at' => :'Time',
-        :'environment_id' => :'String',
-        :'flag_id' => :'String',
-        :'id' => :'String',
-        :'name' => :'String',
-        :'plan_id' => :'String',
-        :'priority' => :'Integer',
-        :'priority_group' => :'Integer',
-        :'updated_at' => :'Time',
-        :'value' => :'Boolean'
+        :'condition_groups' => :'Array<CreateOrUpdateConditionGroupRequestBody>',
+        :'conditions' => :'Array<CreateOrUpdateConditionRequestBody>',
+        :'dir' => :'String',
+        :'limit' => :'Integer',
+        :'offset' => :'Integer',
+        :'order' => :'String',
+        :'q' => :'String'
       }
     end
 
     # List of attributes with nullable: true
     def self.openapi_nullable
       Set.new([
-        :'flag_id',
-        :'plan_id',
-        :'priority_group',
+        :'dir',
+        :'limit',
+        :'offset',
+        :'order',
+        :'q'
       ])
     end
 
@@ -94,13 +79,13 @@ module Schematic
     # @param [Hash] attributes Model attributes in the form of hash
     def initialize(attributes = {})
       if (!attributes.is_a?(Hash))
-        fail ArgumentError, "The input argument (attributes) must be a hash in `Schematic::RuleDetailResponseData` initialize method"
+        fail ArgumentError, "The input argument (attributes) must be a hash in `Schematic::AudienceRequestBody` initialize method"
       end
 
       # check to see if the attribute exists and convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h|
         if (!self.class.attribute_map.key?(k.to_sym))
-          fail ArgumentError, "`#{k}` is not a valid attribute in `Schematic::RuleDetailResponseData`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
+          fail ArgumentError, "`#{k}` is not a valid attribute in `Schematic::AudienceRequestBody`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
         end
         h[k.to_sym] = v
       }
@@ -117,44 +102,24 @@ module Schematic
         end
       end
 
-      if attributes.key?(:'created_at')
-        self.created_at = attributes[:'created_at']
+      if attributes.key?(:'dir')
+        self.dir = attributes[:'dir']
       end
 
-      if attributes.key?(:'environment_id')
-        self.environment_id = attributes[:'environment_id']
+      if attributes.key?(:'limit')
+        self.limit = attributes[:'limit']
       end
 
-      if attributes.key?(:'flag_id')
-        self.flag_id = attributes[:'flag_id']
+      if attributes.key?(:'offset')
+        self.offset = attributes[:'offset']
       end
 
-      if attributes.key?(:'id')
-        self.id = attributes[:'id']
+      if attributes.key?(:'order')
+        self.order = attributes[:'order']
       end
 
-      if attributes.key?(:'name')
-        self.name = attributes[:'name']
-      end
-
-      if attributes.key?(:'plan_id')
-        self.plan_id = attributes[:'plan_id']
-      end
-
-      if attributes.key?(:'priority')
-        self.priority = attributes[:'priority']
-      end
-
-      if attributes.key?(:'priority_group')
-        self.priority_group = attributes[:'priority_group']
-      end
-
-      if attributes.key?(:'updated_at')
-        self.updated_at = attributes[:'updated_at']
-      end
-
-      if attributes.key?(:'value')
-        self.value = attributes[:'value']
+      if attributes.key?(:'q')
+        self.q = attributes[:'q']
       end
     end
 
@@ -170,34 +135,6 @@ module Schematic
         invalid_properties.push('invalid value for "conditions", conditions cannot be nil.')
       end
 
-      if @created_at.nil?
-        invalid_properties.push('invalid value for "created_at", created_at cannot be nil.')
-      end
-
-      if @environment_id.nil?
-        invalid_properties.push('invalid value for "environment_id", environment_id cannot be nil.')
-      end
-
-      if @id.nil?
-        invalid_properties.push('invalid value for "id", id cannot be nil.')
-      end
-
-      if @name.nil?
-        invalid_properties.push('invalid value for "name", name cannot be nil.')
-      end
-
-      if @priority.nil?
-        invalid_properties.push('invalid value for "priority", priority cannot be nil.')
-      end
-
-      if @updated_at.nil?
-        invalid_properties.push('invalid value for "updated_at", updated_at cannot be nil.')
-      end
-
-      if @value.nil?
-        invalid_properties.push('invalid value for "value", value cannot be nil.')
-      end
-
       invalid_properties
     end
 
@@ -206,13 +143,6 @@ module Schematic
     def valid?
       return false if @condition_groups.nil?
       return false if @conditions.nil?
-      return false if @created_at.nil?
-      return false if @environment_id.nil?
-      return false if @id.nil?
-      return false if @name.nil?
-      return false if @priority.nil?
-      return false if @updated_at.nil?
-      return false if @value.nil?
       true
     end
 
@@ -223,16 +153,11 @@ module Schematic
       self.class == o.class &&
           condition_groups == o.condition_groups &&
           conditions == o.conditions &&
-          created_at == o.created_at &&
-          environment_id == o.environment_id &&
-          flag_id == o.flag_id &&
-          id == o.id &&
-          name == o.name &&
-          plan_id == o.plan_id &&
-          priority == o.priority &&
-          priority_group == o.priority_group &&
-          updated_at == o.updated_at &&
-          value == o.value
+          dir == o.dir &&
+          limit == o.limit &&
+          offset == o.offset &&
+          order == o.order &&
+          q == o.q
     end
 
     # @see the `==` method
@@ -244,7 +169,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [condition_groups, conditions, created_at, environment_id, flag_id, id, name, plan_id, priority, priority_group, updated_at, value].hash
+      [condition_groups, conditions, dir, limit, offset, order, q].hash
     end
 
     # Builds the object from hash

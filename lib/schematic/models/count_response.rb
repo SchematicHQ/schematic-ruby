@@ -14,8 +14,8 @@ require 'date'
 require 'time'
 
 module Schematic
+  # The created resource
   class CountResponse
-    # The number of resources
     attr_accessor :count
 
     # Attribute mapping from ruby-style variable name to JSON key.
@@ -67,12 +67,17 @@ module Schematic
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
+      if @count.nil?
+        invalid_properties.push('invalid value for "count", count cannot be nil.')
+      end
+
       invalid_properties
     end
 
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
+      return false if @count.nil?
       true
     end
 

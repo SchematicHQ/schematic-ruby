@@ -1,10 +1,10 @@
-# Schematic::UpdatePlanAudienceResponse
+# Schematic::CountUsersAudienceResponse
 
 ## Properties
 
 | Name | Type | Description | Notes |
 | ---- | ---- | ----------- | ----- |
-| **data** | [**RuleDetailResponseData**](RuleDetailResponseData.md) |  |  |
+| **data** | [**CountResponse**](CountResponse.md) |  |  |
 | **params** | **Object** | Input parameters |  |
 
 ## Example
@@ -12,7 +12,7 @@
 ```ruby
 require 'schematic'
 
-instance = Schematic::UpdatePlanAudienceResponse.new(
+instance = Schematic::CountUsersAudienceResponse.new(
   data: null,
   params: null
 )

@@ -14,7 +14,6 @@ require 'date'
 require 'time'
 
 module Schematic
-  # The returned resource
   class CompanyDetailResponseData
     attr_accessor :created_at
 

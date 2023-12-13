@@ -1,18 +1,18 @@
-# Schematic::CountResponse
+# Schematic::ErrorResponseBody
 
 ## Properties
 
 | Name | Type | Description | Notes |
 | ---- | ---- | ----------- | ----- |
-| **count** | **Integer** |  |  |
+| **error** | **String** | Error message |  |
 
 ## Example
 
 ```ruby
 require 'schematic'
 
-instance = Schematic::CountResponse.new(
-  count: null
+instance = Schematic::ErrorResponseBody.new(
+  error: null
 )
 ```
 
