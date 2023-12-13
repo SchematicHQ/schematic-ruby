@@ -14,47 +14,14 @@ require 'date'
 require 'time'
 
 module Schematic
-  # The updated resource
-  class RuleDetailResponseData
-    attr_accessor :condition_groups
-
-    attr_accessor :conditions
-
-    attr_accessor :created_at
-
-    attr_accessor :environment_id
-
-    attr_accessor :flag_id
-
-    attr_accessor :id
-
-    attr_accessor :name
-
-    attr_accessor :plan_id
-
-    attr_accessor :priority
-
-    attr_accessor :priority_group
-
-    attr_accessor :updated_at
-
-    attr_accessor :value
+  class ErrorResponseBody
+    # Error message
+    attr_accessor :error
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'condition_groups' => :'condition_groups',
-        :'conditions' => :'conditions',
-        :'created_at' => :'created_at',
-        :'environment_id' => :'environment_id',
-        :'flag_id' => :'flag_id',
-        :'id' => :'id',
-        :'name' => :'name',
-        :'plan_id' => :'plan_id',
-        :'priority' => :'priority',
-        :'priority_group' => :'priority_group',
-        :'updated_at' => :'updated_at',
-        :'value' => :'value'
+        :'error' => :'error'
       }
     end
 
@@ -66,27 +33,13 @@ module Schematic
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'condition_groups' => :'Array<RuleConditionGroupDetailResponseData>',
-        :'conditions' => :'Array<RuleConditionResponseData>',
-        :'created_at' => :'Time',
-        :'environment_id' => :'String',
-        :'flag_id' => :'String',
-        :'id' => :'String',
-        :'name' => :'String',
-        :'plan_id' => :'String',
-        :'priority' => :'Integer',
-        :'priority_group' => :'Integer',
-        :'updated_at' => :'Time',
-        :'value' => :'Boolean'
+        :'error' => :'String'
       }
     end
 
     # List of attributes with nullable: true
     def self.openapi_nullable
       Set.new([
-        :'flag_id',
-        :'plan_id',
-        :'priority_group',
       ])
     end
 
@@ -94,67 +47,19 @@ module Schematic
     # @param [Hash] attributes Model attributes in the form of hash
     def initialize(attributes = {})
       if (!attributes.is_a?(Hash))
-        fail ArgumentError, "The input argument (attributes) must be a hash in `Schematic::RuleDetailResponseData` initialize method"
+        fail ArgumentError, "The input argument (attributes) must be a hash in `Schematic::ErrorResponseBody` initialize method"
       end
 
       # check to see if the attribute exists and convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h|
         if (!self.class.attribute_map.key?(k.to_sym))
-          fail ArgumentError, "`#{k}` is not a valid attribute in `Schematic::RuleDetailResponseData`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
+          fail ArgumentError, "`#{k}` is not a valid attribute in `Schematic::ErrorResponseBody`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
         end
         h[k.to_sym] = v
       }
 
-      if attributes.key?(:'condition_groups')
-        if (value = attributes[:'condition_groups']).is_a?(Array)
-          self.condition_groups = value
-        end
-      end
-
-      if attributes.key?(:'conditions')
-        if (value = attributes[:'conditions']).is_a?(Array)
-          self.conditions = value
-        end
-      end
-
-      if attributes.key?(:'created_at')
-        self.created_at = attributes[:'created_at']
-      end
-
-      if attributes.key?(:'environment_id')
-        self.environment_id = attributes[:'environment_id']
-      end
-
-      if attributes.key?(:'flag_id')
-        self.flag_id = attributes[:'flag_id']
-      end
-
-      if attributes.key?(:'id')
-        self.id = attributes[:'id']
-      end
-
-      if attributes.key?(:'name')
-        self.name = attributes[:'name']
-      end
-
-      if attributes.key?(:'plan_id')
-        self.plan_id = attributes[:'plan_id']
-      end
-
-      if attributes.key?(:'priority')
-        self.priority = attributes[:'priority']
-      end
-
-      if attributes.key?(:'priority_group')
-        self.priority_group = attributes[:'priority_group']
-      end
-
-      if attributes.key?(:'updated_at')
-        self.updated_at = attributes[:'updated_at']
-      end
-
-      if attributes.key?(:'value')
-        self.value = attributes[:'value']
+      if attributes.key?(:'error')
+        self.error = attributes[:'error']
       end
     end
 
@@ -162,40 +67,8 @@ module Schematic
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
-      if @condition_groups.nil?
-        invalid_properties.push('invalid value for "condition_groups", condition_groups cannot be nil.')
-      end
-
-      if @conditions.nil?
-        invalid_properties.push('invalid value for "conditions", conditions cannot be nil.')
-      end
-
-      if @created_at.nil?
-        invalid_properties.push('invalid value for "created_at", created_at cannot be nil.')
-      end
-
-      if @environment_id.nil?
-        invalid_properties.push('invalid value for "environment_id", environment_id cannot be nil.')
-      end
-
-      if @id.nil?
-        invalid_properties.push('invalid value for "id", id cannot be nil.')
-      end
-
-      if @name.nil?
-        invalid_properties.push('invalid value for "name", name cannot be nil.')
-      end
-
-      if @priority.nil?
-        invalid_properties.push('invalid value for "priority", priority cannot be nil.')
-      end
-
-      if @updated_at.nil?
-        invalid_properties.push('invalid value for "updated_at", updated_at cannot be nil.')
-      end
-
-      if @value.nil?
-        invalid_properties.push('invalid value for "value", value cannot be nil.')
+      if @error.nil?
+        invalid_properties.push('invalid value for "error", error cannot be nil.')
       end
 
       invalid_properties
@@ -204,15 +77,7 @@ module Schematic
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
-      return false if @condition_groups.nil?
-      return false if @conditions.nil?
-      return false if @created_at.nil?
-      return false if @environment_id.nil?
-      return false if @id.nil?
-      return false if @name.nil?
-      return false if @priority.nil?
-      return false if @updated_at.nil?
-      return false if @value.nil?
+      return false if @error.nil?
       true
     end
 
@@ -221,18 +86,7 @@ module Schematic
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          condition_groups == o.condition_groups &&
-          conditions == o.conditions &&
-          created_at == o.created_at &&
-          environment_id == o.environment_id &&
-          flag_id == o.flag_id &&
-          id == o.id &&
-          name == o.name &&
-          plan_id == o.plan_id &&
-          priority == o.priority &&
-          priority_group == o.priority_group &&
-          updated_at == o.updated_at &&
-          value == o.value
+          error == o.error
     end
 
     # @see the `==` method
@@ -244,7 +98,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [condition_groups, conditions, created_at, environment_id, flag_id, id, name, plan_id, priority, priority_group, updated_at, value].hash
+      [error].hash
     end
 
     # Builds the object from hash

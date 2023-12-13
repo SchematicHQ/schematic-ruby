@@ -1,40 +1,32 @@
-# Schematic::RuleDetailResponseData
+# Schematic::RuleConditionGroupDetailResponseData
 
 ## Properties
 
 | Name | Type | Description | Notes |
 | ---- | ---- | ----------- | ----- |
-| **condition_groups** | [**Array&lt;RuleConditionGroupDetailResponseData&gt;**](RuleConditionGroupDetailResponseData.md) |  |  |
 | **conditions** | [**Array&lt;RuleConditionResponseData&gt;**](RuleConditionResponseData.md) |  |  |
 | **created_at** | **Time** |  |  |
 | **environment_id** | **String** |  |  |
 | **flag_id** | **String** |  | [optional] |
 | **id** | **String** |  |  |
-| **name** | **String** |  |  |
 | **plan_id** | **String** |  | [optional] |
-| **priority** | **Integer** |  |  |
-| **priority_group** | **Integer** |  | [optional] |
+| **rule_id** | **String** |  |  |
 | **updated_at** | **Time** |  |  |
-| **value** | **Boolean** |  |  |
 
 ## Example
 
 ```ruby
 require 'schematic'
 
-instance = Schematic::RuleDetailResponseData.new(
-  condition_groups: null,
+instance = Schematic::RuleConditionGroupDetailResponseData.new(
   conditions: null,
   created_at: null,
   environment_id: null,
   flag_id: null,
   id: null,
-  name: null,
   plan_id: null,
-  priority: null,
-  priority_group: null,
-  updated_at: null,
-  value: null
+  rule_id: null,
+  updated_at: null
 )
 ```
 

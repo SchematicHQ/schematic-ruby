@@ -1,10 +1,10 @@
-# Schematic::UpdatePlanAudienceResponse
+# Schematic::GetCompaniesAudienceResponse
 
 ## Properties
 
 | Name | Type | Description | Notes |
 | ---- | ---- | ----------- | ----- |
-| **data** | [**RuleDetailResponseData**](RuleDetailResponseData.md) |  |  |
+| **data** | [**Array&lt;CompanyDetailResponseData&gt;**](CompanyDetailResponseData.md) | The returned resources |  |
 | **params** | **Object** | Input parameters |  |
 
 ## Example
@@ -12,7 +12,7 @@
 ```ruby
 require 'schematic'
 
-instance = Schematic::UpdatePlanAudienceResponse.new(
+instance = Schematic::GetCompaniesAudienceResponse.new(
   data: null,
   params: null
 )

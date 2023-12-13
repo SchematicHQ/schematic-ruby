@@ -216,6 +216,85 @@ module Schematic
       return data, status_code, headers
     end
 
+    # List company plans
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @option opts [String] :company_id 
+    # @option opts [String] :plan_id 
+    # @option opts [Boolean] :active 
+    # @option opts [Integer] :limit Page limit (default 100)
+    # @option opts [Integer] :offset Page offset (default 0)
+    # @option opts [String] :order Order by column
+    # @option opts [String] :dir Order direction
+    # @return [ListCompanyPlansResponse]
+    def list_company_plans(opts = {})
+      data, _status_code, _headers = list_company_plans_with_http_info(opts)
+      data
+    end
+
+    # List company plans
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @option opts [String] :company_id 
+    # @option opts [String] :plan_id 
+    # @option opts [Boolean] :active 
+    # @option opts [Integer] :limit Page limit (default 100)
+    # @option opts [Integer] :offset Page offset (default 0)
+    # @option opts [String] :order Order by column
+    # @option opts [String] :dir Order direction
+    # @return [Array<(ListCompanyPlansResponse, Integer, Hash)>] ListCompanyPlansResponse data, response status code and response headers
+    def list_company_plans_with_http_info(opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: PlansApi.list_company_plans ...'
+      end
+      # resource path
+      local_var_path = '/company-plans'
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+      query_params[:'company_id'] = opts[:'company_id'] if !opts[:'company_id'].nil?
+      query_params[:'plan_id'] = opts[:'plan_id'] if !opts[:'plan_id'].nil?
+      query_params[:'active'] = opts[:'active'] if !opts[:'active'].nil?
+      query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
+      query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
+      query_params[:'order'] = opts[:'order'] if !opts[:'order'].nil?
+      query_params[:'dir'] = opts[:'dir'] if !opts[:'dir'].nil?
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json'])
+      header_params[:'X-Schematic-Environment-Id'] = opts[:'x_schematic_environment_id'] if !opts[:'x_schematic_environment_id'].nil?
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body]
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'ListCompanyPlansResponse'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['ApiKeyAuth']
+
+      new_options = opts.merge(
+        :operation => :"PlansApi.list_company_plans",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: PlansApi#list_company_plans\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
     # List plans
     # @param [Hash] opts the optional parameters
     # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
@@ -282,75 +361,6 @@ module Schematic
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
       if @api_client.config.debugging
         @api_client.config.logger.debug "API called: PlansApi#list_plans\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
-      return data, status_code, headers
-    end
-
-    # Sync company plans
-    # @param sync_company_plans_request_body [SyncCompanyPlansRequestBody] 
-    # @param [Hash] opts the optional parameters
-    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
-    # @return [SyncCompanyPlansResponse]
-    def sync_company_plans(sync_company_plans_request_body, opts = {})
-      data, _status_code, _headers = sync_company_plans_with_http_info(sync_company_plans_request_body, opts)
-      data
-    end
-
-    # Sync company plans
-    # @param sync_company_plans_request_body [SyncCompanyPlansRequestBody] 
-    # @param [Hash] opts the optional parameters
-    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
-    # @return [Array<(SyncCompanyPlansResponse, Integer, Hash)>] SyncCompanyPlansResponse data, response status code and response headers
-    def sync_company_plans_with_http_info(sync_company_plans_request_body, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: PlansApi.sync_company_plans ...'
-      end
-      # verify the required parameter 'sync_company_plans_request_body' is set
-      if @api_client.config.client_side_validation && sync_company_plans_request_body.nil?
-        fail ArgumentError, "Missing the required parameter 'sync_company_plans_request_body' when calling PlansApi.sync_company_plans"
-      end
-      # resource path
-      local_var_path = '/company-plans/sync'
-
-      # query parameters
-      query_params = opts[:query_params] || {}
-
-      # header parameters
-      header_params = opts[:header_params] || {}
-      # HTTP header 'Accept' (if needed)
-      header_params['Accept'] = @api_client.select_header_accept(['application/json'])
-      # HTTP header 'Content-Type'
-      content_type = @api_client.select_header_content_type(['application/json'])
-      if !content_type.nil?
-          header_params['Content-Type'] = content_type
-      end
-      header_params[:'X-Schematic-Environment-Id'] = opts[:'x_schematic_environment_id'] if !opts[:'x_schematic_environment_id'].nil?
-
-      # form parameters
-      form_params = opts[:form_params] || {}
-
-      # http body (model)
-      post_body = opts[:debug_body] || @api_client.object_to_http_body(sync_company_plans_request_body)
-
-      # return_type
-      return_type = opts[:debug_return_type] || 'SyncCompanyPlansResponse'
-
-      # auth_names
-      auth_names = opts[:debug_auth_names] || ['ApiKeyAuth']
-
-      new_options = opts.merge(
-        :operation => :"PlansApi.sync_company_plans",
-        :header_params => header_params,
-        :query_params => query_params,
-        :form_params => form_params,
-        :body => post_body,
-        :auth_names => auth_names,
-        :return_type => return_type
-      )
-
-      data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: PlansApi#sync_company_plans\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
       end
       return data, status_code, headers
     end

@@ -15,7 +15,6 @@ require 'time'
 
 module Schematic
   class UpdatePlanAudienceResponse
-    # The updated resource
     attr_accessor :data
 
     # Input parameters
@@ -37,7 +36,7 @@ module Schematic
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'data' => :'Object',
+        :'data' => :'RuleDetailResponseData',
         :'params' => :'Object'
       }
     end

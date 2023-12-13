@@ -121,15 +121,19 @@ Class | Method | HTTP request | Description
 *Schematic::EventsApi* | [**list_metric_counts_hourly**](docs/EventsApi.md#list_metric_counts_hourly) | **GET** /metric-counts-hourly | List metric counts hourly
 *Schematic::FeaturesApi* | [**check_flag**](docs/FeaturesApi.md#check_flag) | **POST** /flags/{key}/check | Check flag
 *Schematic::FeaturesApi* | [**check_flags**](docs/FeaturesApi.md#check_flags) | **POST** /flags/check | Check flags
+*Schematic::FeaturesApi* | [**count_companies_audience**](docs/FeaturesApi.md#count_companies_audience) | **POST** /audience/count-companies | Count Companies audience
 *Schematic::FeaturesApi* | [**count_flag_values**](docs/FeaturesApi.md#count_flag_values) | **GET** /flag-values/count | Count flag values
+*Schematic::FeaturesApi* | [**count_users_audience**](docs/FeaturesApi.md#count_users_audience) | **POST** /audience/count-users | Count Users audience
 *Schematic::FeaturesApi* | [**create_feature**](docs/FeaturesApi.md#create_feature) | **POST** /features | Create feature
 *Schematic::FeaturesApi* | [**create_flag**](docs/FeaturesApi.md#create_flag) | **POST** /flags | Create flag
 *Schematic::FeaturesApi* | [**create_rule**](docs/FeaturesApi.md#create_rule) | **POST** /rules | Create rule
 *Schematic::FeaturesApi* | [**delete_feature**](docs/FeaturesApi.md#delete_feature) | **DELETE** /features/{feature_id} | Delete feature
 *Schematic::FeaturesApi* | [**delete_flag**](docs/FeaturesApi.md#delete_flag) | **DELETE** /flags/{flag_id} | Delete flag
+*Schematic::FeaturesApi* | [**get_companies_audience**](docs/FeaturesApi.md#get_companies_audience) | **POST** /audience/get-companies | Get Companies audience
 *Schematic::FeaturesApi* | [**get_feature**](docs/FeaturesApi.md#get_feature) | **GET** /features/{feature_id} | Get feature
 *Schematic::FeaturesApi* | [**get_flag**](docs/FeaturesApi.md#get_flag) | **GET** /flags/{flag_id} | Get flag
 *Schematic::FeaturesApi* | [**get_rule**](docs/FeaturesApi.md#get_rule) | **GET** /rules/{rule_id} | Get rule
+*Schematic::FeaturesApi* | [**get_users_audience**](docs/FeaturesApi.md#get_users_audience) | **POST** /audience/get-users | Get Users audience
 *Schematic::FeaturesApi* | [**latest_flag_checks**](docs/FeaturesApi.md#latest_flag_checks) | **GET** /flag-checks/latest | Latest flag checks
 *Schematic::FeaturesApi* | [**list_features**](docs/FeaturesApi.md#list_features) | **GET** /features | List features
 *Schematic::FeaturesApi* | [**list_flag_checks**](docs/FeaturesApi.md#list_flag_checks) | **GET** /flag-checks | List flag checks
@@ -141,8 +145,8 @@ Class | Method | HTTP request | Description
 *Schematic::PlansApi* | [**create_plan**](docs/PlansApi.md#create_plan) | **POST** /plans | Create plan
 *Schematic::PlansApi* | [**delete_plan**](docs/PlansApi.md#delete_plan) | **DELETE** /plans/{plan_id} | Delete plan
 *Schematic::PlansApi* | [**get_plan**](docs/PlansApi.md#get_plan) | **GET** /plans/{plan_id} | Get plan
+*Schematic::PlansApi* | [**list_company_plans**](docs/PlansApi.md#list_company_plans) | **GET** /company-plans | List company plans
 *Schematic::PlansApi* | [**list_plans**](docs/PlansApi.md#list_plans) | **GET** /plans | List plans
-*Schematic::PlansApi* | [**sync_company_plans**](docs/PlansApi.md#sync_company_plans) | **POST** /company-plans/sync | Sync company plans
 *Schematic::PlansApi* | [**update_plan**](docs/PlansApi.md#update_plan) | **PUT** /plans/{plan_id} | Update plan
 *Schematic::PlansApi* | [**update_plan_audience**](docs/PlansApi.md#update_plan_audience) | **PUT** /plan-audiences/{plan_audience_id} | Update plan audience
 *Schematic::PlansApi* | [**upsert_billing_period**](docs/PlansApi.md#upsert_billing_period) | **POST** /billing-periods/{key}/upsert | Upsert billing period
@@ -150,9 +154,9 @@ Class | Method | HTTP request | Description
 
 ## Documentation for Models
 
- - [Schematic::ApiError](docs/ApiError.md)
  - [Schematic::ApiKeyCreateResponseData](docs/ApiKeyCreateResponseData.md)
  - [Schematic::ApiKeyResponseData](docs/ApiKeyResponseData.md)
+ - [Schematic::AudienceRequestBody](docs/AudienceRequestBody.md)
  - [Schematic::BillingPeriodResponseData](docs/BillingPeriodResponseData.md)
  - [Schematic::CheckFlagOutputWithFlagKey](docs/CheckFlagOutputWithFlagKey.md)
  - [Schematic::CheckFlagRequestBody](docs/CheckFlagRequestBody.md)
@@ -167,6 +171,7 @@ Class | Method | HTTP request | Description
  - [Schematic::CompanyResponseData](docs/CompanyResponseData.md)
  - [Schematic::CountApiKeysParams](docs/CountApiKeysParams.md)
  - [Schematic::CountApiKeysResponse](docs/CountApiKeysResponse.md)
+ - [Schematic::CountCompaniesAudienceResponse](docs/CountCompaniesAudienceResponse.md)
  - [Schematic::CountEventTypesParams](docs/CountEventTypesParams.md)
  - [Schematic::CountEventTypesResponse](docs/CountEventTypesResponse.md)
  - [Schematic::CountEventsParams](docs/CountEventsParams.md)
@@ -174,6 +179,7 @@ Class | Method | HTTP request | Description
  - [Schematic::CountFlagValuesParams](docs/CountFlagValuesParams.md)
  - [Schematic::CountFlagValuesResponse](docs/CountFlagValuesResponse.md)
  - [Schematic::CountResponse](docs/CountResponse.md)
+ - [Schematic::CountUsersAudienceResponse](docs/CountUsersAudienceResponse.md)
  - [Schematic::CreateApiKeyRequestBody](docs/CreateApiKeyRequestBody.md)
  - [Schematic::CreateApiKeyResponse](docs/CreateApiKeyResponse.md)
  - [Schematic::CreateCompanyMembershipResponse](docs/CreateCompanyMembershipResponse.md)
@@ -186,7 +192,6 @@ Class | Method | HTTP request | Description
  - [Schematic::CreateFeatureResponse](docs/CreateFeatureResponse.md)
  - [Schematic::CreateFlagRequestBody](docs/CreateFlagRequestBody.md)
  - [Schematic::CreateFlagResponse](docs/CreateFlagResponse.md)
- - [Schematic::CreateOrUpdateCompanyPlanRequestBody](docs/CreateOrUpdateCompanyPlanRequestBody.md)
  - [Schematic::CreateOrUpdateConditionGroupRequestBody](docs/CreateOrUpdateConditionGroupRequestBody.md)
  - [Schematic::CreateOrUpdateConditionRequestBody](docs/CreateOrUpdateConditionRequestBody.md)
  - [Schematic::CreateOrUpdateFlagRequestBody](docs/CreateOrUpdateFlagRequestBody.md)
@@ -208,6 +213,7 @@ Class | Method | HTTP request | Description
  - [Schematic::EntityTraitDefinitionResponseData](docs/EntityTraitDefinitionResponseData.md)
  - [Schematic::EnvironmentDetailResponseData](docs/EnvironmentDetailResponseData.md)
  - [Schematic::EnvironmentResponseData](docs/EnvironmentResponseData.md)
+ - [Schematic::ErrorResponseBody](docs/ErrorResponseBody.md)
  - [Schematic::EventBody](docs/EventBody.md)
  - [Schematic::EventBodyIdentify](docs/EventBodyIdentify.md)
  - [Schematic::EventBodyIdentifyCompany](docs/EventBodyIdentifyCompany.md)
@@ -220,6 +226,7 @@ Class | Method | HTTP request | Description
  - [Schematic::FlagDetailResponseData](docs/FlagDetailResponseData.md)
  - [Schematic::FlagResponseData](docs/FlagResponseData.md)
  - [Schematic::GetApiKeyResponse](docs/GetApiKeyResponse.md)
+ - [Schematic::GetCompaniesAudienceResponse](docs/GetCompaniesAudienceResponse.md)
  - [Schematic::GetCompanyResponse](docs/GetCompanyResponse.md)
  - [Schematic::GetEventResponse](docs/GetEventResponse.md)
  - [Schematic::GetEventTypeResponse](docs/GetEventTypeResponse.md)
@@ -229,6 +236,7 @@ Class | Method | HTTP request | Description
  - [Schematic::GetPlanResponse](docs/GetPlanResponse.md)
  - [Schematic::GetRuleResponse](docs/GetRuleResponse.md)
  - [Schematic::GetUserResponse](docs/GetUserResponse.md)
+ - [Schematic::GetUsersAudienceResponse](docs/GetUsersAudienceResponse.md)
  - [Schematic::LatestFlagChecksParams](docs/LatestFlagChecksParams.md)
  - [Schematic::LatestFlagChecksResponse](docs/LatestFlagChecksResponse.md)
  - [Schematic::ListApiKeysParams](docs/ListApiKeysParams.md)
@@ -237,6 +245,8 @@ Class | Method | HTTP request | Description
  - [Schematic::ListCompaniesResponse](docs/ListCompaniesResponse.md)
  - [Schematic::ListCompanyMembershipsParams](docs/ListCompanyMembershipsParams.md)
  - [Schematic::ListCompanyMembershipsResponse](docs/ListCompanyMembershipsResponse.md)
+ - [Schematic::ListCompanyPlansParams](docs/ListCompanyPlansParams.md)
+ - [Schematic::ListCompanyPlansResponse](docs/ListCompanyPlansResponse.md)
  - [Schematic::ListEventTypesParams](docs/ListEventTypesParams.md)
  - [Schematic::ListEventTypesResponse](docs/ListEventTypesResponse.md)
  - [Schematic::ListEventsParams](docs/ListEventsParams.md)
@@ -258,14 +268,13 @@ Class | Method | HTTP request | Description
  - [Schematic::ListUsersParams](docs/ListUsersParams.md)
  - [Schematic::ListUsersResponse](docs/ListUsersResponse.md)
  - [Schematic::MetricCountsHourlyResponseData](docs/MetricCountsHourlyResponseData.md)
+ - [Schematic::PaginationFilter](docs/PaginationFilter.md)
  - [Schematic::PlanResponseData](docs/PlanResponseData.md)
+ - [Schematic::RuleConditionGroupDetailResponseData](docs/RuleConditionGroupDetailResponseData.md)
  - [Schematic::RuleConditionGroupResponseData](docs/RuleConditionGroupResponseData.md)
  - [Schematic::RuleConditionResponseData](docs/RuleConditionResponseData.md)
  - [Schematic::RuleDetailResponseData](docs/RuleDetailResponseData.md)
  - [Schematic::RuleResponseData](docs/RuleResponseData.md)
- - [Schematic::SyncCompanyPlansRequestBody](docs/SyncCompanyPlansRequestBody.md)
- - [Schematic::SyncCompanyPlansResponse](docs/SyncCompanyPlansResponse.md)
- - [Schematic::SyncCompanyPlansResponseData](docs/SyncCompanyPlansResponseData.md)
  - [Schematic::UpdateApiKeyRequestBody](docs/UpdateApiKeyRequestBody.md)
  - [Schematic::UpdateApiKeyResponse](docs/UpdateApiKeyResponse.md)
  - [Schematic::UpdateAudienceRequestBody](docs/UpdateAudienceRequestBody.md)

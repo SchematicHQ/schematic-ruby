@@ -4,6 +4,7 @@
 
 | Name | Type | Description | Notes |
 | ---- | ---- | ----------- | ----- |
+| **comparison_trait_id** | **String** |  | [optional] |
 | **condition_group_id** | **String** |  | [optional] |
 | **condition_type** | **String** |  |  |
 | **created_at** | **Time** |  |  |
@@ -14,6 +15,7 @@
 | **metric_period** | **String** |  | [optional] |
 | **metric_value** | **Integer** |  |  |
 | **operator** | **String** |  |  |
+| **plan_id** | **String** |  | [optional] |
 | **resource_ids** | **Array&lt;String&gt;** |  |  |
 | **rule_id** | **String** |  |  |
 | **trait_entity_type** | **String** |  | [optional] |
@@ -27,6 +29,7 @@
 require 'schematic'
 
 instance = Schematic::RuleConditionResponseData.new(
+  comparison_trait_id: null,
   condition_group_id: null,
   condition_type: null,
   created_at: null,
@@ -37,6 +40,7 @@ instance = Schematic::RuleConditionResponseData.new(
   metric_period: null,
   metric_value: null,
   operator: null,
+  plan_id: null,
   resource_ids: null,
   rule_id: null,
   trait_entity_type: null,
