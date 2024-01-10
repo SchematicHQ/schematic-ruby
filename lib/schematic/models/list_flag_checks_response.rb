@@ -36,7 +36,7 @@ module Schematic
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'data' => :'Array<FlagCheckLogResponseData>',
+        :'data' => :'Array<FlagCheckLogDetailResponseData>',
         :'params' => :'ListFlagChecksParams'
       }
     end

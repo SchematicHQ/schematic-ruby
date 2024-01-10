@@ -29,6 +29,8 @@ module Schematic
 
     attr_accessor :rules
 
+    attr_accessor :skip_webhooks
+
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
@@ -38,7 +40,8 @@ module Schematic
         :'flag_type' => :'flag_type',
         :'key' => :'key',
         :'name' => :'name',
-        :'rules' => :'rules'
+        :'rules' => :'rules',
+        :'skip_webhooks' => :'skip_webhooks'
       }
     end
 
@@ -56,7 +59,8 @@ module Schematic
         :'flag_type' => :'String',
         :'key' => :'String',
         :'name' => :'String',
-        :'rules' => :'Array<CreateOrUpdateRuleRequestBody>'
+        :'rules' => :'Array<CreateOrUpdateRuleRequestBody>',
+        :'skip_webhooks' => :'Boolean'
       }
     end
 
@@ -64,6 +68,7 @@ module Schematic
     def self.openapi_nullable
       Set.new([
         :'feature_id',
+        :'skip_webhooks'
       ])
     end
 
@@ -110,6 +115,10 @@ module Schematic
         if (value = attributes[:'rules']).is_a?(Array)
           self.rules = value
         end
+      end
+
+      if attributes.key?(:'skip_webhooks')
+        self.skip_webhooks = attributes[:'skip_webhooks']
       end
     end
 
@@ -167,7 +176,8 @@ module Schematic
           flag_type == o.flag_type &&
           key == o.key &&
           name == o.name &&
-          rules == o.rules
+          rules == o.rules &&
+          skip_webhooks == o.skip_webhooks
     end
 
     # @see the `==` method
@@ -179,7 +189,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [default_value, description, feature_id, flag_type, key, name, rules].hash
+      [default_value, description, feature_id, flag_type, key, name, rules, skip_webhooks].hash
     end
 
     # Builds the object from hash

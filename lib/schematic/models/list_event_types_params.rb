@@ -16,23 +16,17 @@ require 'time'
 module Schematic
   # Input parameters
   class ListEventTypesParams
-    attr_accessor :dir
-
     attr_accessor :limit
 
     attr_accessor :offset
-
-    attr_accessor :order
 
     attr_accessor :q
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'dir' => :'dir',
         :'limit' => :'limit',
         :'offset' => :'offset',
-        :'order' => :'order',
         :'q' => :'q'
       }
     end
@@ -45,10 +39,8 @@ module Schematic
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'dir' => :'String',
         :'limit' => :'Integer',
         :'offset' => :'Integer',
-        :'order' => :'String',
         :'q' => :'String'
       }
     end
@@ -74,20 +66,12 @@ module Schematic
         h[k.to_sym] = v
       }
 
-      if attributes.key?(:'dir')
-        self.dir = attributes[:'dir']
-      end
-
       if attributes.key?(:'limit')
         self.limit = attributes[:'limit']
       end
 
       if attributes.key?(:'offset')
         self.offset = attributes[:'offset']
-      end
-
-      if attributes.key?(:'order')
-        self.order = attributes[:'order']
       end
 
       if attributes.key?(:'q')
@@ -113,10 +97,8 @@ module Schematic
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          dir == o.dir &&
           limit == o.limit &&
           offset == o.offset &&
-          order == o.order &&
           q == o.q
     end
 
@@ -129,7 +111,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [dir, limit, offset, order, q].hash
+      [limit, offset, q].hash
     end
 
     # Builds the object from hash

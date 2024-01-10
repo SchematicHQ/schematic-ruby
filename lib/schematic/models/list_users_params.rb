@@ -16,24 +16,18 @@ require 'time'
 module Schematic
   # Input parameters
   class ListUsersParams
-    attr_accessor :dir
-
     attr_accessor :ids
 
     attr_accessor :limit
 
     attr_accessor :offset
 
-    attr_accessor :order
-
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'dir' => :'dir',
         :'ids' => :'ids',
         :'limit' => :'limit',
-        :'offset' => :'offset',
-        :'order' => :'order'
+        :'offset' => :'offset'
       }
     end
 
@@ -45,11 +39,9 @@ module Schematic
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'dir' => :'String',
-        :'ids' => :'Array<Integer>',
+        :'ids' => :'Array<String>',
         :'limit' => :'Integer',
-        :'offset' => :'Integer',
-        :'order' => :'String'
+        :'offset' => :'Integer'
       }
     end
 
@@ -74,10 +66,6 @@ module Schematic
         h[k.to_sym] = v
       }
 
-      if attributes.key?(:'dir')
-        self.dir = attributes[:'dir']
-      end
-
       if attributes.key?(:'ids')
         if (value = attributes[:'ids']).is_a?(Array)
           self.ids = value
@@ -90,10 +78,6 @@ module Schematic
 
       if attributes.key?(:'offset')
         self.offset = attributes[:'offset']
-      end
-
-      if attributes.key?(:'order')
-        self.order = attributes[:'order']
       end
     end
 
@@ -115,11 +99,9 @@ module Schematic
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          dir == o.dir &&
           ids == o.ids &&
           limit == o.limit &&
-          offset == o.offset &&
-          order == o.order
+          offset == o.offset
     end
 
     # @see the `==` method
@@ -131,7 +113,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [dir, ids, limit, offset, order].hash
+      [ids, limit, offset].hash
     end
 
     # Builds the object from hash

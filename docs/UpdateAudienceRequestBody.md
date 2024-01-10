@@ -6,6 +6,7 @@
 | ---- | ---- | ----------- | ----- |
 | **condition_groups** | [**Array&lt;CreateOrUpdateConditionGroupRequestBody&gt;**](CreateOrUpdateConditionGroupRequestBody.md) |  |  |
 | **conditions** | [**Array&lt;CreateOrUpdateConditionRequestBody&gt;**](CreateOrUpdateConditionRequestBody.md) |  |  |
+| **skip_webhooks** | **Boolean** |  | [optional] |
 
 ## Example
 
@@ -14,7 +15,8 @@ require 'schematic'
 
 instance = Schematic::UpdateAudienceRequestBody.new(
   condition_groups: null,
-  conditions: null
+  conditions: null,
+  skip_webhooks: null
 )
 ```
 

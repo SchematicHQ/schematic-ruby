@@ -70,9 +70,7 @@ opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example', # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
   environment_id: 'environment_id_example', # String | 
   limit: 56, # Integer | Page limit (default 100)
-  offset: 56, # Integer | Page offset (default 0)
-  order: 'order_example', # String | Order by column
-  dir: 'dir_example' # String | Order direction
+  offset: 56 # Integer | Page offset (default 0)
 }
 
 begin
@@ -92,12 +90,16 @@ All URIs are relative to *https://api.schematichq.com*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *Schematic::AccountsApi* | [**count_api_keys**](docs/AccountsApi.md#count_api_keys) | **GET** /api-keys/count | Count api keys
+*Schematic::AccountsApi* | [**count_api_requests**](docs/AccountsApi.md#count_api_requests) | **GET** /api-requests/count | Count api requests
 *Schematic::AccountsApi* | [**create_api_key**](docs/AccountsApi.md#create_api_key) | **POST** /api-keys | Create api key
 *Schematic::AccountsApi* | [**create_environment**](docs/AccountsApi.md#create_environment) | **POST** /environments | Create environment
 *Schematic::AccountsApi* | [**delete_api_key**](docs/AccountsApi.md#delete_api_key) | **DELETE** /api-keys/{api_key_id} | Delete api key
 *Schematic::AccountsApi* | [**delete_environment**](docs/AccountsApi.md#delete_environment) | **DELETE** /environments/{environment_id} | Delete environment
 *Schematic::AccountsApi* | [**get_api_key**](docs/AccountsApi.md#get_api_key) | **GET** /api-keys/{api_key_id} | Get api key
+*Schematic::AccountsApi* | [**get_api_request**](docs/AccountsApi.md#get_api_request) | **GET** /api-requests/{api_request_id} | Get api request
+*Schematic::AccountsApi* | [**get_environment**](docs/AccountsApi.md#get_environment) | **GET** /environments/{environment_id} | Get environment
 *Schematic::AccountsApi* | [**list_api_keys**](docs/AccountsApi.md#list_api_keys) | **GET** /api-keys | List api keys
+*Schematic::AccountsApi* | [**list_api_requests**](docs/AccountsApi.md#list_api_requests) | **GET** /api-requests | List api requests
 *Schematic::AccountsApi* | [**update_api_key**](docs/AccountsApi.md#update_api_key) | **PUT** /api-keys/{api_key_id} | Update api key
 *Schematic::AccountsApi* | [**update_environment**](docs/AccountsApi.md#update_environment) | **PUT** /environments/{environment_id} | Update environment
 *Schematic::CompaniesApi* | [**create_company**](docs/CompaniesApi.md#create_company) | **POST** /companies | Create company
@@ -108,6 +110,7 @@ Class | Method | HTTP request | Description
 *Schematic::CompaniesApi* | [**get_user**](docs/CompaniesApi.md#get_user) | **GET** /users/{user_id} | Get user
 *Schematic::CompaniesApi* | [**list_companies**](docs/CompaniesApi.md#list_companies) | **GET** /companies | List companies
 *Schematic::CompaniesApi* | [**list_company_memberships**](docs/CompaniesApi.md#list_company_memberships) | **GET** /company-memberships | List company memberships
+*Schematic::CompaniesApi* | [**list_company_plans**](docs/CompaniesApi.md#list_company_plans) | **GET** /company-plans | List company plans
 *Schematic::CompaniesApi* | [**list_users**](docs/CompaniesApi.md#list_users) | **GET** /users | List users
 *Schematic::CompaniesApi* | [**update_entity_trait_definition**](docs/CompaniesApi.md#update_entity_trait_definition) | **PUT** /entity-trait-definitions/{entity_trait_definition_id} | Update entity trait definition
 *Schematic::EventsApi* | [**count_event_types**](docs/EventsApi.md#count_event_types) | **GET** /event-types/count | Count event types
@@ -122,6 +125,7 @@ Class | Method | HTTP request | Description
 *Schematic::FeaturesApi* | [**check_flag**](docs/FeaturesApi.md#check_flag) | **POST** /flags/{key}/check | Check flag
 *Schematic::FeaturesApi* | [**check_flags**](docs/FeaturesApi.md#check_flags) | **POST** /flags/check | Check flags
 *Schematic::FeaturesApi* | [**count_companies_audience**](docs/FeaturesApi.md#count_companies_audience) | **POST** /audience/count-companies | Count Companies audience
+*Schematic::FeaturesApi* | [**count_flag_checks**](docs/FeaturesApi.md#count_flag_checks) | **GET** /flag-checks/count | Count flag checks
 *Schematic::FeaturesApi* | [**count_flag_values**](docs/FeaturesApi.md#count_flag_values) | **GET** /flag-values/count | Count flag values
 *Schematic::FeaturesApi* | [**count_users_audience**](docs/FeaturesApi.md#count_users_audience) | **POST** /audience/count-users | Count Users audience
 *Schematic::FeaturesApi* | [**create_feature**](docs/FeaturesApi.md#create_feature) | **POST** /features | Create feature
@@ -132,6 +136,7 @@ Class | Method | HTTP request | Description
 *Schematic::FeaturesApi* | [**get_companies_audience**](docs/FeaturesApi.md#get_companies_audience) | **POST** /audience/get-companies | Get Companies audience
 *Schematic::FeaturesApi* | [**get_feature**](docs/FeaturesApi.md#get_feature) | **GET** /features/{feature_id} | Get feature
 *Schematic::FeaturesApi* | [**get_flag**](docs/FeaturesApi.md#get_flag) | **GET** /flags/{flag_id} | Get flag
+*Schematic::FeaturesApi* | [**get_flag_check**](docs/FeaturesApi.md#get_flag_check) | **GET** /flag-checks/{flag_check_id} | Get flag check
 *Schematic::FeaturesApi* | [**get_rule**](docs/FeaturesApi.md#get_rule) | **GET** /rules/{rule_id} | Get rule
 *Schematic::FeaturesApi* | [**get_users_audience**](docs/FeaturesApi.md#get_users_audience) | **POST** /audience/get-users | Get Users audience
 *Schematic::FeaturesApi* | [**latest_flag_checks**](docs/FeaturesApi.md#latest_flag_checks) | **GET** /flag-checks/latest | Latest flag checks
@@ -145,7 +150,6 @@ Class | Method | HTTP request | Description
 *Schematic::PlansApi* | [**create_plan**](docs/PlansApi.md#create_plan) | **POST** /plans | Create plan
 *Schematic::PlansApi* | [**delete_plan**](docs/PlansApi.md#delete_plan) | **DELETE** /plans/{plan_id} | Delete plan
 *Schematic::PlansApi* | [**get_plan**](docs/PlansApi.md#get_plan) | **GET** /plans/{plan_id} | Get plan
-*Schematic::PlansApi* | [**list_company_plans**](docs/PlansApi.md#list_company_plans) | **GET** /company-plans | List company plans
 *Schematic::PlansApi* | [**list_plans**](docs/PlansApi.md#list_plans) | **GET** /plans | List plans
 *Schematic::PlansApi* | [**update_plan**](docs/PlansApi.md#update_plan) | **PUT** /plans/{plan_id} | Update plan
 *Schematic::PlansApi* | [**update_plan_audience**](docs/PlansApi.md#update_plan_audience) | **PUT** /plan-audiences/{plan_audience_id} | Update plan audience
@@ -154,7 +158,10 @@ Class | Method | HTTP request | Description
 
 ## Documentation for Models
 
+ - [Schematic::ApiError](docs/ApiError.md)
  - [Schematic::ApiKeyCreateResponseData](docs/ApiKeyCreateResponseData.md)
+ - [Schematic::ApiKeyRequestListResponseData](docs/ApiKeyRequestListResponseData.md)
+ - [Schematic::ApiKeyRequestResponseData](docs/ApiKeyRequestResponseData.md)
  - [Schematic::ApiKeyResponseData](docs/ApiKeyResponseData.md)
  - [Schematic::AudienceRequestBody](docs/AudienceRequestBody.md)
  - [Schematic::BillingPeriodResponseData](docs/BillingPeriodResponseData.md)
@@ -171,11 +178,15 @@ Class | Method | HTTP request | Description
  - [Schematic::CompanyResponseData](docs/CompanyResponseData.md)
  - [Schematic::CountApiKeysParams](docs/CountApiKeysParams.md)
  - [Schematic::CountApiKeysResponse](docs/CountApiKeysResponse.md)
+ - [Schematic::CountApiRequestsParams](docs/CountApiRequestsParams.md)
+ - [Schematic::CountApiRequestsResponse](docs/CountApiRequestsResponse.md)
  - [Schematic::CountCompaniesAudienceResponse](docs/CountCompaniesAudienceResponse.md)
  - [Schematic::CountEventTypesParams](docs/CountEventTypesParams.md)
  - [Schematic::CountEventTypesResponse](docs/CountEventTypesResponse.md)
  - [Schematic::CountEventsParams](docs/CountEventsParams.md)
  - [Schematic::CountEventsResponse](docs/CountEventsResponse.md)
+ - [Schematic::CountFlagChecksParams](docs/CountFlagChecksParams.md)
+ - [Schematic::CountFlagChecksResponse](docs/CountFlagChecksResponse.md)
  - [Schematic::CountFlagValuesParams](docs/CountFlagValuesParams.md)
  - [Schematic::CountFlagValuesResponse](docs/CountFlagValuesResponse.md)
  - [Schematic::CountResponse](docs/CountResponse.md)
@@ -213,7 +224,6 @@ Class | Method | HTTP request | Description
  - [Schematic::EntityTraitDefinitionResponseData](docs/EntityTraitDefinitionResponseData.md)
  - [Schematic::EnvironmentDetailResponseData](docs/EnvironmentDetailResponseData.md)
  - [Schematic::EnvironmentResponseData](docs/EnvironmentResponseData.md)
- - [Schematic::ErrorResponseBody](docs/ErrorResponseBody.md)
  - [Schematic::EventBody](docs/EventBody.md)
  - [Schematic::EventBodyIdentify](docs/EventBodyIdentify.md)
  - [Schematic::EventBodyIdentifyCompany](docs/EventBodyIdentifyCompany.md)
@@ -222,15 +232,19 @@ Class | Method | HTTP request | Description
  - [Schematic::EventSummaryResponseData](docs/EventSummaryResponseData.md)
  - [Schematic::FeatureDetailResponseData](docs/FeatureDetailResponseData.md)
  - [Schematic::FeatureResponseData](docs/FeatureResponseData.md)
+ - [Schematic::FlagCheckLogDetailResponseData](docs/FlagCheckLogDetailResponseData.md)
  - [Schematic::FlagCheckLogResponseData](docs/FlagCheckLogResponseData.md)
  - [Schematic::FlagDetailResponseData](docs/FlagDetailResponseData.md)
  - [Schematic::FlagResponseData](docs/FlagResponseData.md)
  - [Schematic::GetApiKeyResponse](docs/GetApiKeyResponse.md)
+ - [Schematic::GetApiRequestResponse](docs/GetApiRequestResponse.md)
  - [Schematic::GetCompaniesAudienceResponse](docs/GetCompaniesAudienceResponse.md)
  - [Schematic::GetCompanyResponse](docs/GetCompanyResponse.md)
+ - [Schematic::GetEnvironmentResponse](docs/GetEnvironmentResponse.md)
  - [Schematic::GetEventResponse](docs/GetEventResponse.md)
  - [Schematic::GetEventTypeResponse](docs/GetEventTypeResponse.md)
  - [Schematic::GetFeatureResponse](docs/GetFeatureResponse.md)
+ - [Schematic::GetFlagCheckResponse](docs/GetFlagCheckResponse.md)
  - [Schematic::GetFlagResponse](docs/GetFlagResponse.md)
  - [Schematic::GetOrCreateCompanyMembershipRequestBody](docs/GetOrCreateCompanyMembershipRequestBody.md)
  - [Schematic::GetPlanResponse](docs/GetPlanResponse.md)
@@ -241,6 +255,8 @@ Class | Method | HTTP request | Description
  - [Schematic::LatestFlagChecksResponse](docs/LatestFlagChecksResponse.md)
  - [Schematic::ListApiKeysParams](docs/ListApiKeysParams.md)
  - [Schematic::ListApiKeysResponse](docs/ListApiKeysResponse.md)
+ - [Schematic::ListApiRequestsParams](docs/ListApiRequestsParams.md)
+ - [Schematic::ListApiRequestsResponse](docs/ListApiRequestsResponse.md)
  - [Schematic::ListCompaniesParams](docs/ListCompaniesParams.md)
  - [Schematic::ListCompaniesResponse](docs/ListCompaniesResponse.md)
  - [Schematic::ListCompanyMembershipsParams](docs/ListCompanyMembershipsParams.md)

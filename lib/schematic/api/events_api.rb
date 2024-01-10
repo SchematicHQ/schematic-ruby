@@ -25,8 +25,6 @@ module Schematic
     # @option opts [String] :q 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [CountEventTypesResponse]
     def count_event_types(opts = {})
       data, _status_code, _headers = count_event_types_with_http_info(opts)
@@ -39,8 +37,6 @@ module Schematic
     # @option opts [String] :q 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [Array<(CountEventTypesResponse, Integer, Hash)>] CountEventTypesResponse data, response status code and response headers
     def count_event_types_with_http_info(opts = {})
       if @api_client.config.debugging
@@ -54,8 +50,6 @@ module Schematic
       query_params[:'q'] = opts[:'q'] if !opts[:'q'].nil?
       query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
       query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
-      query_params[:'order'] = opts[:'order'] if !opts[:'order'].nil?
-      query_params[:'dir'] = opts[:'dir'] if !opts[:'dir'].nil?
 
       # header parameters
       header_params = opts[:header_params] || {}
@@ -101,8 +95,6 @@ module Schematic
     # @option opts [String] :event_subtype 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [CountEventsResponse]
     def count_events(opts = {})
       data, _status_code, _headers = count_events_with_http_info(opts)
@@ -118,8 +110,6 @@ module Schematic
     # @option opts [String] :event_subtype 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [Array<(CountEventsResponse, Integer, Hash)>] CountEventsResponse data, response status code and response headers
     def count_events_with_http_info(opts = {})
       if @api_client.config.debugging
@@ -136,8 +126,6 @@ module Schematic
       query_params[:'event_subtype'] = opts[:'event_subtype'] if !opts[:'event_subtype'].nil?
       query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
       query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
-      query_params[:'order'] = opts[:'order'] if !opts[:'order'].nil?
-      query_params[:'dir'] = opts[:'dir'] if !opts[:'dir'].nil?
 
       # header parameters
       header_params = opts[:header_params] || {}
@@ -377,8 +365,6 @@ module Schematic
     # @option opts [String] :q 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [ListEventTypesResponse]
     def list_event_types(opts = {})
       data, _status_code, _headers = list_event_types_with_http_info(opts)
@@ -391,8 +377,6 @@ module Schematic
     # @option opts [String] :q 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [Array<(ListEventTypesResponse, Integer, Hash)>] ListEventTypesResponse data, response status code and response headers
     def list_event_types_with_http_info(opts = {})
       if @api_client.config.debugging
@@ -406,8 +390,6 @@ module Schematic
       query_params[:'q'] = opts[:'q'] if !opts[:'q'].nil?
       query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
       query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
-      query_params[:'order'] = opts[:'order'] if !opts[:'order'].nil?
-      query_params[:'dir'] = opts[:'dir'] if !opts[:'dir'].nil?
 
       # header parameters
       header_params = opts[:header_params] || {}
@@ -453,8 +435,6 @@ module Schematic
     # @option opts [String] :event_subtype 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [ListEventsResponse]
     def list_events(opts = {})
       data, _status_code, _headers = list_events_with_http_info(opts)
@@ -470,8 +450,6 @@ module Schematic
     # @option opts [String] :event_subtype 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [Array<(ListEventsResponse, Integer, Hash)>] ListEventsResponse data, response status code and response headers
     def list_events_with_http_info(opts = {})
       if @api_client.config.debugging
@@ -488,8 +466,6 @@ module Schematic
       query_params[:'event_subtype'] = opts[:'event_subtype'] if !opts[:'event_subtype'].nil?
       query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
       query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
-      query_params[:'order'] = opts[:'order'] if !opts[:'order'].nil?
-      query_params[:'dir'] = opts[:'dir'] if !opts[:'dir'].nil?
 
       # header parameters
       header_params = opts[:header_params] || {}
@@ -532,12 +508,11 @@ module Schematic
     # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
     # @option opts [Time] :start_time 
     # @option opts [Time] :end_time 
+    # @option opts [Array<String>] :event_subtypes 
     # @option opts [String] :company_id 
     # @option opts [String] :user_id 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @option opts [String] :grouping 
     # @return [ListMetricCountsResponse]
     def list_metric_counts(event_subtype, opts = {})
@@ -551,12 +526,11 @@ module Schematic
     # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
     # @option opts [Time] :start_time 
     # @option opts [Time] :end_time 
+    # @option opts [Array<String>] :event_subtypes 
     # @option opts [String] :company_id 
     # @option opts [String] :user_id 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @option opts [String] :grouping 
     # @return [Array<(ListMetricCountsResponse, Integer, Hash)>] ListMetricCountsResponse data, response status code and response headers
     def list_metric_counts_with_http_info(event_subtype, opts = {})
@@ -575,12 +549,11 @@ module Schematic
       query_params[:'event_subtype'] = event_subtype
       query_params[:'start_time'] = opts[:'start_time'] if !opts[:'start_time'].nil?
       query_params[:'end_time'] = opts[:'end_time'] if !opts[:'end_time'].nil?
+      query_params[:'event_subtypes'] = @api_client.build_collection_param(opts[:'event_subtypes'], :multi) if !opts[:'event_subtypes'].nil?
       query_params[:'company_id'] = opts[:'company_id'] if !opts[:'company_id'].nil?
       query_params[:'user_id'] = opts[:'user_id'] if !opts[:'user_id'].nil?
       query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
       query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
-      query_params[:'order'] = opts[:'order'] if !opts[:'order'].nil?
-      query_params[:'dir'] = opts[:'dir'] if !opts[:'dir'].nil?
       query_params[:'grouping'] = opts[:'grouping'] if !opts[:'grouping'].nil?
 
       # header parameters
@@ -624,12 +597,11 @@ module Schematic
     # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
     # @option opts [Time] :start_time 
     # @option opts [Time] :end_time 
+    # @option opts [Array<String>] :event_subtypes 
     # @option opts [String] :company_id 
     # @option opts [String] :user_id 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [ListMetricCountsHourlyResponse]
     def list_metric_counts_hourly(event_subtype, opts = {})
       data, _status_code, _headers = list_metric_counts_hourly_with_http_info(event_subtype, opts)
@@ -642,12 +614,11 @@ module Schematic
     # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
     # @option opts [Time] :start_time 
     # @option opts [Time] :end_time 
+    # @option opts [Array<String>] :event_subtypes 
     # @option opts [String] :company_id 
     # @option opts [String] :user_id 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [Array<(ListMetricCountsHourlyResponse, Integer, Hash)>] ListMetricCountsHourlyResponse data, response status code and response headers
     def list_metric_counts_hourly_with_http_info(event_subtype, opts = {})
       if @api_client.config.debugging
@@ -665,12 +636,11 @@ module Schematic
       query_params[:'event_subtype'] = event_subtype
       query_params[:'start_time'] = opts[:'start_time'] if !opts[:'start_time'].nil?
       query_params[:'end_time'] = opts[:'end_time'] if !opts[:'end_time'].nil?
+      query_params[:'event_subtypes'] = @api_client.build_collection_param(opts[:'event_subtypes'], :multi) if !opts[:'event_subtypes'].nil?
       query_params[:'company_id'] = opts[:'company_id'] if !opts[:'company_id'].nil?
       query_params[:'user_id'] = opts[:'user_id'] if !opts[:'user_id'].nil?
       query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
       query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
-      query_params[:'order'] = opts[:'order'] if !opts[:'order'].nil?
-      query_params[:'dir'] = opts[:'dir'] if !opts[:'dir'].nil?
 
       # header parameters
       header_params = opts[:header_params] || {}

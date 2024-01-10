@@ -18,19 +18,17 @@ module Schematic
   class ListMetricCountsParams
     attr_accessor :company_id
 
-    attr_accessor :dir
-
     attr_accessor :end_time
 
     attr_accessor :event_subtype
+
+    attr_accessor :event_subtypes
 
     attr_accessor :grouping
 
     attr_accessor :limit
 
     attr_accessor :offset
-
-    attr_accessor :order
 
     attr_accessor :start_time
 
@@ -40,13 +38,12 @@ module Schematic
     def self.attribute_map
       {
         :'company_id' => :'company_id',
-        :'dir' => :'dir',
         :'end_time' => :'end_time',
         :'event_subtype' => :'event_subtype',
+        :'event_subtypes' => :'event_subtypes',
         :'grouping' => :'grouping',
         :'limit' => :'limit',
         :'offset' => :'offset',
-        :'order' => :'order',
         :'start_time' => :'start_time',
         :'user_id' => :'user_id'
       }
@@ -61,13 +58,12 @@ module Schematic
     def self.openapi_types
       {
         :'company_id' => :'String',
-        :'dir' => :'String',
         :'end_time' => :'Time',
         :'event_subtype' => :'String',
+        :'event_subtypes' => :'Array<String>',
         :'grouping' => :'String',
         :'limit' => :'Integer',
         :'offset' => :'Integer',
-        :'order' => :'String',
         :'start_time' => :'Time',
         :'user_id' => :'String'
       }
@@ -98,16 +94,18 @@ module Schematic
         self.company_id = attributes[:'company_id']
       end
 
-      if attributes.key?(:'dir')
-        self.dir = attributes[:'dir']
-      end
-
       if attributes.key?(:'end_time')
         self.end_time = attributes[:'end_time']
       end
 
       if attributes.key?(:'event_subtype')
         self.event_subtype = attributes[:'event_subtype']
+      end
+
+      if attributes.key?(:'event_subtypes')
+        if (value = attributes[:'event_subtypes']).is_a?(Array)
+          self.event_subtypes = value
+        end
       end
 
       if attributes.key?(:'grouping')
@@ -120,10 +118,6 @@ module Schematic
 
       if attributes.key?(:'offset')
         self.offset = attributes[:'offset']
-      end
-
-      if attributes.key?(:'order')
-        self.order = attributes[:'order']
       end
 
       if attributes.key?(:'start_time')
@@ -154,13 +148,12 @@ module Schematic
       return true if self.equal?(o)
       self.class == o.class &&
           company_id == o.company_id &&
-          dir == o.dir &&
           end_time == o.end_time &&
           event_subtype == o.event_subtype &&
+          event_subtypes == o.event_subtypes &&
           grouping == o.grouping &&
           limit == o.limit &&
           offset == o.offset &&
-          order == o.order &&
           start_time == o.start_time &&
           user_id == o.user_id
     end
@@ -174,7 +167,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [company_id, dir, end_time, event_subtype, grouping, limit, offset, order, start_time, user_id].hash
+      [company_id, end_time, event_subtype, event_subtypes, grouping, limit, offset, start_time, user_id].hash
     end
 
     # Builds the object from hash

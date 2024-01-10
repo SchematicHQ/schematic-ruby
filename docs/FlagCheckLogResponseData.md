@@ -4,6 +4,7 @@
 
 | Name | Type | Description | Notes |
 | ---- | ---- | ----------- | ----- |
+| **check_status** | **String** |  |  |
 | **company_id** | **String** |  | [optional] |
 | **created_at** | **Time** |  |  |
 | **environment_id** | **String** |  |  |
@@ -25,6 +26,7 @@
 require 'schematic'
 
 instance = Schematic::FlagCheckLogResponseData.new(
+  check_status: null,
   company_id: null,
   created_at: null,
   environment_id: null,

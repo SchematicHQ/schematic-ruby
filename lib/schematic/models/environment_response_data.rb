@@ -14,7 +14,6 @@ require 'date'
 require 'time'
 
 module Schematic
-  # The updated resource
   class EnvironmentResponseData
     attr_accessor :created_at
 

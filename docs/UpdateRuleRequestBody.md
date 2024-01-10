@@ -9,6 +9,7 @@
 | **name** | **String** |  |  |
 | **priority** | **Integer** |  |  |
 | **priority_group** | **Integer** |  | [optional] |
+| **skip_webhooks** | **Boolean** |  | [optional] |
 | **value** | **Boolean** |  |  |
 
 ## Example
@@ -22,6 +23,7 @@ instance = Schematic::UpdateRuleRequestBody.new(
   name: null,
   priority: null,
   priority_group: null,
+  skip_webhooks: null,
   value: null
 )
 ```

@@ -232,6 +232,79 @@ module Schematic
       return data, status_code, headers
     end
 
+    # Count flag checks
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @option opts [String] :flag_id 
+    # @option opts [Array<String>] :flag_ids 
+    # @option opts [String] :id 
+    # @option opts [Integer] :limit Page limit (default 100)
+    # @option opts [Integer] :offset Page offset (default 0)
+    # @return [CountFlagChecksResponse]
+    def count_flag_checks(opts = {})
+      data, _status_code, _headers = count_flag_checks_with_http_info(opts)
+      data
+    end
+
+    # Count flag checks
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @option opts [String] :flag_id 
+    # @option opts [Array<String>] :flag_ids 
+    # @option opts [String] :id 
+    # @option opts [Integer] :limit Page limit (default 100)
+    # @option opts [Integer] :offset Page offset (default 0)
+    # @return [Array<(CountFlagChecksResponse, Integer, Hash)>] CountFlagChecksResponse data, response status code and response headers
+    def count_flag_checks_with_http_info(opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: FeaturesApi.count_flag_checks ...'
+      end
+      # resource path
+      local_var_path = '/flag-checks/count'
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+      query_params[:'flag_id'] = opts[:'flag_id'] if !opts[:'flag_id'].nil?
+      query_params[:'flag_ids'] = @api_client.build_collection_param(opts[:'flag_ids'], :multi) if !opts[:'flag_ids'].nil?
+      query_params[:'id'] = opts[:'id'] if !opts[:'id'].nil?
+      query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
+      query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json'])
+      header_params[:'X-Schematic-Environment-Id'] = opts[:'x_schematic_environment_id'] if !opts[:'x_schematic_environment_id'].nil?
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body]
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'CountFlagChecksResponse'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['ApiKeyAuth']
+
+      new_options = opts.merge(
+        :operation => :"FeaturesApi.count_flag_checks",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: FeaturesApi#count_flag_checks\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
     # Count flag values
     # @param entity_type [Integer] 
     # @param [Hash] opts the optional parameters
@@ -241,8 +314,6 @@ module Schematic
     # @option opts [String] :flag_id 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [CountFlagValuesResponse]
     def count_flag_values(entity_type, opts = {})
       data, _status_code, _headers = count_flag_values_with_http_info(entity_type, opts)
@@ -258,8 +329,6 @@ module Schematic
     # @option opts [String] :flag_id 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [Array<(CountFlagValuesResponse, Integer, Hash)>] CountFlagValuesResponse data, response status code and response headers
     def count_flag_values_with_http_info(entity_type, opts = {})
       if @api_client.config.debugging
@@ -280,8 +349,6 @@ module Schematic
       query_params[:'flag_id'] = opts[:'flag_id'] if !opts[:'flag_id'].nil?
       query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
       query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
-      query_params[:'order'] = opts[:'order'] if !opts[:'order'].nil?
-      query_params[:'dir'] = opts[:'dir'] if !opts[:'dir'].nil?
 
       # header parameters
       header_params = opts[:header_params] || {}
@@ -919,6 +986,70 @@ module Schematic
       return data, status_code, headers
     end
 
+    # Get flag check
+    # @param flag_check_id [String] flag_check_id
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @return [GetFlagCheckResponse]
+    def get_flag_check(flag_check_id, opts = {})
+      data, _status_code, _headers = get_flag_check_with_http_info(flag_check_id, opts)
+      data
+    end
+
+    # Get flag check
+    # @param flag_check_id [String] flag_check_id
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @return [Array<(GetFlagCheckResponse, Integer, Hash)>] GetFlagCheckResponse data, response status code and response headers
+    def get_flag_check_with_http_info(flag_check_id, opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: FeaturesApi.get_flag_check ...'
+      end
+      # verify the required parameter 'flag_check_id' is set
+      if @api_client.config.client_side_validation && flag_check_id.nil?
+        fail ArgumentError, "Missing the required parameter 'flag_check_id' when calling FeaturesApi.get_flag_check"
+      end
+      # resource path
+      local_var_path = '/flag-checks/{flag_check_id}'.sub('{' + 'flag_check_id' + '}', CGI.escape(flag_check_id.to_s))
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json'])
+      header_params[:'X-Schematic-Environment-Id'] = opts[:'x_schematic_environment_id'] if !opts[:'x_schematic_environment_id'].nil?
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body]
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'GetFlagCheckResponse'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['ApiKeyAuth']
+
+      new_options = opts.merge(
+        :operation => :"FeaturesApi.get_flag_check",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: FeaturesApi#get_flag_check\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
     # Get rule
     # @param rule_id [String] rule_id
     # @param [Hash] opts the optional parameters
@@ -1057,10 +1188,9 @@ module Schematic
     # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
     # @option opts [String] :flag_id 
     # @option opts [Array<String>] :flag_ids 
+    # @option opts [String] :id 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [LatestFlagChecksResponse]
     def latest_flag_checks(opts = {})
       data, _status_code, _headers = latest_flag_checks_with_http_info(opts)
@@ -1072,10 +1202,9 @@ module Schematic
     # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
     # @option opts [String] :flag_id 
     # @option opts [Array<String>] :flag_ids 
+    # @option opts [String] :id 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [Array<(LatestFlagChecksResponse, Integer, Hash)>] LatestFlagChecksResponse data, response status code and response headers
     def latest_flag_checks_with_http_info(opts = {})
       if @api_client.config.debugging
@@ -1088,10 +1217,9 @@ module Schematic
       query_params = opts[:query_params] || {}
       query_params[:'flag_id'] = opts[:'flag_id'] if !opts[:'flag_id'].nil?
       query_params[:'flag_ids'] = @api_client.build_collection_param(opts[:'flag_ids'], :multi) if !opts[:'flag_ids'].nil?
+      query_params[:'id'] = opts[:'id'] if !opts[:'id'].nil?
       query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
       query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
-      query_params[:'order'] = opts[:'order'] if !opts[:'order'].nil?
-      query_params[:'dir'] = opts[:'dir'] if !opts[:'dir'].nil?
 
       # header parameters
       header_params = opts[:header_params] || {}
@@ -1133,8 +1261,6 @@ module Schematic
     # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [ListFeaturesResponse]
     def list_features(opts = {})
       data, _status_code, _headers = list_features_with_http_info(opts)
@@ -1146,8 +1272,6 @@ module Schematic
     # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [Array<(ListFeaturesResponse, Integer, Hash)>] ListFeaturesResponse data, response status code and response headers
     def list_features_with_http_info(opts = {})
       if @api_client.config.debugging
@@ -1160,8 +1284,6 @@ module Schematic
       query_params = opts[:query_params] || {}
       query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
       query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
-      query_params[:'order'] = opts[:'order'] if !opts[:'order'].nil?
-      query_params[:'dir'] = opts[:'dir'] if !opts[:'dir'].nil?
 
       # header parameters
       header_params = opts[:header_params] || {}
@@ -1203,10 +1325,9 @@ module Schematic
     # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
     # @option opts [String] :flag_id 
     # @option opts [Array<String>] :flag_ids 
+    # @option opts [String] :id 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [ListFlagChecksResponse]
     def list_flag_checks(opts = {})
       data, _status_code, _headers = list_flag_checks_with_http_info(opts)
@@ -1218,10 +1339,9 @@ module Schematic
     # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
     # @option opts [String] :flag_id 
     # @option opts [Array<String>] :flag_ids 
+    # @option opts [String] :id 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [Array<(ListFlagChecksResponse, Integer, Hash)>] ListFlagChecksResponse data, response status code and response headers
     def list_flag_checks_with_http_info(opts = {})
       if @api_client.config.debugging
@@ -1234,10 +1354,9 @@ module Schematic
       query_params = opts[:query_params] || {}
       query_params[:'flag_id'] = opts[:'flag_id'] if !opts[:'flag_id'].nil?
       query_params[:'flag_ids'] = @api_client.build_collection_param(opts[:'flag_ids'], :multi) if !opts[:'flag_ids'].nil?
+      query_params[:'id'] = opts[:'id'] if !opts[:'id'].nil?
       query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
       query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
-      query_params[:'order'] = opts[:'order'] if !opts[:'order'].nil?
-      query_params[:'dir'] = opts[:'dir'] if !opts[:'dir'].nil?
 
       # header parameters
       header_params = opts[:header_params] || {}
@@ -1283,8 +1402,6 @@ module Schematic
     # @option opts [String] :flag_id 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [ListFlagValuesResponse]
     def list_flag_values(entity_type, opts = {})
       data, _status_code, _headers = list_flag_values_with_http_info(entity_type, opts)
@@ -1300,8 +1417,6 @@ module Schematic
     # @option opts [String] :flag_id 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [Array<(ListFlagValuesResponse, Integer, Hash)>] ListFlagValuesResponse data, response status code and response headers
     def list_flag_values_with_http_info(entity_type, opts = {})
       if @api_client.config.debugging
@@ -1322,8 +1437,6 @@ module Schematic
       query_params[:'flag_id'] = opts[:'flag_id'] if !opts[:'flag_id'].nil?
       query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
       query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
-      query_params[:'order'] = opts[:'order'] if !opts[:'order'].nil?
-      query_params[:'dir'] = opts[:'dir'] if !opts[:'dir'].nil?
 
       # header parameters
       header_params = opts[:header_params] || {}
@@ -1367,8 +1480,6 @@ module Schematic
     # @option opts [Array<String>] :flag_ids 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [ListFlagsResponse]
     def list_flags(opts = {})
       data, _status_code, _headers = list_flags_with_http_info(opts)
@@ -1382,8 +1493,6 @@ module Schematic
     # @option opts [Array<String>] :flag_ids 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [Array<(ListFlagsResponse, Integer, Hash)>] ListFlagsResponse data, response status code and response headers
     def list_flags_with_http_info(opts = {})
       if @api_client.config.debugging
@@ -1398,8 +1507,6 @@ module Schematic
       query_params[:'flag_ids'] = @api_client.build_collection_param(opts[:'flag_ids'], :multi) if !opts[:'flag_ids'].nil?
       query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
       query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
-      query_params[:'order'] = opts[:'order'] if !opts[:'order'].nil?
-      query_params[:'dir'] = opts[:'dir'] if !opts[:'dir'].nil?
 
       # header parameters
       header_params = opts[:header_params] || {}

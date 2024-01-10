@@ -19,17 +19,11 @@ module Schematic
 
     attr_accessor :conditions
 
-    # Order direction
-    attr_accessor :dir
-
     # Page limit (default 100)
     attr_accessor :limit
 
     # Page offset (default 0)
     attr_accessor :offset
-
-    # Order by column
-    attr_accessor :order
 
     attr_accessor :q
 
@@ -38,10 +32,8 @@ module Schematic
       {
         :'condition_groups' => :'condition_groups',
         :'conditions' => :'conditions',
-        :'dir' => :'dir',
         :'limit' => :'limit',
         :'offset' => :'offset',
-        :'order' => :'order',
         :'q' => :'q'
       }
     end
@@ -56,10 +48,8 @@ module Schematic
       {
         :'condition_groups' => :'Array<CreateOrUpdateConditionGroupRequestBody>',
         :'conditions' => :'Array<CreateOrUpdateConditionRequestBody>',
-        :'dir' => :'String',
         :'limit' => :'Integer',
         :'offset' => :'Integer',
-        :'order' => :'String',
         :'q' => :'String'
       }
     end
@@ -67,10 +57,8 @@ module Schematic
     # List of attributes with nullable: true
     def self.openapi_nullable
       Set.new([
-        :'dir',
         :'limit',
         :'offset',
-        :'order',
         :'q'
       ])
     end
@@ -102,20 +90,12 @@ module Schematic
         end
       end
 
-      if attributes.key?(:'dir')
-        self.dir = attributes[:'dir']
-      end
-
       if attributes.key?(:'limit')
         self.limit = attributes[:'limit']
       end
 
       if attributes.key?(:'offset')
         self.offset = attributes[:'offset']
-      end
-
-      if attributes.key?(:'order')
-        self.order = attributes[:'order']
       end
 
       if attributes.key?(:'q')
@@ -153,10 +133,8 @@ module Schematic
       self.class == o.class &&
           condition_groups == o.condition_groups &&
           conditions == o.conditions &&
-          dir == o.dir &&
           limit == o.limit &&
           offset == o.offset &&
-          order == o.order &&
           q == o.q
     end
 
@@ -169,7 +147,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [condition_groups, conditions, dir, limit, offset, order, q].hash
+      [condition_groups, conditions, limit, offset, q].hash
     end
 
     # Builds the object from hash

@@ -7,6 +7,7 @@ All URIs are relative to *https://api.schematichq.com*
 | [**check_flag**](FeaturesApi.md#check_flag) | **POST** /flags/{key}/check | Check flag |
 | [**check_flags**](FeaturesApi.md#check_flags) | **POST** /flags/check | Check flags |
 | [**count_companies_audience**](FeaturesApi.md#count_companies_audience) | **POST** /audience/count-companies | Count Companies audience |
+| [**count_flag_checks**](FeaturesApi.md#count_flag_checks) | **GET** /flag-checks/count | Count flag checks |
 | [**count_flag_values**](FeaturesApi.md#count_flag_values) | **GET** /flag-values/count | Count flag values |
 | [**count_users_audience**](FeaturesApi.md#count_users_audience) | **POST** /audience/count-users | Count Users audience |
 | [**create_feature**](FeaturesApi.md#create_feature) | **POST** /features | Create feature |
@@ -17,6 +18,7 @@ All URIs are relative to *https://api.schematichq.com*
 | [**get_companies_audience**](FeaturesApi.md#get_companies_audience) | **POST** /audience/get-companies | Get Companies audience |
 | [**get_feature**](FeaturesApi.md#get_feature) | **GET** /features/{feature_id} | Get feature |
 | [**get_flag**](FeaturesApi.md#get_flag) | **GET** /flags/{flag_id} | Get flag |
+| [**get_flag_check**](FeaturesApi.md#get_flag_check) | **GET** /flag-checks/{flag_check_id} | Get flag check |
 | [**get_rule**](FeaturesApi.md#get_rule) | **GET** /rules/{rule_id} | Get rule |
 | [**get_users_audience**](FeaturesApi.md#get_users_audience) | **POST** /audience/get-users | Get Users audience |
 | [**latest_flag_checks**](FeaturesApi.md#latest_flag_checks) | **GET** /flag-checks/latest | Latest flag checks |
@@ -250,6 +252,87 @@ end
 - **Accept**: application/json
 
 
+## count_flag_checks
+
+> <CountFlagChecksResponse> count_flag_checks(opts)
+
+Count flag checks
+
+### Examples
+
+```ruby
+require 'time'
+require 'schematic'
+# setup authorization
+Schematic.configure do |config|
+  # Configure API key authorization: ApiKeyAuth
+  config.api_key['ApiKeyAuth'] = 'YOUR API KEY'
+  # Uncomment the following line to set a prefix for the API key, e.g. 'Bearer' (defaults to nil)
+  # config.api_key_prefix['ApiKeyAuth'] = 'Bearer'
+end
+
+api_instance = Schematic::FeaturesApi.new
+opts = {
+  x_schematic_environment_id: 'x_schematic_environment_id_example', # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
+  flag_id: 'flag_id_example', # String | 
+  flag_ids: ['inner_example'], # Array<String> | 
+  id: 'id_example', # String | 
+  limit: 56, # Integer | Page limit (default 100)
+  offset: 56 # Integer | Page offset (default 0)
+}
+
+begin
+  # Count flag checks
+  result = api_instance.count_flag_checks(opts)
+  p result
+rescue Schematic::ApiError => e
+  puts "Error when calling FeaturesApi->count_flag_checks: #{e}"
+end
+```
+
+#### Using the count_flag_checks_with_http_info variant
+
+This returns an Array which contains the response data, status code and headers.
+
+> <Array(<CountFlagChecksResponse>, Integer, Hash)> count_flag_checks_with_http_info(opts)
+
+```ruby
+begin
+  # Count flag checks
+  data, status_code, headers = api_instance.count_flag_checks_with_http_info(opts)
+  p status_code # => 2xx
+  p headers # => { ... }
+  p data # => <CountFlagChecksResponse>
+rescue Schematic::ApiError => e
+  puts "Error when calling FeaturesApi->count_flag_checks_with_http_info: #{e}"
+end
+```
+
+### Parameters
+
+| Name | Type | Description | Notes |
+| ---- | ---- | ----------- | ----- |
+| **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
+| **flag_id** | **String** |  | [optional] |
+| **flag_ids** | [**Array&lt;String&gt;**](String.md) |  | [optional] |
+| **id** | **String** |  | [optional] |
+| **limit** | **Integer** | Page limit (default 100) | [optional] |
+| **offset** | **Integer** | Page offset (default 0) | [optional] |
+
+### Return type
+
+[**CountFlagChecksResponse**](CountFlagChecksResponse.md)
+
+### Authorization
+
+[ApiKeyAuth](../README.md#ApiKeyAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
 ## count_flag_values
 
 > <CountFlagValuesResponse> count_flag_values(entity_type, opts)
@@ -277,9 +360,7 @@ opts = {
   user_id: 'user_id_example', # String | 
   flag_id: 'flag_id_example', # String | 
   limit: 56, # Integer | Page limit (default 100)
-  offset: 56, # Integer | Page offset (default 0)
-  order: 'order_example', # String | Order by column
-  dir: 'dir_example' # String | Order direction
+  offset: 56 # Integer | Page offset (default 0)
 }
 
 begin
@@ -320,8 +401,6 @@ end
 | **flag_id** | **String** |  | [optional] |
 | **limit** | **Integer** | Page limit (default 100) | [optional] |
 | **offset** | **Integer** | Page offset (default 0) | [optional] |
-| **order** | **String** | Order by column | [optional] |
-| **dir** | **String** | Order direction | [optional] |
 
 ### Return type
 
@@ -994,6 +1073,79 @@ end
 - **Accept**: application/json
 
 
+## get_flag_check
+
+> <GetFlagCheckResponse> get_flag_check(flag_check_id, opts)
+
+Get flag check
+
+### Examples
+
+```ruby
+require 'time'
+require 'schematic'
+# setup authorization
+Schematic.configure do |config|
+  # Configure API key authorization: ApiKeyAuth
+  config.api_key['ApiKeyAuth'] = 'YOUR API KEY'
+  # Uncomment the following line to set a prefix for the API key, e.g. 'Bearer' (defaults to nil)
+  # config.api_key_prefix['ApiKeyAuth'] = 'Bearer'
+end
+
+api_instance = Schematic::FeaturesApi.new
+flag_check_id = 'flag_check_id_example' # String | flag_check_id
+opts = {
+  x_schematic_environment_id: 'x_schematic_environment_id_example' # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
+}
+
+begin
+  # Get flag check
+  result = api_instance.get_flag_check(flag_check_id, opts)
+  p result
+rescue Schematic::ApiError => e
+  puts "Error when calling FeaturesApi->get_flag_check: #{e}"
+end
+```
+
+#### Using the get_flag_check_with_http_info variant
+
+This returns an Array which contains the response data, status code and headers.
+
+> <Array(<GetFlagCheckResponse>, Integer, Hash)> get_flag_check_with_http_info(flag_check_id, opts)
+
+```ruby
+begin
+  # Get flag check
+  data, status_code, headers = api_instance.get_flag_check_with_http_info(flag_check_id, opts)
+  p status_code # => 2xx
+  p headers # => { ... }
+  p data # => <GetFlagCheckResponse>
+rescue Schematic::ApiError => e
+  puts "Error when calling FeaturesApi->get_flag_check_with_http_info: #{e}"
+end
+```
+
+### Parameters
+
+| Name | Type | Description | Notes |
+| ---- | ---- | ----------- | ----- |
+| **flag_check_id** | **String** | flag_check_id |  |
+| **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
+
+### Return type
+
+[**GetFlagCheckResponse**](GetFlagCheckResponse.md)
+
+### Authorization
+
+[ApiKeyAuth](../README.md#ApiKeyAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
 ## get_rule
 
 > <GetRuleResponse> get_rule(rule_id, opts)
@@ -1164,10 +1316,9 @@ opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example', # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
   flag_id: 'flag_id_example', # String | 
   flag_ids: ['inner_example'], # Array<String> | 
+  id: 'id_example', # String | 
   limit: 56, # Integer | Page limit (default 100)
-  offset: 56, # Integer | Page offset (default 0)
-  order: 'order_example', # String | Order by column
-  dir: 'dir_example' # String | Order direction
+  offset: 56 # Integer | Page offset (default 0)
 }
 
 begin
@@ -1204,10 +1355,9 @@ end
 | **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
 | **flag_id** | **String** |  | [optional] |
 | **flag_ids** | [**Array&lt;String&gt;**](String.md) |  | [optional] |
+| **id** | **String** |  | [optional] |
 | **limit** | **Integer** | Page limit (default 100) | [optional] |
 | **offset** | **Integer** | Page offset (default 0) | [optional] |
-| **order** | **String** | Order by column | [optional] |
-| **dir** | **String** | Order direction | [optional] |
 
 ### Return type
 
@@ -1246,9 +1396,7 @@ api_instance = Schematic::FeaturesApi.new
 opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example', # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
   limit: 56, # Integer | Page limit (default 100)
-  offset: 56, # Integer | Page offset (default 0)
-  order: 'order_example', # String | Order by column
-  dir: 'dir_example' # String | Order direction
+  offset: 56 # Integer | Page offset (default 0)
 }
 
 begin
@@ -1285,8 +1433,6 @@ end
 | **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
 | **limit** | **Integer** | Page limit (default 100) | [optional] |
 | **offset** | **Integer** | Page offset (default 0) | [optional] |
-| **order** | **String** | Order by column | [optional] |
-| **dir** | **String** | Order direction | [optional] |
 
 ### Return type
 
@@ -1326,10 +1472,9 @@ opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example', # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
   flag_id: 'flag_id_example', # String | 
   flag_ids: ['inner_example'], # Array<String> | 
+  id: 'id_example', # String | 
   limit: 56, # Integer | Page limit (default 100)
-  offset: 56, # Integer | Page offset (default 0)
-  order: 'order_example', # String | Order by column
-  dir: 'dir_example' # String | Order direction
+  offset: 56 # Integer | Page offset (default 0)
 }
 
 begin
@@ -1366,10 +1511,9 @@ end
 | **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
 | **flag_id** | **String** |  | [optional] |
 | **flag_ids** | [**Array&lt;String&gt;**](String.md) |  | [optional] |
+| **id** | **String** |  | [optional] |
 | **limit** | **Integer** | Page limit (default 100) | [optional] |
 | **offset** | **Integer** | Page offset (default 0) | [optional] |
-| **order** | **String** | Order by column | [optional] |
-| **dir** | **String** | Order direction | [optional] |
 
 ### Return type
 
@@ -1412,9 +1556,7 @@ opts = {
   user_id: 'user_id_example', # String | 
   flag_id: 'flag_id_example', # String | 
   limit: 56, # Integer | Page limit (default 100)
-  offset: 56, # Integer | Page offset (default 0)
-  order: 'order_example', # String | Order by column
-  dir: 'dir_example' # String | Order direction
+  offset: 56 # Integer | Page offset (default 0)
 }
 
 begin
@@ -1455,8 +1597,6 @@ end
 | **flag_id** | **String** |  | [optional] |
 | **limit** | **Integer** | Page limit (default 100) | [optional] |
 | **offset** | **Integer** | Page offset (default 0) | [optional] |
-| **order** | **String** | Order by column | [optional] |
-| **dir** | **String** | Order direction | [optional] |
 
 ### Return type
 
@@ -1497,9 +1637,7 @@ opts = {
   feature_id: 'feature_id_example', # String | 
   flag_ids: ['inner_example'], # Array<String> | 
   limit: 56, # Integer | Page limit (default 100)
-  offset: 56, # Integer | Page offset (default 0)
-  order: 'order_example', # String | Order by column
-  dir: 'dir_example' # String | Order direction
+  offset: 56 # Integer | Page offset (default 0)
 }
 
 begin
@@ -1538,8 +1676,6 @@ end
 | **flag_ids** | [**Array&lt;String&gt;**](String.md) |  | [optional] |
 | **limit** | **Integer** | Page limit (default 100) | [optional] |
 | **offset** | **Integer** | Page offset (default 0) | [optional] |
-| **order** | **String** | Order by column | [optional] |
-| **dir** | **String** | Order direction | [optional] |
 
 ### Return type
 

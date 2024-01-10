@@ -39,9 +39,7 @@ opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example', # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
   q: 'q_example', # String | 
   limit: 56, # Integer | Page limit (default 100)
-  offset: 56, # Integer | Page offset (default 0)
-  order: 'order_example', # String | Order by column
-  dir: 'dir_example' # String | Order direction
+  offset: 56 # Integer | Page offset (default 0)
 }
 
 begin
@@ -79,8 +77,6 @@ end
 | **q** | **String** |  | [optional] |
 | **limit** | **Integer** | Page limit (default 100) | [optional] |
 | **offset** | **Integer** | Page offset (default 0) | [optional] |
-| **order** | **String** | Order by column | [optional] |
-| **dir** | **String** | Order direction | [optional] |
 
 ### Return type
 
@@ -123,9 +119,7 @@ opts = {
   feature_id: 'feature_id_example', # String | 
   event_subtype: 'event_subtype_example', # String | 
   limit: 56, # Integer | Page limit (default 100)
-  offset: 56, # Integer | Page offset (default 0)
-  order: 'order_example', # String | Order by column
-  dir: 'dir_example' # String | Order direction
+  offset: 56 # Integer | Page offset (default 0)
 }
 
 begin
@@ -166,8 +160,6 @@ end
 | **event_subtype** | **String** |  | [optional] |
 | **limit** | **Integer** | Page limit (default 100) | [optional] |
 | **offset** | **Integer** | Page offset (default 0) | [optional] |
-| **order** | **String** | Order by column | [optional] |
-| **dir** | **String** | Order direction | [optional] |
 
 ### Return type
 
@@ -426,9 +418,7 @@ opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example', # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
   q: 'q_example', # String | 
   limit: 56, # Integer | Page limit (default 100)
-  offset: 56, # Integer | Page offset (default 0)
-  order: 'order_example', # String | Order by column
-  dir: 'dir_example' # String | Order direction
+  offset: 56 # Integer | Page offset (default 0)
 }
 
 begin
@@ -466,8 +456,6 @@ end
 | **q** | **String** |  | [optional] |
 | **limit** | **Integer** | Page limit (default 100) | [optional] |
 | **offset** | **Integer** | Page offset (default 0) | [optional] |
-| **order** | **String** | Order by column | [optional] |
-| **dir** | **String** | Order direction | [optional] |
 
 ### Return type
 
@@ -510,9 +498,7 @@ opts = {
   feature_id: 'feature_id_example', # String | 
   event_subtype: 'event_subtype_example', # String | 
   limit: 56, # Integer | Page limit (default 100)
-  offset: 56, # Integer | Page offset (default 0)
-  order: 'order_example', # String | Order by column
-  dir: 'dir_example' # String | Order direction
+  offset: 56 # Integer | Page offset (default 0)
 }
 
 begin
@@ -553,8 +539,6 @@ end
 | **event_subtype** | **String** |  | [optional] |
 | **limit** | **Integer** | Page limit (default 100) | [optional] |
 | **offset** | **Integer** | Page offset (default 0) | [optional] |
-| **order** | **String** | Order by column | [optional] |
-| **dir** | **String** | Order direction | [optional] |
 
 ### Return type
 
@@ -595,12 +579,11 @@ opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example', # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
   start_time: Time.parse('2013-10-20T19:20:30+01:00'), # Time | 
   end_time: Time.parse('2013-10-20T19:20:30+01:00'), # Time | 
+  event_subtypes: ['inner_example'], # Array<String> | 
   company_id: 'company_id_example', # String | 
   user_id: 'user_id_example', # String | 
   limit: 56, # Integer | Page limit (default 100)
   offset: 56, # Integer | Page offset (default 0)
-  order: 'order_example', # String | Order by column
-  dir: 'dir_example', # String | Order direction
   grouping: 'grouping_example' # String | 
 }
 
@@ -639,12 +622,11 @@ end
 | **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
 | **start_time** | **Time** |  | [optional] |
 | **end_time** | **Time** |  | [optional] |
+| **event_subtypes** | [**Array&lt;String&gt;**](String.md) |  | [optional] |
 | **company_id** | **String** |  | [optional] |
 | **user_id** | **String** |  | [optional] |
 | **limit** | **Integer** | Page limit (default 100) | [optional] |
 | **offset** | **Integer** | Page offset (default 0) | [optional] |
-| **order** | **String** | Order by column | [optional] |
-| **dir** | **String** | Order direction | [optional] |
 | **grouping** | **String** |  | [optional] |
 
 ### Return type
@@ -686,12 +668,11 @@ opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example', # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
   start_time: Time.parse('2013-10-20T19:20:30+01:00'), # Time | 
   end_time: Time.parse('2013-10-20T19:20:30+01:00'), # Time | 
+  event_subtypes: ['inner_example'], # Array<String> | 
   company_id: 'company_id_example', # String | 
   user_id: 'user_id_example', # String | 
   limit: 56, # Integer | Page limit (default 100)
-  offset: 56, # Integer | Page offset (default 0)
-  order: 'order_example', # String | Order by column
-  dir: 'dir_example' # String | Order direction
+  offset: 56 # Integer | Page offset (default 0)
 }
 
 begin
@@ -729,12 +710,11 @@ end
 | **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
 | **start_time** | **Time** |  | [optional] |
 | **end_time** | **Time** |  | [optional] |
+| **event_subtypes** | [**Array&lt;String&gt;**](String.md) |  | [optional] |
 | **company_id** | **String** |  | [optional] |
 | **user_id** | **String** |  | [optional] |
 | **limit** | **Integer** | Page limit (default 100) | [optional] |
 | **offset** | **Integer** | Page offset (default 0) | [optional] |
-| **order** | **String** | Order by column | [optional] |
-| **dir** | **String** | Order direction | [optional] |
 
 ### Return type
 

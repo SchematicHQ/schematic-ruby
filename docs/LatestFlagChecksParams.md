@@ -4,12 +4,11 @@
 
 | Name | Type | Description | Notes |
 | ---- | ---- | ----------- | ----- |
-| **dir** | **String** |  | [optional] |
 | **flag_id** | **String** |  | [optional] |
 | **flag_ids** | **Array&lt;String&gt;** |  | [optional] |
+| **id** | **String** |  | [optional] |
 | **limit** | **Integer** |  | [optional] |
 | **offset** | **Integer** |  | [optional] |
-| **order** | **String** |  | [optional] |
 
 ## Example
 
@@ -17,12 +16,11 @@
 require 'schematic'
 
 instance = Schematic::LatestFlagChecksParams.new(
-  dir: null,
   flag_id: null,
   flag_ids: null,
+  id: null,
   limit: null,
-  offset: null,
-  order: null
+  offset: null
 )
 ```
 

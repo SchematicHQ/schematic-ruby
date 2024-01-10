@@ -18,8 +18,6 @@ module Schematic
   class CountEventsParams
     attr_accessor :company_id
 
-    attr_accessor :dir
-
     attr_accessor :event_subtype
 
     attr_accessor :feature_id
@@ -28,20 +26,16 @@ module Schematic
 
     attr_accessor :offset
 
-    attr_accessor :order
-
     attr_accessor :user_id
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
         :'company_id' => :'company_id',
-        :'dir' => :'dir',
         :'event_subtype' => :'event_subtype',
         :'feature_id' => :'feature_id',
         :'limit' => :'limit',
         :'offset' => :'offset',
-        :'order' => :'order',
         :'user_id' => :'user_id'
       }
     end
@@ -55,12 +49,10 @@ module Schematic
     def self.openapi_types
       {
         :'company_id' => :'String',
-        :'dir' => :'String',
         :'event_subtype' => :'String',
         :'feature_id' => :'String',
         :'limit' => :'Integer',
         :'offset' => :'Integer',
-        :'order' => :'String',
         :'user_id' => :'String'
       }
     end
@@ -90,10 +82,6 @@ module Schematic
         self.company_id = attributes[:'company_id']
       end
 
-      if attributes.key?(:'dir')
-        self.dir = attributes[:'dir']
-      end
-
       if attributes.key?(:'event_subtype')
         self.event_subtype = attributes[:'event_subtype']
       end
@@ -108,10 +96,6 @@ module Schematic
 
       if attributes.key?(:'offset')
         self.offset = attributes[:'offset']
-      end
-
-      if attributes.key?(:'order')
-        self.order = attributes[:'order']
       end
 
       if attributes.key?(:'user_id')
@@ -138,12 +122,10 @@ module Schematic
       return true if self.equal?(o)
       self.class == o.class &&
           company_id == o.company_id &&
-          dir == o.dir &&
           event_subtype == o.event_subtype &&
           feature_id == o.feature_id &&
           limit == o.limit &&
           offset == o.offset &&
-          order == o.order &&
           user_id == o.user_id
     end
 
@@ -156,7 +138,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [company_id, dir, event_subtype, feature_id, limit, offset, order, user_id].hash
+      [company_id, event_subtype, feature_id, limit, offset, user_id].hash
     end
 
     # Builds the object from hash
