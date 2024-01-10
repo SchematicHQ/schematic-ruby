@@ -421,11 +421,9 @@ module Schematic
     # List companies
     # @param [Hash] opts the optional parameters
     # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
-    # @option opts [Array<Integer>] :ids 
+    # @option opts [Array<String>] :ids 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [ListCompaniesResponse]
     def list_companies(opts = {})
       data, _status_code, _headers = list_companies_with_http_info(opts)
@@ -435,11 +433,9 @@ module Schematic
     # List companies
     # @param [Hash] opts the optional parameters
     # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
-    # @option opts [Array<Integer>] :ids 
+    # @option opts [Array<String>] :ids 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [Array<(ListCompaniesResponse, Integer, Hash)>] ListCompaniesResponse data, response status code and response headers
     def list_companies_with_http_info(opts = {})
       if @api_client.config.debugging
@@ -453,8 +449,6 @@ module Schematic
       query_params[:'ids'] = @api_client.build_collection_param(opts[:'ids'], :multi) if !opts[:'ids'].nil?
       query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
       query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
-      query_params[:'order'] = opts[:'order'] if !opts[:'order'].nil?
-      query_params[:'dir'] = opts[:'dir'] if !opts[:'dir'].nil?
 
       # header parameters
       header_params = opts[:header_params] || {}
@@ -498,8 +492,6 @@ module Schematic
     # @option opts [String] :user_id 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [ListCompanyMembershipsResponse]
     def list_company_memberships(opts = {})
       data, _status_code, _headers = list_company_memberships_with_http_info(opts)
@@ -513,8 +505,6 @@ module Schematic
     # @option opts [String] :user_id 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [Array<(ListCompanyMembershipsResponse, Integer, Hash)>] ListCompanyMembershipsResponse data, response status code and response headers
     def list_company_memberships_with_http_info(opts = {})
       if @api_client.config.debugging
@@ -529,8 +519,6 @@ module Schematic
       query_params[:'user_id'] = opts[:'user_id'] if !opts[:'user_id'].nil?
       query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
       query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
-      query_params[:'order'] = opts[:'order'] if !opts[:'order'].nil?
-      query_params[:'dir'] = opts[:'dir'] if !opts[:'dir'].nil?
 
       # header parameters
       header_params = opts[:header_params] || {}
@@ -567,14 +555,85 @@ module Schematic
       return data, status_code, headers
     end
 
+    # List company plans
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @option opts [String] :company_id 
+    # @option opts [String] :plan_id 
+    # @option opts [Boolean] :active 
+    # @option opts [Integer] :limit Page limit (default 100)
+    # @option opts [Integer] :offset Page offset (default 0)
+    # @return [ListCompanyPlansResponse]
+    def list_company_plans(opts = {})
+      data, _status_code, _headers = list_company_plans_with_http_info(opts)
+      data
+    end
+
+    # List company plans
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @option opts [String] :company_id 
+    # @option opts [String] :plan_id 
+    # @option opts [Boolean] :active 
+    # @option opts [Integer] :limit Page limit (default 100)
+    # @option opts [Integer] :offset Page offset (default 0)
+    # @return [Array<(ListCompanyPlansResponse, Integer, Hash)>] ListCompanyPlansResponse data, response status code and response headers
+    def list_company_plans_with_http_info(opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: CompaniesApi.list_company_plans ...'
+      end
+      # resource path
+      local_var_path = '/company-plans'
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+      query_params[:'company_id'] = opts[:'company_id'] if !opts[:'company_id'].nil?
+      query_params[:'plan_id'] = opts[:'plan_id'] if !opts[:'plan_id'].nil?
+      query_params[:'active'] = opts[:'active'] if !opts[:'active'].nil?
+      query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
+      query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json'])
+      header_params[:'X-Schematic-Environment-Id'] = opts[:'x_schematic_environment_id'] if !opts[:'x_schematic_environment_id'].nil?
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body]
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'ListCompanyPlansResponse'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['ApiKeyAuth']
+
+      new_options = opts.merge(
+        :operation => :"CompaniesApi.list_company_plans",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: CompaniesApi#list_company_plans\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
     # List users
     # @param [Hash] opts the optional parameters
     # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
-    # @option opts [Array<Integer>] :ids 
+    # @option opts [Array<String>] :ids 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [ListUsersResponse]
     def list_users(opts = {})
       data, _status_code, _headers = list_users_with_http_info(opts)
@@ -584,11 +643,9 @@ module Schematic
     # List users
     # @param [Hash] opts the optional parameters
     # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
-    # @option opts [Array<Integer>] :ids 
+    # @option opts [Array<String>] :ids 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [Array<(ListUsersResponse, Integer, Hash)>] ListUsersResponse data, response status code and response headers
     def list_users_with_http_info(opts = {})
       if @api_client.config.debugging
@@ -602,8 +659,6 @@ module Schematic
       query_params[:'ids'] = @api_client.build_collection_param(opts[:'ids'], :multi) if !opts[:'ids'].nil?
       query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
       query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
-      query_params[:'order'] = opts[:'order'] if !opts[:'order'].nil?
-      query_params[:'dir'] = opts[:'dir'] if !opts[:'dir'].nil?
 
       # header parameters
       header_params = opts[:header_params] || {}

@@ -29,6 +29,8 @@ module Schematic
     # A map of trait names to trait values
     attr_accessor :traits
 
+    attr_accessor :update_only
+
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
@@ -37,7 +39,8 @@ module Schematic
         :'last_seen_at' => :'last_seen_at',
         :'name' => :'name',
         :'skip_webhooks' => :'skip_webhooks',
-        :'traits' => :'traits'
+        :'traits' => :'traits',
+        :'update_only' => :'update_only'
       }
     end
 
@@ -54,7 +57,8 @@ module Schematic
         :'last_seen_at' => :'Time',
         :'name' => :'String',
         :'skip_webhooks' => :'Boolean',
-        :'traits' => :'Object'
+        :'traits' => :'Object',
+        :'update_only' => :'Boolean'
       }
     end
 
@@ -65,6 +69,7 @@ module Schematic
         :'last_seen_at',
         :'name',
         :'skip_webhooks',
+        :'update_only'
       ])
     end
 
@@ -106,6 +111,10 @@ module Schematic
       if attributes.key?(:'traits')
         self.traits = attributes[:'traits']
       end
+
+      if attributes.key?(:'update_only')
+        self.update_only = attributes[:'update_only']
+      end
     end
 
     # Show invalid properties with the reasons. Usually used together with valid?
@@ -136,7 +145,8 @@ module Schematic
           last_seen_at == o.last_seen_at &&
           name == o.name &&
           skip_webhooks == o.skip_webhooks &&
-          traits == o.traits
+          traits == o.traits &&
+          update_only == o.update_only
     end
 
     # @see the `==` method
@@ -148,7 +158,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [company_id, keys, last_seen_at, name, skip_webhooks, traits].hash
+      [company_id, keys, last_seen_at, name, skip_webhooks, traits, update_only].hash
     end
 
     # Builds the object from hash

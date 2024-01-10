@@ -15,6 +15,8 @@ require 'time'
 
 module Schematic
   class FlagCheckLogResponseData
+    attr_accessor :check_status
+
     attr_accessor :company_id
 
     attr_accessor :created_at
@@ -46,6 +48,7 @@ module Schematic
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
+        :'check_status' => :'check_status',
         :'company_id' => :'company_id',
         :'created_at' => :'created_at',
         :'environment_id' => :'environment_id',
@@ -71,6 +74,7 @@ module Schematic
     # Attribute type mapping.
     def self.openapi_types
       {
+        :'check_status' => :'String',
         :'company_id' => :'String',
         :'created_at' => :'Time',
         :'environment_id' => :'String',
@@ -113,6 +117,10 @@ module Schematic
         end
         h[k.to_sym] = v
       }
+
+      if attributes.key?(:'check_status')
+        self.check_status = attributes[:'check_status']
+      end
 
       if attributes.key?(:'company_id')
         self.company_id = attributes[:'company_id']
@@ -175,6 +183,10 @@ module Schematic
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
+      if @check_status.nil?
+        invalid_properties.push('invalid value for "check_status", check_status cannot be nil.')
+      end
+
       if @created_at.nil?
         invalid_properties.push('invalid value for "created_at", created_at cannot be nil.')
       end
@@ -217,6 +229,7 @@ module Schematic
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
+      return false if @check_status.nil?
       return false if @created_at.nil?
       return false if @environment_id.nil?
       return false if @flag_key.nil?
@@ -234,6 +247,7 @@ module Schematic
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
+          check_status == o.check_status &&
           company_id == o.company_id &&
           created_at == o.created_at &&
           environment_id == o.environment_id &&
@@ -259,7 +273,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [company_id, created_at, environment_id, error, flag_id, flag_key, id, reason, req_company, req_user, rule_id, updated_at, user_id, value].hash
+      [check_status, company_id, created_at, environment_id, error, flag_id, flag_key, id, reason, req_company, req_user, rule_id, updated_at, user_id, value].hash
     end
 
     # Builds the object from hash

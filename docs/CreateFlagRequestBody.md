@@ -11,6 +11,7 @@
 | **key** | **String** |  |  |
 | **name** | **String** |  |  |
 | **rules** | [**Array&lt;CreateOrUpdateRuleRequestBody&gt;**](CreateOrUpdateRuleRequestBody.md) |  |  |
+| **skip_webhooks** | **Boolean** |  | [optional] |
 
 ## Example
 
@@ -24,7 +25,8 @@ instance = Schematic::CreateFlagRequestBody.new(
   flag_type: null,
   key: null,
   name: null,
-  rules: null
+  rules: null,
+  skip_webhooks: null
 )
 ```
 

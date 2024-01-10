@@ -16,26 +16,20 @@ require 'time'
 module Schematic
   # Input parameters
   class ListApiKeysParams
-    attr_accessor :dir
-
     attr_accessor :environment_id
 
     attr_accessor :limit
 
     attr_accessor :offset
 
-    attr_accessor :order
-
     attr_accessor :require_environment
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'dir' => :'dir',
         :'environment_id' => :'environment_id',
         :'limit' => :'limit',
         :'offset' => :'offset',
-        :'order' => :'order',
         :'require_environment' => :'require_environment'
       }
     end
@@ -48,11 +42,9 @@ module Schematic
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'dir' => :'String',
         :'environment_id' => :'String',
         :'limit' => :'Integer',
         :'offset' => :'Integer',
-        :'order' => :'String',
         :'require_environment' => :'Boolean'
       }
     end
@@ -78,10 +70,6 @@ module Schematic
         h[k.to_sym] = v
       }
 
-      if attributes.key?(:'dir')
-        self.dir = attributes[:'dir']
-      end
-
       if attributes.key?(:'environment_id')
         self.environment_id = attributes[:'environment_id']
       end
@@ -92,10 +80,6 @@ module Schematic
 
       if attributes.key?(:'offset')
         self.offset = attributes[:'offset']
-      end
-
-      if attributes.key?(:'order')
-        self.order = attributes[:'order']
       end
 
       if attributes.key?(:'require_environment')
@@ -121,11 +105,9 @@ module Schematic
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          dir == o.dir &&
           environment_id == o.environment_id &&
           limit == o.limit &&
           offset == o.offset &&
-          order == o.order &&
           require_environment == o.require_environment
     end
 
@@ -138,7 +120,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [dir, environment_id, limit, offset, order, require_environment].hash
+      [environment_id, limit, offset, require_environment].hash
     end
 
     # Builds the object from hash

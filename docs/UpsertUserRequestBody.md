@@ -11,6 +11,7 @@
 | **name** | **String** |  | [optional] |
 | **skip_webhooks** | **Boolean** |  | [optional] |
 | **traits** | **Object** | A map of trait names to trait values | [optional] |
+| **update_only** | **Boolean** |  | [optional] |
 
 ## Example
 
@@ -24,7 +25,8 @@ instance = Schematic::UpsertUserRequestBody.new(
   last_seen_at: null,
   name: null,
   skip_webhooks: null,
-  traits: null
+  traits: null,
+  update_only: null
 )
 ```
 

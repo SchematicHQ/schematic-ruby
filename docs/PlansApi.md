@@ -7,7 +7,6 @@ All URIs are relative to *https://api.schematichq.com*
 | [**create_plan**](PlansApi.md#create_plan) | **POST** /plans | Create plan |
 | [**delete_plan**](PlansApi.md#delete_plan) | **DELETE** /plans/{plan_id} | Delete plan |
 | [**get_plan**](PlansApi.md#get_plan) | **GET** /plans/{plan_id} | Get plan |
-| [**list_company_plans**](PlansApi.md#list_company_plans) | **GET** /company-plans | List company plans |
 | [**list_plans**](PlansApi.md#list_plans) | **GET** /plans | List plans |
 | [**update_plan**](PlansApi.md#update_plan) | **PUT** /plans/{plan_id} | Update plan |
 | [**update_plan_audience**](PlansApi.md#update_plan_audience) | **PUT** /plan-audiences/{plan_audience_id} | Update plan audience |
@@ -233,91 +232,6 @@ end
 - **Accept**: application/json
 
 
-## list_company_plans
-
-> <ListCompanyPlansResponse> list_company_plans(opts)
-
-List company plans
-
-### Examples
-
-```ruby
-require 'time'
-require 'schematic'
-# setup authorization
-Schematic.configure do |config|
-  # Configure API key authorization: ApiKeyAuth
-  config.api_key['ApiKeyAuth'] = 'YOUR API KEY'
-  # Uncomment the following line to set a prefix for the API key, e.g. 'Bearer' (defaults to nil)
-  # config.api_key_prefix['ApiKeyAuth'] = 'Bearer'
-end
-
-api_instance = Schematic::PlansApi.new
-opts = {
-  x_schematic_environment_id: 'x_schematic_environment_id_example', # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
-  company_id: 'company_id_example', # String | 
-  plan_id: 'plan_id_example', # String | 
-  active: true, # Boolean | 
-  limit: 56, # Integer | Page limit (default 100)
-  offset: 56, # Integer | Page offset (default 0)
-  order: 'order_example', # String | Order by column
-  dir: 'dir_example' # String | Order direction
-}
-
-begin
-  # List company plans
-  result = api_instance.list_company_plans(opts)
-  p result
-rescue Schematic::ApiError => e
-  puts "Error when calling PlansApi->list_company_plans: #{e}"
-end
-```
-
-#### Using the list_company_plans_with_http_info variant
-
-This returns an Array which contains the response data, status code and headers.
-
-> <Array(<ListCompanyPlansResponse>, Integer, Hash)> list_company_plans_with_http_info(opts)
-
-```ruby
-begin
-  # List company plans
-  data, status_code, headers = api_instance.list_company_plans_with_http_info(opts)
-  p status_code # => 2xx
-  p headers # => { ... }
-  p data # => <ListCompanyPlansResponse>
-rescue Schematic::ApiError => e
-  puts "Error when calling PlansApi->list_company_plans_with_http_info: #{e}"
-end
-```
-
-### Parameters
-
-| Name | Type | Description | Notes |
-| ---- | ---- | ----------- | ----- |
-| **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
-| **company_id** | **String** |  | [optional] |
-| **plan_id** | **String** |  | [optional] |
-| **active** | **Boolean** |  | [optional] |
-| **limit** | **Integer** | Page limit (default 100) | [optional] |
-| **offset** | **Integer** | Page offset (default 0) | [optional] |
-| **order** | **String** | Order by column | [optional] |
-| **dir** | **String** | Order direction | [optional] |
-
-### Return type
-
-[**ListCompanyPlansResponse**](ListCompanyPlansResponse.md)
-
-### Authorization
-
-[ApiKeyAuth](../README.md#ApiKeyAuth)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-
 ## list_plans
 
 > <ListPlansResponse> list_plans(opts)
@@ -341,9 +255,7 @@ api_instance = Schematic::PlansApi.new
 opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example', # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
   limit: 56, # Integer | Page limit (default 100)
-  offset: 56, # Integer | Page offset (default 0)
-  order: 'order_example', # String | Order by column
-  dir: 'dir_example' # String | Order direction
+  offset: 56 # Integer | Page offset (default 0)
 }
 
 begin
@@ -380,8 +292,6 @@ end
 | **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
 | **limit** | **Integer** | Page limit (default 100) | [optional] |
 | **offset** | **Integer** | Page offset (default 0) | [optional] |
-| **order** | **String** | Order by column | [optional] |
-| **dir** | **String** | Order direction | [optional] |
 
 ### Return type
 

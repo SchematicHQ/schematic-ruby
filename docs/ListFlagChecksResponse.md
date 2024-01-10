@@ -4,7 +4,7 @@
 
 | Name | Type | Description | Notes |
 | ---- | ---- | ----------- | ----- |
-| **data** | [**Array&lt;FlagCheckLogResponseData&gt;**](FlagCheckLogResponseData.md) | The returned resources |  |
+| **data** | [**Array&lt;FlagCheckLogDetailResponseData&gt;**](FlagCheckLogDetailResponseData.md) | The returned resources |  |
 | **params** | [**ListFlagChecksParams**](ListFlagChecksParams.md) |  |  |
 
 ## Example

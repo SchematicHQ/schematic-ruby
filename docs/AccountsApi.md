@@ -5,12 +5,16 @@ All URIs are relative to *https://api.schematichq.com*
 | Method | HTTP request | Description |
 | ------ | ------------ | ----------- |
 | [**count_api_keys**](AccountsApi.md#count_api_keys) | **GET** /api-keys/count | Count api keys |
+| [**count_api_requests**](AccountsApi.md#count_api_requests) | **GET** /api-requests/count | Count api requests |
 | [**create_api_key**](AccountsApi.md#create_api_key) | **POST** /api-keys | Create api key |
 | [**create_environment**](AccountsApi.md#create_environment) | **POST** /environments | Create environment |
 | [**delete_api_key**](AccountsApi.md#delete_api_key) | **DELETE** /api-keys/{api_key_id} | Delete api key |
 | [**delete_environment**](AccountsApi.md#delete_environment) | **DELETE** /environments/{environment_id} | Delete environment |
 | [**get_api_key**](AccountsApi.md#get_api_key) | **GET** /api-keys/{api_key_id} | Get api key |
+| [**get_api_request**](AccountsApi.md#get_api_request) | **GET** /api-requests/{api_request_id} | Get api request |
+| [**get_environment**](AccountsApi.md#get_environment) | **GET** /environments/{environment_id} | Get environment |
 | [**list_api_keys**](AccountsApi.md#list_api_keys) | **GET** /api-keys | List api keys |
+| [**list_api_requests**](AccountsApi.md#list_api_requests) | **GET** /api-requests | List api requests |
 | [**update_api_key**](AccountsApi.md#update_api_key) | **PUT** /api-keys/{api_key_id} | Update api key |
 | [**update_environment**](AccountsApi.md#update_environment) | **PUT** /environments/{environment_id} | Update environment |
 
@@ -40,9 +44,7 @@ opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example', # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
   environment_id: 'environment_id_example', # String | 
   limit: 56, # Integer | Page limit (default 100)
-  offset: 56, # Integer | Page offset (default 0)
-  order: 'order_example', # String | Order by column
-  dir: 'dir_example' # String | Order direction
+  offset: 56 # Integer | Page offset (default 0)
 }
 
 begin
@@ -81,12 +83,87 @@ end
 | **environment_id** | **String** |  | [optional] |
 | **limit** | **Integer** | Page limit (default 100) | [optional] |
 | **offset** | **Integer** | Page offset (default 0) | [optional] |
-| **order** | **String** | Order by column | [optional] |
-| **dir** | **String** | Order direction | [optional] |
 
 ### Return type
 
 [**CountApiKeysResponse**](CountApiKeysResponse.md)
+
+### Authorization
+
+[ApiKeyAuth](../README.md#ApiKeyAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## count_api_requests
+
+> <CountApiRequestsResponse> count_api_requests(opts)
+
+Count api requests
+
+### Examples
+
+```ruby
+require 'time'
+require 'schematic'
+# setup authorization
+Schematic.configure do |config|
+  # Configure API key authorization: ApiKeyAuth
+  config.api_key['ApiKeyAuth'] = 'YOUR API KEY'
+  # Uncomment the following line to set a prefix for the API key, e.g. 'Bearer' (defaults to nil)
+  # config.api_key_prefix['ApiKeyAuth'] = 'Bearer'
+end
+
+api_instance = Schematic::AccountsApi.new
+opts = {
+  x_schematic_environment_id: 'x_schematic_environment_id_example', # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
+  q: 'q_example', # String | 
+  limit: 56, # Integer | Page limit (default 100)
+  offset: 56 # Integer | Page offset (default 0)
+}
+
+begin
+  # Count api requests
+  result = api_instance.count_api_requests(opts)
+  p result
+rescue Schematic::ApiError => e
+  puts "Error when calling AccountsApi->count_api_requests: #{e}"
+end
+```
+
+#### Using the count_api_requests_with_http_info variant
+
+This returns an Array which contains the response data, status code and headers.
+
+> <Array(<CountApiRequestsResponse>, Integer, Hash)> count_api_requests_with_http_info(opts)
+
+```ruby
+begin
+  # Count api requests
+  data, status_code, headers = api_instance.count_api_requests_with_http_info(opts)
+  p status_code # => 2xx
+  p headers # => { ... }
+  p data # => <CountApiRequestsResponse>
+rescue Schematic::ApiError => e
+  puts "Error when calling AccountsApi->count_api_requests_with_http_info: #{e}"
+end
+```
+
+### Parameters
+
+| Name | Type | Description | Notes |
+| ---- | ---- | ----------- | ----- |
+| **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
+| **q** | **String** |  | [optional] |
+| **limit** | **Integer** | Page limit (default 100) | [optional] |
+| **offset** | **Integer** | Page offset (default 0) | [optional] |
+
+### Return type
+
+[**CountApiRequestsResponse**](CountApiRequestsResponse.md)
 
 ### Authorization
 
@@ -463,6 +540,152 @@ end
 - **Accept**: application/json
 
 
+## get_api_request
+
+> <GetApiRequestResponse> get_api_request(api_request_id, opts)
+
+Get api request
+
+### Examples
+
+```ruby
+require 'time'
+require 'schematic'
+# setup authorization
+Schematic.configure do |config|
+  # Configure API key authorization: ApiKeyAuth
+  config.api_key['ApiKeyAuth'] = 'YOUR API KEY'
+  # Uncomment the following line to set a prefix for the API key, e.g. 'Bearer' (defaults to nil)
+  # config.api_key_prefix['ApiKeyAuth'] = 'Bearer'
+end
+
+api_instance = Schematic::AccountsApi.new
+api_request_id = 'api_request_id_example' # String | api_request_id
+opts = {
+  x_schematic_environment_id: 'x_schematic_environment_id_example' # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
+}
+
+begin
+  # Get api request
+  result = api_instance.get_api_request(api_request_id, opts)
+  p result
+rescue Schematic::ApiError => e
+  puts "Error when calling AccountsApi->get_api_request: #{e}"
+end
+```
+
+#### Using the get_api_request_with_http_info variant
+
+This returns an Array which contains the response data, status code and headers.
+
+> <Array(<GetApiRequestResponse>, Integer, Hash)> get_api_request_with_http_info(api_request_id, opts)
+
+```ruby
+begin
+  # Get api request
+  data, status_code, headers = api_instance.get_api_request_with_http_info(api_request_id, opts)
+  p status_code # => 2xx
+  p headers # => { ... }
+  p data # => <GetApiRequestResponse>
+rescue Schematic::ApiError => e
+  puts "Error when calling AccountsApi->get_api_request_with_http_info: #{e}"
+end
+```
+
+### Parameters
+
+| Name | Type | Description | Notes |
+| ---- | ---- | ----------- | ----- |
+| **api_request_id** | **String** | api_request_id |  |
+| **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
+
+### Return type
+
+[**GetApiRequestResponse**](GetApiRequestResponse.md)
+
+### Authorization
+
+[ApiKeyAuth](../README.md#ApiKeyAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## get_environment
+
+> <GetEnvironmentResponse> get_environment(environment_id, opts)
+
+Get environment
+
+### Examples
+
+```ruby
+require 'time'
+require 'schematic'
+# setup authorization
+Schematic.configure do |config|
+  # Configure API key authorization: ApiKeyAuth
+  config.api_key['ApiKeyAuth'] = 'YOUR API KEY'
+  # Uncomment the following line to set a prefix for the API key, e.g. 'Bearer' (defaults to nil)
+  # config.api_key_prefix['ApiKeyAuth'] = 'Bearer'
+end
+
+api_instance = Schematic::AccountsApi.new
+environment_id = 'environment_id_example' # String | environment_id
+opts = {
+  x_schematic_environment_id: 'x_schematic_environment_id_example' # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
+}
+
+begin
+  # Get environment
+  result = api_instance.get_environment(environment_id, opts)
+  p result
+rescue Schematic::ApiError => e
+  puts "Error when calling AccountsApi->get_environment: #{e}"
+end
+```
+
+#### Using the get_environment_with_http_info variant
+
+This returns an Array which contains the response data, status code and headers.
+
+> <Array(<GetEnvironmentResponse>, Integer, Hash)> get_environment_with_http_info(environment_id, opts)
+
+```ruby
+begin
+  # Get environment
+  data, status_code, headers = api_instance.get_environment_with_http_info(environment_id, opts)
+  p status_code # => 2xx
+  p headers # => { ... }
+  p data # => <GetEnvironmentResponse>
+rescue Schematic::ApiError => e
+  puts "Error when calling AccountsApi->get_environment_with_http_info: #{e}"
+end
+```
+
+### Parameters
+
+| Name | Type | Description | Notes |
+| ---- | ---- | ----------- | ----- |
+| **environment_id** | **String** | environment_id |  |
+| **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
+
+### Return type
+
+[**GetEnvironmentResponse**](GetEnvironmentResponse.md)
+
+### Authorization
+
+[ApiKeyAuth](../README.md#ApiKeyAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
 ## list_api_keys
 
 > <ListApiKeysResponse> list_api_keys(require_environment, opts)
@@ -488,9 +711,7 @@ opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example', # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
   environment_id: 'environment_id_example', # String | 
   limit: 56, # Integer | Page limit (default 100)
-  offset: 56, # Integer | Page offset (default 0)
-  order: 'order_example', # String | Order by column
-  dir: 'dir_example' # String | Order direction
+  offset: 56 # Integer | Page offset (default 0)
 }
 
 begin
@@ -529,12 +750,87 @@ end
 | **environment_id** | **String** |  | [optional] |
 | **limit** | **Integer** | Page limit (default 100) | [optional] |
 | **offset** | **Integer** | Page offset (default 0) | [optional] |
-| **order** | **String** | Order by column | [optional] |
-| **dir** | **String** | Order direction | [optional] |
 
 ### Return type
 
 [**ListApiKeysResponse**](ListApiKeysResponse.md)
+
+### Authorization
+
+[ApiKeyAuth](../README.md#ApiKeyAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## list_api_requests
+
+> <ListApiRequestsResponse> list_api_requests(opts)
+
+List api requests
+
+### Examples
+
+```ruby
+require 'time'
+require 'schematic'
+# setup authorization
+Schematic.configure do |config|
+  # Configure API key authorization: ApiKeyAuth
+  config.api_key['ApiKeyAuth'] = 'YOUR API KEY'
+  # Uncomment the following line to set a prefix for the API key, e.g. 'Bearer' (defaults to nil)
+  # config.api_key_prefix['ApiKeyAuth'] = 'Bearer'
+end
+
+api_instance = Schematic::AccountsApi.new
+opts = {
+  x_schematic_environment_id: 'x_schematic_environment_id_example', # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
+  q: 'q_example', # String | 
+  limit: 56, # Integer | Page limit (default 100)
+  offset: 56 # Integer | Page offset (default 0)
+}
+
+begin
+  # List api requests
+  result = api_instance.list_api_requests(opts)
+  p result
+rescue Schematic::ApiError => e
+  puts "Error when calling AccountsApi->list_api_requests: #{e}"
+end
+```
+
+#### Using the list_api_requests_with_http_info variant
+
+This returns an Array which contains the response data, status code and headers.
+
+> <Array(<ListApiRequestsResponse>, Integer, Hash)> list_api_requests_with_http_info(opts)
+
+```ruby
+begin
+  # List api requests
+  data, status_code, headers = api_instance.list_api_requests_with_http_info(opts)
+  p status_code # => 2xx
+  p headers # => { ... }
+  p data # => <ListApiRequestsResponse>
+rescue Schematic::ApiError => e
+  puts "Error when calling AccountsApi->list_api_requests_with_http_info: #{e}"
+end
+```
+
+### Parameters
+
+| Name | Type | Description | Notes |
+| ---- | ---- | ----------- | ----- |
+| **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
+| **q** | **String** |  | [optional] |
+| **limit** | **Integer** | Page limit (default 100) | [optional] |
+| **offset** | **Integer** | Page offset (default 0) | [optional] |
+
+### Return type
+
+[**ListApiRequestsResponse**](ListApiRequestsResponse.md)
 
 ### Authorization
 

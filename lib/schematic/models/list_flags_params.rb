@@ -16,8 +16,6 @@ require 'time'
 module Schematic
   # Input parameters
   class ListFlagsParams
-    attr_accessor :dir
-
     attr_accessor :feature_id
 
     attr_accessor :flag_ids
@@ -26,17 +24,13 @@ module Schematic
 
     attr_accessor :offset
 
-    attr_accessor :order
-
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'dir' => :'dir',
         :'feature_id' => :'feature_id',
         :'flag_ids' => :'flag_ids',
         :'limit' => :'limit',
-        :'offset' => :'offset',
-        :'order' => :'order'
+        :'offset' => :'offset'
       }
     end
 
@@ -48,12 +42,10 @@ module Schematic
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'dir' => :'String',
         :'feature_id' => :'String',
         :'flag_ids' => :'Array<String>',
         :'limit' => :'Integer',
-        :'offset' => :'Integer',
-        :'order' => :'String'
+        :'offset' => :'Integer'
       }
     end
 
@@ -78,10 +70,6 @@ module Schematic
         h[k.to_sym] = v
       }
 
-      if attributes.key?(:'dir')
-        self.dir = attributes[:'dir']
-      end
-
       if attributes.key?(:'feature_id')
         self.feature_id = attributes[:'feature_id']
       end
@@ -98,10 +86,6 @@ module Schematic
 
       if attributes.key?(:'offset')
         self.offset = attributes[:'offset']
-      end
-
-      if attributes.key?(:'order')
-        self.order = attributes[:'order']
       end
     end
 
@@ -123,12 +107,10 @@ module Schematic
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          dir == o.dir &&
           feature_id == o.feature_id &&
           flag_ids == o.flag_ids &&
           limit == o.limit &&
-          offset == o.offset &&
-          order == o.order
+          offset == o.offset
     end
 
     # @see the `==` method
@@ -140,7 +122,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [dir, feature_id, flag_ids, limit, offset, order].hash
+      [feature_id, flag_ids, limit, offset].hash
     end
 
     # Builds the object from hash

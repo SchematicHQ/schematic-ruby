@@ -29,6 +29,8 @@ module Schematic
 
     attr_accessor :priority_group
 
+    attr_accessor :skip_webhooks
+
     attr_accessor :value
 
     # Attribute mapping from ruby-style variable name to JSON key.
@@ -41,6 +43,7 @@ module Schematic
         :'plan_id' => :'plan_id',
         :'priority' => :'priority',
         :'priority_group' => :'priority_group',
+        :'skip_webhooks' => :'skip_webhooks',
         :'value' => :'value'
       }
     end
@@ -60,6 +63,7 @@ module Schematic
         :'plan_id' => :'String',
         :'priority' => :'Integer',
         :'priority_group' => :'Integer',
+        :'skip_webhooks' => :'Boolean',
         :'value' => :'Boolean'
       }
     end
@@ -70,6 +74,7 @@ module Schematic
         :'flag_id',
         :'plan_id',
         :'priority_group',
+        :'skip_webhooks',
       ])
     end
 
@@ -118,6 +123,10 @@ module Schematic
 
       if attributes.key?(:'priority_group')
         self.priority_group = attributes[:'priority_group']
+      end
+
+      if attributes.key?(:'skip_webhooks')
+        self.skip_webhooks = attributes[:'skip_webhooks']
       end
 
       if attributes.key?(:'value')
@@ -175,6 +184,7 @@ module Schematic
           plan_id == o.plan_id &&
           priority == o.priority &&
           priority_group == o.priority_group &&
+          skip_webhooks == o.skip_webhooks &&
           value == o.value
     end
 
@@ -187,7 +197,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [condition_groups, conditions, flag_id, name, plan_id, priority, priority_group, value].hash
+      [condition_groups, conditions, flag_id, name, plan_id, priority, priority_group, skip_webhooks, value].hash
     end
 
     # Builds the object from hash

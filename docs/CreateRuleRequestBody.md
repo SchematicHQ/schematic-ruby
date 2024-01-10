@@ -11,6 +11,7 @@
 | **plan_id** | **String** |  | [optional] |
 | **priority** | **Integer** |  |  |
 | **priority_group** | **Integer** |  | [optional] |
+| **skip_webhooks** | **Boolean** |  | [optional] |
 | **value** | **Boolean** |  |  |
 
 ## Example
@@ -26,6 +27,7 @@ instance = Schematic::CreateRuleRequestBody.new(
   plan_id: null,
   priority: null,
   priority_group: null,
+  skip_webhooks: null,
   value: null
 )
 ```

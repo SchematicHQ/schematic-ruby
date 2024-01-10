@@ -26,8 +26,6 @@ module Schematic
     # @option opts [String] :environment_id 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [CountApiKeysResponse]
     def count_api_keys(require_environment, opts = {})
       data, _status_code, _headers = count_api_keys_with_http_info(require_environment, opts)
@@ -41,8 +39,6 @@ module Schematic
     # @option opts [String] :environment_id 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [Array<(CountApiKeysResponse, Integer, Hash)>] CountApiKeysResponse data, response status code and response headers
     def count_api_keys_with_http_info(require_environment, opts = {})
       if @api_client.config.debugging
@@ -61,8 +57,6 @@ module Schematic
       query_params[:'environment_id'] = opts[:'environment_id'] if !opts[:'environment_id'].nil?
       query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
       query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
-      query_params[:'order'] = opts[:'order'] if !opts[:'order'].nil?
-      query_params[:'dir'] = opts[:'dir'] if !opts[:'dir'].nil?
 
       # header parameters
       header_params = opts[:header_params] || {}
@@ -95,6 +89,73 @@ module Schematic
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
       if @api_client.config.debugging
         @api_client.config.logger.debug "API called: AccountsApi#count_api_keys\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
+    # Count api requests
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @option opts [String] :q 
+    # @option opts [Integer] :limit Page limit (default 100)
+    # @option opts [Integer] :offset Page offset (default 0)
+    # @return [CountApiRequestsResponse]
+    def count_api_requests(opts = {})
+      data, _status_code, _headers = count_api_requests_with_http_info(opts)
+      data
+    end
+
+    # Count api requests
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @option opts [String] :q 
+    # @option opts [Integer] :limit Page limit (default 100)
+    # @option opts [Integer] :offset Page offset (default 0)
+    # @return [Array<(CountApiRequestsResponse, Integer, Hash)>] CountApiRequestsResponse data, response status code and response headers
+    def count_api_requests_with_http_info(opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: AccountsApi.count_api_requests ...'
+      end
+      # resource path
+      local_var_path = '/api-requests/count'
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+      query_params[:'q'] = opts[:'q'] if !opts[:'q'].nil?
+      query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
+      query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json'])
+      header_params[:'X-Schematic-Environment-Id'] = opts[:'x_schematic_environment_id'] if !opts[:'x_schematic_environment_id'].nil?
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body]
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'CountApiRequestsResponse'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['ApiKeyAuth']
+
+      new_options = opts.merge(
+        :operation => :"AccountsApi.count_api_requests",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: AccountsApi#count_api_requests\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
       end
       return data, status_code, headers
     end
@@ -429,6 +490,134 @@ module Schematic
       return data, status_code, headers
     end
 
+    # Get api request
+    # @param api_request_id [String] api_request_id
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @return [GetApiRequestResponse]
+    def get_api_request(api_request_id, opts = {})
+      data, _status_code, _headers = get_api_request_with_http_info(api_request_id, opts)
+      data
+    end
+
+    # Get api request
+    # @param api_request_id [String] api_request_id
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @return [Array<(GetApiRequestResponse, Integer, Hash)>] GetApiRequestResponse data, response status code and response headers
+    def get_api_request_with_http_info(api_request_id, opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: AccountsApi.get_api_request ...'
+      end
+      # verify the required parameter 'api_request_id' is set
+      if @api_client.config.client_side_validation && api_request_id.nil?
+        fail ArgumentError, "Missing the required parameter 'api_request_id' when calling AccountsApi.get_api_request"
+      end
+      # resource path
+      local_var_path = '/api-requests/{api_request_id}'.sub('{' + 'api_request_id' + '}', CGI.escape(api_request_id.to_s))
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json'])
+      header_params[:'X-Schematic-Environment-Id'] = opts[:'x_schematic_environment_id'] if !opts[:'x_schematic_environment_id'].nil?
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body]
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'GetApiRequestResponse'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['ApiKeyAuth']
+
+      new_options = opts.merge(
+        :operation => :"AccountsApi.get_api_request",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: AccountsApi#get_api_request\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
+    # Get environment
+    # @param environment_id [String] environment_id
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @return [GetEnvironmentResponse]
+    def get_environment(environment_id, opts = {})
+      data, _status_code, _headers = get_environment_with_http_info(environment_id, opts)
+      data
+    end
+
+    # Get environment
+    # @param environment_id [String] environment_id
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @return [Array<(GetEnvironmentResponse, Integer, Hash)>] GetEnvironmentResponse data, response status code and response headers
+    def get_environment_with_http_info(environment_id, opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: AccountsApi.get_environment ...'
+      end
+      # verify the required parameter 'environment_id' is set
+      if @api_client.config.client_side_validation && environment_id.nil?
+        fail ArgumentError, "Missing the required parameter 'environment_id' when calling AccountsApi.get_environment"
+      end
+      # resource path
+      local_var_path = '/environments/{environment_id}'.sub('{' + 'environment_id' + '}', CGI.escape(environment_id.to_s))
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json'])
+      header_params[:'X-Schematic-Environment-Id'] = opts[:'x_schematic_environment_id'] if !opts[:'x_schematic_environment_id'].nil?
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body]
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'GetEnvironmentResponse'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['ApiKeyAuth']
+
+      new_options = opts.merge(
+        :operation => :"AccountsApi.get_environment",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: AccountsApi#get_environment\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
     # List api keys
     # @param require_environment [Boolean] 
     # @param [Hash] opts the optional parameters
@@ -436,8 +625,6 @@ module Schematic
     # @option opts [String] :environment_id 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [ListApiKeysResponse]
     def list_api_keys(require_environment, opts = {})
       data, _status_code, _headers = list_api_keys_with_http_info(require_environment, opts)
@@ -451,8 +638,6 @@ module Schematic
     # @option opts [String] :environment_id 
     # @option opts [Integer] :limit Page limit (default 100)
     # @option opts [Integer] :offset Page offset (default 0)
-    # @option opts [String] :order Order by column
-    # @option opts [String] :dir Order direction
     # @return [Array<(ListApiKeysResponse, Integer, Hash)>] ListApiKeysResponse data, response status code and response headers
     def list_api_keys_with_http_info(require_environment, opts = {})
       if @api_client.config.debugging
@@ -471,8 +656,6 @@ module Schematic
       query_params[:'environment_id'] = opts[:'environment_id'] if !opts[:'environment_id'].nil?
       query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
       query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
-      query_params[:'order'] = opts[:'order'] if !opts[:'order'].nil?
-      query_params[:'dir'] = opts[:'dir'] if !opts[:'dir'].nil?
 
       # header parameters
       header_params = opts[:header_params] || {}
@@ -505,6 +688,73 @@ module Schematic
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
       if @api_client.config.debugging
         @api_client.config.logger.debug "API called: AccountsApi#list_api_keys\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
+    # List api requests
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @option opts [String] :q 
+    # @option opts [Integer] :limit Page limit (default 100)
+    # @option opts [Integer] :offset Page offset (default 0)
+    # @return [ListApiRequestsResponse]
+    def list_api_requests(opts = {})
+      data, _status_code, _headers = list_api_requests_with_http_info(opts)
+      data
+    end
+
+    # List api requests
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_schematic_environment_id If the request is made using an API key that is not environment-scoped, specify the environment using this header
+    # @option opts [String] :q 
+    # @option opts [Integer] :limit Page limit (default 100)
+    # @option opts [Integer] :offset Page offset (default 0)
+    # @return [Array<(ListApiRequestsResponse, Integer, Hash)>] ListApiRequestsResponse data, response status code and response headers
+    def list_api_requests_with_http_info(opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: AccountsApi.list_api_requests ...'
+      end
+      # resource path
+      local_var_path = '/api-requests'
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+      query_params[:'q'] = opts[:'q'] if !opts[:'q'].nil?
+      query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
+      query_params[:'offset'] = opts[:'offset'] if !opts[:'offset'].nil?
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json'])
+      header_params[:'X-Schematic-Environment-Id'] = opts[:'x_schematic_environment_id'] if !opts[:'x_schematic_environment_id'].nil?
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body]
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'ListApiRequestsResponse'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['ApiKeyAuth']
+
+      new_options = opts.merge(
+        :operation => :"AccountsApi.list_api_requests",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: AccountsApi#list_api_requests\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
       end
       return data, status_code, headers
     end

@@ -19,11 +19,14 @@ module Schematic
 
     attr_accessor :conditions
 
+    attr_accessor :skip_webhooks
+
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
         :'condition_groups' => :'condition_groups',
-        :'conditions' => :'conditions'
+        :'conditions' => :'conditions',
+        :'skip_webhooks' => :'skip_webhooks'
       }
     end
 
@@ -36,13 +39,15 @@ module Schematic
     def self.openapi_types
       {
         :'condition_groups' => :'Array<CreateOrUpdateConditionGroupRequestBody>',
-        :'conditions' => :'Array<CreateOrUpdateConditionRequestBody>'
+        :'conditions' => :'Array<CreateOrUpdateConditionRequestBody>',
+        :'skip_webhooks' => :'Boolean'
       }
     end
 
     # List of attributes with nullable: true
     def self.openapi_nullable
       Set.new([
+        :'skip_webhooks'
       ])
     end
 
@@ -71,6 +76,10 @@ module Schematic
         if (value = attributes[:'conditions']).is_a?(Array)
           self.conditions = value
         end
+      end
+
+      if attributes.key?(:'skip_webhooks')
+        self.skip_webhooks = attributes[:'skip_webhooks']
       end
     end
 
@@ -103,7 +112,8 @@ module Schematic
       return true if self.equal?(o)
       self.class == o.class &&
           condition_groups == o.condition_groups &&
-          conditions == o.conditions
+          conditions == o.conditions &&
+          skip_webhooks == o.skip_webhooks
     end
 
     # @see the `==` method
@@ -115,7 +125,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [condition_groups, conditions].hash
+      [condition_groups, conditions, skip_webhooks].hash
     end
 
     # Builds the object from hash

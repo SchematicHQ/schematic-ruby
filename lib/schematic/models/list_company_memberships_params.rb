@@ -18,13 +18,9 @@ module Schematic
   class ListCompanyMembershipsParams
     attr_accessor :company_id
 
-    attr_accessor :dir
-
     attr_accessor :limit
 
     attr_accessor :offset
-
-    attr_accessor :order
 
     attr_accessor :user_id
 
@@ -32,10 +28,8 @@ module Schematic
     def self.attribute_map
       {
         :'company_id' => :'company_id',
-        :'dir' => :'dir',
         :'limit' => :'limit',
         :'offset' => :'offset',
-        :'order' => :'order',
         :'user_id' => :'user_id'
       }
     end
@@ -49,10 +43,8 @@ module Schematic
     def self.openapi_types
       {
         :'company_id' => :'String',
-        :'dir' => :'String',
         :'limit' => :'Integer',
         :'offset' => :'Integer',
-        :'order' => :'String',
         :'user_id' => :'String'
       }
     end
@@ -82,20 +74,12 @@ module Schematic
         self.company_id = attributes[:'company_id']
       end
 
-      if attributes.key?(:'dir')
-        self.dir = attributes[:'dir']
-      end
-
       if attributes.key?(:'limit')
         self.limit = attributes[:'limit']
       end
 
       if attributes.key?(:'offset')
         self.offset = attributes[:'offset']
-      end
-
-      if attributes.key?(:'order')
-        self.order = attributes[:'order']
       end
 
       if attributes.key?(:'user_id')
@@ -122,10 +106,8 @@ module Schematic
       return true if self.equal?(o)
       self.class == o.class &&
           company_id == o.company_id &&
-          dir == o.dir &&
           limit == o.limit &&
           offset == o.offset &&
-          order == o.order &&
           user_id == o.user_id
     end
 
@@ -138,7 +120,7 @@ module Schematic
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [company_id, dir, limit, offset, order, user_id].hash
+      [company_id, limit, offset, user_id].hash
     end
 
     # Builds the object from hash
