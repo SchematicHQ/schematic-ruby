@@ -37,8 +37,6 @@ docs/CountEventsParams.md
 docs/CountEventsResponse.md
 docs/CountFlagChecksParams.md
 docs/CountFlagChecksResponse.md
-docs/CountFlagValuesParams.md
-docs/CountFlagValuesResponse.md
 docs/CountResponse.md
 docs/CountUsersAudienceResponse.md
 docs/CreateApiKeyRequestBody.md
@@ -69,7 +67,6 @@ docs/DeleteFeatureResponse.md
 docs/DeleteFlagResponse.md
 docs/DeletePlanResponse.md
 docs/DeleteResponse.md
-docs/EntityFlagValueResponseData.md
 docs/EntityKeyResponseData.md
 docs/EntityTraitDefinitionResponseData.md
 docs/EnvironmentDetailResponseData.md
@@ -123,8 +120,6 @@ docs/ListFeaturesParams.md
 docs/ListFeaturesResponse.md
 docs/ListFlagChecksParams.md
 docs/ListFlagChecksResponse.md
-docs/ListFlagValuesParams.md
-docs/ListFlagValuesResponse.md
 docs/ListFlagsParams.md
 docs/ListFlagsResponse.md
 docs/ListMetricCountsHourlyParams.md
@@ -205,8 +200,6 @@ lib/schematic/models/count_events_params.rb
 lib/schematic/models/count_events_response.rb
 lib/schematic/models/count_flag_checks_params.rb
 lib/schematic/models/count_flag_checks_response.rb
-lib/schematic/models/count_flag_values_params.rb
-lib/schematic/models/count_flag_values_response.rb
 lib/schematic/models/count_response.rb
 lib/schematic/models/count_users_audience_response.rb
 lib/schematic/models/create_api_key_request_body.rb
@@ -237,7 +230,6 @@ lib/schematic/models/delete_feature_response.rb
 lib/schematic/models/delete_flag_response.rb
 lib/schematic/models/delete_plan_response.rb
 lib/schematic/models/delete_response.rb
-lib/schematic/models/entity_flag_value_response_data.rb
 lib/schematic/models/entity_key_response_data.rb
 lib/schematic/models/entity_trait_definition_response_data.rb
 lib/schematic/models/environment_detail_response_data.rb
@@ -289,8 +281,6 @@ lib/schematic/models/list_features_params.rb
 lib/schematic/models/list_features_response.rb
 lib/schematic/models/list_flag_checks_params.rb
 lib/schematic/models/list_flag_checks_response.rb
-lib/schematic/models/list_flag_values_params.rb
-lib/schematic/models/list_flag_values_response.rb
 lib/schematic/models/list_flags_params.rb
 lib/schematic/models/list_flags_response.rb
 lib/schematic/models/list_metric_counts_hourly_params.rb
@@ -335,16 +325,4 @@ lib/schematic/version.rb
 schematic.gemspec
 spec/api_client_spec.rb
 spec/configuration_spec.rb
-spec/models/api_key_request_list_response_data_spec.rb
-spec/models/api_key_request_response_data_spec.rb
-spec/models/count_api_requests_params_spec.rb
-spec/models/count_api_requests_response_spec.rb
-spec/models/count_flag_checks_params_spec.rb
-spec/models/count_flag_checks_response_spec.rb
-spec/models/flag_check_log_detail_response_data_spec.rb
-spec/models/get_api_request_response_spec.rb
-spec/models/get_environment_response_spec.rb
-spec/models/get_flag_check_response_spec.rb
-spec/models/list_api_requests_params_spec.rb
-spec/models/list_api_requests_response_spec.rb
 spec/spec_helper.rb

@@ -36,9 +36,9 @@ Finally add this to the Gemfile:
 
 ### Install from Git
 
-If the Ruby gem is hosted at a git repository: https://github.com/GIT_USER_ID/GIT_REPO_ID, then add the following in the Gemfile:
+If the Ruby gem is hosted at a git repository: https://github.com/SchematicHQ/schematic-go, then add the following in the Gemfile:
 
-    gem 'schematic', :git => 'https://github.com/GIT_USER_ID/GIT_REPO_ID.git'
+    gem 'schematic', :git => 'https://github.com/SchematicHQ/schematic-go.git'
 
 ### Include the Ruby code directly
 
@@ -126,7 +126,6 @@ Class | Method | HTTP request | Description
 *Schematic::FeaturesApi* | [**check_flags**](docs/FeaturesApi.md#check_flags) | **POST** /flags/check | Check flags
 *Schematic::FeaturesApi* | [**count_companies_audience**](docs/FeaturesApi.md#count_companies_audience) | **POST** /audience/count-companies | Count Companies audience
 *Schematic::FeaturesApi* | [**count_flag_checks**](docs/FeaturesApi.md#count_flag_checks) | **GET** /flag-checks/count | Count flag checks
-*Schematic::FeaturesApi* | [**count_flag_values**](docs/FeaturesApi.md#count_flag_values) | **GET** /flag-values/count | Count flag values
 *Schematic::FeaturesApi* | [**count_users_audience**](docs/FeaturesApi.md#count_users_audience) | **POST** /audience/count-users | Count Users audience
 *Schematic::FeaturesApi* | [**create_feature**](docs/FeaturesApi.md#create_feature) | **POST** /features | Create feature
 *Schematic::FeaturesApi* | [**create_flag**](docs/FeaturesApi.md#create_flag) | **POST** /flags | Create flag
@@ -142,7 +141,6 @@ Class | Method | HTTP request | Description
 *Schematic::FeaturesApi* | [**latest_flag_checks**](docs/FeaturesApi.md#latest_flag_checks) | **GET** /flag-checks/latest | Latest flag checks
 *Schematic::FeaturesApi* | [**list_features**](docs/FeaturesApi.md#list_features) | **GET** /features | List features
 *Schematic::FeaturesApi* | [**list_flag_checks**](docs/FeaturesApi.md#list_flag_checks) | **GET** /flag-checks | List flag checks
-*Schematic::FeaturesApi* | [**list_flag_values**](docs/FeaturesApi.md#list_flag_values) | **GET** /flag-values | List flag values
 *Schematic::FeaturesApi* | [**list_flags**](docs/FeaturesApi.md#list_flags) | **GET** /flags | List flags
 *Schematic::FeaturesApi* | [**update_feature**](docs/FeaturesApi.md#update_feature) | **PUT** /features/{feature_id} | Update feature
 *Schematic::FeaturesApi* | [**update_flag**](docs/FeaturesApi.md#update_flag) | **PUT** /flags/{flag_id} | Update flag
@@ -187,8 +185,6 @@ Class | Method | HTTP request | Description
  - [Schematic::CountEventsResponse](docs/CountEventsResponse.md)
  - [Schematic::CountFlagChecksParams](docs/CountFlagChecksParams.md)
  - [Schematic::CountFlagChecksResponse](docs/CountFlagChecksResponse.md)
- - [Schematic::CountFlagValuesParams](docs/CountFlagValuesParams.md)
- - [Schematic::CountFlagValuesResponse](docs/CountFlagValuesResponse.md)
  - [Schematic::CountResponse](docs/CountResponse.md)
  - [Schematic::CountUsersAudienceResponse](docs/CountUsersAudienceResponse.md)
  - [Schematic::CreateApiKeyRequestBody](docs/CreateApiKeyRequestBody.md)
@@ -219,7 +215,6 @@ Class | Method | HTTP request | Description
  - [Schematic::DeleteFlagResponse](docs/DeleteFlagResponse.md)
  - [Schematic::DeletePlanResponse](docs/DeletePlanResponse.md)
  - [Schematic::DeleteResponse](docs/DeleteResponse.md)
- - [Schematic::EntityFlagValueResponseData](docs/EntityFlagValueResponseData.md)
  - [Schematic::EntityKeyResponseData](docs/EntityKeyResponseData.md)
  - [Schematic::EntityTraitDefinitionResponseData](docs/EntityTraitDefinitionResponseData.md)
  - [Schematic::EnvironmentDetailResponseData](docs/EnvironmentDetailResponseData.md)
@@ -271,8 +266,6 @@ Class | Method | HTTP request | Description
  - [Schematic::ListFeaturesResponse](docs/ListFeaturesResponse.md)
  - [Schematic::ListFlagChecksParams](docs/ListFlagChecksParams.md)
  - [Schematic::ListFlagChecksResponse](docs/ListFlagChecksResponse.md)
- - [Schematic::ListFlagValuesParams](docs/ListFlagValuesParams.md)
- - [Schematic::ListFlagValuesResponse](docs/ListFlagValuesResponse.md)
  - [Schematic::ListFlagsParams](docs/ListFlagsParams.md)
  - [Schematic::ListFlagsResponse](docs/ListFlagsResponse.md)
  - [Schematic::ListMetricCountsHourlyParams](docs/ListMetricCountsHourlyParams.md)

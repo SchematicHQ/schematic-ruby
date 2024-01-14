@@ -8,7 +8,6 @@ All URIs are relative to *https://api.schematichq.com*
 | [**check_flags**](FeaturesApi.md#check_flags) | **POST** /flags/check | Check flags |
 | [**count_companies_audience**](FeaturesApi.md#count_companies_audience) | **POST** /audience/count-companies | Count Companies audience |
 | [**count_flag_checks**](FeaturesApi.md#count_flag_checks) | **GET** /flag-checks/count | Count flag checks |
-| [**count_flag_values**](FeaturesApi.md#count_flag_values) | **GET** /flag-values/count | Count flag values |
 | [**count_users_audience**](FeaturesApi.md#count_users_audience) | **POST** /audience/count-users | Count Users audience |
 | [**create_feature**](FeaturesApi.md#create_feature) | **POST** /features | Create feature |
 | [**create_flag**](FeaturesApi.md#create_flag) | **POST** /flags | Create flag |
@@ -24,7 +23,6 @@ All URIs are relative to *https://api.schematichq.com*
 | [**latest_flag_checks**](FeaturesApi.md#latest_flag_checks) | **GET** /flag-checks/latest | Latest flag checks |
 | [**list_features**](FeaturesApi.md#list_features) | **GET** /features | List features |
 | [**list_flag_checks**](FeaturesApi.md#list_flag_checks) | **GET** /flag-checks | List flag checks |
-| [**list_flag_values**](FeaturesApi.md#list_flag_values) | **GET** /flag-values | List flag values |
 | [**list_flags**](FeaturesApi.md#list_flags) | **GET** /flags | List flags |
 | [**update_feature**](FeaturesApi.md#update_feature) | **PUT** /features/{feature_id} | Update feature |
 | [**update_flag**](FeaturesApi.md#update_flag) | **PUT** /flags/{flag_id} | Update flag |
@@ -52,7 +50,7 @@ end
 
 api_instance = Schematic::FeaturesApi.new
 key = 'key_example' # String | key
-check_flag_request_body = Schematic::CheckFlagRequestBody.new({company: 3.56}) # CheckFlagRequestBody | 
+check_flag_request_body = Schematic::CheckFlagRequestBody.new # CheckFlagRequestBody | 
 opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example' # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
 }
@@ -126,7 +124,7 @@ Schematic.configure do |config|
 end
 
 api_instance = Schematic::FeaturesApi.new
-check_flag_request_body = Schematic::CheckFlagRequestBody.new({company: 3.56}) # CheckFlagRequestBody | 
+check_flag_request_body = Schematic::CheckFlagRequestBody.new # CheckFlagRequestBody | 
 opts = {
   x_schematic_environment_id: 'x_schematic_environment_id_example' # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
 }
@@ -322,89 +320,6 @@ end
 ### Return type
 
 [**CountFlagChecksResponse**](CountFlagChecksResponse.md)
-
-### Authorization
-
-[ApiKeyAuth](../README.md#ApiKeyAuth)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-
-## count_flag_values
-
-> <CountFlagValuesResponse> count_flag_values(entity_type, opts)
-
-Count flag values
-
-### Examples
-
-```ruby
-require 'time'
-require 'schematic'
-# setup authorization
-Schematic.configure do |config|
-  # Configure API key authorization: ApiKeyAuth
-  config.api_key['ApiKeyAuth'] = 'YOUR API KEY'
-  # Uncomment the following line to set a prefix for the API key, e.g. 'Bearer' (defaults to nil)
-  # config.api_key_prefix['ApiKeyAuth'] = 'Bearer'
-end
-
-api_instance = Schematic::FeaturesApi.new
-entity_type = 56 # Integer | 
-opts = {
-  x_schematic_environment_id: 'x_schematic_environment_id_example', # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
-  company_id: 'company_id_example', # String | 
-  user_id: 'user_id_example', # String | 
-  flag_id: 'flag_id_example', # String | 
-  limit: 56, # Integer | Page limit (default 100)
-  offset: 56 # Integer | Page offset (default 0)
-}
-
-begin
-  # Count flag values
-  result = api_instance.count_flag_values(entity_type, opts)
-  p result
-rescue Schematic::ApiError => e
-  puts "Error when calling FeaturesApi->count_flag_values: #{e}"
-end
-```
-
-#### Using the count_flag_values_with_http_info variant
-
-This returns an Array which contains the response data, status code and headers.
-
-> <Array(<CountFlagValuesResponse>, Integer, Hash)> count_flag_values_with_http_info(entity_type, opts)
-
-```ruby
-begin
-  # Count flag values
-  data, status_code, headers = api_instance.count_flag_values_with_http_info(entity_type, opts)
-  p status_code # => 2xx
-  p headers # => { ... }
-  p data # => <CountFlagValuesResponse>
-rescue Schematic::ApiError => e
-  puts "Error when calling FeaturesApi->count_flag_values_with_http_info: #{e}"
-end
-```
-
-### Parameters
-
-| Name | Type | Description | Notes |
-| ---- | ---- | ----------- | ----- |
-| **entity_type** | **Integer** |  |  |
-| **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
-| **company_id** | **String** |  | [optional] |
-| **user_id** | **String** |  | [optional] |
-| **flag_id** | **String** |  | [optional] |
-| **limit** | **Integer** | Page limit (default 100) | [optional] |
-| **offset** | **Integer** | Page offset (default 0) | [optional] |
-
-### Return type
-
-[**CountFlagValuesResponse**](CountFlagValuesResponse.md)
 
 ### Authorization
 
@@ -1518,89 +1433,6 @@ end
 ### Return type
 
 [**ListFlagChecksResponse**](ListFlagChecksResponse.md)
-
-### Authorization
-
-[ApiKeyAuth](../README.md#ApiKeyAuth)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-
-## list_flag_values
-
-> <ListFlagValuesResponse> list_flag_values(entity_type, opts)
-
-List flag values
-
-### Examples
-
-```ruby
-require 'time'
-require 'schematic'
-# setup authorization
-Schematic.configure do |config|
-  # Configure API key authorization: ApiKeyAuth
-  config.api_key['ApiKeyAuth'] = 'YOUR API KEY'
-  # Uncomment the following line to set a prefix for the API key, e.g. 'Bearer' (defaults to nil)
-  # config.api_key_prefix['ApiKeyAuth'] = 'Bearer'
-end
-
-api_instance = Schematic::FeaturesApi.new
-entity_type = 56 # Integer | 
-opts = {
-  x_schematic_environment_id: 'x_schematic_environment_id_example', # String | If the request is made using an API key that is not environment-scoped, specify the environment using this header
-  company_id: 'company_id_example', # String | 
-  user_id: 'user_id_example', # String | 
-  flag_id: 'flag_id_example', # String | 
-  limit: 56, # Integer | Page limit (default 100)
-  offset: 56 # Integer | Page offset (default 0)
-}
-
-begin
-  # List flag values
-  result = api_instance.list_flag_values(entity_type, opts)
-  p result
-rescue Schematic::ApiError => e
-  puts "Error when calling FeaturesApi->list_flag_values: #{e}"
-end
-```
-
-#### Using the list_flag_values_with_http_info variant
-
-This returns an Array which contains the response data, status code and headers.
-
-> <Array(<ListFlagValuesResponse>, Integer, Hash)> list_flag_values_with_http_info(entity_type, opts)
-
-```ruby
-begin
-  # List flag values
-  data, status_code, headers = api_instance.list_flag_values_with_http_info(entity_type, opts)
-  p status_code # => 2xx
-  p headers # => { ... }
-  p data # => <ListFlagValuesResponse>
-rescue Schematic::ApiError => e
-  puts "Error when calling FeaturesApi->list_flag_values_with_http_info: #{e}"
-end
-```
-
-### Parameters
-
-| Name | Type | Description | Notes |
-| ---- | ---- | ----------- | ----- |
-| **entity_type** | **Integer** |  |  |
-| **x_schematic_environment_id** | **String** | If the request is made using an API key that is not environment-scoped, specify the environment using this header | [optional] |
-| **company_id** | **String** |  | [optional] |
-| **user_id** | **String** |  | [optional] |
-| **flag_id** | **String** |  | [optional] |
-| **limit** | **Integer** | Page limit (default 100) | [optional] |
-| **offset** | **Integer** | Page offset (default 0) | [optional] |
-
-### Return type
-
-[**ListFlagValuesResponse**](ListFlagValuesResponse.md)
 
 ### Authorization
 

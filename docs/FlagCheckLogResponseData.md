@@ -13,8 +13,8 @@
 | **flag_key** | **String** |  |  |
 | **id** | **String** |  |  |
 | **reason** | **String** |  |  |
-| **req_company** | **Object** |  |  |
-| **req_user** | **Object** |  |  |
+| **req_company** | **Object** |  | [optional] |
+| **req_user** | **Object** |  | [optional] |
 | **rule_id** | **String** |  | [optional] |
 | **updated_at** | **Time** |  |  |
 | **user_id** | **String** |  | [optional] |

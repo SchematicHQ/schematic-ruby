@@ -98,6 +98,8 @@ module Schematic
         :'company_id',
         :'error',
         :'flag_id',
+        :'req_company',
+        :'req_user',
         :'rule_id',
         :'user_id',
       ])
@@ -207,14 +209,6 @@ module Schematic
         invalid_properties.push('invalid value for "reason", reason cannot be nil.')
       end
 
-      if @req_company.nil?
-        invalid_properties.push('invalid value for "req_company", req_company cannot be nil.')
-      end
-
-      if @req_user.nil?
-        invalid_properties.push('invalid value for "req_user", req_user cannot be nil.')
-      end
-
       if @updated_at.nil?
         invalid_properties.push('invalid value for "updated_at", updated_at cannot be nil.')
       end
@@ -235,8 +229,6 @@ module Schematic
       return false if @flag_key.nil?
       return false if @id.nil?
       return false if @reason.nil?
-      return false if @req_company.nil?
-      return false if @req_user.nil?
       return false if @updated_at.nil?
       return false if @value.nil?
       true

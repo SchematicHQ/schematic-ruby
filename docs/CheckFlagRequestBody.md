@@ -4,7 +4,7 @@
 
 | Name | Type | Description | Notes |
 | ---- | ---- | ----------- | ----- |
-| **company** | **Object** |  |  |
+| **company** | **Object** |  | [optional] |
 | **user** | **Object** |  | [optional] |
 
 ## Example
