@@ -36,9 +36,9 @@ Finally add this to the Gemfile:
 
 ### Install from Git
 
-If the Ruby gem is hosted at a git repository: https://github.com/SchematicHQ/schematic-go, then add the following in the Gemfile:
+If the Ruby gem is hosted at a git repository: https://github.com/SchematicHQ/schematic-ruby, then add the following in the Gemfile:
 
-    gem 'schematic', :git => 'https://github.com/SchematicHQ/schematic-go.git'
+    gem 'schematic', :git => 'https://github.com/SchematicHQ/schematic-ruby.git'
 
 ### Include the Ruby code directly
 
