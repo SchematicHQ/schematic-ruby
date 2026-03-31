@@ -1,0 +1,11 @@
+{
+  "cliVersion": "4.43.1",
+  "generatorName": "fernapi/fern-ruby-sdk",
+  "generatorVersion": "1.1.10",
+  "generatorConfig": {
+    "module": "SchematicHQ",
+    "rubocopVariableNumberStyle": "disabled"
+  },
+  "originGitCommit": "464a4739821bafe4f8f6f2da0f78530c78ec40e3",
+  "sdkVersion": "0.0.1"
+}
