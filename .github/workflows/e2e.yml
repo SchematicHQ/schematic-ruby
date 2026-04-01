@@ -1,0 +1,36 @@
+name: e2e
+on:
+  workflow_dispatch:
+    inputs:
+      api-base-url:
+        description: "Schematic API base URL"
+        required: false
+        default: "https://api.schematichq.dev"
+      sdk-source:
+        description: "SDK source: local or published"
+        required: false
+        type: choice
+        options:
+          - local
+          - published
+        default: "local"
+      sdk-version:
+        description: "SDK version (only used when sdk-source=published)"
+        required: false
+        default: ""
+
+jobs:
+  e2e:
+    uses: SchematicHQ/actions/.github/workflows/sdk-e2e.yml@main
+    with:
+      setup: |
+        sudo apt-get update -q && sudo apt-get install -yq ruby-dev
+        gem install bundler
+        bundle install
+        ./scripts/download-wasm.sh
+        cd testapp && bundle install
+      start: ruby testapp/app.rb
+      api-base-url: ${{ inputs.api-base-url || 'https://api.schematichq.dev' }}
+      sdk-source: ${{ inputs.sdk-source || 'local' }}
+      sdk-version: ${{ inputs.sdk-version || '' }}
+    secrets: inherit
