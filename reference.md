@@ -12091,7 +12091,10 @@ client.plans.list_plan_issues(
 <dd>
 
 ```ruby
-client.plans.delete_plan_version(plan_id: "plan_id")
+client.plans.delete_plan_version(
+  plan_id: "plan_id",
+  promote_archived_version: true
+)
 ```
 </dd>
 </dl>
@@ -12107,6 +12110,14 @@ client.plans.delete_plan_version(plan_id: "plan_id")
 <dd>
 
 **plan_id:** `String` — plan_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**promote_archived_version:** `Internal::Types::Boolean` 
     
 </dd>
 </dl>
