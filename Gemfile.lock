@@ -1,8 +1,9 @@
 PATH
   remote: .
   specs:
-    schematichq (0.0.1)
+    schematichq (0.1.0)
       wasmtime (>= 19.0)
+      websocket (>= 1.2)
 
 GEM
   remote: https://rubygems.org/
@@ -74,6 +75,7 @@ GEM
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
     webrick (1.9.2)
+    websocket (1.2.11)
 
 PLATFORMS
   aarch64-linux
