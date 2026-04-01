@@ -388,14 +388,21 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :plan_id
+      # @option params [Boolean, nil] :promote_archived_version
       #
       # @return [Schematic::Plans::Types::DeletePlanVersionResponse]
       def delete_plan_version(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        query_param_names = %i[promote_archived_version]
+        query_params = {}
+        query_params["promote_archived_version"] = params[:promote_archived_version] if params.key?(:promote_archived_version)
+        params = params.except(*query_param_names)
+
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
           method: "DELETE",
           path: "plans/version/#{URI.encode_uri_component(params[:plan_id].to_s)}",
+          query: query_params,
           request_options: request_options
         )
         begin

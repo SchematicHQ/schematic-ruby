@@ -16,6 +16,8 @@ group :test, :development do
   gem "pry"
 
   gem "webmock"
+
+  gem "webrick", ">= 1.0"
 end
 
 # Load custom Gemfile configuration if it exists

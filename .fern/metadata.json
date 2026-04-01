@@ -4,8 +4,14 @@
   "generatorVersion": "1.1.10",
   "generatorConfig": {
     "module": "SchematicHQ",
-    "rubocopVariableNumberStyle": "disabled"
+    "rubocopVariableNumberStyle": "disabled",
+    "extraDependencies": {
+      "wasmtime": ">= 19.0"
+    },
+    "extraDevDependencies": {
+      "webrick": ">= 1.0"
+    }
   },
-  "originGitCommit": "464a4739821bafe4f8f6f2da0f78530c78ec40e3",
+  "originGitCommit": "7ab8910eff1993525f47867321008baf3105305a",
   "sdkVersion": "0.0.1"
 }
