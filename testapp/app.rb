@@ -93,19 +93,16 @@ def handle_configure(request, response)
   }
 
   # Build Redis client if needed (shared between cache and DataStream/replicator)
-  redis_client = nil
-  if config["redisUrl"]
-    redis_client = Redis.new(url: config["redisUrl"])
-  end
+  redis_client = config["redisUrl"] ? Redis.new(url: config["redisUrl"]) : nil
 
   # Cache provider: explicit Redis, disabled, or SDK defaults
-  if redis_client
-    cache_providers = [Schematic::RedisCacheProvider.new(client: redis_client, ttl: CACHE_TTL)]
-  elsif config["noCache"]
-    cache_providers = []
-  else
-    cache_providers = [Schematic::LocalCache.new(ttl: CACHE_TTL)]
-  end
+  cache_providers = if redis_client
+                      [Schematic::RedisCacheProvider.new(client: redis_client, ttl: CACHE_TTL)]
+                    elsif config["noCache"]
+                      []
+                    else
+                      [Schematic::LocalCache.new(ttl: CACHE_TTL)]
+                    end
   opts[:cache_providers] = cache_providers
   AppState.cache_providers = cache_providers
 
