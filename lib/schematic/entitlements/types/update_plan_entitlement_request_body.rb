@@ -9,6 +9,7 @@ module Schematic
         field :billing_threshold, -> { Integer }, optional: true, nullable: false
         field :credit_consumption_rate, -> { Integer }, optional: true, nullable: false
         field :currency, -> { String }, optional: true, nullable: false
+        field :currency_prices, -> { Internal::Types::Array[Schematic::Types::CurrencyPriceRequestBody] }, optional: true, nullable: false
         field :metric_period, -> { Schematic::Entitlements::Types::UpdatePlanEntitlementRequestBodyMetricPeriod }, optional: true, nullable: false
         field :metric_period_month_reset, -> { Schematic::Entitlements::Types::UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset }, optional: true, nullable: false
         field :monthly_metered_price_id, -> { String }, optional: true, nullable: false
