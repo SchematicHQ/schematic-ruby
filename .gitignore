@@ -1,1 +1,5 @@
 *.gem
+
+# WASM artifacts (downloaded from schematic-api GitHub Releases)
+lib/schematic/wasm/rulesengine.wasm
+lib/schematic/wasm/.wasm_version

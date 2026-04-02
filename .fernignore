@@ -1,1 +1,21 @@
-# Specify files that shouldn't be modified by Fern
+.claude/
+.github/
+.gitignore
+CLAUDE.md
+LICENSE
+README.md
+WASM_VERSION
+custom.gemspec.rb
+lib/schematic/cache.rb
+lib/schematic/datastream/
+lib/schematic/event_buffer.rb
+lib/schematic/logger.rb
+lib/schematic/redis_cache.rb
+lib/schematic/rules_engine.rb
+lib/schematic/schematic_client.rb
+lib/schematic/wasm/
+lib/schematic/webhook_verification.rb
+lib/schematichq.rb
+scripts/
+test/custom.test.rb
+testapp/
