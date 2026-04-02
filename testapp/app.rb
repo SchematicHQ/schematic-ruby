@@ -24,6 +24,7 @@
 require "webrick"
 require "json"
 require "socket"
+require "redis"
 
 # --- SDK Loading ---
 
@@ -91,12 +92,20 @@ def handle_configure(request, response)
     api_key: config["apiKey"]
   }
 
-  # Cache provider: disabled or SDK defaults with short TTL
-  cache_providers = if config["noCache"]
-                      []
-                    else
-                      [Schematic::LocalCache.new(ttl: CACHE_TTL)]
-                    end
+  # Build Redis client if needed (shared between cache and DataStream/replicator)
+  redis_client = nil
+  if config["redisUrl"]
+    redis_client = Redis.new(url: config["redisUrl"])
+  end
+
+  # Cache provider: explicit Redis, disabled, or SDK defaults
+  if redis_client
+    cache_providers = [Schematic::RedisCacheProvider.new(client: redis_client, ttl: CACHE_TTL)]
+  elsif config["noCache"]
+    cache_providers = []
+  else
+    cache_providers = [Schematic::LocalCache.new(ttl: CACHE_TTL)]
+  end
   opts[:cache_providers] = cache_providers
   AppState.cache_providers = cache_providers
 
@@ -109,6 +118,7 @@ def handle_configure(request, response)
     opts[:use_data_stream] = true
 
     datastream_opts = { cache_ttl: CACHE_TTL }
+    datastream_opts[:redis_client] = redis_client if redis_client
 
     if config["replicatorUrl"]
       datastream_opts[:replicator_mode] = true
