@@ -6,4 +6,9 @@
 # you will need to add it to the .fernignore file to prevent your changes from being
 # overwritten by the generator.
 
+# Example usage:
+# group :test, :development do
+#   gem 'custom-gem', '~> 2.0'
+# end
+
 # Add your custom gem dependencies here

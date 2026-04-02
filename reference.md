@@ -4589,7 +4589,7 @@ client.credits.grant_billing_credits_to_company(
   company_id: "company_id",
   credit_id: "credit_id",
   quantity: 1000000,
-  reason: "billing_credit_auto_topup"
+  reason: "adjustment"
 )
 ```
 </dd>
@@ -5400,6 +5400,54 @@ client.credits.create_billing_plan_credit_grant(
 <dd>
 
 **request:** `Schematic::Types::CreateBillingPlanCreditGrantRequestBody` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Credits::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">get_single_billing_plan_credit_grant</a>(plan_grant_id) -> Schematic::Credits::Types::GetSingleBillingPlanCreditGrantResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.credits.get_single_billing_plan_credit_grant(plan_grant_id: "plan_grant_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_grant_id:** `String` — plan_grant_id
     
 </dd>
 </dl>
@@ -10579,6 +10627,14 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
+**currency_prices:** `Internal::Types::Array[Schematic::Types::CurrencyPriceRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **feature_id:** `String` 
     
 </dd>
@@ -10887,6 +10943,14 @@ client.entitlements.update_plan_entitlement(
 <dd>
 
 **currency:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**currency_prices:** `Internal::Types::Array[Schematic::Types::CurrencyPriceRequestBody]` 
     
 </dd>
 </dl>

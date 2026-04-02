@@ -5,6 +5,7 @@ module Schematic
     module BillingCreditGrantReason
       extend Schematic::Internal::Types::Enum
 
+      ADJUSTMENT = "adjustment"
       BILLING_CREDIT_AUTO_TOPUP = "billing_credit_auto_topup"
       FREE = "free"
       PLAN = "plan"
