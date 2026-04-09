@@ -2416,11 +2416,13 @@ describe "DataStream Client - Partial Entity Messages" do
               data: existing
             })
 
-    # Send a partial update
+    # Send a partial update. The cache lookup uses entity_id from the envelope;
+    # data is the wrapped partial payload with no top-level id.
     ds.send(:handle_message, {
               entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
+              entity_id: "comp_1",
               message_type: Schematic::DataStream::MESSAGE_TYPE_PARTIAL,
-              data: { id: "comp_1", traits: { "seats" => "25" } }
+              data: { traits: { "seats" => "25" } }
             })
 
     cached = ds.instance_variable_get(:@company_cache).get_by_id("comp_1")
@@ -2445,10 +2447,13 @@ describe "DataStream Client - Partial Entity Messages" do
               data: existing
             })
 
+    # Send a partial update. Cache lookup uses entity_id from the envelope;
+    # data is the wrapped partial payload with no top-level id.
     ds.send(:handle_message, {
               entity_type: Schematic::DataStream::ENTITY_TYPE_USER,
+              entity_id: "user_1",
               message_type: Schematic::DataStream::MESSAGE_TYPE_PARTIAL,
-              data: { id: "user_1", keys: { "user_id" => "u123" } }
+              data: { keys: { "user_id" => "u123" } }
             })
 
     cached = ds.instance_variable_get(:@user_cache).get_by_id("user_1")
@@ -2460,36 +2465,39 @@ describe "DataStream Client - Partial Entity Messages" do
     ds.close
   end
 
-  it "partial company for non-existing entity caches as new" do
+  it "partial company for non-existing entity is skipped" do
     ctx = build_ds_client
     ds = ctx[:client]
 
+    # No FULL message for new_comp; partial should be dropped on cache miss.
     ds.send(:handle_message, {
               entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
+              entity_id: "new_comp",
               message_type: Schematic::DataStream::MESSAGE_TYPE_PARTIAL,
-              data: { id: "new_comp", keys: { "org_id" => "xyz" }, traits: { "tier" => "free" } }
+              data: { traits: { "tier" => "free" } }
             })
 
     cached = ds.instance_variable_get(:@company_cache).get_by_id("new_comp")
 
-    refute_nil cached, "partial message for non-existing entity should create a new cache entry"
+    assert_nil cached, "partial message for non-existing entity should be dropped"
 
     ds.close
   end
 
-  it "partial user for non-existing entity caches as new" do
+  it "partial user for non-existing entity is skipped" do
     ctx = build_ds_client
     ds = ctx[:client]
 
     ds.send(:handle_message, {
               entity_type: Schematic::DataStream::ENTITY_TYPE_USER,
+              entity_id: "new_user",
               message_type: Schematic::DataStream::MESSAGE_TYPE_PARTIAL,
-              data: { id: "new_user", keys: { "email" => "new@test.com" } }
+              data: { keys: { "email" => "new@test.com" } }
             })
 
     cached = ds.instance_variable_get(:@user_cache).get_by_id("new_user")
 
-    refute_nil cached
+    assert_nil cached, "partial message for non-existing entity should be dropped"
 
     ds.close
   end

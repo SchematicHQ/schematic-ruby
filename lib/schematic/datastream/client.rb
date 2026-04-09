@@ -295,6 +295,7 @@ module Schematic
       def handle_message(message)
         entity_type = message[:entity_type] || message["entity_type"]
         message_type = message[:message_type] || message["message_type"]
+        entity_id = message[:entity_id] || message["entity_id"]
         data = message[:data] || message["data"]
 
         @logger.debug("Processing DataStream message: EntityType=#{entity_type}, MessageType=#{message_type}")
@@ -305,9 +306,9 @@ module Schematic
         when ENTITY_TYPE_FLAG
           handle_flag_message(data, message_type)
         when ENTITY_TYPE_COMPANY, ENTITY_TYPE_COMPANIES
-          handle_company_message(data, message_type)
+          handle_company_message(data, message_type, entity_id)
         when ENTITY_TYPE_USER, ENTITY_TYPE_USERS
-          handle_user_message(data, message_type)
+          handle_user_message(data, message_type, entity_id)
         else
           if message[:error] || message["error"]
             handle_error_message(message)
@@ -357,25 +358,28 @@ module Schematic
         end
       end
 
-      def handle_company_message(data, message_type)
-        id = data[:id] || data["id"]
-
+      def handle_company_message(data, message_type, entity_id = nil)
         case message_type
         when MESSAGE_TYPE_DELETE
-          @company_cache.delete_entity(data) if id
+          delete_id = data[:id] || data["id"] if data.is_a?(Hash)
+          @company_cache.delete_entity(data) if delete_id
         when MESSAGE_TYPE_PARTIAL
-          if id
-            existing = @company_cache.get_by_id(id)
+          # Cache lookup uses envelope entity_id; data is the wrapped partial
+          # payload (e.g. {"credit_balances": {...}}), with no top-level id.
+          if entity_id
+            existing = @company_cache.get_by_id(entity_id)
             if existing
               merged = Merge.partial_company(existing, data)
               @company_cache.cache_entity(merged, ttl: @cache_ttl)
             else
-              @logger.warn("Cache miss for partial company '#{id}', caching as new")
-              @company_cache.cache_entity(data, ttl: @cache_ttl)
+              @logger.warn("Cache miss for partial company '#{entity_id}', skipping")
             end
+          else
+            @logger.warn("Partial company message missing entity_id")
           end
         when MESSAGE_TYPE_FULL
-          @company_cache.cache_entity(data, ttl: @cache_ttl) if id
+          full_id = data[:id] || data["id"] if data.is_a?(Hash)
+          @company_cache.cache_entity(data, ttl: @cache_ttl) if full_id
         end
 
         notify_pending(:company, data)
@@ -383,25 +387,28 @@ module Schematic
         @logger.error("Failed to process company message: #{e.message}")
       end
 
-      def handle_user_message(data, message_type)
-        id = data[:id] || data["id"]
-
+      def handle_user_message(data, message_type, entity_id = nil)
         case message_type
         when MESSAGE_TYPE_DELETE
-          @user_cache.delete_entity(data) if id
+          delete_id = data[:id] || data["id"] if data.is_a?(Hash)
+          @user_cache.delete_entity(data) if delete_id
         when MESSAGE_TYPE_PARTIAL
-          if id
-            existing = @user_cache.get_by_id(id)
+          # Cache lookup uses envelope entity_id; data is the wrapped partial
+          # payload with no top-level id.
+          if entity_id
+            existing = @user_cache.get_by_id(entity_id)
             if existing
               merged = Merge.partial_user(existing, data)
               @user_cache.cache_entity(merged, ttl: @cache_ttl)
             else
-              @logger.warn("Cache miss for partial user '#{id}', caching as new")
-              @user_cache.cache_entity(data, ttl: @cache_ttl)
+              @logger.warn("Cache miss for partial user '#{entity_id}', skipping")
             end
+          else
+            @logger.warn("Partial user message missing entity_id")
           end
         when MESSAGE_TYPE_FULL
-          @user_cache.cache_entity(data, ttl: @cache_ttl) if id
+          full_id = data[:id] || data["id"] if data.is_a?(Hash)
+          @user_cache.cache_entity(data, ttl: @cache_ttl) if full_id
         end
 
         notify_pending(:user, data)
