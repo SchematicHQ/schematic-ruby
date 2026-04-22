@@ -1612,6 +1612,40 @@ describe "SchematicClient - check_flags with DataStream" do
     WebMock.reset!
   end
 
+  it "does not enqueue flag_check events for bulk check_flags via DataStream" do
+    captured_bodies = []
+    stub_request(:post, CAPTURE_URL).to_return do |req|
+      captured_bodies << JSON.parse(req.body, symbolize_names: true)
+      { status: 200 }
+    end
+
+    client = Schematic::SchematicClient.new(api_key: "api_test_key_123")
+
+    mock_ds = Object.new
+    mock_ds.define_singleton_method(:connected?) { true }
+    mock_ds.define_singleton_method(:close) { nil }
+    mock_ds.define_singleton_method(:check_flag) do |_eval_ctx, flag_key|
+      { value: true, flag_key: flag_key, reason: "match" }
+    end
+    client.instance_variable_set(:@datastream_client, mock_ds)
+
+    client.check_flags(
+      company: { "org_id" => "abc" },
+      keys: %w[ds-flag-a ds-flag-b]
+    )
+
+    # Force the buffer to flush any pending events
+    client.instance_variable_get(:@event_buffer).flush
+
+    flag_check_events = captured_bodies.flat_map { |b| b[:events] || [] }
+                                       .select { |e| e[:type] == "flag_check" }
+
+    assert_empty flag_check_events, "bulk check_flags should not emit flag_check events"
+
+    client.close
+    WebMock.reset!
+  end
+
   it "falls back to API when any DataStream flag evaluation fails" do
     stub_request(:post, CAPTURE_URL).to_return(status: 200)
 

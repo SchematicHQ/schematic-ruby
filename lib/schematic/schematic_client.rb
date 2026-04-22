@@ -482,7 +482,6 @@ module Schematic
       keys.each do |key|
         result = @datastream_client.check_flag(eval_ctx, key)
         response = CheckFlagResponse.new(result)
-        enqueue_flag_check_event(key, response, company, user)
         results << { flag: key, value: response.value, reason: response.reason }
       rescue DataStream::EvaluationError => e
         @logger.debug("DataStream check_flags falling back to API: #{e.message}")
