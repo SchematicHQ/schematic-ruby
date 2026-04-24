@@ -10,8 +10,8 @@ module Schematic
         field :credit_consumption_rate, -> { Integer }, optional: true, nullable: false
         field :currency, -> { String }, optional: true, nullable: false
         field :currency_prices, -> { Internal::Types::Array[Schematic::Types::CurrencyPriceRequestBody] }, optional: true, nullable: false
-        field :metric_period, -> { Schematic::Entitlements::Types::UpdatePlanEntitlementRequestBodyMetricPeriod }, optional: true, nullable: false
-        field :metric_period_month_reset, -> { Schematic::Entitlements::Types::UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset }, optional: true, nullable: false
+        field :metric_period, -> { Schematic::Types::MetricPeriod }, optional: true, nullable: false
+        field :metric_period_month_reset, -> { Schematic::Types::MetricPeriodMonthReset }, optional: true, nullable: false
         field :monthly_metered_price_id, -> { String }, optional: true, nullable: false
         field :monthly_price_tiers, -> { Internal::Types::Array[Schematic::Types::CreatePriceTierRequestBody] }, optional: true, nullable: false
         field :monthly_unit_price, -> { Integer }, optional: true, nullable: false

@@ -8,8 +8,8 @@ module Schematic
         field :credit_consumption_rate, -> { Integer }, optional: true, nullable: false
         field :expiration_date, -> { String }, optional: true, nullable: false
         field :feature_id, -> { String }, optional: false, nullable: false
-        field :metric_period, -> { Schematic::Entitlements::Types::CreateCompanyOverrideRequestBodyMetricPeriod }, optional: true, nullable: false
-        field :metric_period_month_reset, -> { Schematic::Entitlements::Types::CreateCompanyOverrideRequestBodyMetricPeriodMonthReset }, optional: true, nullable: false
+        field :metric_period, -> { Schematic::Types::MetricPeriod }, optional: true, nullable: false
+        field :metric_period_month_reset, -> { Schematic::Types::MetricPeriodMonthReset }, optional: true, nullable: false
         field :note, -> { String }, optional: true, nullable: false
         field :value_bool, -> { Internal::Types::Boolean }, optional: true, nullable: false
         field :value_credit_id, -> { String }, optional: true, nullable: false

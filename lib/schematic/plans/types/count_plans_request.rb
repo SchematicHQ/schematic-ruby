@@ -5,6 +5,7 @@ module Schematic
     module Types
       class CountPlansRequest < Internal::Types::Model
         field :company_id, -> { String }, optional: true, nullable: false
+        field :exclude_company_scoped, -> { Internal::Types::Boolean }, optional: true, nullable: false
         field :for_fallback_plan, -> { Internal::Types::Boolean }, optional: true, nullable: false
         field :for_initial_plan, -> { Internal::Types::Boolean }, optional: true, nullable: false
         field :for_trial_expiry_plan, -> { Internal::Types::Boolean }, optional: true, nullable: false
@@ -13,6 +14,7 @@ module Schematic
         field :include_draft_versions, -> { Internal::Types::Boolean }, optional: true, nullable: false
         field :plan_type, -> { Schematic::Types::PlanType }, optional: true, nullable: false
         field :q, -> { String }, optional: true, nullable: false
+        field :scoped_to_company_id, -> { String }, optional: true, nullable: false
         field :without_entitlement_for, -> { String }, optional: true, nullable: false
         field :without_paid_product_id, -> { Internal::Types::Boolean }, optional: true, nullable: false
         field :limit, -> { Integer }, optional: true, nullable: false

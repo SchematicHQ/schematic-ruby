@@ -10,7 +10,7 @@ module Schematic
       field :icon, -> { String }, optional: false, nullable: false
       field :id, -> { String }, optional: false, nullable: false
       field :lifecycle_phase, -> { Schematic::Types::FeatureLifecyclePhase }, optional: true, nullable: false
-      field :maintainer_id, -> { String }, optional: true, nullable: false
+      field :maintainer_account_member_id, -> { String }, optional: true, nullable: false
       field :name, -> { String }, optional: false, nullable: false
       field :plural_name, -> { String }, optional: true, nullable: false
       field :singular_name, -> { String }, optional: true, nullable: false

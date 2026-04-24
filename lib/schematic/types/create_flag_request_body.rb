@@ -8,7 +8,7 @@ module Schematic
       field :feature_id, -> { String }, optional: true, nullable: false
       field :flag_type, -> { String }, optional: false, nullable: false
       field :key, -> { String }, optional: false, nullable: false
-      field :maintainer_id, -> { String }, optional: true, nullable: false
+      field :maintainer_account_member_id, -> { String }, optional: true, nullable: false
       field :name, -> { String }, optional: false, nullable: false
     end
   end

@@ -18,6 +18,7 @@ module Schematic
         field :period_end, -> { Integer }, optional: true, nullable: false
         field :period_start, -> { Integer }, optional: true, nullable: false
         field :product_external_ids, -> { Internal::Types::Array[Schematic::Types::BillingProductPricing] }, optional: false, nullable: false
+        field :provider_type, -> { Schematic::Types::BillingProviderType }, optional: true, nullable: false
         field :status, -> { String }, optional: true, nullable: false
         field :subscription_external_id, -> { String }, optional: false, nullable: false
         field :total_price, -> { Integer }, optional: false, nullable: false

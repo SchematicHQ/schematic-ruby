@@ -11,8 +11,8 @@ module Schematic
       field :entitlement_type, -> { Schematic::Types::EntitlementType }, optional: false, nullable: false
       field :feature, -> { Schematic::Types::FeatureDetailResponseData }, optional: true, nullable: false
       field :metric_reset_at, -> { String }, optional: true, nullable: false
-      field :month_reset, -> { String }, optional: true, nullable: false
-      field :period, -> { String }, optional: true, nullable: false
+      field :month_reset, -> { Schematic::Types::MetricPeriodMonthReset }, optional: true, nullable: false
+      field :period, -> { Schematic::Types::MetricPeriod }, optional: true, nullable: false
       field :plan, -> { Schematic::Types::PlanResponseData }, optional: true, nullable: false
       field :usage, -> { Integer }, optional: true, nullable: false
       field :user, -> { Schematic::Types::UserResponseData }, optional: true, nullable: false

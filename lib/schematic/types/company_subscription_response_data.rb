@@ -13,6 +13,7 @@ module Schematic
       field :latest_invoice, -> { Schematic::Types::InvoiceResponseData }, optional: true, nullable: false
       field :payment_method, -> { Schematic::Types::PaymentMethodResponseData }, optional: true, nullable: false
       field :products, -> { Internal::Types::Array[Schematic::Types::BillingProductForSubscriptionResponseData] }, optional: false, nullable: false
+      field :provider_type, -> { Schematic::Types::BillingProviderType }, optional: false, nullable: false
       field :status, -> { String }, optional: false, nullable: false
       field :subscription_external_id, -> { String }, optional: false, nullable: false
       field :total_price, -> { Integer }, optional: false, nullable: false

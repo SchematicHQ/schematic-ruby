@@ -5,6 +5,7 @@ module Schematic
     class ApiKeyCreateResponseData < Internal::Types::Model
       field :created_at, -> { String }, optional: false, nullable: false
       field :description, -> { String }, optional: true, nullable: false
+      field :environment, -> { Schematic::Types::EnvironmentResponseData }, optional: true, nullable: false
       field :environment_id, -> { String }, optional: true, nullable: false
       field :id, -> { String }, optional: false, nullable: false
       field :last_used_at, -> { String }, optional: true, nullable: false

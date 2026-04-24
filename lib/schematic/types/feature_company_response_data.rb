@@ -24,15 +24,15 @@ module Schematic
       field :entitlement_id, -> { String }, optional: false, nullable: false
       field :entitlement_source, -> { String }, optional: true, nullable: false
       field :entitlement_type, -> { Schematic::Types::EntitlementType }, optional: false, nullable: false
-      field :feature, -> { Schematic::Types::FeatureDetailResponseData }, optional: true, nullable: false
+      field :feature, -> { Schematic::Types::FeatureInPlanResponseData }, optional: true, nullable: false
       field :has_valid_allocation, -> { Internal::Types::Boolean }, optional: true, nullable: false
       field :is_unlimited, -> { Internal::Types::Boolean }, optional: true, nullable: false
       field :metric_reset_at, -> { String }, optional: true, nullable: false
-      field :month_reset, -> { String }, optional: true, nullable: false
+      field :month_reset, -> { Schematic::Types::MetricPeriodMonthReset }, optional: true, nullable: false
       field :monthly_usage_based_price, -> { Schematic::Types::BillingPriceView }, optional: true, nullable: false
       field :overuse, -> { Integer }, optional: true, nullable: false
       field :percent_used, -> { Integer }, optional: true, nullable: false
-      field :period, -> { String }, optional: true, nullable: false
+      field :period, -> { Schematic::Types::MetricPeriod }, optional: true, nullable: false
       field :plan, -> { Schematic::Types::PlanResponseData }, optional: true, nullable: false
       field :plan_entitlement, -> { Schematic::Types::PlanEntitlementResponseData }, optional: true, nullable: false
       field :price_behavior, -> { Schematic::Types::EntitlementPriceBehavior }, optional: true, nullable: false

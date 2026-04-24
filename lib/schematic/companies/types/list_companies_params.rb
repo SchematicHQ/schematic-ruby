@@ -6,6 +6,7 @@ module Schematic
       # Input parameters
       class ListCompaniesParams < Internal::Types::Model
         field :credit_type_ids, -> { Internal::Types::Array[String] }, optional: true, nullable: false
+        field :has_scheduled_downgrade, -> { Internal::Types::Boolean }, optional: true, nullable: false
         field :ids, -> { Internal::Types::Array[String] }, optional: true, nullable: false
         field :limit, -> { Integer }, optional: true, nullable: false
         field :monetized_subscriptions, -> { Internal::Types::Boolean }, optional: true, nullable: false

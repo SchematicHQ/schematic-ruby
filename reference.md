@@ -1,101 +1,130 @@
 # Reference
-<details><summary><code>client.<a href="/lib/schematic/client.rb">put_plan_audiences_plan_audience_id</a>(plan_audience_id) -> </code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```ruby
-client.put_plan_audiences_plan_audience_id(plan_audience_id: "plan_audience_id")
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**plan_audience_id:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `Schematic::RequestOptions` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.<a href="/lib/schematic/client.rb">delete_plan_audiences_plan_audience_id</a>(plan_audience_id) -> </code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```ruby
-client.delete_plan_audiences_plan_audience_id(plan_audience_id: "plan_audience_id")
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**plan_audience_id:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `Schematic::RequestOptions` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 ## accounts
+<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">list_account_members</a>() -> Schematic::Accounts::Types::ListAccountMembersResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.accounts.list_account_members(
+  ids: ["ids"],
+  q: "q",
+  limit: 1000000,
+  offset: 1000000
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**ids:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `String` — Search filter
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Integer` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `Integer` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Accounts::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">get_account_member</a>(account_member_id) -> Schematic::Accounts::Types::GetAccountMemberResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.accounts.get_account_member(account_member_id: "account_member_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**account_member_id:** `String` — account_member_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Accounts::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">list_api_keys</a>() -> Schematic::Accounts::Types::ListApiKeysResponse</code></summary>
 <dl>
 <dd>
@@ -752,6 +781,7 @@ client.accounts.count_audit_logs(
 
 ```ruby
 client.accounts.list_environments(
+  ids: ["ids"],
   limit: 1000000,
   offset: 1000000
 )
@@ -1420,8 +1450,9 @@ client.billing.upsert_billing_customer(
 
 ```ruby
 client.billing.list_customers_with_subscriptions(
+  company_ids: ["company_ids"],
   name: "name",
-  provider_type: "schematic",
+  provider_type: "orb",
   q: "q",
   limit: 1000000,
   offset: 1000000
@@ -1514,8 +1545,9 @@ client.billing.list_customers_with_subscriptions(
 
 ```ruby
 client.billing.count_customers(
+  company_ids: ["company_ids"],
   name: "name",
-  provider_type: "schematic",
+  provider_type: "orb",
   q: "q",
   limit: 1000000,
   offset: 1000000
@@ -1965,6 +1997,14 @@ client.billing.upsert_billing_meter(
 <dl>
 <dd>
 
+**provider_type:** `Schematic::Types::BillingProviderType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `Schematic::Billing::RequestOptions` 
     
 </dd>
@@ -2211,11 +2251,13 @@ client.billing.list_billing_prices(
   currency: "currency",
   for_initial_plan: true,
   for_trial_expiry_plan: true,
+  ids: ["ids"],
   interval: "interval",
   is_active: true,
   price: 1000000,
   product_id: "product_id",
-  provider_type: "schematic",
+  product_ids: ["product_ids"],
+  provider_type: "orb",
   q: "q",
   tiers_mode: "graduated",
   usage_type: "licensed",
@@ -2466,6 +2508,14 @@ client.billing.upsert_billing_price(
 <dl>
 <dd>
 
+**nickname:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **package_size:** `Integer` 
     
 </dd>
@@ -2615,11 +2665,13 @@ client.billing.list_billing_product_prices(
   currency: "currency",
   for_initial_plan: true,
   for_trial_expiry_plan: true,
+  ids: ["ids"],
   interval: "interval",
   is_active: true,
   price: 1000000,
   product_id: "product_id",
-  provider_type: "schematic",
+  product_ids: ["product_ids"],
+  provider_type: "orb",
   q: "q",
   tiers_mode: "graduated",
   usage_type: "licensed",
@@ -2926,10 +2978,11 @@ client.billing.upsert_billing_product(
 
 ```ruby
 client.billing.list_billing_products(
+  ids: ["ids"],
   is_active: true,
   name: "name",
   price_usage_type: "licensed",
-  provider_type: "schematic",
+  provider_type: "orb",
   q: "q",
   with_one_time_charges: true,
   with_prices_only: true,
@@ -3074,10 +3127,11 @@ client.billing.list_billing_products(
 
 ```ruby
 client.billing.count_billing_products(
+  ids: ["ids"],
   is_active: true,
   name: "name",
   price_usage_type: "licensed",
-  provider_type: "schematic",
+  provider_type: "orb",
   q: "q",
   with_one_time_charges: true,
   with_prices_only: true,
@@ -3370,6 +3424,14 @@ client.billing.upsert_billing_subscription(
 <dl>
 <dd>
 
+**provider_type:** `Schematic::Types::BillingProviderType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **status:** `String` 
     
 </dd>
@@ -3437,6 +3499,7 @@ client.billing.upsert_billing_subscription(
 
 ```ruby
 client.credits.list_billing_credits(
+  ids: ["ids"],
   name: "name",
   limit: 1000000,
   offset: 1000000
@@ -3905,6 +3968,7 @@ client.credits.soft_delete_billing_credit(credit_id: "credit_id")
 
 ```ruby
 client.credits.list_credit_bundles(
+  ids: ["ids"],
   credit_id: "credit_id",
   status: "active",
   bundle_type: "fixed",
@@ -4360,6 +4424,7 @@ client.credits.delete_credit_bundle(bundle_id: "bundle_id")
 
 ```ruby
 client.credits.count_credit_bundles(
+  ids: ["ids"],
   credit_id: "credit_id",
   status: "active",
   bundle_type: "fixed",
@@ -4454,6 +4519,7 @@ client.credits.count_credit_bundles(
 
 ```ruby
 client.credits.count_billing_credits(
+  ids: ["ids"],
   name: "name",
   limit: 1000000,
   offset: 1000000
@@ -4900,6 +4966,7 @@ client.credits.list_company_grants(
 ```ruby
 client.credits.count_billing_credits_grants(
   credit_id: "credit_id",
+  ids: ["ids"],
   limit: 1000000,
   offset: 1000000
 )
@@ -4976,6 +5043,7 @@ client.credits.count_billing_credits_grants(
 ```ruby
 client.credits.list_grants_for_credit(
   credit_id: "credit_id",
+  ids: ["ids"],
   limit: 1000000,
   offset: 1000000
 )
@@ -5278,7 +5346,9 @@ client.credits.count_credit_ledger(
 ```ruby
 client.credits.list_billing_plan_credit_grants(
   credit_id: "credit_id",
+  ids: ["ids"],
   plan_id: "plan_id",
+  plan_ids: ["plan_ids"],
   plan_version_id: "plan_version_id",
   limit: 1000000,
   offset: 1000000
@@ -5601,7 +5671,9 @@ client.credits.delete_billing_plan_credit_grant(
 ```ruby
 client.credits.count_billing_plan_credit_grants(
   credit_id: "credit_id",
+  ids: ["ids"],
   plan_id: "plan_id",
+  plan_ids: ["plan_ids"],
   plan_version_id: "plan_version_id",
   limit: 1000000,
   offset: 1000000
@@ -6358,12 +6430,18 @@ client.checkout.update_customer_subscription_trial_end(subscription_id: "subscri
 
 ```ruby
 client.companies.list_companies(
+  credit_type_ids: ["credit_type_ids"],
+  has_scheduled_downgrade: true,
+  ids: ["ids"],
   monetized_subscriptions: true,
   plan_id: "plan_id",
+  plan_ids: ["plan_ids"],
   plan_version_id: "plan_version_id",
   q: "q",
   sort_order_column: "sort_order_column",
   sort_order_direction: "asc",
+  subscription_statuses: ["active"],
+  subscription_types: ["free"],
   with_entitlement_for: "with_entitlement_for",
   without_feature_override_for: "without_feature_override_for",
   without_plan: true,
@@ -6387,6 +6465,14 @@ client.companies.list_companies(
 <dd>
 
 **credit_type_ids:** `String` — Filter companies by one or more credit type IDs (each ID starts with bcrd_)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**has_scheduled_downgrade:** `Internal::Types::Boolean` — Filter companies that have a pending scheduled downgrade
     
 </dd>
 </dl>
@@ -6722,12 +6808,18 @@ client.companies.delete_company(
 
 ```ruby
 client.companies.count_companies(
+  credit_type_ids: ["credit_type_ids"],
+  has_scheduled_downgrade: true,
+  ids: ["ids"],
   monetized_subscriptions: true,
   plan_id: "plan_id",
+  plan_ids: ["plan_ids"],
   plan_version_id: "plan_version_id",
   q: "q",
   sort_order_column: "sort_order_column",
   sort_order_direction: "asc",
+  subscription_statuses: ["active"],
+  subscription_types: ["free"],
   with_entitlement_for: "with_entitlement_for",
   without_feature_override_for: "without_feature_override_for",
   without_plan: true,
@@ -6751,6 +6843,14 @@ client.companies.count_companies(
 <dd>
 
 **credit_type_ids:** `String` — Filter companies by one or more credit type IDs (each ID starts with bcrd_)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**has_scheduled_downgrade:** `Internal::Types::Boolean` — Filter companies that have a pending scheduled downgrade
     
 </dd>
 </dl>
@@ -7273,6 +7373,7 @@ client.companies.delete_company_membership(company_membership_id: "company_membe
 ```ruby
 client.companies.get_active_company_subscription(
   company_id: "company_id",
+  company_ids: ["company_ids"],
   limit: 1000000,
   offset: 1000000
 )
@@ -7402,6 +7503,7 @@ client.companies.upsert_company_trait(
 ```ruby
 client.companies.list_entity_key_definitions(
   entity_type: "company",
+  ids: ["ids"],
   q: "q",
   limit: 1000000,
   offset: 1000000
@@ -7487,6 +7589,7 @@ client.companies.list_entity_key_definitions(
 ```ruby
 client.companies.count_entity_key_definitions(
   entity_type: "company",
+  ids: ["ids"],
   q: "q",
   limit: 1000000,
   offset: 1000000
@@ -7572,8 +7675,10 @@ client.companies.count_entity_key_definitions(
 ```ruby
 client.companies.list_entity_trait_definitions(
   entity_type: "company",
+  ids: ["ids"],
   q: "q",
   trait_type: "boolean",
+  trait_types: ["boolean"],
   limit: 1000000,
   offset: 1000000
 )
@@ -7865,8 +7970,10 @@ client.companies.update_entity_trait_definition(
 ```ruby
 client.companies.count_entity_trait_definitions(
   entity_type: "company",
+  ids: ["ids"],
   q: "q",
   trait_type: "boolean",
+  trait_types: ["boolean"],
   limit: 1000000,
   offset: 1000000
 )
@@ -8043,9 +8150,11 @@ client.companies.get_entity_trait_values(
 
 ```ruby
 client.companies.list_plan_changes(
-  action: "action",
-  base_plan_action: "base_plan_action",
+  action: "checkout",
+  base_plan_action: "fallback",
   company_id: "company_id",
+  company_ids: ["company_ids"],
+  plan_ids: ["plan_ids"],
   limit: 1000000,
   offset: 1000000
 )
@@ -8063,7 +8172,7 @@ client.companies.list_plan_changes(
 <dl>
 <dd>
 
-**action:** `String` 
+**action:** `Schematic::Types::PlanChangeAction` 
     
 </dd>
 </dl>
@@ -8071,7 +8180,7 @@ client.companies.list_plan_changes(
 <dl>
 <dd>
 
-**base_plan_action:** `String` 
+**base_plan_action:** `Schematic::Types::PlanChangeBasePlanAction` 
     
 </dd>
 </dl>
@@ -8193,8 +8302,10 @@ client.companies.get_plan_change(plan_change_id: "plan_change_id")
 
 ```ruby
 client.companies.list_plan_traits(
+  ids: ["ids"],
   plan_id: "plan_id",
   trait_id: "trait_id",
+  trait_ids: ["trait_ids"],
   limit: 1000000,
   offset: 1000000
 )
@@ -8272,74 +8383,6 @@ client.companies.list_plan_traits(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">create_plan_trait</a>(request) -> Schematic::Companies::Types::CreatePlanTraitResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```ruby
-client.companies.create_plan_trait(
-  plan_id: "plan_id",
-  trait_id: "trait_id",
-  trait_value: "trait_value"
-)
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**plan_id:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**trait_id:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**trait_value:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `Schematic::Companies::RequestOptions` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">get_plan_trait</a>(plan_trait_id) -> Schematic::Companies::Types::GetPlanTraitResponse</code></summary>
 <dl>
 <dd>
@@ -8354,122 +8397,6 @@ client.companies.create_plan_trait(
 
 ```ruby
 client.companies.get_plan_trait(plan_trait_id: "plan_trait_id")
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**plan_trait_id:** `String` — plan_trait_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `Schematic::Companies::RequestOptions` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">update_plan_trait</a>(plan_trait_id, request) -> Schematic::Companies::Types::UpdatePlanTraitResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```ruby
-client.companies.update_plan_trait(
-  plan_trait_id: "plan_trait_id",
-  plan_id: "plan_id",
-  trait_value: "trait_value"
-)
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**plan_trait_id:** `String` — plan_trait_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**plan_id:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**trait_value:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `Schematic::Companies::RequestOptions` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">delete_plan_trait</a>(plan_trait_id) -> Schematic::Companies::Types::DeletePlanTraitResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```ruby
-client.companies.delete_plan_trait(plan_trait_id: "plan_trait_id")
 ```
 </dd>
 </dl>
@@ -8589,8 +8516,10 @@ client.companies.update_plan_traits_bulk(
 
 ```ruby
 client.companies.count_plan_traits(
+  ids: ["ids"],
   plan_id: "plan_id",
   trait_id: "trait_id",
+  trait_ids: ["trait_ids"],
   limit: 1000000,
   offset: 1000000
 )
@@ -8736,6 +8665,7 @@ client.companies.upsert_user_trait(
 ```ruby
 client.companies.list_users(
   company_id: "company_id",
+  ids: ["ids"],
   plan_id: "plan_id",
   q: "q",
   limit: 1000000,
@@ -8976,6 +8906,7 @@ client.companies.delete_user(user_id: "user_id")
 ```ruby
 client.companies.count_users(
   company_id: "company_id",
+  ids: ["ids"],
   plan_id: "plan_id",
   q: "q",
   limit: 1000000,
@@ -9221,7 +9152,10 @@ client.companies.lookup_user(keys: {
 ```ruby
 client.entitlements.list_company_overrides(
   company_id: "company_id",
+  company_ids: ["company_ids"],
   feature_id: "feature_id",
+  feature_ids: ["feature_ids"],
+  ids: ["ids"],
   without_expired: true,
   q: "q",
   limit: 1000000,
@@ -9389,7 +9323,7 @@ client.entitlements.create_company_override(
 <dl>
 <dd>
 
-**metric_period:** `Schematic::Entitlements::Types::CreateCompanyOverrideRequestBodyMetricPeriod` 
+**metric_period:** `Schematic::Types::MetricPeriod` 
     
 </dd>
 </dl>
@@ -9397,7 +9331,7 @@ client.entitlements.create_company_override(
 <dl>
 <dd>
 
-**metric_period_month_reset:** `Schematic::Entitlements::Types::CreateCompanyOverrideRequestBodyMetricPeriodMonthReset` 
+**metric_period_month_reset:** `Schematic::Types::MetricPeriodMonthReset` 
     
 </dd>
 </dl>
@@ -9568,7 +9502,7 @@ client.entitlements.update_company_override(
 <dl>
 <dd>
 
-**metric_period:** `Schematic::Entitlements::Types::UpdateCompanyOverrideRequestBodyMetricPeriod` 
+**metric_period:** `Schematic::Types::MetricPeriod` 
     
 </dd>
 </dl>
@@ -9576,7 +9510,7 @@ client.entitlements.update_company_override(
 <dl>
 <dd>
 
-**metric_period_month_reset:** `Schematic::Entitlements::Types::UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset` 
+**metric_period_month_reset:** `Schematic::Types::MetricPeriodMonthReset` 
     
 </dd>
 </dl>
@@ -9707,7 +9641,10 @@ client.entitlements.delete_company_override(company_override_id: "company_overri
 ```ruby
 client.entitlements.count_company_overrides(
   company_id: "company_id",
+  company_ids: ["company_ids"],
   feature_id: "feature_id",
+  feature_ids: ["feature_ids"],
+  ids: ["ids"],
   without_expired: true,
   q: "q",
   limit: 1000000,
@@ -9980,6 +9917,7 @@ client.entitlements.count_feature_companies(
 ```ruby
 client.entitlements.list_feature_usage(
   company_id: "company_id",
+  feature_ids: ["feature_ids"],
   include_usage_aggregation: true,
   q: "q",
   without_negative_entitlements: true,
@@ -10177,6 +10115,7 @@ client.entitlements.get_feature_usage_time_series(
 ```ruby
 client.entitlements.count_feature_usage(
   company_id: "company_id",
+  feature_ids: ["feature_ids"],
   include_usage_aggregation: true,
   q: "q",
   without_negative_entitlements: true,
@@ -10442,8 +10381,12 @@ client.entitlements.count_feature_users(
 ```ruby
 client.entitlements.list_plan_entitlements(
   feature_id: "feature_id",
+  feature_ids: ["feature_ids"],
+  ids: ["ids"],
   plan_id: "plan_id",
+  plan_ids: ["plan_ids"],
   plan_version_id: "plan_version_id",
+  plan_version_ids: ["plan_version_ids"],
   q: "q",
   with_metered_products: true,
   limit: 1000000,
@@ -10643,7 +10586,7 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
-**metric_period:** `Schematic::Entitlements::Types::CreatePlanEntitlementRequestBodyMetricPeriod` 
+**metric_period:** `Schematic::Types::MetricPeriod` 
     
 </dd>
 </dl>
@@ -10651,7 +10594,7 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
-**metric_period_month_reset:** `Schematic::Entitlements::Types::CreatePlanEntitlementRequestBodyMetricPeriodMonthReset` 
+**metric_period_month_reset:** `Schematic::Types::MetricPeriodMonthReset` 
     
 </dd>
 </dl>
@@ -10958,7 +10901,7 @@ client.entitlements.update_plan_entitlement(
 <dl>
 <dd>
 
-**metric_period:** `Schematic::Entitlements::Types::UpdatePlanEntitlementRequestBodyMetricPeriod` 
+**metric_period:** `Schematic::Types::MetricPeriod` 
     
 </dd>
 </dl>
@@ -10966,7 +10909,7 @@ client.entitlements.update_plan_entitlement(
 <dl>
 <dd>
 
-**metric_period_month_reset:** `Schematic::Entitlements::Types::UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset` 
+**metric_period_month_reset:** `Schematic::Types::MetricPeriodMonthReset` 
     
 </dd>
 </dl>
@@ -11178,6 +11121,292 @@ client.entitlements.delete_plan_entitlement(plan_entitlement_id: "plan_entitleme
 </dl>
 </details>
 
+<details><summary><code>client.entitlements.<a href="/lib/schematic/entitlements/client.rb">upsert_plan_entitlement_for_billing_product</a>(request) -> Schematic::Entitlements::Types::UpsertPlanEntitlementForBillingProductResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.entitlements.upsert_plan_entitlement_for_billing_product(
+  billing_provider: "orb",
+  external_resource_id: "external_resource_id",
+  feature_id: "feature_id",
+  plan_id: "plan_id",
+  value_type: "boolean"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_product_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billing_provider:** `Schematic::Types::BillingProviderType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billing_threshold:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**credit_consumption_rate:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**currency:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**currency_prices:** `Internal::Types::Array[Schematic::Types::CurrencyPriceRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**external_resource_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**feature_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metric_period:** `Schematic::Types::MetricPeriod` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metric_period_month_reset:** `Schematic::Types::MetricPeriodMonthReset` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**monthly_metered_price_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**monthly_price_tiers:** `Internal::Types::Array[Schematic::Types::CreatePriceTierRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**monthly_unit_price:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**monthly_unit_price_decimal:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**overage_billing_product_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**price_behavior:** `Schematic::Types::EntitlementPriceBehavior` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**price_tiers:** `Internal::Types::Array[Schematic::Types::CreatePriceTierRequestBody]` — Use MonthlyPriceTiers or YearlyPriceTiers instead
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**soft_limit:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tier_mode:** `Schematic::Types::BillingTiersMode` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**value_bool:** `Internal::Types::Boolean` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**value_credit_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**value_numeric:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**value_trait_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**value_type:** `Schematic::Types::EntitlementValueType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**yearly_metered_price_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**yearly_price_tiers:** `Internal::Types::Array[Schematic::Types::CreatePriceTierRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**yearly_unit_price:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**yearly_unit_price_decimal:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Entitlements::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.entitlements.<a href="/lib/schematic/entitlements/client.rb">count_plan_entitlements</a>() -> Schematic::Entitlements::Types::CountPlanEntitlementsResponse</code></summary>
 <dl>
 <dd>
@@ -11193,8 +11422,12 @@ client.entitlements.delete_plan_entitlement(plan_entitlement_id: "plan_entitleme
 ```ruby
 client.entitlements.count_plan_entitlements(
   feature_id: "feature_id",
+  feature_ids: ["feature_ids"],
+  ids: ["ids"],
   plan_id: "plan_id",
+  plan_ids: ["plan_ids"],
   plan_version_id: "plan_version_id",
+  plan_version_ids: ["plan_version_ids"],
   q: "q",
   with_metered_products: true,
   limit: 1000000,
@@ -11491,6 +11724,272 @@ client.plans.update_company_plans(
 </dl>
 </details>
 
+<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">list_custom_plan_billings</a>() -> Schematic::Plans::Types::ListCustomPlanBillingsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.plans.list_custom_plan_billings(
+  company_id: "company_id",
+  plan_id: "plan_id",
+  status: "active",
+  statuses: ["active"],
+  limit: 1000000,
+  offset: 1000000
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `String` — Filter by company ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_id:** `String` — Filter by plan ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `Schematic::Types::CustomPlanBillingStatus` — Filter by billing status
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**statuses:** `Schematic::Types::CustomPlanBillingStatus` — Filter by multiple billing statuses
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Integer` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `Integer` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Plans::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">retry_custom_plan_billing</a>(custom_plan_billing_id, request) -> Schematic::Plans::Types::RetryCustomPlanBillingResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.plans.retry_custom_plan_billing(
+  custom_plan_billing_id: "custom_plan_billing_id",
+  customer_email: "customer_email",
+  pay_in_advance: [{
+    price_id: "price_id",
+    quantity: 1000000
+  }]
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**custom_plan_billing_id:** `String` — custom_plan_billing_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**activation_strategy:** `Schematic::Types::CustomPlanActivationStrategy` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**customer_email:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**days_until_due:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pay_in_advance:** `Internal::Types::Array[Schematic::Types::UpdatePayInAdvanceRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Plans::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">create_custom_plan</a>(request) -> Schematic::Plans::Types::CreateCustomPlanResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.plans.create_custom_plan(
+  company_id: "company_id",
+  description: "description",
+  name: "name"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**copied_from_plan_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**icon:** `Schematic::Types::PlanIcon` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Plans::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">list_plans</a>() -> Schematic::Plans::Types::ListPlansResponse</code></summary>
 <dl>
 <dd>
@@ -11506,13 +12005,16 @@ client.plans.update_company_plans(
 ```ruby
 client.plans.list_plans(
   company_id: "company_id",
+  exclude_company_scoped: true,
   for_fallback_plan: true,
   for_initial_plan: true,
   for_trial_expiry_plan: true,
   has_product_id: true,
+  ids: ["ids"],
   include_draft_versions: true,
   plan_type: "plan",
   q: "q",
+  scoped_to_company_id: "scoped_to_company_id",
   without_entitlement_for: "without_entitlement_for",
   without_paid_product_id: true,
   limit: 1000000,
@@ -11533,6 +12035,14 @@ client.plans.list_plans(
 <dd>
 
 **company_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exclude_company_scoped:** `Internal::Types::Boolean` — Exclude plans that are scoped to a company (custom plans assigned to a company)
     
 </dd>
 </dl>
@@ -11597,6 +12107,14 @@ client.plans.list_plans(
 <dd>
 
 **q:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scoped_to_company_id:** `String` — Filter plans scoped to a specific company (custom plans)
     
 </dd>
 </dl>
@@ -11926,6 +12444,254 @@ client.plans.upsert_billing_product_plan(
 </dl>
 </details>
 
+<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">upsert_plan_for_billing_product</a>(request) -> Schematic::Plans::Types::UpsertPlanForBillingProductResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.plans.upsert_plan_for_billing_product(
+  billing_provider: "orb",
+  description: "description",
+  external_resource_id: "external_resource_id",
+  name: "name",
+  plan_type: "plan"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_provider:** `Schematic::Types::BillingProviderType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**external_resource_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**icon:** `Schematic::Types::PlanIcon` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_type:** `Schematic::Types::PlanType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Plans::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">list_billing_product_match_companies</a>() -> Schematic::Plans::Types::ListBillingProductMatchCompaniesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.plans.list_billing_product_match_companies(
+  plan_id: "plan_id",
+  q: "q",
+  limit: 1000000,
+  offset: 1000000
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_id:** `String` — The plan ID to find billing product match companies for
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `String` — Search for companies by name, keys or string traits
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Integer` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `Integer` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Plans::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">count_billing_product_match_companies</a>() -> Schematic::Plans::Types::CountBillingProductMatchCompaniesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.plans.count_billing_product_match_companies(
+  plan_id: "plan_id",
+  q: "q",
+  limit: 1000000,
+  offset: 1000000
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_id:** `String` — The plan ID to find billing product match companies for
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `String` — Search for companies by name, keys or string traits
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Integer` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `Integer` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Plans::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">count_plans</a>() -> Schematic::Plans::Types::CountPlansResponse</code></summary>
 <dl>
 <dd>
@@ -11941,13 +12707,16 @@ client.plans.upsert_billing_product_plan(
 ```ruby
 client.plans.count_plans(
   company_id: "company_id",
+  exclude_company_scoped: true,
   for_fallback_plan: true,
   for_initial_plan: true,
   for_trial_expiry_plan: true,
   has_product_id: true,
+  ids: ["ids"],
   include_draft_versions: true,
   plan_type: "plan",
   q: "q",
+  scoped_to_company_id: "scoped_to_company_id",
   without_entitlement_for: "without_entitlement_for",
   without_paid_product_id: true,
   limit: 1000000,
@@ -11968,6 +12737,14 @@ client.plans.count_plans(
 <dd>
 
 **company_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exclude_company_scoped:** `Internal::Types::Boolean` — Exclude plans that are scoped to a company (custom plans assigned to a company)
     
 </dd>
 </dl>
@@ -12032,6 +12809,14 @@ client.plans.count_plans(
 <dd>
 
 **q:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scoped_to_company_id:** `String` — Filter plans scoped to a specific company (custom plans)
     
 </dd>
 </dl>
@@ -12217,7 +13002,11 @@ client.plans.delete_plan_version(
 client.plans.publish_plan_version(
   plan_id: "plan_id",
   excluded_company_ids: ["excluded_company_ids"],
-  migration_strategy: "immediate"
+  migration_strategy: "immediate",
+  pay_in_advance: [{
+    price_id: "price_id",
+    quantity: 1000000
+  }]
 )
 ```
 </dd>
@@ -12241,6 +13030,30 @@ client.plans.publish_plan_version(
 <dl>
 <dd>
 
+**activation_strategy:** `Schematic::Types::CustomPlanActivationStrategy` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**customer_email:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**days_until_due:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **excluded_company_ids:** `Internal::Types::Array[String]` 
     
 </dd>
@@ -12250,6 +13063,14 @@ client.plans.publish_plan_version(
 <dd>
 
 **migration_strategy:** `Schematic::Types::PlanVersionMigrationStrategy` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pay_in_advance:** `Internal::Types::Array[Schematic::Types::UpdatePayInAdvanceRequestBody]` 
     
 </dd>
 </dl>
@@ -12891,6 +13712,7 @@ client.events.create_event_batch(events: [{
 ```ruby
 client.events.get_event_summaries(
   q: "q",
+  event_subtypes: ["event_subtypes"],
   limit: 1000000,
   offset: 1000000
 )
@@ -12968,6 +13790,7 @@ client.events.get_event_summaries(
 client.events.list_events(
   company_id: "company_id",
   event_subtype: "event_subtype",
+  event_types: ["flag_check"],
   flag_id: "flag_id",
   user_id: "user_id",
   limit: 1000000,
@@ -13206,11 +14029,13 @@ client.events.get_segment_integration_status
 
 ```ruby
 client.features.list_features(
+  boolean_require_event: true,
+  feature_type: ["boolean"],
+  ids: ["ids"],
+  plan_version_id: "plan_version_id",
   q: "q",
   without_company_override_for: "without_company_override_for",
-  plan_version_id: "plan_version_id",
   without_plan_entitlement_for: "without_plan_entitlement_for",
-  boolean_require_event: true,
   limit: 1000000,
   offset: 1000000
 )
@@ -13228,7 +14053,31 @@ client.features.list_features(
 <dl>
 <dd>
 
+**boolean_require_event:** `Internal::Types::Boolean` — Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**feature_type:** `Schematic::Types::FeatureType` — Filter by one or more feature types (boolean, event, trait)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **ids:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_id:** `String` — Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
     
 </dd>
 </dl>
@@ -13252,31 +14101,7 @@ client.features.list_features(
 <dl>
 <dd>
 
-**plan_version_id:** `String` — Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **without_plan_entitlement_for:** `String` — Filter out features that already have a plan entitlement for the specified plan ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**feature_type:** `Schematic::Types::FeatureType` — Filter by one or more feature types (boolean, event, trait)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**boolean_require_event:** `Internal::Types::Boolean` — Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
     
 </dd>
 </dl>
@@ -13392,7 +14217,7 @@ client.features.create_feature(
 <dl>
 <dd>
 
-**maintainer_id:** `String` 
+**maintainer_account_member_id:** `String` 
     
 </dd>
 </dl>
@@ -13576,7 +14401,7 @@ client.features.update_feature(feature_id: "feature_id")
 <dl>
 <dd>
 
-**maintainer_id:** `String` 
+**maintainer_account_member_id:** `String` 
     
 </dd>
 </dl>
@@ -13676,6 +14501,156 @@ client.features.delete_feature(feature_id: "feature_id")
 </dl>
 </details>
 
+<details><summary><code>client.features.<a href="/lib/schematic/features/client.rb">upsert_feature_for_billing_product</a>(request) -> Schematic::Features::Types::UpsertFeatureForBillingProductResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.features.upsert_feature_for_billing_product(
+  billing_provider: "orb",
+  description: "description",
+  external_resource_id: "external_resource_id",
+  feature_type: "boolean",
+  name: "name"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_provider:** `Schematic::Types::BillingProviderType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**event_subtype:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**external_resource_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**feature_type:** `Schematic::Types::FeatureType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**flag:** `Schematic::Types::CreateOrUpdateFlagRequestBody` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**icon:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**lifecycle_phase:** `Schematic::Types::FeatureLifecyclePhase` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**maintainer_account_member_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plural_name:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**singular_name:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trait_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Features::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.features.<a href="/lib/schematic/features/client.rb">count_features</a>() -> Schematic::Features::Types::CountFeaturesResponse</code></summary>
 <dl>
 <dd>
@@ -13690,11 +14665,13 @@ client.features.delete_feature(feature_id: "feature_id")
 
 ```ruby
 client.features.count_features(
+  boolean_require_event: true,
+  feature_type: ["boolean"],
+  ids: ["ids"],
+  plan_version_id: "plan_version_id",
   q: "q",
   without_company_override_for: "without_company_override_for",
-  plan_version_id: "plan_version_id",
   without_plan_entitlement_for: "without_plan_entitlement_for",
-  boolean_require_event: true,
   limit: 1000000,
   offset: 1000000
 )
@@ -13712,7 +14689,31 @@ client.features.count_features(
 <dl>
 <dd>
 
+**boolean_require_event:** `Internal::Types::Boolean` — Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**feature_type:** `Schematic::Types::FeatureType` — Filter by one or more feature types (boolean, event, trait)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **ids:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_id:** `String` — Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
     
 </dd>
 </dl>
@@ -13736,31 +14737,7 @@ client.features.count_features(
 <dl>
 <dd>
 
-**plan_version_id:** `String` — Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **without_plan_entitlement_for:** `String` — Filter out features that already have a plan entitlement for the specified plan ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**feature_type:** `Schematic::Types::FeatureType` — Filter by one or more feature types (boolean, event, trait)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**boolean_require_event:** `Internal::Types::Boolean` — Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
     
 </dd>
 </dl>
@@ -13811,6 +14788,7 @@ client.features.count_features(
 ```ruby
 client.features.list_flags(
   feature_id: "feature_id",
+  ids: ["ids"],
   q: "q",
   limit: 1000000,
   offset: 1000000
@@ -14112,13 +15090,13 @@ client.features.update_flag_rules(
   rules: [{
     condition_groups: [{
       conditions: [{
-        condition_type: "company",
+        condition_type: "base_plan",
         operator: "eq",
         resource_ids: ["resource_ids"]
       }]
     }],
     conditions: [{
-      condition_type: "company",
+      condition_type: "base_plan",
       operator: "eq",
       resource_ids: ["resource_ids"]
     }],
@@ -14336,6 +15314,7 @@ client.features.check_flags_bulk(contexts: [{}])
 ```ruby
 client.features.count_flags(
   feature_id: "feature_id",
+  ids: ["ids"],
   q: "q",
   limit: 1000000,
   offset: 1000000
@@ -14395,6 +15374,55 @@ client.features.count_flags(
 <dd>
 
 **request_options:** `Schematic::Features::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## integrationsapi
+<details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">get_integration_webhook_url</a>(type) -> Schematic::Integrationsapi::Types::GetIntegrationWebhookUrlResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.integrationsapi.get_integration_webhook_url(type: "type")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**type:** `String` — type
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Integrationsapi::RequestOptions` 
     
 </dd>
 </dl>
@@ -16050,6 +17078,7 @@ client.accesstokens.issue_temporary_access_token(
 
 ```ruby
 client.webhooks.list_webhook_events(
+  ids: ["ids"],
   q: "q",
   webhook_id: "webhook_id",
   limit: 1000000,
@@ -16183,6 +17212,7 @@ client.webhooks.get_webhook_event(webhook_event_id: "webhook_event_id")
 
 ```ruby
 client.webhooks.count_webhook_events(
+  ids: ["ids"],
   q: "q",
   webhook_id: "webhook_id",
   limit: 1000000,

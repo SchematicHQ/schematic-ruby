@@ -6,6 +6,7 @@ module Schematic
       field :actor_type, -> { Schematic::Types::ActorType }, optional: false, nullable: false
       field :api_key_id, -> { String }, optional: true, nullable: false
       field :ended_at, -> { String }, optional: true, nullable: false
+      field :environment, -> { Schematic::Types::EnvironmentResponseData }, optional: true, nullable: false
       field :environment_id, -> { String }, optional: true, nullable: false
       field :id, -> { String }, optional: false, nullable: false
       field :method_, -> { String }, optional: false, nullable: false, api_name: "method"

@@ -5,6 +5,7 @@ module Schematic
     module Types
       class CountCompaniesRequest < Internal::Types::Model
         field :credit_type_ids, -> { String }, optional: true, nullable: false
+        field :has_scheduled_downgrade, -> { Internal::Types::Boolean }, optional: true, nullable: false
         field :ids, -> { String }, optional: true, nullable: false
         field :monetized_subscriptions, -> { Internal::Types::Boolean }, optional: true, nullable: false
         field :plan_id, -> { String }, optional: true, nullable: false
