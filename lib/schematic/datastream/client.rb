@@ -336,7 +336,7 @@ module Schematic
           keys_to_keep << versioned_key
         end
 
-        @flag_cache.delete_missing(keys_to_keep) if @flag_cache.respond_to?(:delete_missing)
+        @flag_cache.delete_missing(keys_to_keep, scope: "flags:") if @flag_cache.respond_to?(:delete_missing)
 
         @logger.debug("Cached #{data.size} flags from DataStream")
 
