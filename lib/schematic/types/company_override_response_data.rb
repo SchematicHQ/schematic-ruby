@@ -12,8 +12,8 @@ module Schematic
       field :feature, -> { Schematic::Types::FeatureResponseData }, optional: true, nullable: false
       field :feature_id, -> { String }, optional: false, nullable: false
       field :id, -> { String }, optional: false, nullable: false
-      field :metric_period, -> { String }, optional: true, nullable: false
-      field :metric_period_month_reset, -> { String }, optional: true, nullable: false
+      field :metric_period, -> { Schematic::Types::MetricPeriod }, optional: true, nullable: false
+      field :metric_period_month_reset, -> { Schematic::Types::MetricPeriodMonthReset }, optional: true, nullable: false
       field :notes, -> { Internal::Types::Array[Schematic::Types::CompanyOverrideNoteResponseData] }, optional: false, nullable: false
       field :rule_id, -> { String }, optional: true, nullable: false
       field :rule_id_usage_exceeded, -> { String }, optional: true, nullable: false

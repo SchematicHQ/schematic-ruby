@@ -11,9 +11,9 @@ module Schematic
       field :event_name, -> { String }, optional: true, nullable: false
       field :feature_id, -> { String }, optional: false, nullable: false
       field :feature_key, -> { String }, optional: false, nullable: false
-      field :metric_period, -> { Schematic::Types::FeatureEntitlementMetricPeriod }, optional: true, nullable: false
+      field :metric_period, -> { Schematic::Types::MetricPeriod }, optional: true, nullable: false
       field :metric_reset_at, -> { String }, optional: true, nullable: false
-      field :month_reset, -> { Schematic::Types::FeatureEntitlementMonthReset }, optional: true, nullable: false
+      field :month_reset, -> { Schematic::Types::MetricPeriodMonthReset }, optional: true, nullable: false
       field :soft_limit, -> { Integer }, optional: true, nullable: false
       field :usage, -> { Integer }, optional: true, nullable: false
       field :value_type, -> { Schematic::Types::EntitlementValueType }, optional: false, nullable: false

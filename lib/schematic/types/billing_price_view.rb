@@ -12,6 +12,7 @@ module Schematic
       field :meter_event_name, -> { String }, optional: true, nullable: false
       field :meter_event_payload_key, -> { String }, optional: true, nullable: false
       field :meter_id, -> { String }, optional: true, nullable: false
+      field :nickname, -> { String }, optional: true, nullable: false
       field :package_size, -> { Integer }, optional: false, nullable: false
       field :price, -> { Integer }, optional: false, nullable: false
       field :price_decimal, -> { String }, optional: true, nullable: false

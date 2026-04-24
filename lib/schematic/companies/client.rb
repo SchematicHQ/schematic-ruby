@@ -18,6 +18,7 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String, nil] :credit_type_ids
+      # @option params [Boolean, nil] :has_scheduled_downgrade
       # @option params [String, nil] :ids
       # @option params [Boolean, nil] :monetized_subscriptions
       # @option params [String, nil] :plan_id
@@ -39,9 +40,10 @@ module Schematic
       # @return [Schematic::Companies::Types::ListCompaniesResponse]
       def list_companies(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[credit_type_ids ids monetized_subscriptions plan_id plan_ids plan_version_id q sort_order_column sort_order_direction subscription_statuses subscription_types with_entitlement_for without_feature_override_for without_plan without_subscription with_subscription limit offset]
+        query_param_names = %i[credit_type_ids has_scheduled_downgrade ids monetized_subscriptions plan_id plan_ids plan_version_id q sort_order_column sort_order_direction subscription_statuses subscription_types with_entitlement_for without_feature_override_for without_plan without_subscription with_subscription limit offset]
         query_params = {}
         query_params["credit_type_ids"] = params[:credit_type_ids] if params.key?(:credit_type_ids)
+        query_params["has_scheduled_downgrade"] = params[:has_scheduled_downgrade] if params.key?(:has_scheduled_downgrade)
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["monetized_subscriptions"] = params[:monetized_subscriptions] if params.key?(:monetized_subscriptions)
         query_params["plan_id"] = params[:plan_id] if params.key?(:plan_id)
@@ -195,6 +197,7 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String, nil] :credit_type_ids
+      # @option params [Boolean, nil] :has_scheduled_downgrade
       # @option params [String, nil] :ids
       # @option params [Boolean, nil] :monetized_subscriptions
       # @option params [String, nil] :plan_id
@@ -216,9 +219,10 @@ module Schematic
       # @return [Schematic::Companies::Types::CountCompaniesResponse]
       def count_companies(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[credit_type_ids ids monetized_subscriptions plan_id plan_ids plan_version_id q sort_order_column sort_order_direction subscription_statuses subscription_types with_entitlement_for without_feature_override_for without_plan without_subscription with_subscription limit offset]
+        query_param_names = %i[credit_type_ids has_scheduled_downgrade ids monetized_subscriptions plan_id plan_ids plan_version_id q sort_order_column sort_order_direction subscription_statuses subscription_types with_entitlement_for without_feature_override_for without_plan without_subscription with_subscription limit offset]
         query_params = {}
         query_params["credit_type_ids"] = params[:credit_type_ids] if params.key?(:credit_type_ids)
+        query_params["has_scheduled_downgrade"] = params[:has_scheduled_downgrade] if params.key?(:has_scheduled_downgrade)
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["monetized_subscriptions"] = params[:monetized_subscriptions] if params.key?(:monetized_subscriptions)
         query_params["plan_id"] = params[:plan_id] if params.key?(:plan_id)
@@ -895,8 +899,8 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
-      # @option params [String, nil] :action
-      # @option params [String, nil] :base_plan_action
+      # @option params [Schematic::Types::PlanChangeAction, nil] :action
+      # @option params [Schematic::Types::PlanChangeBasePlanAction, nil] :base_plan_action
       # @option params [String, nil] :company_id
       # @option params [String, nil] :company_ids
       # @option params [String, nil] :plan_ids
@@ -1019,38 +1023,6 @@ module Schematic
       end
 
       # @param request_options [Hash]
-      # @param params [Schematic::Companies::Types::CreatePlanTraitRequestBody]
-      # @option request_options [String] :base_url
-      # @option request_options [Hash{String => Object}] :additional_headers
-      # @option request_options [Hash{String => Object}] :additional_query_parameters
-      # @option request_options [Hash{String => Object}] :additional_body_parameters
-      # @option request_options [Integer] :timeout_in_seconds
-      #
-      # @return [Schematic::Companies::Types::CreatePlanTraitResponse]
-      def create_plan_trait(request_options: {}, **params)
-        params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        request = Schematic::Internal::JSON::Request.new(
-          base_url: request_options[:base_url],
-          method: "POST",
-          path: "plan-traits",
-          body: Schematic::Companies::Types::CreatePlanTraitRequestBody.new(params).to_h,
-          request_options: request_options
-        )
-        begin
-          response = @client.send(request)
-        rescue Net::HTTPRequestTimeout
-          raise Schematic::Errors::TimeoutError
-        end
-        code = response.code.to_i
-        if code.between?(200, 299)
-          Schematic::Companies::Types::CreatePlanTraitResponse.load(response.body)
-        else
-          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
-        end
-      end
-
-      # @param request_options [Hash]
       # @param params [Hash]
       # @option request_options [String] :base_url
       # @option request_options [Hash{String => Object}] :additional_headers
@@ -1076,75 +1048,6 @@ module Schematic
         code = response.code.to_i
         if code.between?(200, 299)
           Schematic::Companies::Types::GetPlanTraitResponse.load(response.body)
-        else
-          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
-        end
-      end
-
-      # @param request_options [Hash]
-      # @param params [Schematic::Companies::Types::UpdatePlanTraitRequestBody]
-      # @option request_options [String] :base_url
-      # @option request_options [Hash{String => Object}] :additional_headers
-      # @option request_options [Hash{String => Object}] :additional_query_parameters
-      # @option request_options [Hash{String => Object}] :additional_body_parameters
-      # @option request_options [Integer] :timeout_in_seconds
-      # @option params [String] :plan_trait_id
-      #
-      # @return [Schematic::Companies::Types::UpdatePlanTraitResponse]
-      def update_plan_trait(request_options: {}, **params)
-        params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        request_data = Schematic::Companies::Types::UpdatePlanTraitRequestBody.new(params).to_h
-        non_body_param_names = ["plan_trait_id"]
-        body = request_data.except(*non_body_param_names)
-
-        request = Schematic::Internal::JSON::Request.new(
-          base_url: request_options[:base_url],
-          method: "PUT",
-          path: "plan-traits/#{URI.encode_uri_component(params[:plan_trait_id].to_s)}",
-          body: body,
-          request_options: request_options
-        )
-        begin
-          response = @client.send(request)
-        rescue Net::HTTPRequestTimeout
-          raise Schematic::Errors::TimeoutError
-        end
-        code = response.code.to_i
-        if code.between?(200, 299)
-          Schematic::Companies::Types::UpdatePlanTraitResponse.load(response.body)
-        else
-          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
-        end
-      end
-
-      # @param request_options [Hash]
-      # @param params [Hash]
-      # @option request_options [String] :base_url
-      # @option request_options [Hash{String => Object}] :additional_headers
-      # @option request_options [Hash{String => Object}] :additional_query_parameters
-      # @option request_options [Hash{String => Object}] :additional_body_parameters
-      # @option request_options [Integer] :timeout_in_seconds
-      # @option params [String] :plan_trait_id
-      #
-      # @return [Schematic::Companies::Types::DeletePlanTraitResponse]
-      def delete_plan_trait(request_options: {}, **params)
-        params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        request = Schematic::Internal::JSON::Request.new(
-          base_url: request_options[:base_url],
-          method: "DELETE",
-          path: "plan-traits/#{URI.encode_uri_component(params[:plan_trait_id].to_s)}",
-          request_options: request_options
-        )
-        begin
-          response = @client.send(request)
-        rescue Net::HTTPRequestTimeout
-          raise Schematic::Errors::TimeoutError
-        end
-        code = response.code.to_i
-        if code.between?(200, 299)
-          Schematic::Companies::Types::DeletePlanTraitResponse.load(response.body)
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)

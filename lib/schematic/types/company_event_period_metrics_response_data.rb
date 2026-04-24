@@ -10,8 +10,8 @@ module Schematic
       field :created_at, -> { String }, optional: false, nullable: false
       field :environment_id, -> { String }, optional: false, nullable: false
       field :event_subtype, -> { String }, optional: false, nullable: false
-      field :month_reset, -> { String }, optional: false, nullable: false
-      field :period, -> { String }, optional: false, nullable: false
+      field :month_reset, -> { Schematic::Types::MetricPeriodMonthReset }, optional: false, nullable: false
+      field :period, -> { Schematic::Types::MetricPeriod }, optional: false, nullable: false
       field :valid_until, -> { String }, optional: true, nullable: false
       field :value, -> { Integer }, optional: false, nullable: false
     end

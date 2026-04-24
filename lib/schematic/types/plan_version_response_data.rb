@@ -6,7 +6,7 @@ module Schematic
       field :created_at, -> { String }, optional: false, nullable: false
       field :description, -> { String }, optional: false, nullable: false
       field :environment_id, -> { String }, optional: false, nullable: false
-      field :icon, -> { String }, optional: false, nullable: false
+      field :icon, -> { Schematic::Types::PlanIcon }, optional: false, nullable: false
       field :id, -> { String }, optional: false, nullable: false
       field :name, -> { String }, optional: false, nullable: false
       field :original_plan_id, -> { String }, optional: true, nullable: false

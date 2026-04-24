@@ -72,6 +72,11 @@ module Schematic
       @features ||= Schematic::Features::Client.new(client: @raw_client)
     end
 
+    # @return [Schematic::Integrationsapi::Client]
+    def integrationsapi
+      @integrationsapi ||= Schematic::Integrationsapi::Client.new(client: @raw_client)
+    end
+
     # @return [Schematic::Planbundle::Client]
     def planbundle
       @planbundle ||= Schematic::Planbundle::Client.new(client: @raw_client)

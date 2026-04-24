@@ -9,7 +9,7 @@ module Schematic
       field :id, -> { String }, optional: false, nullable: false
       field :name, -> { String }, optional: false, nullable: false
       field :priority, -> { Integer }, optional: false, nullable: false
-      field :rule_type, -> { String }, optional: false, nullable: false
+      field :rule_type, -> { Schematic::Types::RuleType }, optional: false, nullable: false
       field :updated_at, -> { String }, optional: false, nullable: false
       field :value, -> { Internal::Types::Boolean }, optional: false, nullable: false
     end

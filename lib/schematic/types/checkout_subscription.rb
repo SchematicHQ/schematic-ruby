@@ -16,6 +16,7 @@ module Schematic
       field :expired_at, -> { String }, optional: true, nullable: false
       field :id, -> { String }, optional: false, nullable: false
       field :interval, -> { String }, optional: false, nullable: false
+      field :invoice_url, -> { String }, optional: true, nullable: false
       field :metadata, -> { Internal::Types::Hash[String, Object] }, optional: true, nullable: false
       field :period_end, -> { Integer }, optional: false, nullable: false
       field :period_start, -> { Integer }, optional: false, nullable: false

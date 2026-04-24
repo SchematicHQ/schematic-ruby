@@ -3,6 +3,7 @@
 module Schematic
   module Types
     class PlanEntitlementResponseData < Internal::Types::Model
+      field :billing_linked_resource, -> { Schematic::Types::BillingLinkedResourceResponseData }, optional: true, nullable: false
       field :billing_threshold, -> { Integer }, optional: true, nullable: false
       field :consumption_rate, -> { Integer }, optional: true, nullable: false
       field :created_at, -> { String }, optional: false, nullable: false
@@ -13,8 +14,8 @@ module Schematic
       field :id, -> { String }, optional: false, nullable: false
       field :metered_monthly_price, -> { Schematic::Types::BillingPriceView }, optional: true, nullable: false
       field :metered_yearly_price, -> { Schematic::Types::BillingPriceView }, optional: true, nullable: false
-      field :metric_period, -> { String }, optional: true, nullable: false
-      field :metric_period_month_reset, -> { String }, optional: true, nullable: false
+      field :metric_period, -> { Schematic::Types::MetricPeriod }, optional: true, nullable: false
+      field :metric_period_month_reset, -> { Schematic::Types::MetricPeriodMonthReset }, optional: true, nullable: false
       field :plan, -> { Schematic::Types::PlanResponseData }, optional: true, nullable: false
       field :plan_id, -> { String }, optional: false, nullable: false
       field :price_behavior, -> { Schematic::Types::EntitlementPriceBehavior }, optional: true, nullable: false

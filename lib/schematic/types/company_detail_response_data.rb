@@ -8,6 +8,7 @@ module Schematic
       field :billing_subscription, -> { Schematic::Types::BillingSubscriptionView }, optional: true, nullable: false
       field :billing_subscriptions, -> { Internal::Types::Array[Schematic::Types::BillingSubscriptionView] }, optional: false, nullable: false
       field :created_at, -> { String }, optional: false, nullable: false
+      field :custom_plan_billings, -> { Internal::Types::Array[Schematic::Types::CustomPlanBillingResponseData] }, optional: false, nullable: false
       field :default_payment_method, -> { Schematic::Types::PaymentMethodResponseData }, optional: true, nullable: false
       field :entitlements, -> { Internal::Types::Array[Schematic::Types::FeatureEntitlement] }, optional: false, nullable: false
       field :entity_traits, -> { Internal::Types::Array[Schematic::Types::EntityTraitDetailResponseData] }, optional: false, nullable: false

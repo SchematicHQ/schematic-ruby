@@ -5,7 +5,7 @@ module Schematic
     module RulesEngineSchemaVersion
       extend Schematic::Internal::Types::Enum
 
-      V_5_F_633_CC_3 = "v5f633cc3"
+      VF_05_BF_5_DA = "vf05bf5da"
       PLACEHOLDER_FOR_FERN_COMPATIBILITY = "placeholder-for-fern-compatibility"
     end
   end

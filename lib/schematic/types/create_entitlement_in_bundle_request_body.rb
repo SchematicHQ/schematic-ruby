@@ -9,8 +9,8 @@ module Schematic
       field :currency, -> { String }, optional: true, nullable: false
       field :currency_prices, -> { Internal::Types::Array[Schematic::Types::CurrencyPriceRequestBody] }, optional: true, nullable: false
       field :feature_id, -> { String }, optional: false, nullable: false
-      field :metric_period, -> { Schematic::Types::CreateEntitlementInBundleRequestBodyMetricPeriod }, optional: true, nullable: false
-      field :metric_period_month_reset, -> { Schematic::Types::CreateEntitlementInBundleRequestBodyMetricPeriodMonthReset }, optional: true, nullable: false
+      field :metric_period, -> { Schematic::Types::MetricPeriod }, optional: true, nullable: false
+      field :metric_period_month_reset, -> { Schematic::Types::MetricPeriodMonthReset }, optional: true, nullable: false
       field :monthly_metered_price_id, -> { String }, optional: true, nullable: false
       field :monthly_price_tiers, -> { Internal::Types::Array[Schematic::Types::CreatePriceTierRequestBody] }, optional: true, nullable: false
       field :monthly_unit_price, -> { Integer }, optional: true, nullable: false

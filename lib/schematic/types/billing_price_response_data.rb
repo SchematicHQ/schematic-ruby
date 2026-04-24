@@ -7,6 +7,7 @@ module Schematic
       field :external_price_id, -> { String }, optional: false, nullable: false
       field :id, -> { String }, optional: false, nullable: false
       field :interval, -> { Schematic::Types::BillingProductPriceInterval }, optional: false, nullable: false
+      field :nickname, -> { String }, optional: true, nullable: false
       field :price, -> { Integer }, optional: false, nullable: false
       field :price_decimal, -> { String }, optional: true, nullable: false
       field :provider_type, -> { Schematic::Types::BillingProviderType }, optional: false, nullable: false

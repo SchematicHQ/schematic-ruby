@@ -8,6 +8,7 @@ module Schematic
         field :event_name, -> { String }, optional: false, nullable: false
         field :event_payload_key, -> { String }, optional: false, nullable: false
         field :external_id, -> { String }, optional: false, nullable: false
+        field :provider_type, -> { Schematic::Types::BillingProviderType }, optional: true, nullable: false
       end
     end
   end

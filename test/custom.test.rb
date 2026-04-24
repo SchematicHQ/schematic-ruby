@@ -22,7 +22,7 @@ Minitest::Spec.include CaptureServiceStub
 # A shared (non-local) cache for testing replicator mode.
 # Delegates to LocalCache but has its own class identity so the
 # DataStream::Client replicator validation doesn't reject it.
-class TestSharedCache # rubocop:disable Style/OneClassPerFile
+class TestSharedCache
   include Schematic::CacheProvider
 
   def initialize(max_size: 100, ttl: 60)
