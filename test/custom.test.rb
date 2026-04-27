@@ -32,7 +32,7 @@ class TestSharedCache
   def get(key) = @inner.get(key)
   def set(key, value, ttl: nil) = @inner.set(key, value, ttl: ttl)
   def delete(key) = @inner.delete(key)
-  def delete_missing(keys_to_keep) = @inner.delete_missing(keys_to_keep)
+  def delete_missing(keys_to_keep, scope:) = @inner.delete_missing(keys_to_keep, scope: scope)
   def size = @inner.size
   def stop = @inner.stop
 end
@@ -103,15 +103,26 @@ describe "LocalCache" do
     assert_nil @cache.get("key1")
   end
 
-  it "delete_missing removes unlisted keys" do
-    @cache.set("keep1", "v1")
-    @cache.set("keep2", "v2")
-    @cache.set("remove1", "v3")
-    @cache.delete_missing(%w[keep1 keep2])
+  it "delete_missing removes unlisted keys within scope" do
+    @cache.set("flags:keep1", "v1")
+    @cache.set("flags:keep2", "v2")
+    @cache.set("flags:remove1", "v3")
+    @cache.delete_missing(%w[flags:keep1 flags:keep2], scope: "flags:")
 
-    assert_equal "v1", @cache.get("keep1")
-    assert_equal "v2", @cache.get("keep2")
-    assert_nil @cache.get("remove1")
+    assert_equal "v1", @cache.get("flags:keep1")
+    assert_equal "v2", @cache.get("flags:keep2")
+    assert_nil @cache.get("flags:remove1")
+  end
+
+  it "delete_missing leaves keys outside scope untouched" do
+    @cache.set("flags:keep1", "v1")
+    @cache.set("company:abc", "companydata")
+    @cache.set("user:xyz", "userdata")
+    @cache.delete_missing(%w[flags:keep1], scope: "flags:")
+
+    assert_equal "v1", @cache.get("flags:keep1")
+    assert_equal "companydata", @cache.get("company:abc")
+    assert_equal "userdata", @cache.get("user:xyz")
   end
 
   it "zero-size cache disables caching" do
@@ -2297,16 +2308,36 @@ describe "RedisCacheProvider" do
     assert_nil @cache.get("key1")
   end
 
-  it "delete_missing removes unlisted keys" do
-    @cache.set("keep1", { v: 1 })
-    @cache.set("keep2", { v: 2 })
-    @cache.set("remove1", { v: 3 })
+  it "delete_missing removes unlisted keys within scope" do
+    @cache.set("flags:keep1", { v: 1 })
+    @cache.set("flags:keep2", { v: 2 })
+    @cache.set("flags:remove1", { v: 3 })
 
-    @cache.delete_missing(%w[keep1 keep2])
+    @cache.delete_missing(%w[flags:keep1 flags:keep2], scope: "flags:")
 
-    refute_nil @cache.get("keep1")
-    refute_nil @cache.get("keep2")
-    assert_nil @cache.get("remove1")
+    refute_nil @cache.get("flags:keep1")
+    refute_nil @cache.get("flags:keep2")
+    assert_nil @cache.get("flags:remove1")
+  end
+
+  it "delete_missing does not wipe sibling caches sharing the same key_prefix" do
+    # Simulate two RedisCacheProviders backed by the same Redis with the same
+    # base key_prefix ("test:") — one for flags, one for companies.
+    flag_cache = Schematic::RedisCacheProvider.new(client: @mock_redis, ttl: 300, key_prefix: "test:")
+    company_cache = Schematic::RedisCacheProvider.new(client: @mock_redis, ttl: 300, key_prefix: "test:")
+
+    flag_cache.set("flags:ver1:flag-a", { v: 1 })
+    flag_cache.set("flags:ver1:flag-b", { v: 2 })
+    company_cache.set("company:abc", { id: "abc" })
+    company_cache.set("company:xyz", { id: "xyz" })
+
+    # Prune flags to only keep flag-a; company entries must survive.
+    flag_cache.delete_missing(%w[flags:ver1:flag-a], scope: "flags:")
+
+    refute_nil flag_cache.get("flags:ver1:flag-a")
+    assert_nil flag_cache.get("flags:ver1:flag-b")
+    refute_nil company_cache.get("company:abc"), "company cache should not be wiped by flag cache prune"
+    refute_nil company_cache.get("company:xyz"), "company cache should not be wiped by flag cache prune"
   end
 
   it "handles objects with to_h method" do

@@ -67,11 +67,14 @@ module Schematic
       @client.del(full_key)
     end
 
-    def delete_missing(keys_to_keep)
+    # Scans `#{key_prefix}#{scope}*` only, so callers sharing a key_prefix
+    # across cache types (e.g. flags/company/user all under "schematic:") do
+    # not wipe sibling caches when pruning one of them.
+    def delete_missing(keys_to_keep, scope:)
       full_keys_to_keep = keys_to_keep.to_set { |k| prefixed_key(k) }
       keys_to_delete = []
 
-      @client.scan_each(match: "#{@key_prefix}*", count: BATCH_DELETE_SIZE) do |key|
+      @client.scan_each(match: "#{@key_prefix}#{scope}*", count: BATCH_DELETE_SIZE) do |key|
         unless full_keys_to_keep.include?(key)
           keys_to_delete << key
 

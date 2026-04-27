@@ -14,8 +14,11 @@ module Schematic
       raise NotImplementedError
     end
 
-    def delete_missing(keys_to_keep)
-      # Optional: remove all keys NOT in keys_to_keep
+    # Remove all keys matching `scope` that are NOT in `keys_to_keep`.
+    # `scope:` is required so shared caches (e.g. Redis) only prune their own
+    # namespace instead of wiping sibling caches that share a base key_prefix.
+    def delete_missing(keys_to_keep, scope:)
+      raise NotImplementedError
     end
   end
 
@@ -72,10 +75,10 @@ module Schematic
       end
     end
 
-    def delete_missing(keys_to_keep)
+    def delete_missing(keys_to_keep, scope:)
       keep_set = keys_to_keep.to_set
       @mutex.synchronize do
-        @cache.delete_if { |k, _| !keep_set.include?(k) }
+        @cache.delete_if { |k, _| k.start_with?(scope) && !keep_set.include?(k) }
       end
     end
 
