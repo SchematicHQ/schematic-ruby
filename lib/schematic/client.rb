@@ -10,7 +10,7 @@ module Schematic
       @raw_client = Schematic::Internal::Http::RawClient.new(
         base_url: base_url || Schematic::Environment::DEFAULT,
         headers: {
-          "User-Agent" => "schematichq/1.4.0",
+          "User-Agent" => "schematichq/1.4.1",
           "X-Fern-Language" => "Ruby",
           "X-Schematic-Api-Key" => api_key.to_s
         }
@@ -70,6 +70,11 @@ module Schematic
     # @return [Schematic::Features::Client]
     def features
       @features ||= Schematic::Features::Client.new(client: @raw_client)
+    end
+
+    # @return [Schematic::Insights::Client]
+    def insights
+      @insights ||= Schematic::Insights::Client.new(client: @raw_client)
     end
 
     # @return [Schematic::Integrationsapi::Client]

@@ -3954,6 +3954,54 @@ client.credits.soft_delete_billing_credit(credit_id: "credit_id")
 </dl>
 </details>
 
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">list_company_credit_balances</a>() -> Schematic::Credits::Types::ListCompanyCreditBalancesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.credits.list_company_credit_balances(company_id: "company_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Credits::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">list_credit_bundles</a>() -> Schematic::Credits::Types::ListCreditBundlesResponse</code></summary>
 <dl>
 <dd>
@@ -15374,6 +15422,365 @@ client.features.count_flags(
 <dd>
 
 **request_options:** `Schematic::Features::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## insights
+<details><summary><code>client.insights.<a href="/lib/schematic/insights/client.rb">get_activity</a>() -> Schematic::Insights::Types::GetActivityResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.insights.get_activity(limit: 1000000)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**limit:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Insights::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.insights.<a href="/lib/schematic/insights/client.rb">get_environment_feature_usage_time_series</a>() -> Schematic::Insights::Types::GetEnvironmentFeatureUsageTimeSeriesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.insights.get_environment_feature_usage_time_series(
+  end_time: "2024-01-15T09:30:00Z",
+  feature_id: "feature_id",
+  granularity: "daily",
+  start_time: "2024-01-15T09:30:00Z"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**end_time:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**feature_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**granularity:** `Schematic::Types::TimeSeriesGranularity` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_time:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Insights::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.insights.<a href="/lib/schematic/insights/client.rb">get_plan_growth</a>() -> Schematic::Insights::Types::GetPlanGrowthResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.insights.get_plan_growth(months: 1000000)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**months:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Insights::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.insights.<a href="/lib/schematic/insights/client.rb">get_summary</a>() -> Schematic::Insights::Types::GetSummaryResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.insights.get_summary
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Insights::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.insights.<a href="/lib/schematic/insights/client.rb">get_top_features_by_usage</a>() -> Schematic::Insights::Types::GetTopFeaturesByUsageResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.insights.get_top_features_by_usage(
+  end_time: "2024-01-15T09:30:00Z",
+  limit: 1000000,
+  start_time: "2024-01-15T09:30:00Z"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**end_time:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_time:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Insights::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.insights.<a href="/lib/schematic/insights/client.rb">get_environment_trait_usage_time_series</a>() -> Schematic::Insights::Types::GetEnvironmentTraitUsageTimeSeriesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.insights.get_environment_trait_usage_time_series(
+  end_time: "2024-01-15T09:30:00Z",
+  feature_id: "feature_id",
+  granularity: "daily",
+  start_time: "2024-01-15T09:30:00Z"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**end_time:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**feature_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**granularity:** `Schematic::Types::TimeSeriesGranularity` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_time:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Insights::RequestOptions` 
     
 </dd>
 </dl>
