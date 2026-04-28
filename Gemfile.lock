@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    schematichq (1.4.0)
+    schematichq (1.4.1)
       wasmtime (>= 19.0)
       websocket (>= 1.2)
 
@@ -25,7 +25,7 @@ GEM
     minitest (5.27.0)
     minitest-rg (5.4.0)
       minitest (>= 5.0, < 7)
-    parallel (2.0.1)
+    parallel (2.1.0)
     parser (3.3.11.1)
       ast (~> 2.4.1)
       racc
@@ -64,12 +64,12 @@ GEM
     unicode-display_width (3.2.0)
       unicode-emoji (~> 4.1)
     unicode-emoji (4.2.0)
-    wasmtime (43.0.1-aarch64-linux)
-    wasmtime (43.0.1-aarch64-linux-musl)
-    wasmtime (43.0.1-arm64-darwin)
-    wasmtime (43.0.1-x86_64-darwin)
-    wasmtime (43.0.1-x86_64-linux)
-    wasmtime (43.0.1-x86_64-linux-musl)
+    wasmtime (44.0.0-aarch64-linux)
+    wasmtime (44.0.0-aarch64-linux-musl)
+    wasmtime (44.0.0-arm64-darwin)
+    wasmtime (44.0.0-x86_64-darwin)
+    wasmtime (44.0.0-x86_64-linux)
+    wasmtime (44.0.0-x86_64-linux-musl)
     webmock (3.26.2)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
