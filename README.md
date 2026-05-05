@@ -1,4 +1,4 @@
-# schematic-ruby
+# Schematic Ruby
 
 ## Installation and Setup
 
