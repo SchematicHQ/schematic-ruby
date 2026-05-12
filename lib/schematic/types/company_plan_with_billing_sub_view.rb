@@ -9,7 +9,7 @@ module Schematic
       field :description, -> { String }, optional: true, nullable: false
       field :id, -> { String }, optional: false, nullable: false
       field :image_url, -> { String }, optional: true, nullable: false
-      field :included_credit_grants, -> { Internal::Types::Array[Schematic::Types::PlanCreditGrantView] }, optional: false, nullable: false
+      field :included_credit_grants, -> { Internal::Types::Array[Schematic::Types::CompanyPlanCreditGrantView] }, optional: false, nullable: false
       field :name, -> { String }, optional: false, nullable: false
       field :plan_period, -> { String }, optional: true, nullable: false
       field :plan_price, -> { Integer }, optional: true, nullable: false

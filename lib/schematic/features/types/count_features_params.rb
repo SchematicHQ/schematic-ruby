@@ -9,6 +9,7 @@ module Schematic
         field :feature_type, -> { Internal::Types::Array[Schematic::Types::FeatureType] }, optional: true, nullable: false
         field :ids, -> { Internal::Types::Array[String] }, optional: true, nullable: false
         field :limit, -> { Integer }, optional: true, nullable: false
+        field :managed_by, -> { Schematic::Types::BillingProviderType }, optional: true, nullable: false
         field :offset, -> { Integer }, optional: true, nullable: false
         field :plan_version_id, -> { String }, optional: true, nullable: false
         field :q, -> { String }, optional: true, nullable: false

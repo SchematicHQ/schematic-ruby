@@ -9,6 +9,7 @@ module Schematic
       field :auto_topup_expiry_type, -> { Schematic::Types::BillingCreditExpiryType }, optional: true, nullable: false
       field :auto_topup_expiry_unit, -> { Schematic::Types::BillingCreditExpiryUnit }, optional: true, nullable: false
       field :auto_topup_expiry_unit_count, -> { Integer }, optional: true, nullable: false
+      field :auto_topup_self_service, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :auto_topup_threshold_credits, -> { Integer }, optional: true, nullable: false
       field :auto_topup_threshold_percent, -> { Integer }, optional: true, nullable: false
       field :created_at, -> { String }, optional: false, nullable: false

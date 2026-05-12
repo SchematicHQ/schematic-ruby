@@ -20,6 +20,7 @@ module Schematic
       # @option params [Boolean, nil] :boolean_require_event
       # @option params [Schematic::Types::FeatureType, nil] :feature_type
       # @option params [String, nil] :ids
+      # @option params [Schematic::Types::BillingProviderType, nil] :managed_by
       # @option params [String, nil] :plan_version_id
       # @option params [String, nil] :q
       # @option params [String, nil] :without_company_override_for
@@ -30,11 +31,12 @@ module Schematic
       # @return [Schematic::Features::Types::ListFeaturesResponse]
       def list_features(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[boolean_require_event feature_type ids plan_version_id q without_company_override_for without_plan_entitlement_for limit offset]
+        query_param_names = %i[boolean_require_event feature_type ids managed_by plan_version_id q without_company_override_for without_plan_entitlement_for limit offset]
         query_params = {}
         query_params["boolean_require_event"] = params[:boolean_require_event] if params.key?(:boolean_require_event)
         query_params["feature_type"] = params[:feature_type] if params.key?(:feature_type)
         query_params["ids"] = params[:ids] if params.key?(:ids)
+        query_params["managed_by"] = params[:managed_by] if params.key?(:managed_by)
         query_params["plan_version_id"] = params[:plan_version_id] if params.key?(:plan_version_id)
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["without_company_override_for"] = params[:without_company_override_for] if params.key?(:without_company_override_for)
@@ -239,6 +241,7 @@ module Schematic
       # @option params [Boolean, nil] :boolean_require_event
       # @option params [Schematic::Types::FeatureType, nil] :feature_type
       # @option params [String, nil] :ids
+      # @option params [Schematic::Types::BillingProviderType, nil] :managed_by
       # @option params [String, nil] :plan_version_id
       # @option params [String, nil] :q
       # @option params [String, nil] :without_company_override_for
@@ -249,11 +252,12 @@ module Schematic
       # @return [Schematic::Features::Types::CountFeaturesResponse]
       def count_features(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[boolean_require_event feature_type ids plan_version_id q without_company_override_for without_plan_entitlement_for limit offset]
+        query_param_names = %i[boolean_require_event feature_type ids managed_by plan_version_id q without_company_override_for without_plan_entitlement_for limit offset]
         query_params = {}
         query_params["boolean_require_event"] = params[:boolean_require_event] if params.key?(:boolean_require_event)
         query_params["feature_type"] = params[:feature_type] if params.key?(:feature_type)
         query_params["ids"] = params[:ids] if params.key?(:ids)
+        query_params["managed_by"] = params[:managed_by] if params.key?(:managed_by)
         query_params["plan_version_id"] = params[:plan_version_id] if params.key?(:plan_version_id)
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["without_company_override_for"] = params[:without_company_override_for] if params.key?(:without_company_override_for)

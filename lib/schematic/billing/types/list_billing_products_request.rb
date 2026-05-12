@@ -10,6 +10,7 @@ module Schematic
         field :price_usage_type, -> { Schematic::Types::BillingPriceUsageType }, optional: true, nullable: false
         field :provider_type, -> { Schematic::Types::BillingProviderType }, optional: true, nullable: false
         field :q, -> { String }, optional: true, nullable: false
+        field :recurring_charges_only, -> { Internal::Types::Boolean }, optional: true, nullable: false
         field :with_one_time_charges, -> { Internal::Types::Boolean }, optional: true, nullable: false
         field :with_prices_only, -> { Internal::Types::Boolean }, optional: true, nullable: false
         field :with_zero_price, -> { Internal::Types::Boolean }, optional: true, nullable: false

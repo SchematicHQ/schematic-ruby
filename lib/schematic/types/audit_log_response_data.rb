@@ -4,6 +4,7 @@ module Schematic
   module Types
     class AuditLogResponseData < Internal::Types::Model
       field :actor_type, -> { Schematic::Types::ActorType }, optional: false, nullable: false
+      field :api_key, -> { Schematic::Types::ApiKeyResponseData }, optional: true, nullable: false
       field :api_key_id, -> { String }, optional: true, nullable: false
       field :ended_at, -> { String }, optional: true, nullable: false
       field :environment, -> { Schematic::Types::EnvironmentResponseData }, optional: true, nullable: false

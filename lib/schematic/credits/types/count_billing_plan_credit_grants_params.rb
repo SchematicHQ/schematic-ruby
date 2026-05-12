@@ -12,6 +12,7 @@ module Schematic
         field :plan_id, -> { String }, optional: true, nullable: false
         field :plan_ids, -> { Internal::Types::Array[String] }, optional: true, nullable: false
         field :plan_version_id, -> { String }, optional: true, nullable: false
+        field :plan_version_ids, -> { Internal::Types::Array[String] }, optional: true, nullable: false
       end
     end
   end
