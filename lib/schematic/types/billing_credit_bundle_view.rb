@@ -9,7 +9,7 @@ module Schematic
       field :credit_icon, -> { String }, optional: true, nullable: false
       field :credit_id, -> { String }, optional: false, nullable: false
       field :credit_name, -> { String }, optional: false, nullable: false
-      field :currency_prices, -> { Internal::Types::Array[Schematic::Types::CreditBundleCurrencyPrice] }, optional: true, nullable: false
+      field :currency_prices, -> { Internal::Types::Array[Schematic::Types::CreditBundleCurrencyPrice] }, optional: false, nullable: false
       field :expiry_type, -> { Schematic::Types::BillingCreditExpiryType }, optional: false, nullable: false
       field :expiry_unit, -> { Schematic::Types::BillingCreditExpiryUnit }, optional: false, nullable: false
       field :expiry_unit_count, -> { Integer }, optional: true, nullable: false

@@ -1,5 +1,5 @@
 {
-  "cliVersion": "4.76.1",
+  "cliVersion": "5.6.0",
   "generatorName": "fernapi/fern-ruby-sdk",
   "generatorVersion": "1.1.13",
   "generatorConfig": {
@@ -13,6 +13,6 @@
       "webrick": ">= 1.0"
     }
   },
-  "originGitCommit": "65ef3b80b68cd7596daad7fa53232ea510ad01f2",
+  "originGitCommit": "4fd82021eff164a6f2484d4504850c46fe8f4a95",
   "sdkVersion": "1.4.1"
 }

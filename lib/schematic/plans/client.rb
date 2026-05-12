@@ -172,6 +172,7 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String, nil] :company_id
+      # @option params [Boolean, nil] :company_scoped_only
       # @option params [Boolean, nil] :exclude_company_scoped
       # @option params [Boolean, nil] :for_fallback_plan
       # @option params [Boolean, nil] :for_initial_plan
@@ -190,9 +191,10 @@ module Schematic
       # @return [Schematic::Plans::Types::ListPlansResponse]
       def list_plans(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[company_id exclude_company_scoped for_fallback_plan for_initial_plan for_trial_expiry_plan has_product_id ids include_draft_versions plan_type q scoped_to_company_id without_entitlement_for without_paid_product_id limit offset]
+        query_param_names = %i[company_id company_scoped_only exclude_company_scoped for_fallback_plan for_initial_plan for_trial_expiry_plan has_product_id ids include_draft_versions plan_type q scoped_to_company_id without_entitlement_for without_paid_product_id limit offset]
         query_params = {}
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
+        query_params["company_scoped_only"] = params[:company_scoped_only] if params.key?(:company_scoped_only)
         query_params["exclude_company_scoped"] = params[:exclude_company_scoped] if params.key?(:exclude_company_scoped)
         query_params["for_fallback_plan"] = params[:for_fallback_plan] if params.key?(:for_fallback_plan)
         query_params["for_initial_plan"] = params[:for_initial_plan] if params.key?(:for_initial_plan)
@@ -527,6 +529,7 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String, nil] :company_id
+      # @option params [Boolean, nil] :company_scoped_only
       # @option params [Boolean, nil] :exclude_company_scoped
       # @option params [Boolean, nil] :for_fallback_plan
       # @option params [Boolean, nil] :for_initial_plan
@@ -545,9 +548,10 @@ module Schematic
       # @return [Schematic::Plans::Types::CountPlansResponse]
       def count_plans(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[company_id exclude_company_scoped for_fallback_plan for_initial_plan for_trial_expiry_plan has_product_id ids include_draft_versions plan_type q scoped_to_company_id without_entitlement_for without_paid_product_id limit offset]
+        query_param_names = %i[company_id company_scoped_only exclude_company_scoped for_fallback_plan for_initial_plan for_trial_expiry_plan has_product_id ids include_draft_versions plan_type q scoped_to_company_id without_entitlement_for without_paid_product_id limit offset]
         query_params = {}
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
+        query_params["company_scoped_only"] = params[:company_scoped_only] if params.key?(:company_scoped_only)
         query_params["exclude_company_scoped"] = params[:exclude_company_scoped] if params.key?(:exclude_company_scoped)
         query_params["for_fallback_plan"] = params[:for_fallback_plan] if params.key?(:for_fallback_plan)
         query_params["for_initial_plan"] = params[:for_initial_plan] if params.key?(:for_initial_plan)

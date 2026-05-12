@@ -719,6 +719,7 @@ module Schematic
       # @option params [Schematic::Types::BillingPriceUsageType, nil] :price_usage_type
       # @option params [Schematic::Types::BillingProviderType, nil] :provider_type
       # @option params [String, nil] :q
+      # @option params [Boolean, nil] :recurring_charges_only
       # @option params [Boolean, nil] :with_one_time_charges
       # @option params [Boolean, nil] :with_prices_only
       # @option params [Boolean, nil] :with_zero_price
@@ -729,7 +730,7 @@ module Schematic
       # @return [Schematic::Billing::Types::ListBillingProductsResponse]
       def list_billing_products(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[ids is_active name price_usage_type provider_type q with_one_time_charges with_prices_only with_zero_price without_linked_to_plan limit offset]
+        query_param_names = %i[ids is_active name price_usage_type provider_type q recurring_charges_only with_one_time_charges with_prices_only with_zero_price without_linked_to_plan limit offset]
         query_params = {}
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["is_active"] = params[:is_active] if params.key?(:is_active)
@@ -737,6 +738,7 @@ module Schematic
         query_params["price_usage_type"] = params[:price_usage_type] if params.key?(:price_usage_type)
         query_params["provider_type"] = params[:provider_type] if params.key?(:provider_type)
         query_params["q"] = params[:q] if params.key?(:q)
+        query_params["recurring_charges_only"] = params[:recurring_charges_only] if params.key?(:recurring_charges_only)
         query_params["with_one_time_charges"] = params[:with_one_time_charges] if params.key?(:with_one_time_charges)
         query_params["with_prices_only"] = params[:with_prices_only] if params.key?(:with_prices_only)
         query_params["with_zero_price"] = params[:with_zero_price] if params.key?(:with_zero_price)
@@ -779,6 +781,7 @@ module Schematic
       # @option params [Schematic::Types::BillingPriceUsageType, nil] :price_usage_type
       # @option params [Schematic::Types::BillingProviderType, nil] :provider_type
       # @option params [String, nil] :q
+      # @option params [Boolean, nil] :recurring_charges_only
       # @option params [Boolean, nil] :with_one_time_charges
       # @option params [Boolean, nil] :with_prices_only
       # @option params [Boolean, nil] :with_zero_price
@@ -789,7 +792,7 @@ module Schematic
       # @return [Schematic::Billing::Types::CountBillingProductsResponse]
       def count_billing_products(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[ids is_active name price_usage_type provider_type q with_one_time_charges with_prices_only with_zero_price without_linked_to_plan limit offset]
+        query_param_names = %i[ids is_active name price_usage_type provider_type q recurring_charges_only with_one_time_charges with_prices_only with_zero_price without_linked_to_plan limit offset]
         query_params = {}
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["is_active"] = params[:is_active] if params.key?(:is_active)
@@ -797,6 +800,7 @@ module Schematic
         query_params["price_usage_type"] = params[:price_usage_type] if params.key?(:price_usage_type)
         query_params["provider_type"] = params[:provider_type] if params.key?(:provider_type)
         query_params["q"] = params[:q] if params.key?(:q)
+        query_params["recurring_charges_only"] = params[:recurring_charges_only] if params.key?(:recurring_charges_only)
         query_params["with_one_time_charges"] = params[:with_one_time_charges] if params.key?(:with_one_time_charges)
         query_params["with_prices_only"] = params[:with_prices_only] if params.key?(:with_prices_only)
         query_params["with_zero_price"] = params[:with_zero_price] if params.key?(:with_zero_price)

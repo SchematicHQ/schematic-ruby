@@ -2984,6 +2984,7 @@ client.billing.list_billing_products(
   price_usage_type: "licensed",
   provider_type: "orb",
   q: "q",
+  recurring_charges_only: true,
   with_one_time_charges: true,
   with_prices_only: true,
   with_zero_price: true,
@@ -3046,6 +3047,14 @@ client.billing.list_billing_products(
 <dd>
 
 **q:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**recurring_charges_only:** `Internal::Types::Boolean` — Filter to products that have at least one recurring price
     
 </dd>
 </dl>
@@ -3133,6 +3142,7 @@ client.billing.count_billing_products(
   price_usage_type: "licensed",
   provider_type: "orb",
   q: "q",
+  recurring_charges_only: true,
   with_one_time_charges: true,
   with_prices_only: true,
   with_zero_price: true,
@@ -3195,6 +3205,14 @@ client.billing.count_billing_products(
 <dd>
 
 **q:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**recurring_charges_only:** `Internal::Types::Boolean` — Filter to products that have at least one recurring price
     
 </dd>
 </dl>
@@ -5398,6 +5416,7 @@ client.credits.list_billing_plan_credit_grants(
   plan_id: "plan_id",
   plan_ids: ["plan_ids"],
   plan_version_id: "plan_version_id",
+  plan_version_ids: ["plan_version_ids"],
   limit: 1000000,
   offset: 1000000
 )
@@ -5448,6 +5467,14 @@ client.credits.list_billing_plan_credit_grants(
 <dd>
 
 **plan_version_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_ids:** `String` 
     
 </dd>
 </dl>
@@ -5723,6 +5750,7 @@ client.credits.count_billing_plan_credit_grants(
   plan_id: "plan_id",
   plan_ids: ["plan_ids"],
   plan_version_id: "plan_version_id",
+  plan_version_ids: ["plan_version_ids"],
   limit: 1000000,
   offset: 1000000
 )
@@ -5773,6 +5801,14 @@ client.credits.count_billing_plan_credit_grants(
 <dd>
 
 **plan_version_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_ids:** `String` 
     
 </dd>
 </dl>
@@ -6053,6 +6089,9 @@ client.checkout.internal(
     add_on_id: "add_on_id",
     price_id: "price_id"
   }],
+  auto_topup_overrides: [{
+    plan_credit_grant_id: "plan_credit_grant_id"
+  }],
   company_id: "company_id",
   credit_bundles: [{
     bundle_id: "bundle_id",
@@ -6173,6 +6212,9 @@ client.checkout.preview_checkout_internal(
   add_on_ids: [{
     add_on_id: "add_on_id",
     price_id: "price_id"
+  }],
+  auto_topup_overrides: [{
+    plan_credit_grant_id: "plan_credit_grant_id"
   }],
   company_id: "company_id",
   credit_bundles: [{
@@ -12053,6 +12095,7 @@ client.plans.create_custom_plan(
 ```ruby
 client.plans.list_plans(
   company_id: "company_id",
+  company_scoped_only: true,
   exclude_company_scoped: true,
   for_fallback_plan: true,
   for_initial_plan: true,
@@ -12083,6 +12126,14 @@ client.plans.list_plans(
 <dd>
 
 **company_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_scoped_only:** `Internal::Types::Boolean` — Only return plans that are scoped to a company (custom plans assigned to a company)
     
 </dd>
 </dl>
@@ -12550,6 +12601,14 @@ client.plans.upsert_plan_for_billing_product(
 <dl>
 <dd>
 
+**external_resource_version:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **icon:** `Schematic::Types::PlanIcon` 
     
 </dd>
@@ -12755,6 +12814,7 @@ client.plans.count_billing_product_match_companies(
 ```ruby
 client.plans.count_plans(
   company_id: "company_id",
+  company_scoped_only: true,
   exclude_company_scoped: true,
   for_fallback_plan: true,
   for_initial_plan: true,
@@ -12785,6 +12845,14 @@ client.plans.count_plans(
 <dd>
 
 **company_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_scoped_only:** `Internal::Types::Boolean` — Only return plans that are scoped to a company (custom plans assigned to a company)
     
 </dd>
 </dl>
@@ -13840,6 +13908,7 @@ client.events.list_events(
   event_subtype: "event_subtype",
   event_types: ["flag_check"],
   flag_id: "flag_id",
+  idempotency_key: "idempotency_key",
   user_id: "user_id",
   limit: 1000000,
   offset: 1000000
@@ -13883,6 +13952,14 @@ client.events.list_events(
 <dd>
 
 **flag_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotency_key:** `String` 
     
 </dd>
 </dl>
@@ -14080,6 +14157,7 @@ client.features.list_features(
   boolean_require_event: true,
   feature_type: ["boolean"],
   ids: ["ids"],
+  managed_by: "orb",
   plan_version_id: "plan_version_id",
   q: "q",
   without_company_override_for: "without_company_override_for",
@@ -14118,6 +14196,14 @@ client.features.list_features(
 <dd>
 
 **ids:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**managed_by:** `Schematic::Types::BillingProviderType` — Filter for features managed by a billing provider, or by Schematic (no billing provider)
     
 </dd>
 </dl>
@@ -14716,6 +14802,7 @@ client.features.count_features(
   boolean_require_event: true,
   feature_type: ["boolean"],
   ids: ["ids"],
+  managed_by: "orb",
   plan_version_id: "plan_version_id",
   q: "q",
   without_company_override_for: "without_company_override_for",
@@ -14754,6 +14841,14 @@ client.features.count_features(
 <dd>
 
 **ids:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**managed_by:** `Schematic::Types::BillingProviderType` — Filter for features managed by a billing provider, or by Schematic (no billing provider)
     
 </dd>
 </dl>
@@ -15793,6 +15888,158 @@ client.insights.get_environment_trait_usage_time_series(
 </details>
 
 ## integrationsapi
+<details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">run_integration</a>(integration_id) -> Schematic::Integrationsapi::Types::RunIntegrationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.integrationsapi.run_integration(integration_id: "integration_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**integration_id:** `String` — integration_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Integrationsapi::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">list_integrations</a>() -> Schematic::Integrationsapi::Types::ListIntegrationsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.integrationsapi.list_integrations(
+  billing_only: true,
+  exclude_ids: ["exclude_ids"],
+  id: "id",
+  state: "active",
+  type: "clerk",
+  limit: 1000000,
+  offset: 1000000
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_only:** `Internal::Types::Boolean` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exclude_ids:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**state:** `Schematic::Types::IntegrationState` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**type:** `Schematic::Types::IntegrationType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Integer` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `Integer` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Integrationsapi::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">get_integration_webhook_url</a>(type) -> Schematic::Integrationsapi::Types::GetIntegrationWebhookUrlResponse</code></summary>
 <dl>
 <dd>
@@ -15822,6 +16069,158 @@ client.integrationsapi.get_integration_webhook_url(type: "type")
 <dd>
 
 **type:** `String` — type
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Integrationsapi::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">start_data_import</a>(request) -> Schematic::Integrationsapi::Types::StartDataImportResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.integrationsapi.start_data_import(integration_id: "integration_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_matching_criteria:** `Schematic::Types::CompanyMatchingCriteria` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_matching_field:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**integration_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Integrationsapi::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">load_sample_data_set_v_2</a>() -> Schematic::Integrationsapi::Types::LoadSampleDataSetV2Response</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.integrationsapi.load_sample_data_set_v_2
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Integrationsapi::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">uninstall_integration</a>(integration_id) -> Schematic::Integrationsapi::Types::UninstallIntegrationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.integrationsapi.uninstall_integration(integration_id: "integration_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**integration_id:** `String` — integration_id
     
 </dd>
 </dl>

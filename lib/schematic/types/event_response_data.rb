@@ -13,6 +13,7 @@ module Schematic
       field :error_message, -> { String }, optional: true, nullable: false
       field :feature_ids, -> { Internal::Types::Array[String] }, optional: false, nullable: false
       field :id, -> { String }, optional: false, nullable: false
+      field :idempotency_key, -> { String }, optional: true, nullable: false
       field :loaded_at, -> { String }, optional: true, nullable: false
       field :processed_at, -> { String }, optional: true, nullable: false
       field :quantity, -> { Integer }, optional: false, nullable: false

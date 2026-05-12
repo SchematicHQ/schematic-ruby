@@ -863,19 +863,21 @@ module Schematic
       # @option params [String, nil] :plan_id
       # @option params [String, nil] :plan_ids
       # @option params [String, nil] :plan_version_id
+      # @option params [String, nil] :plan_version_ids
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
       # @return [Schematic::Credits::Types::ListBillingPlanCreditGrantsResponse]
       def list_billing_plan_credit_grants(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[credit_id ids plan_id plan_ids plan_version_id limit offset]
+        query_param_names = %i[credit_id ids plan_id plan_ids plan_version_id plan_version_ids limit offset]
         query_params = {}
         query_params["credit_id"] = params[:credit_id] if params.key?(:credit_id)
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["plan_id"] = params[:plan_id] if params.key?(:plan_id)
         query_params["plan_ids"] = params[:plan_ids] if params.key?(:plan_ids)
         query_params["plan_version_id"] = params[:plan_version_id] if params.key?(:plan_version_id)
+        query_params["plan_version_ids"] = params[:plan_version_ids] if params.key?(:plan_version_ids)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
         params.except(*query_param_names)
@@ -1049,19 +1051,21 @@ module Schematic
       # @option params [String, nil] :plan_id
       # @option params [String, nil] :plan_ids
       # @option params [String, nil] :plan_version_id
+      # @option params [String, nil] :plan_version_ids
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
       # @return [Schematic::Credits::Types::CountBillingPlanCreditGrantsResponse]
       def count_billing_plan_credit_grants(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[credit_id ids plan_id plan_ids plan_version_id limit offset]
+        query_param_names = %i[credit_id ids plan_id plan_ids plan_version_id plan_version_ids limit offset]
         query_params = {}
         query_params["credit_id"] = params[:credit_id] if params.key?(:credit_id)
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["plan_id"] = params[:plan_id] if params.key?(:plan_id)
         query_params["plan_ids"] = params[:plan_ids] if params.key?(:plan_ids)
         query_params["plan_version_id"] = params[:plan_version_id] if params.key?(:plan_version_id)
+        query_params["plan_version_ids"] = params[:plan_version_ids] if params.key?(:plan_version_ids)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
         params.except(*query_param_names)

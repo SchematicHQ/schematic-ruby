@@ -4,6 +4,7 @@ module Schematic
   module Types
     class EventDetailResponseData < Internal::Types::Model
       field :api_key, -> { String }, optional: true, nullable: false
+      field :api_key_view, -> { Schematic::Types::ApiKeyResponseData }, optional: true, nullable: false
       field :body, -> { Internal::Types::Hash[String, Object] }, optional: false, nullable: false
       field :body_preview, -> { String }, optional: false, nullable: false
       field :captured_at, -> { String }, optional: false, nullable: false
@@ -15,6 +16,7 @@ module Schematic
       field :feature_ids, -> { Internal::Types::Array[String] }, optional: false, nullable: false
       field :features, -> { Internal::Types::Array[Schematic::Types::PreviewObject] }, optional: false, nullable: false
       field :id, -> { String }, optional: false, nullable: false
+      field :idempotency_key, -> { String }, optional: true, nullable: false
       field :loaded_at, -> { String }, optional: true, nullable: false
       field :processed_at, -> { String }, optional: true, nullable: false
       field :quantity, -> { Integer }, optional: false, nullable: false

@@ -7,6 +7,7 @@ module Schematic
       field :burn_strategy, -> { Schematic::Types::BillingCreditBurnStrategy }, optional: false, nullable: false
       field :cost_editable, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :created_at, -> { String }, optional: false, nullable: false
+      field :currency_prices, -> { Internal::Types::Array[Schematic::Types::CreditCurrencyPrice] }, optional: false, nullable: false
       field :default_expiry_unit, -> { Schematic::Types::BillingCreditExpiryUnit }, optional: false, nullable: false
       field :default_expiry_unit_count, -> { Integer }, optional: true, nullable: false
       field :default_rollover_policy, -> { Schematic::Types::BillingCreditRolloverPolicy }, optional: false, nullable: false

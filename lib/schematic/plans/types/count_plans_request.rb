@@ -5,6 +5,7 @@ module Schematic
     module Types
       class CountPlansRequest < Internal::Types::Model
         field :company_id, -> { String }, optional: true, nullable: false
+        field :company_scoped_only, -> { Internal::Types::Boolean }, optional: true, nullable: false
         field :exclude_company_scoped, -> { Internal::Types::Boolean }, optional: true, nullable: false
         field :for_fallback_plan, -> { Internal::Types::Boolean }, optional: true, nullable: false
         field :for_initial_plan, -> { Internal::Types::Boolean }, optional: true, nullable: false

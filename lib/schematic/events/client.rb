@@ -97,6 +97,7 @@ module Schematic
       # @option params [String, nil] :event_subtype
       # @option params [Schematic::Types::EventType, nil] :event_types
       # @option params [String, nil] :flag_id
+      # @option params [String, nil] :idempotency_key
       # @option params [String, nil] :user_id
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
@@ -104,12 +105,13 @@ module Schematic
       # @return [Schematic::Events::Types::ListEventsResponse]
       def list_events(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[company_id event_subtype event_types flag_id user_id limit offset]
+        query_param_names = %i[company_id event_subtype event_types flag_id idempotency_key user_id limit offset]
         query_params = {}
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["event_subtype"] = params[:event_subtype] if params.key?(:event_subtype)
         query_params["event_types"] = params[:event_types] if params.key?(:event_types)
         query_params["flag_id"] = params[:flag_id] if params.key?(:flag_id)
+        query_params["idempotency_key"] = params[:idempotency_key] if params.key?(:idempotency_key)
         query_params["user_id"] = params[:user_id] if params.key?(:user_id)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
