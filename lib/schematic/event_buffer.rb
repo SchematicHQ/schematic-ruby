@@ -26,6 +26,7 @@ module Schematic
       @stopped = false
       @flushing = false
       @flush_done = ConditionVariable.new
+      @stop_cv = ConditionVariable.new
 
       start_periodic_flush unless @offline
     end
@@ -77,6 +78,10 @@ module Schematic
       @mutex.synchronize do
         @stopped = true
 
+        # Wake the periodic flush thread so it sees @stopped immediately
+        # instead of sleeping out the rest of @interval.
+        @stop_cv.broadcast
+
         # Wait for any in-flight flush to complete before our final flush,
         # so we don't skip events that arrived during the in-flight batch.
         @flush_done.wait(@mutex, 30) if @flushing
@@ -92,8 +97,11 @@ module Schematic
     def start_periodic_flush
       @flush_thread = Thread.new do
         loop do
-          sleep(@interval)
-          break if @stopped
+          should_break = @mutex.synchronize do
+            @stop_cv.wait(@mutex, @interval) unless @stopped
+            @stopped
+          end
+          break if should_break
 
           begin
             flush
