@@ -36,6 +36,7 @@ module Schematic
       field :name, -> { String }, optional: false, nullable: false
       field :one_time_price, -> { Schematic::Types::BillingPriceResponseData }, optional: true, nullable: false
       field :plan_type, -> { Schematic::Types::PlanType }, optional: false, nullable: false
+      field :quarterly_price, -> { Schematic::Types::BillingPriceResponseData }, optional: true, nullable: false
       field :trial_days, -> { Integer }, optional: true, nullable: false
       field :updated_at, -> { String }, optional: false, nullable: false
       field :usage_violations, -> { Internal::Types::Array[Schematic::Types::FeatureUsageResponseData] }, optional: false, nullable: false

@@ -11,6 +11,7 @@ module Schematic
       field :metric_period_month_reset, -> { Schematic::Types::MetricPeriodMonthReset }, optional: true, nullable: false
       field :monthly_usage_based_price, -> { Schematic::Types::BillingPriceView }, optional: true, nullable: false
       field :price_behavior, -> { Schematic::Types::EntitlementPriceBehavior }, optional: true, nullable: false
+      field :quarterly_usage_based_price, -> { Schematic::Types::BillingPriceView }, optional: true, nullable: false
       field :value_bool, -> { Internal::Types::Boolean }, optional: true, nullable: false
       field :value_numeric, -> { Integer }, optional: true, nullable: false
       field :value_type, -> { Schematic::Types::EntitlementValueType }, optional: false, nullable: false

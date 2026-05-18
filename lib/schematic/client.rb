@@ -57,6 +57,11 @@ module Schematic
       @components ||= Schematic::Components::Client.new(client: @raw_client)
     end
 
+    # @return [Schematic::Planbundle::Client]
+    def planbundle
+      @planbundle ||= Schematic::Planbundle::Client.new(client: @raw_client)
+    end
+
     # @return [Schematic::Dataexports::Client]
     def dataexports
       @dataexports ||= Schematic::Dataexports::Client.new(client: @raw_client)
@@ -80,11 +85,6 @@ module Schematic
     # @return [Schematic::Integrationsapi::Client]
     def integrationsapi
       @integrationsapi ||= Schematic::Integrationsapi::Client.new(client: @raw_client)
-    end
-
-    # @return [Schematic::Planbundle::Client]
-    def planbundle
-      @planbundle ||= Schematic::Planbundle::Client.new(client: @raw_client)
     end
 
     # @return [Schematic::Plangroups::Client]

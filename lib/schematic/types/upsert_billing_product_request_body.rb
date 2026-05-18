@@ -12,6 +12,8 @@ module Schematic
       field :monthly_price_id, -> { String }, optional: true, nullable: false
       field :one_time_price, -> { Integer }, optional: true, nullable: false
       field :one_time_price_id, -> { String }, optional: true, nullable: false
+      field :quarterly_price, -> { Integer }, optional: true, nullable: false
+      field :quarterly_price_id, -> { String }, optional: true, nullable: false
       field :trial_days, -> { Integer }, optional: true, nullable: false
       field :yearly_price, -> { Integer }, optional: true, nullable: false
       field :yearly_price_id, -> { String }, optional: true, nullable: false

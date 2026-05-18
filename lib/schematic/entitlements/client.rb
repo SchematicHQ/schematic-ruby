@@ -350,6 +350,7 @@ module Schematic
       # @option params [Hash[String, String], nil] :company_keys
       # @option params [String, nil] :feature_ids
       # @option params [Boolean, nil] :include_usage_aggregation
+      # @option params [Schematic::Types::BillingProviderType, nil] :managed_by
       # @option params [String, nil] :q
       # @option params [Boolean, nil] :without_negative_entitlements
       # @option params [Integer, nil] :limit
@@ -358,12 +359,13 @@ module Schematic
       # @return [Schematic::Entitlements::Types::ListFeatureUsageResponse]
       def list_feature_usage(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[company_id company_keys feature_ids include_usage_aggregation q without_negative_entitlements limit offset]
+        query_param_names = %i[company_id company_keys feature_ids include_usage_aggregation managed_by q without_negative_entitlements limit offset]
         query_params = {}
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["company_keys"] = params[:company_keys] if params.key?(:company_keys)
         query_params["feature_ids"] = params[:feature_ids] if params.key?(:feature_ids)
         query_params["include_usage_aggregation"] = params[:include_usage_aggregation] if params.key?(:include_usage_aggregation)
+        query_params["managed_by"] = params[:managed_by] if params.key?(:managed_by)
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["without_negative_entitlements"] = params[:without_negative_entitlements] if params.key?(:without_negative_entitlements)
         query_params["limit"] = params[:limit] if params.key?(:limit)
@@ -448,6 +450,7 @@ module Schematic
       # @option params [Hash[String, String], nil] :company_keys
       # @option params [String, nil] :feature_ids
       # @option params [Boolean, nil] :include_usage_aggregation
+      # @option params [Schematic::Types::BillingProviderType, nil] :managed_by
       # @option params [String, nil] :q
       # @option params [Boolean, nil] :without_negative_entitlements
       # @option params [Integer, nil] :limit
@@ -456,12 +459,13 @@ module Schematic
       # @return [Schematic::Entitlements::Types::CountFeatureUsageResponse]
       def count_feature_usage(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[company_id company_keys feature_ids include_usage_aggregation q without_negative_entitlements limit offset]
+        query_param_names = %i[company_id company_keys feature_ids include_usage_aggregation managed_by q without_negative_entitlements limit offset]
         query_params = {}
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["company_keys"] = params[:company_keys] if params.key?(:company_keys)
         query_params["feature_ids"] = params[:feature_ids] if params.key?(:feature_ids)
         query_params["include_usage_aggregation"] = params[:include_usage_aggregation] if params.key?(:include_usage_aggregation)
+        query_params["managed_by"] = params[:managed_by] if params.key?(:managed_by)
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["without_negative_entitlements"] = params[:without_negative_entitlements] if params.key?(:without_negative_entitlements)
         query_params["limit"] = params[:limit] if params.key?(:limit)

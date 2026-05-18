@@ -7,6 +7,9 @@ module Schematic
       field :monthly_price_tiers, -> { Internal::Types::Array[Schematic::Types::CreatePriceTierRequestBody] }, optional: true, nullable: false
       field :monthly_unit_price, -> { Integer }, optional: true, nullable: false
       field :monthly_unit_price_decimal, -> { String }, optional: true, nullable: false
+      field :quarterly_price_tiers, -> { Internal::Types::Array[Schematic::Types::CreatePriceTierRequestBody] }, optional: true, nullable: false
+      field :quarterly_unit_price, -> { Integer }, optional: true, nullable: false
+      field :quarterly_unit_price_decimal, -> { String }, optional: true, nullable: false
       field :yearly_price_tiers, -> { Internal::Types::Array[Schematic::Types::CreatePriceTierRequestBody] }, optional: true, nullable: false
       field :yearly_unit_price, -> { Integer }, optional: true, nullable: false
       field :yearly_unit_price_decimal, -> { String }, optional: true, nullable: false
