@@ -6,6 +6,8 @@ require "uri"
 require "json"
 require "websocket"
 
+require_relative "../version"
+
 module Schematic
   module DataStream
     WRITE_WAIT = 10       # seconds
@@ -26,6 +28,14 @@ module Schematic
     MESSAGE_TYPE_PARTIAL = "partial"
     MESSAGE_TYPE_DELETE = "delete"
     MESSAGE_TYPE_ERROR = "error"
+
+    # Headers attached to the WebSocket handshake so the backend can distinguish
+    # direct-SDK connections from the schematic-datastream-replicator and
+    # correlate either to a specific release. Mode is always "direct" here —
+    # replicator mode in this SDK doesn't open a WebSocket at all.
+    CLIENT_NAME = "schematic-ruby"
+    DATASTREAM_MODE_DIRECT = "direct"
+    UNKNOWN_VERSION = "unknown"
 
     class WebSocketClient
       attr_reader :url, :connected, :ready
@@ -154,7 +164,7 @@ module Schematic
       def perform_handshake
         @handshake = WebSocket::Handshake::Client.new(
           url: @url,
-          headers: { "X-Schematic-Api-Key" => @api_key }
+          headers: handshake_headers
         )
 
         @socket.write(@handshake.to_s)
@@ -309,6 +319,27 @@ module Schematic
           data: data
         )
         @write_mutex.synchronize { @socket&.write(frame.to_s) }
+      end
+
+      # Headers attached to the WebSocket handshake. The mode/client headers let
+      # the backend tell direct-SDK connections apart from the
+      # schematic-datastream-replicator and correlate them to a release.
+      def handshake_headers
+        {
+          "X-Schematic-Api-Key" => @api_key,
+          "X-Schematic-Datastream-Mode" => DATASTREAM_MODE_DIRECT,
+          "X-Schematic-Client" => CLIENT_NAME,
+          "X-Schematic-Client-Version" => sdk_version
+        }
+      end
+
+      # Resolves the SDK version reported in handshake headers. Schematic::VERSION
+      # is stamped into the Fern-generated lib/schematic/version.rb on each release;
+      # fall back to "unknown" if the constant is missing (e.g. a partial checkout).
+      def sdk_version
+        return Schematic::VERSION if defined?(Schematic::VERSION) && !Schematic::VERSION.to_s.empty?
+
+        UNKNOWN_VERSION
       end
     end
   end
