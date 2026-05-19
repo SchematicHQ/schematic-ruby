@@ -6,6 +6,7 @@ module Schematic
       extend Schematic::Internal::Types::Enum
 
       FREE = "free"
+      NONE = "none"
       ONE_TIME = "one_time"
       RECURRING = "recurring"
     end
