@@ -10,6 +10,7 @@ module Schematic
         field :feature_ids, -> { Internal::Types::Array[String] }, optional: true, nullable: false
         field :include_usage_aggregation, -> { Internal::Types::Boolean }, optional: true, nullable: false
         field :limit, -> { Integer }, optional: true, nullable: false
+        field :managed_by, -> { Schematic::Types::BillingProviderType }, optional: true, nullable: false
         field :offset, -> { Integer }, optional: true, nullable: false
         field :q, -> { String }, optional: true, nullable: false
         field :without_negative_entitlements, -> { Internal::Types::Boolean }, optional: true, nullable: false

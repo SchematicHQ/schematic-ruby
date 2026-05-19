@@ -13,6 +13,7 @@ module Schematic
       field :feature_id, -> { String }, optional: false, nullable: false
       field :id, -> { String }, optional: false, nullable: false
       field :metered_monthly_price, -> { Schematic::Types::BillingPriceView }, optional: true, nullable: false
+      field :metered_quarterly_price, -> { Schematic::Types::BillingPriceView }, optional: true, nullable: false
       field :metered_yearly_price, -> { Schematic::Types::BillingPriceView }, optional: true, nullable: false
       field :metric_period, -> { Schematic::Types::MetricPeriod }, optional: true, nullable: false
       field :metric_period_month_reset, -> { Schematic::Types::MetricPeriodMonthReset }, optional: true, nullable: false

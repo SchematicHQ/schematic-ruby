@@ -34,6 +34,7 @@ module Schematic
       field :plan, -> { Schematic::Types::PlanResponseData }, optional: true, nullable: false
       field :plan_entitlement, -> { Schematic::Types::PlanEntitlementResponseData }, optional: true, nullable: false
       field :price_behavior, -> { Schematic::Types::EntitlementPriceBehavior }, optional: true, nullable: false
+      field :quarterly_usage_based_price, -> { Schematic::Types::BillingPriceView }, optional: true, nullable: false
       field :soft_limit, -> { Integer }, optional: true, nullable: false
       field :usage, -> { Integer }, optional: true, nullable: false
       field :yearly_usage_based_price, -> { Schematic::Types::BillingPriceView }, optional: true, nullable: false

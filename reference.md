@@ -2492,6 +2492,14 @@ client.billing.upsert_billing_price(
 <dl>
 <dd>
 
+**interval_count:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **is_active:** `Internal::Types::Boolean` 
     
 </dd>
@@ -10009,6 +10017,7 @@ client.entitlements.list_feature_usage(
   company_id: "company_id",
   feature_ids: ["feature_ids"],
   include_usage_aggregation: true,
+  managed_by: "orb",
   q: "q",
   without_negative_entitlements: true,
   limit: 1000000,
@@ -10053,6 +10062,14 @@ client.entitlements.list_feature_usage(
 <dd>
 
 **include_usage_aggregation:** `Internal::Types::Boolean` — Include time-bucketed usage aggregation (today, this week, this month, billing period) for credit-based entitlements. Defaults to false for performance.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**managed_by:** `Schematic::Types::BillingProviderType` — Filter for features managed by a billing provider, or by Schematic (no billing provider)
     
 </dd>
 </dl>
@@ -10207,6 +10224,7 @@ client.entitlements.count_feature_usage(
   company_id: "company_id",
   feature_ids: ["feature_ids"],
   include_usage_aggregation: true,
+  managed_by: "orb",
   q: "q",
   without_negative_entitlements: true,
   limit: 1000000,
@@ -10251,6 +10269,14 @@ client.entitlements.count_feature_usage(
 <dd>
 
 **include_usage_aggregation:** `Internal::Types::Boolean` — Include time-bucketed usage aggregation (today, this week, this month, billing period) for credit-based entitlements. Defaults to false for performance.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**managed_by:** `Schematic::Types::BillingProviderType` — Filter for features managed by a billing provider, or by Schematic (no billing provider)
     
 </dd>
 </dl>
@@ -10764,6 +10790,38 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
+**quarterly_metered_price_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**quarterly_price_tiers:** `Internal::Types::Array[Schematic::Types::CreatePriceTierRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**quarterly_unit_price:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**quarterly_unit_price_decimal:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **soft_limit:** `Integer` 
     
 </dd>
@@ -11056,6 +11114,38 @@ client.entitlements.update_plan_entitlement(
 <dd>
 
 **price_tiers:** `Internal::Types::Array[Schematic::Types::CreatePriceTierRequestBody]` — Use MonthlyPriceTiers or YearlyPriceTiers instead
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**quarterly_metered_price_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**quarterly_price_tiers:** `Internal::Types::Array[Schematic::Types::CreatePriceTierRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**quarterly_unit_price:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**quarterly_unit_price_decimal:** `String` 
     
 </dd>
 </dl>
@@ -11390,6 +11480,38 @@ client.entitlements.upsert_plan_entitlement_for_billing_product(
 <dd>
 
 **price_tiers:** `Internal::Types::Array[Schematic::Types::CreatePriceTierRequestBody]` — Use MonthlyPriceTiers or YearlyPriceTiers instead
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**quarterly_metered_price_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**quarterly_price_tiers:** `Internal::Types::Array[Schematic::Types::CreatePriceTierRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**quarterly_unit_price:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**quarterly_unit_price_decimal:** `String` 
     
 </dd>
 </dl>
@@ -13634,6 +13756,256 @@ client.components.preview_component_data(
 <dd>
 
 **request_options:** `Schematic::Components::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## planbundle
+<details><summary><code>client.planbundle.<a href="/lib/schematic/planbundle/client.rb">create_custom_plan_bundle</a>(request) -> Schematic::Planbundle::Types::CreateCustomPlanBundleResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.planbundle.create_custom_plan_bundle(entitlements: [{
+  action: "create"
+}])
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_product:** `Schematic::Types::UpsertBillingProductRequestBody` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entitlements:** `Internal::Types::Array[Schematic::Types::PlanBundleEntitlementRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan:** `Schematic::Types::CreateCustomPlanBundlePlanRequestBody` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Planbundle::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.planbundle.<a href="/lib/schematic/planbundle/client.rb">create_plan_bundle</a>(request) -> Schematic::Planbundle::Types::CreatePlanBundleResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.planbundle.create_plan_bundle(entitlements: [{
+  action: "create"
+}])
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_product:** `Schematic::Types::UpsertBillingProductRequestBody` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**credit_grants:** `Internal::Types::Array[Schematic::Types::PlanBundleCreditGrantRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entitlements:** `Internal::Types::Array[Schematic::Types::PlanBundleEntitlementRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan:** `Schematic::Types::CreatePlanRequestBody` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**traits:** `Internal::Types::Array[Schematic::Types::UpdatePlanTraitTraitRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Planbundle::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.planbundle.<a href="/lib/schematic/planbundle/client.rb">update_plan_bundle</a>(plan_bundle_id, request) -> Schematic::Planbundle::Types::UpdatePlanBundleResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.planbundle.update_plan_bundle(
+  plan_bundle_id: "plan_bundle_id",
+  entitlements: [{
+    action: "create"
+  }]
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_bundle_id:** `String` — plan_bundle_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billing_product:** `Schematic::Types::UpsertBillingProductRequestBody` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**credit_grants:** `Internal::Types::Array[Schematic::Types::PlanBundleCreditGrantRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entitlements:** `Internal::Types::Array[Schematic::Types::PlanBundleEntitlementRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan:** `Schematic::Types::UpdatePlanRequestBody` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**traits:** `Internal::Types::Array[Schematic::Types::UpdatePlanTraitTraitRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Planbundle::RequestOptions` 
     
 </dd>
 </dl>
@@ -16229,190 +16601,6 @@ client.integrationsapi.uninstall_integration(integration_id: "integration_id")
 <dd>
 
 **request_options:** `Schematic::Integrationsapi::RequestOptions` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## planbundle
-<details><summary><code>client.planbundle.<a href="/lib/schematic/planbundle/client.rb">create_plan_bundle</a>(request) -> Schematic::Planbundle::Types::CreatePlanBundleResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```ruby
-client.planbundle.create_plan_bundle(entitlements: [{
-  action: "create"
-}])
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**billing_product:** `Schematic::Types::UpsertBillingProductRequestBody` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**credit_grants:** `Internal::Types::Array[Schematic::Types::PlanBundleCreditGrantRequestBody]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entitlements:** `Internal::Types::Array[Schematic::Types::PlanBundleEntitlementRequestBody]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**plan:** `Schematic::Types::CreatePlanRequestBody` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**traits:** `Internal::Types::Array[Schematic::Types::UpdatePlanTraitTraitRequestBody]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `Schematic::Planbundle::RequestOptions` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.planbundle.<a href="/lib/schematic/planbundle/client.rb">update_plan_bundle</a>(plan_bundle_id, request) -> Schematic::Planbundle::Types::UpdatePlanBundleResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```ruby
-client.planbundle.update_plan_bundle(
-  plan_bundle_id: "plan_bundle_id",
-  entitlements: [{
-    action: "create"
-  }]
-)
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**plan_bundle_id:** `String` — plan_bundle_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**billing_product:** `Schematic::Types::UpsertBillingProductRequestBody` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**credit_grants:** `Internal::Types::Array[Schematic::Types::PlanBundleCreditGrantRequestBody]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entitlements:** `Internal::Types::Array[Schematic::Types::PlanBundleEntitlementRequestBody]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**plan:** `Schematic::Types::UpdatePlanRequestBody` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**plan_version_id:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**traits:** `Internal::Types::Array[Schematic::Types::UpdatePlanTraitTraitRequestBody]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `Schematic::Planbundle::RequestOptions` 
     
 </dd>
 </dl>

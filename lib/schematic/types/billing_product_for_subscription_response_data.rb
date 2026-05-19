@@ -11,6 +11,7 @@ module Schematic
       field :external_id, -> { String }, optional: false, nullable: false
       field :id, -> { String }, optional: false, nullable: false
       field :interval, -> { String }, optional: false, nullable: false
+      field :interval_count, -> { Integer }, optional: true, nullable: false
       field :meter_id, -> { String }, optional: true, nullable: false
       field :name, -> { String }, optional: false, nullable: false
       field :package_size, -> { Integer }, optional: false, nullable: false

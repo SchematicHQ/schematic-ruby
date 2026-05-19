@@ -6,6 +6,7 @@ module Schematic
       field :currency, -> { String }, optional: false, nullable: false
       field :monthly_price, -> { Schematic::Types::BillingPriceResponseData }, optional: true, nullable: false
       field :one_time_price, -> { Schematic::Types::BillingPriceResponseData }, optional: true, nullable: false
+      field :quarterly_price, -> { Schematic::Types::BillingPriceResponseData }, optional: true, nullable: false
       field :yearly_price, -> { Schematic::Types::BillingPriceResponseData }, optional: true, nullable: false
     end
   end

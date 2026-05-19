@@ -8,6 +8,7 @@ module Schematic
       field :currency, -> { String }, optional: false, nullable: false
       field :id, -> { String }, optional: false, nullable: false
       field :interval, -> { Schematic::Types::BillingProductPriceInterval }, optional: false, nullable: false
+      field :interval_count, -> { Integer }, optional: false, nullable: false
       field :is_active, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :meter_event_name, -> { String }, optional: true, nullable: false
       field :meter_event_payload_key, -> { String }, optional: true, nullable: false
