@@ -4,6 +4,7 @@ module Schematic
   module Types
     class UpsertBillingProductRequestBody < Internal::Types::Model
       field :billing_product_id, -> { String }, optional: true, nullable: false
+      field :billing_strategy, -> { Schematic::Types::BillingStrategy }, optional: true, nullable: false
       field :charge_type, -> { Schematic::Types::ChargeType }, optional: false, nullable: false
       field :currency, -> { String }, optional: true, nullable: false
       field :currency_prices, -> { Internal::Types::Array[Schematic::Types::PlanCurrencyPriceRequestBody] }, optional: true, nullable: false

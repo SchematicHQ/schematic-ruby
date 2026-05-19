@@ -19,3 +19,6 @@ lib/schematichq.rb
 scripts/
 test/custom.test.rb
 testapp/
+.fern/replay.lock
+.fern/replay.yml
+.gitattributes

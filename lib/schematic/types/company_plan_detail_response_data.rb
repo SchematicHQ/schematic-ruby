@@ -7,6 +7,7 @@ module Schematic
       field :audience_type, -> { String }, optional: true, nullable: false
       field :billing_linked_resource, -> { Schematic::Types::BillingLinkedResourceResponseData }, optional: true, nullable: false
       field :billing_product, -> { Schematic::Types::BillingProductDetailResponseData }, optional: true, nullable: false
+      field :billing_strategy, -> { Schematic::Types::BillingStrategy }, optional: false, nullable: false
       field :charge_type, -> { Schematic::Types::ChargeType }, optional: false, nullable: false
       field :company_can_trial, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :company_count, -> { Integer }, optional: false, nullable: false
