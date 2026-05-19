@@ -659,6 +659,40 @@ describe "DataStream WebSocket URL Conversion" do
   end
 end
 
+describe "DataStream WebSocket handshake headers" do
+  def build_client(api_key: "test_api_key")
+    Schematic::DataStream::WebSocketClient.new(
+      base_url: "https://api.schematichq.com",
+      api_key: api_key,
+      logger: Schematic::ConsoleLogger.new(level: :error),
+      message_handler: ->(_msg) {}
+    )
+  end
+
+  it "includes the api key, datastream mode, client name, and client version" do
+    headers = build_client(api_key: "test_api_key").send(:handshake_headers)
+
+    assert_equal "test_api_key", headers["X-Schematic-Api-Key"]
+    assert_equal "direct", headers["X-Schematic-Datastream-Mode"]
+    assert_equal "schematic-ruby", headers["X-Schematic-Client"]
+    assert_equal Schematic::VERSION, headers["X-Schematic-Client-Version"]
+  end
+
+  it "falls back to 'unknown' when Schematic::VERSION is empty" do
+    client = build_client
+    original_version = Schematic::VERSION
+    Schematic.send(:remove_const, :VERSION)
+    Schematic.const_set(:VERSION, "")
+
+    begin
+      assert_equal "unknown", client.send(:handshake_headers)["X-Schematic-Client-Version"]
+    ensure
+      Schematic.send(:remove_const, :VERSION)
+      Schematic.const_set(:VERSION, original_version)
+    end
+  end
+end
+
 # =============================================================================
 # CheckFlagResponse Tests
 # =============================================================================
