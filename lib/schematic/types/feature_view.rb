@@ -21,6 +21,7 @@ module Schematic
       field :trait, -> { Schematic::Types::EntityTraitDefinitionResponseData }, optional: true, nullable: false
       field :trait_id, -> { String }, optional: true, nullable: false
       field :updated_at, -> { String }, optional: false, nullable: false
+      field :usage_limit_trait_id, -> { String }, optional: true, nullable: false
     end
   end
 end

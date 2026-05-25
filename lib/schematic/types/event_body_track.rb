@@ -5,6 +5,7 @@ module Schematic
     class EventBodyTrack < Internal::Types::Model
       field :company, -> { Internal::Types::Hash[String, String] }, optional: true, nullable: false
       field :event, -> { String }, optional: false, nullable: false
+      field :lease_id, -> { String }, optional: true, nullable: false
       field :quantity, -> { Integer }, optional: true, nullable: false
       field :traits, -> { Internal::Types::Hash[String, Object] }, optional: true, nullable: false
       field :user, -> { Internal::Types::Hash[String, String] }, optional: true, nullable: false

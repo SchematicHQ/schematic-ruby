@@ -748,6 +748,108 @@ module Schematic
       end
 
       # @param request_options [Hash]
+      # @param params [Schematic::Credits::Types::AcquireCreditLeaseRequestBody]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @return [Schematic::Credits::Types::AcquireCreditLeaseResponse]
+      def acquire_credit_lease(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "POST",
+          path: "billing/credits/lease",
+          body: Schematic::Credits::Types::AcquireCreditLeaseRequestBody.new(params).to_h,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          Schematic::Credits::Types::AcquireCreditLeaseResponse.load(response.body)
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          raise error_class.new(response.body, code: code)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Schematic::Credits::Types::ExtendCreditLeaseRequestBody]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :lease_id
+      #
+      # @return [Schematic::Credits::Types::ExtendCreditLeaseResponse]
+      def extend_credit_lease(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request_data = Schematic::Credits::Types::ExtendCreditLeaseRequestBody.new(params).to_h
+        non_body_param_names = ["lease_id"]
+        body = request_data.except(*non_body_param_names)
+
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "PUT",
+          path: "billing/credits/lease/#{URI.encode_uri_component(params[:lease_id].to_s)}/extend",
+          body: body,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          Schematic::Credits::Types::ExtendCreditLeaseResponse.load(response.body)
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          raise error_class.new(response.body, code: code)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Schematic::Types::ReleaseCreditLeaseRequestBody]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :lease_id
+      #
+      # @return [Schematic::Credits::Types::ReleaseCreditLeaseResponse]
+      def release_credit_lease(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "PUT",
+          path: "billing/credits/lease/#{URI.encode_uri_component(params[:lease_id].to_s)}/release",
+          body: params,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          Schematic::Credits::Types::ReleaseCreditLeaseResponse.load(response.body)
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          raise error_class.new(response.body, code: code)
+        end
+      end
+
+      # @param request_options [Hash]
       # @param params [Hash]
       # @option request_options [String] :base_url
       # @option request_options [Hash{String => Object}] :additional_headers

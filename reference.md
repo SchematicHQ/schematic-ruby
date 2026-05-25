@@ -2234,6 +2234,54 @@ client.billing.upsert_payment_method(
 </dl>
 </details>
 
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">delete_payment_method_by_external_id</a>(billing_id) -> Schematic::Billing::Types::DeletePaymentMethodByExternalIdResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.billing.delete_payment_method_by_external_id(billing_id: "billing_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_id:** `String` — billing_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Billing::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">list_billing_prices</a>() -> Schematic::Billing::Types::ListBillingPricesResponse</code></summary>
 <dl>
 <dd>
@@ -5160,6 +5208,208 @@ client.credits.list_grants_for_credit(
 <dd>
 
 **offset:** `Integer` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Credits::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">acquire_credit_lease</a>(request) -> Schematic::Credits::Types::AcquireCreditLeaseResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.credits.acquire_credit_lease(
+  company_id: "company_id",
+  credit_type_id: "credit_type_id",
+  requested_amount: 1.1
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**credit_type_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expires_at:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requested_amount:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Credits::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">extend_credit_lease</a>(lease_id, request) -> Schematic::Credits::Types::ExtendCreditLeaseResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.credits.extend_credit_lease(
+  lease_id: "lease_id",
+  additional_amount: 1.1
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**lease_id:** `String` — lease_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**additional_amount:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expires_at:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Credits::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">release_credit_lease</a>(lease_id, request) -> Schematic::Credits::Types::ReleaseCreditLeaseResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.credits.release_credit_lease(
+  lease_id: "lease_id",
+  request: {}
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**lease_id:** `String` — lease_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Internal::Types::Hash[String, Object]` 
     
 </dd>
 </dl>
