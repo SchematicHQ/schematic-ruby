@@ -251,26 +251,24 @@ module Schematic
 
     # --- Event Submission ---
 
-    def identify(body)
+    # Optional event metadata accepted via the `options:` keyword.
+    # identify only honors :idempotency_key; track also honors :sent_at,
+    # :trusted_client_clock, and :backfill. Fields are only sent when set.
+    TRACK_OPTION_KEYS = %i[idempotency_key sent_at trusted_client_clock backfill].freeze
+    IDENTIFY_OPTION_KEYS = %i[idempotency_key].freeze
+
+    def identify(body, options: nil)
       return if @offline
 
-      @event_buffer.push({
-                           event_type: "identify",
-                           body: body,
-                           sent_at: Time.now.utc.iso8601
-                         })
+      @event_buffer.push(build_event("identify", body, options, IDENTIFY_OPTION_KEYS))
     rescue StandardError => e
       @logger.error("Error sending identify event: #{e.message}")
     end
 
-    def track(body)
+    def track(body, options: nil)
       return if @offline
 
-      @event_buffer.push({
-                           event_type: "track",
-                           body: body,
-                           sent_at: Time.now.utc.iso8601
-                         })
+      @event_buffer.push(build_event("track", body, options, TRACK_OPTION_KEYS))
 
       # Update company metrics locally if DataStream is active and connected
       if @datastream_client&.connected? && body[:company]
@@ -493,6 +491,41 @@ module Schematic
 
       @logger.debug("All #{keys.length} flags evaluated via DataStream")
       results
+    end
+
+    # Build the buffered event hash, applying any caller-supplied options.
+    # Only keys in allowed_keys are honored, and only when explicitly set, so
+    # unset fields never appear on the wire.
+    def build_event(event_type, body, options, allowed_keys)
+      event = {
+        event_type: event_type,
+        body: body,
+        sent_at: Time.now.utc.iso8601
+      }
+      return event unless options.is_a?(Hash)
+
+      allowed_keys.each do |key|
+        value = option_value(options, key)
+        next if value.nil?
+
+        event[key] = key == :sent_at ? normalize_sent_at(value) : value
+      end
+
+      event
+    end
+
+    def option_value(options, key)
+      return options[key] if options.key?(key)
+
+      options[key.to_s]
+    end
+
+    def normalize_sent_at(value)
+      return value if value.is_a?(String)
+      return value.utc.iso8601 if value.respond_to?(:utc)
+      return value.iso8601 if value.respond_to?(:iso8601)
+
+      value
     end
 
     def enqueue_flag_check_event(flag_key, response, company, user)

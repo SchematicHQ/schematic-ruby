@@ -489,6 +489,64 @@ describe "EventBuffer" do
     buffer.stop
   end
 
+  it "excludes unset optional fields from the capture payload" do
+    request_body = nil
+    stub_request(:post, CAPTURE_URL).to_return do |req|
+      request_body = JSON.parse(req.body, symbolize_names: true)
+      { status: 200 }
+    end
+
+    buffer = Schematic::EventBuffer.new(
+      api_key: "test_key",
+      logger: Schematic::ConsoleLogger.new(level: :error),
+      interval: 100,
+      offline: false
+    )
+
+    buffer.push({ event_type: "track", body: { event: "page_view" }, sent_at: "2024-01-01T00:00:00Z" })
+    buffer.flush
+
+    event = request_body[:events][0]
+
+    refute event.key?(:idempotency_key)
+    refute event.key?(:trusted_client_clock)
+    refute event.key?(:backfill)
+    buffer.stop
+  end
+
+  it "includes set optional fields in the capture payload" do
+    request_body = nil
+    stub_request(:post, CAPTURE_URL).to_return do |req|
+      request_body = JSON.parse(req.body, symbolize_names: true)
+      { status: 200 }
+    end
+
+    buffer = Schematic::EventBuffer.new(
+      api_key: "test_key",
+      logger: Schematic::ConsoleLogger.new(level: :error),
+      interval: 100,
+      offline: false
+    )
+
+    buffer.push({
+                  event_type: "track",
+                  body: { event: "page_view" },
+                  sent_at: "2024-01-01T00:00:00Z",
+                  idempotency_key: "evt_xyz",
+                  trusted_client_clock: true,
+                  backfill: false
+                })
+    buffer.flush
+
+    event = request_body[:events][0]
+
+    assert_equal "evt_xyz", event[:idempotency_key]
+    assert event[:trusted_client_clock]
+    assert event.key?(:backfill)
+    refute event[:backfill]
+    buffer.stop
+  end
+
   it "includes X-Schematic-Api-Key header" do
     stub = stub_request(:post, CAPTURE_URL).with(
       headers: { "X-Schematic-Api-Key" => "test_key" }
@@ -1566,6 +1624,113 @@ describe "SchematicClient - Track with Quantity" do
 
     client.close
     WebMock.reset!
+  end
+end
+
+# =============================================================================
+# SchematicClient - Track/Identify Event Options
+# =============================================================================
+describe "SchematicClient - Event Options" do
+  def capture_event(&block)
+    request_body = nil
+    stub_request(:post, CAPTURE_URL).to_return do |req|
+      request_body = JSON.parse(req.body, symbolize_names: true)
+      { status: 200 }
+    end
+
+    client = Schematic::SchematicClient.new(api_key: "api_test_key_123", cache_providers: [])
+    block.call(client)
+    client.instance_variable_get(:@event_buffer).flush
+    client.close
+
+    request_body[:events][0]
+  end
+
+  after { WebMock.reset! }
+
+  it "passes idempotency_key from track options to the wire payload" do
+    event = capture_event do |client|
+      client.track({ event: "credit-consumed", company: { "id" => "company_id" } },
+                   options: { idempotency_key: "evt_abc123" })
+    end
+
+    assert_equal "evt_abc123", event[:idempotency_key]
+    refute event.key?(:trusted_client_clock)
+    refute event.key?(:backfill)
+  end
+
+  it "passes all track options to the wire payload" do
+    sent_at = Time.utc(2026, 5, 21, 12, 0, 0)
+    event = capture_event do |client|
+      client.track({ event: "historical-import", company: { "id" => "company_id" } },
+                   options: {
+                     idempotency_key: "evt_xyz",
+                     sent_at: sent_at,
+                     trusted_client_clock: true,
+                     backfill: true
+                   })
+    end
+
+    assert_equal "evt_xyz", event[:idempotency_key]
+    assert_equal "2026-05-21T12:00:00Z", event[:sent_at]
+    assert event[:trusted_client_clock]
+    assert event[:backfill]
+  end
+
+  it "omits unset optional fields when track has no options" do
+    event = capture_event do |client|
+      client.track({ event: "some-event", company: { "id" => "company_id" } })
+    end
+
+    refute event.key?(:idempotency_key)
+    refute event.key?(:trusted_client_clock)
+    refute event.key?(:backfill)
+  end
+
+  it "sends explicitly false backfill on the wire" do
+    event = capture_event do |client|
+      client.track({ event: "some-event" }, options: { backfill: false, trusted_client_clock: false })
+    end
+
+    assert event.key?(:backfill)
+    refute event[:backfill]
+    assert event.key?(:trusted_client_clock)
+    refute event[:trusted_client_clock]
+  end
+
+  it "accepts a string sent_at without modification" do
+    event = capture_event do |client|
+      client.track({ event: "some-event" }, options: { sent_at: "2024-01-01T00:00:00Z" })
+    end
+
+    assert_equal "2024-01-01T00:00:00Z", event[:sent_at]
+  end
+
+  it "passes idempotency_key from identify options to the wire payload" do
+    event = capture_event do |client|
+      client.identify({ keys: { "id" => "user_id" } }, options: { idempotency_key: "ident_123" })
+    end
+
+    assert_equal "ident_123", event[:idempotency_key]
+  end
+
+  it "ignores track-only options on identify" do
+    event = capture_event do |client|
+      client.identify({ keys: { "id" => "user_id" } },
+                      options: { idempotency_key: "ident_123", trusted_client_clock: true, backfill: true })
+    end
+
+    assert_equal "ident_123", event[:idempotency_key]
+    refute event.key?(:trusted_client_clock)
+    refute event.key?(:backfill)
+  end
+
+  it "omits idempotency_key when identify has no options" do
+    event = capture_event do |client|
+      client.identify({ keys: { "id" => "user_id" }, name: "User Name" })
+    end
+
+    refute event.key?(:idempotency_key)
   end
 end
 

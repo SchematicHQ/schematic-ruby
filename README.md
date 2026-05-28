@@ -216,6 +216,36 @@ client.track({
 })
 ```
 
+#### Event options
+
+Both `track` and `identify` accept an `options:` keyword for optional event metadata. Only fields you set are sent.
+
+```ruby
+client.track(
+  { event: "query-tokens", company: { "id" => "your-company-id" }, quantity: 1500 },
+  options: {
+    # Dedupe key. Duplicate events with the same key are dropped
+    # server-side for 24 hours.
+    idempotency_key: "evt_2026_05_21_query_tokens",
+    # Timestamp the event occurred (Time or ISO 8601 String). Required
+    # when trusted_client_clock is true.
+    sent_at: Time.now.utc,
+    # Use sent_at as the effective event time instead of server receipt
+    # time. Requires a secret API key and sent_at.
+    trusted_client_clock: true,
+    # Import historical data without affecting billing. Requires a secret
+    # API key and trusted_client_clock.
+    backfill: false
+  }
+)
+
+client.identify(
+  { keys: { "user_id" => "your-user-id" }, name: "Wile E. Coyote" },
+  # identify only supports idempotency_key.
+  options: { idempotency_key: "ident_your-user-id" }
+)
+```
+
 ### Creating and updating companies
 
 Although it is faster to create companies and users via identify events, if you need to handle a response, you can use the companies API to upsert companies. Because you use your own identifiers to identify companies, rather than a Schematic company ID, creating and updating companies are both done via the same upsert operation:
