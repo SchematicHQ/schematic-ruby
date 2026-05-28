@@ -630,6 +630,119 @@ describe "DataStream Merge" do
 
     assert_equal 2, result.size
   end
+
+  it "partial_company syncs entitlement usage from updated metrics" do
+    existing = {
+      id: "comp_1",
+      metrics: [
+        { event_subtype: "api_call", period: "current_month", month_reset: "first_of_month", value: 5 }
+      ],
+      entitlements: [
+        {
+          feature_id: "feat_1",
+          feature_key: "api",
+          event_name: "api_call",
+          metric_period: "current_month",
+          month_reset: "first_of_month",
+          usage: 5
+        }
+      ]
+    }
+
+    partial = {
+      metrics: [
+        { event_subtype: "api_call", period: "current_month", month_reset: "first_of_month", value: 12 }
+      ]
+    }
+
+    result = Schematic::DataStream::Merge.partial_company(existing, partial)
+
+    assert_equal 12, result[:entitlements][0][:usage]
+  end
+
+  it "partial_company defaults metric_period and month_reset when matching usage" do
+    existing = {
+      id: "comp_1",
+      metrics: [
+        { event_subtype: "api_call", period: "all_time", month_reset: "first_of_month", value: 1 }
+      ],
+      entitlements: [
+        { feature_id: "feat_1", feature_key: "api", event_name: "api_call", usage: 1 }
+      ]
+    }
+
+    partial = {
+      metrics: [
+        { event_subtype: "api_call", period: "all_time", month_reset: "first_of_month", value: 9 }
+      ]
+    }
+
+    result = Schematic::DataStream::Merge.partial_company(existing, partial)
+
+    assert_equal 9, result[:entitlements][0][:usage]
+  end
+
+  it "partial_company syncs credit_remaining from updated credit_balances" do
+    existing = {
+      id: "comp_1",
+      credit_balances: { "credit_abc" => 100 },
+      entitlements: [
+        { feature_id: "feat_1", feature_key: "ai", credit_id: "credit_abc", credit_remaining: 100 }
+      ]
+    }
+
+    partial = {
+      credit_balances: { "credit_abc" => 40 }
+    }
+
+    result = Schematic::DataStream::Merge.partial_company(existing, partial)
+
+    assert_equal 40, result[:entitlements][0][:credit_remaining]
+  end
+
+  it "partial_company does not derive entitlements when partial sends them wholesale" do
+    existing = {
+      id: "comp_1",
+      metrics: [
+        { event_subtype: "api_call", period: "current_month", month_reset: "first_of_month", value: 5 }
+      ],
+      entitlements: [
+        { feature_id: "feat_1", feature_key: "api", event_name: "api_call",
+          metric_period: "current_month", month_reset: "first_of_month", usage: 5 }
+      ]
+    }
+
+    partial = {
+      metrics: [
+        { event_subtype: "api_call", period: "current_month", month_reset: "first_of_month", value: 12 }
+      ],
+      entitlements: [
+        { feature_id: "feat_1", feature_key: "api", event_name: "api_call",
+          metric_period: "current_month", month_reset: "first_of_month", usage: 99 }
+      ]
+    }
+
+    result = Schematic::DataStream::Merge.partial_company(existing, partial)
+
+    # entitlements were sent wholesale, so the explicit value wins (no derivation)
+    assert_equal 99, result[:entitlements][0][:usage]
+  end
+
+  it "partial_company leaves entitlements untouched when neither metrics nor balances change" do
+    existing = {
+      id: "comp_1",
+      traits: { "plan" => "pro" },
+      entitlements: [
+        { feature_id: "feat_1", feature_key: "api", event_name: "api_call", usage: 5 }
+      ]
+    }
+
+    partial = { traits: { "seats" => "10" } }
+
+    result = Schematic::DataStream::Merge.partial_company(existing, partial)
+
+    assert_equal 5, result[:entitlements][0][:usage]
+  end
 end
 
 # =============================================================================
