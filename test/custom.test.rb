@@ -223,6 +223,26 @@ describe "ConsoleLogger" do
 
     assert_equal :debug, logger.level
   end
+
+  it "defaults to the warn level" do
+    assert_equal :warn, Schematic::ConsoleLogger.new.level
+  end
+
+  it "creates a default logger at the warn level when none is provided" do
+    client = Schematic::SchematicClient.new(offline: true)
+
+    assert_equal :warn, client.instance_variable_get(:@logger).level
+    client.close
+  end
+
+  it "leaves a custom logger's level untouched, ignoring log_level" do
+    custom = Schematic::ConsoleLogger.new(level: :debug)
+    client = Schematic::SchematicClient.new(offline: true, logger: custom, log_level: :error)
+
+    assert_same custom, client.instance_variable_get(:@logger)
+    assert_equal :debug, custom.level
+    client.close
+  end
 end
 
 # =============================================================================

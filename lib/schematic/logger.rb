@@ -26,7 +26,7 @@ module Schematic
 
     attr_accessor :level
 
-    def initialize(level: :info)
+    def initialize(level: :warn)
       @level = level
       @mutex = Mutex.new
       @io = $stderr

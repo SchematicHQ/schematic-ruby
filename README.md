@@ -127,7 +127,7 @@ client = Schematic::SchematicClient.new(
 client.close
 ```
 
-You can also adjust the log level of the built-in console logger:
+You can also adjust the log level of the built-in console logger via the `log_level` option:
 
 ```ruby
 require "schematichq"
@@ -135,11 +135,11 @@ require "schematichq"
 api_key = ENV["SCHEMATIC_API_KEY"]
 client = Schematic::SchematicClient.new(
   api_key: api_key,
-  logger: Schematic::ConsoleLogger.new(level: :debug)
+  log_level: :debug
 )
 ```
 
-If no logger is provided, the client will use a default console logger at the `:info` level that outputs to stderr.
+If no logger is provided, the client will use a default console logger at the `:warn` level that outputs to stderr. The `log_level` option only applies to this built-in logger; when you supply your own `logger`, its level is left untouched.
 
 ## Usage Examples
 

@@ -67,7 +67,7 @@ module Schematic
       use_data_stream: false,
       datastream_options: {},
       logger: nil,
-      log_level: :info
+      log_level: :warn
     )
       @api_key = api_key
       @base_url = base_url || DEFAULT_BASE_URL
