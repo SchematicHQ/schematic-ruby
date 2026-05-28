@@ -778,6 +778,29 @@ describe "DataStream Merge" do
     assert_equal 40, result[:entitlements][0][:credit_remaining]
   end
 
+  it "partial_company syncs credit_remaining for every entitlement sharing a credit_id" do
+    existing = {
+      id: "comp_1",
+      credit_balances: { "credit_abc" => 100 },
+      entitlements: [
+        { feature_id: "feat_1", feature_key: "ai-chat", credit_id: "credit_abc", credit_remaining: 100 },
+        { feature_id: "feat_2", feature_key: "ai-image", credit_id: "credit_abc", credit_remaining: 100 },
+        { feature_id: "feat_3", feature_key: "other", credit_id: "credit_xyz", credit_remaining: 7 }
+      ]
+    }
+
+    partial = {
+      credit_balances: { "credit_abc" => 40 }
+    }
+
+    result = Schematic::DataStream::Merge.partial_company(existing, partial)
+
+    assert_equal 40, result[:entitlements][0][:credit_remaining]
+    assert_equal 40, result[:entitlements][1][:credit_remaining]
+    # untouched: its credit wasn't in the partial
+    assert_equal 7, result[:entitlements][2][:credit_remaining]
+  end
+
   it "partial_company does not derive entitlements when partial sends them wholesale" do
     existing = {
       id: "comp_1",

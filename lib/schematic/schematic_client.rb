@@ -56,6 +56,12 @@ module Schematic
     DEFAULT_CACHE_MAX_SIZE = 1000
     DEFAULT_EVENT_BUFFER_PERIOD = 5.0 # seconds (canonical Go value)
 
+    # Optional event metadata accepted via the `options:` keyword on track/identify.
+    # identify only honors :idempotency_key; track also honors :sent_at,
+    # :trusted_client_clock, and :backfill. Fields are only sent when set.
+    TRACK_OPTION_KEYS = %i[idempotency_key sent_at trusted_client_clock backfill].freeze
+    IDENTIFY_OPTION_KEYS = %i[idempotency_key].freeze
+
     def initialize(
       api_key: nil,
       base_url: nil,
@@ -250,12 +256,6 @@ module Schematic
     end
 
     # --- Event Submission ---
-
-    # Optional event metadata accepted via the `options:` keyword.
-    # identify only honors :idempotency_key; track also honors :sent_at,
-    # :trusted_client_clock, and :backfill. Fields are only sent when set.
-    TRACK_OPTION_KEYS = %i[idempotency_key sent_at trusted_client_clock backfill].freeze
-    IDENTIFY_OPTION_KEYS = %i[idempotency_key].freeze
 
     def identify(body, options: nil)
       return if @offline
