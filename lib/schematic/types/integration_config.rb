@@ -10,6 +10,7 @@ module Schematic
       member -> { Schematic::Types::ClerkIntegrationConfig }, key: "CLERK"
       member -> { Schematic::Types::OrbIntegrationConfig }, key: "ORB"
       member -> { Schematic::Types::StripeIntegrationConfig }, key: "STRIPE"
+      member -> { Schematic::Types::WorkOsIntegrationConfig }, key: "WORKOS"
     end
   end
 end

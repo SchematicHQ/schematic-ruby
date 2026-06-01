@@ -9,7 +9,6 @@ module Schematic
       field :is_sandbox, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :live_mode, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :onboard_url, -> { String }, optional: true, nullable: false
-      field :version, -> { Integer }, optional: false, nullable: false
     end
   end
 end

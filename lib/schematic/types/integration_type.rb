@@ -9,6 +9,7 @@ module Schematic
       ORB = "orb"
       STRIPE = "stripe"
       UNKNOWN = "unknown"
+      WORKOS = "workos"
     end
   end
 end

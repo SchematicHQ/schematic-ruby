@@ -6785,6 +6785,7 @@ client.companies.list_companies(
   plan_id: "plan_id",
   plan_ids: ["plan_ids"],
   plan_version_id: "plan_version_id",
+  plan_version_ids: ["plan_version_ids"],
   q: "q",
   sort_order_column: "sort_order_column",
   sort_order_direction: "asc",
@@ -6861,6 +6862,14 @@ client.companies.list_companies(
 <dd>
 
 **plan_version_id:** `String` — Filter companies by plan version ID (starts with plvr_)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_ids:** `String` — Filter companies by one or more plan version IDs (each ID starts with plvr_). Takes precedence over plan_version_id when set.
     
 </dd>
 </dl>
@@ -7163,6 +7172,7 @@ client.companies.count_companies(
   plan_id: "plan_id",
   plan_ids: ["plan_ids"],
   plan_version_id: "plan_version_id",
+  plan_version_ids: ["plan_version_ids"],
   q: "q",
   sort_order_column: "sort_order_column",
   sort_order_direction: "asc",
@@ -7239,6 +7249,14 @@ client.companies.count_companies(
 <dd>
 
 **plan_version_id:** `String` — Filter companies by plan version ID (starts with plvr_)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_ids:** `String` — Filter companies by one or more plan version IDs (each ID starts with plvr_). Takes precedence over plan_version_id when set.
     
 </dd>
 </dl>
@@ -11088,6 +11106,14 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
+**usage_quantity:** `Integer` — The committed unit quantity for this entitlement. For custom plans this is the quantity the company is contractually committed to; for standard plans it is the quantity pre-filled when subscribing. Only applies to pay-in-advance entitlements. Note: this is not yet enforced/auto-provisioned as a true default — it is currently stored for downstream billing use.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **value_bool:** `Internal::Types::Boolean` 
     
 </dd>
@@ -11412,6 +11438,14 @@ client.entitlements.update_plan_entitlement(
 <dd>
 
 **tier_mode:** `Schematic::Types::BillingTiersMode` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**usage_quantity:** `Integer` — The committed unit quantity for this entitlement. For custom plans this is the quantity the company is contractually committed to; for standard plans it is the quantity pre-filled when subscribing. Only applies to pay-in-advance entitlements. Note: this is not yet enforced/auto-provisioned as a true default — it is currently stored for downstream billing use.
     
 </dd>
 </dl>
@@ -11778,6 +11812,14 @@ client.entitlements.upsert_plan_entitlement_for_billing_product(
 <dd>
 
 **tier_mode:** `Schematic::Types::BillingTiersMode` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**usage_quantity:** `Integer` — The committed unit quantity for this entitlement. For custom plans this is the quantity the company is contractually committed to; for standard plans it is the quantity pre-filled when subscribing. Only applies to pay-in-advance entitlements. Note: this is not yet enforced/auto-provisioned as a true default — it is currently stored for downstream billing use.
     
 </dd>
 </dl>
@@ -12281,6 +12323,65 @@ client.plans.list_custom_plan_billings(
 </dl>
 </details>
 
+<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">mark_custom_plan_billing_paid</a>(custom_plan_billing_id, request) -> Schematic::Plans::Types::MarkCustomPlanBillingPaidResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.plans.mark_custom_plan_billing_paid(
+  custom_plan_billing_id: "custom_plan_billing_id",
+  request: {}
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**custom_plan_billing_id:** `String` — custom_plan_billing_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Internal::Types::Hash[String, Object]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Plans::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">retry_custom_plan_billing</a>(custom_plan_billing_id, request) -> Schematic::Plans::Types::RetryCustomPlanBillingResponse</code></summary>
 <dl>
 <dd>
@@ -12478,6 +12579,7 @@ client.plans.list_plans(
   plan_type: "plan",
   q: "q",
   scoped_to_company_id: "scoped_to_company_id",
+  with_entitlements: true,
   without_entitlement_for: "without_entitlement_for",
   without_paid_product_id: true,
   limit: 1000000,
@@ -12586,6 +12688,14 @@ client.plans.list_plans(
 <dd>
 
 **scoped_to_company_id:** `String` — Filter plans scoped to a specific company (custom plans)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**with_entitlements:** `Internal::Types::Boolean` — Include each plan's entitlements in the response
     
 </dd>
 </dl>
@@ -13197,6 +13307,7 @@ client.plans.count_plans(
   plan_type: "plan",
   q: "q",
   scoped_to_company_id: "scoped_to_company_id",
+  with_entitlements: true,
   without_entitlement_for: "without_entitlement_for",
   without_paid_product_id: true,
   limit: 1000000,
@@ -13305,6 +13416,14 @@ client.plans.count_plans(
 <dd>
 
 **scoped_to_company_id:** `String` — Filter plans scoped to a specific company (custom plans)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**with_entitlements:** `Internal::Types::Boolean` — Include each plan's entitlements in the response
     
 </dd>
 </dl>
@@ -17649,6 +17768,54 @@ client.planmigrations.list_company_migrations(
 </dl>
 </details>
 
+<details><summary><code>client.planmigrations.<a href="/lib/schematic/planmigrations/client.rb">retry_company_migration</a>(plan_version_company_migration_id) -> Schematic::Planmigrations::Types::RetryCompanyMigrationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.planmigrations.retry_company_migration(plan_version_company_migration_id: "plan_version_company_migration_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_version_company_migration_id:** `String` — plan_version_company_migration_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Planmigrations::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.planmigrations.<a href="/lib/schematic/planmigrations/client.rb">count_company_migrations</a>() -> Schematic::Planmigrations::Types::CountCompanyMigrationsResponse</code></summary>
 <dl>
 <dd>
@@ -17812,6 +17979,110 @@ client.planmigrations.list_migrations(
 </dl>
 </details>
 
+<details><summary><code>client.planmigrations.<a href="/lib/schematic/planmigrations/client.rb">create_migration</a>(request) -> Schematic::Planmigrations::Types::CreateMigrationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.planmigrations.create_migration(
+  company_ids: ["company_ids"],
+  excluded_company_ids: ["excluded_company_ids"],
+  plan_id: "plan_id",
+  plan_version_id_to: "plan_version_id_to",
+  plan_version_ids_from: ["plan_version_ids_from"],
+  strategy: "immediate",
+  target_plan_type: "plan"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_ids:** `Internal::Types::Array[String]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**excluded_company_ids:** `Internal::Types::Array[String]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_id_to:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_ids_from:** `Internal::Types::Array[String]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**strategy:** `Schematic::Types::PlanVersionMigrationStrategy` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**target_plan_type:** `Schematic::Types::PlanType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Planmigrations::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.planmigrations.<a href="/lib/schematic/planmigrations/client.rb">get_migration</a>(plan_version_migration_id) -> Schematic::Planmigrations::Types::GetMigrationResponse</code></summary>
 <dl>
 <dd>
@@ -17841,6 +18112,65 @@ client.planmigrations.get_migration(plan_version_migration_id: "plan_version_mig
 <dd>
 
 **plan_version_migration_id:** `String` — plan_version_migration_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Planmigrations::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.planmigrations.<a href="/lib/schematic/planmigrations/client.rb">retry_migration</a>(plan_version_migration_id, request) -> Schematic::Planmigrations::Types::RetryMigrationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.planmigrations.retry_migration(
+  plan_version_migration_id: "plan_version_migration_id",
+  error_codes: ["ambiguous_subscription_item"]
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_version_migration_id:** `String` — plan_version_migration_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**error_codes:** `Internal::Types::Array[Schematic::Types::MigrationErrorCode]` 
     
 </dd>
 </dl>

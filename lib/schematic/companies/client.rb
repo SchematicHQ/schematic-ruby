@@ -24,6 +24,7 @@ module Schematic
       # @option params [String, nil] :plan_id
       # @option params [String, nil] :plan_ids
       # @option params [String, nil] :plan_version_id
+      # @option params [String, nil] :plan_version_ids
       # @option params [String, nil] :q
       # @option params [String, nil] :sort_order_column
       # @option params [Schematic::Types::SortDirection, nil] :sort_order_direction
@@ -40,7 +41,7 @@ module Schematic
       # @return [Schematic::Companies::Types::ListCompaniesResponse]
       def list_companies(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[credit_type_ids has_scheduled_downgrade ids monetized_subscriptions plan_id plan_ids plan_version_id q sort_order_column sort_order_direction subscription_statuses subscription_types with_entitlement_for without_feature_override_for without_plan without_subscription with_subscription limit offset]
+        query_param_names = %i[credit_type_ids has_scheduled_downgrade ids monetized_subscriptions plan_id plan_ids plan_version_id plan_version_ids q sort_order_column sort_order_direction subscription_statuses subscription_types with_entitlement_for without_feature_override_for without_plan without_subscription with_subscription limit offset]
         query_params = {}
         query_params["credit_type_ids"] = params[:credit_type_ids] if params.key?(:credit_type_ids)
         query_params["has_scheduled_downgrade"] = params[:has_scheduled_downgrade] if params.key?(:has_scheduled_downgrade)
@@ -49,6 +50,7 @@ module Schematic
         query_params["plan_id"] = params[:plan_id] if params.key?(:plan_id)
         query_params["plan_ids"] = params[:plan_ids] if params.key?(:plan_ids)
         query_params["plan_version_id"] = params[:plan_version_id] if params.key?(:plan_version_id)
+        query_params["plan_version_ids"] = params[:plan_version_ids] if params.key?(:plan_version_ids)
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["sort_order_column"] = params[:sort_order_column] if params.key?(:sort_order_column)
         query_params["sort_order_direction"] = params[:sort_order_direction] if params.key?(:sort_order_direction)
@@ -203,6 +205,7 @@ module Schematic
       # @option params [String, nil] :plan_id
       # @option params [String, nil] :plan_ids
       # @option params [String, nil] :plan_version_id
+      # @option params [String, nil] :plan_version_ids
       # @option params [String, nil] :q
       # @option params [String, nil] :sort_order_column
       # @option params [Schematic::Types::SortDirection, nil] :sort_order_direction
@@ -219,7 +222,7 @@ module Schematic
       # @return [Schematic::Companies::Types::CountCompaniesResponse]
       def count_companies(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[credit_type_ids has_scheduled_downgrade ids monetized_subscriptions plan_id plan_ids plan_version_id q sort_order_column sort_order_direction subscription_statuses subscription_types with_entitlement_for without_feature_override_for without_plan without_subscription with_subscription limit offset]
+        query_param_names = %i[credit_type_ids has_scheduled_downgrade ids monetized_subscriptions plan_id plan_ids plan_version_id plan_version_ids q sort_order_column sort_order_direction subscription_statuses subscription_types with_entitlement_for without_feature_override_for without_plan without_subscription with_subscription limit offset]
         query_params = {}
         query_params["credit_type_ids"] = params[:credit_type_ids] if params.key?(:credit_type_ids)
         query_params["has_scheduled_downgrade"] = params[:has_scheduled_downgrade] if params.key?(:has_scheduled_downgrade)
@@ -228,6 +231,7 @@ module Schematic
         query_params["plan_id"] = params[:plan_id] if params.key?(:plan_id)
         query_params["plan_ids"] = params[:plan_ids] if params.key?(:plan_ids)
         query_params["plan_version_id"] = params[:plan_version_id] if params.key?(:plan_version_id)
+        query_params["plan_version_ids"] = params[:plan_version_ids] if params.key?(:plan_version_ids)
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["sort_order_column"] = params[:sort_order_column] if params.key?(:sort_order_column)
         query_params["sort_order_direction"] = params[:sort_order_direction] if params.key?(:sort_order_direction)

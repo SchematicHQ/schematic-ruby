@@ -16,6 +16,7 @@ module Schematic
         field :plan_type, -> { Schematic::Types::PlanType }, optional: true, nullable: false
         field :q, -> { String }, optional: true, nullable: false
         field :scoped_to_company_id, -> { String }, optional: true, nullable: false
+        field :with_entitlements, -> { Internal::Types::Boolean }, optional: true, nullable: false
         field :without_entitlement_for, -> { String }, optional: true, nullable: false
         field :without_paid_product_id, -> { Internal::Types::Boolean }, optional: true, nullable: false
         field :limit, -> { Integer }, optional: true, nullable: false

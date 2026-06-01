@@ -5,6 +5,7 @@ module Schematic
     class PlanGroupPlanDetailResponseData < Internal::Types::Model
       field :active_version, -> { Schematic::Types::PlanVersionResponseData }, optional: true, nullable: false
       field :audience_type, -> { String }, optional: true, nullable: false
+      field :available_periods, -> { Internal::Types::Array[Schematic::Types::PlanPriceCadence] }, optional: false, nullable: false
       field :billing_linked_resource, -> { Schematic::Types::BillingLinkedResourceResponseData }, optional: true, nullable: false
       field :billing_product, -> { Schematic::Types::BillingProductDetailResponseData }, optional: true, nullable: false
       field :billing_strategy, -> { Schematic::Types::BillingStrategy }, optional: false, nullable: false
@@ -20,7 +21,7 @@ module Schematic
       field :custom_plan_config, -> { Schematic::Types::CustomPlanViewConfigResponseData }, optional: true, nullable: false
       field :description, -> { String }, optional: false, nullable: false
       field :draft_version, -> { Schematic::Types::PlanVersionResponseData }, optional: true, nullable: false
-      field :entitlements, -> { Internal::Types::Array[Schematic::Types::PlanEntitlementResponseData] }, optional: false, nullable: false
+      field :entitlements, -> { Internal::Types::Array[Schematic::Types::PlanEntitlementResponseData] }, optional: true, nullable: false
       field :features, -> { Internal::Types::Array[Schematic::Types::FeatureInPlanResponseData] }, optional: false, nullable: false
       field :icon, -> { Schematic::Types::PlanIcon }, optional: false, nullable: false
       field :id, -> { String }, optional: false, nullable: false

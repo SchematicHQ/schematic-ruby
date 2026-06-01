@@ -18,6 +18,7 @@ module Schematic
       field :currency_prices, -> { Internal::Types::Array[Schematic::Types::PlanCurrencyPricesResponseData] }, optional: false, nullable: false
       field :description, -> { String }, optional: false, nullable: false
       field :draft_version, -> { Schematic::Types::PlanVersionResponseData }, optional: true, nullable: false
+      field :entitlements, -> { Internal::Types::Array[Schematic::Types::PlanEntitlementResponseData] }, optional: true, nullable: false
       field :features, -> { Internal::Types::Array[Schematic::Types::FeatureInPlanResponseData] }, optional: false, nullable: false
       field :icon, -> { Schematic::Types::PlanIcon }, optional: false, nullable: false
       field :id, -> { String }, optional: false, nullable: false
