@@ -96,6 +96,39 @@ module Schematic
       end
 
       # @param request_options [Hash]
+      # @param params [Schematic::Types::MarkCustomPlanBillingPaidRequestBody]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :custom_plan_billing_id
+      #
+      # @return [Schematic::Plans::Types::MarkCustomPlanBillingPaidResponse]
+      def mark_custom_plan_billing_paid(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "PUT",
+          path: "custom-plan-billings/#{URI.encode_uri_component(params[:custom_plan_billing_id].to_s)}/mark-paid",
+          body: params,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          Schematic::Plans::Types::MarkCustomPlanBillingPaidResponse.load(response.body)
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          raise error_class.new(response.body, code: code)
+        end
+      end
+
+      # @param request_options [Hash]
       # @param params [Schematic::Plans::Types::RetryCustomPlanBillingRequestBody]
       # @option request_options [String] :base_url
       # @option request_options [Hash{String => Object}] :additional_headers
@@ -183,6 +216,7 @@ module Schematic
       # @option params [Schematic::Types::PlanType, nil] :plan_type
       # @option params [String, nil] :q
       # @option params [String, nil] :scoped_to_company_id
+      # @option params [Boolean, nil] :with_entitlements
       # @option params [String, nil] :without_entitlement_for
       # @option params [Boolean, nil] :without_paid_product_id
       # @option params [Integer, nil] :limit
@@ -191,7 +225,7 @@ module Schematic
       # @return [Schematic::Plans::Types::ListPlansResponse]
       def list_plans(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[company_id company_scoped_only exclude_company_scoped for_fallback_plan for_initial_plan for_trial_expiry_plan has_product_id ids include_draft_versions plan_type q scoped_to_company_id without_entitlement_for without_paid_product_id limit offset]
+        query_param_names = %i[company_id company_scoped_only exclude_company_scoped for_fallback_plan for_initial_plan for_trial_expiry_plan has_product_id ids include_draft_versions plan_type q scoped_to_company_id with_entitlements without_entitlement_for without_paid_product_id limit offset]
         query_params = {}
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["company_scoped_only"] = params[:company_scoped_only] if params.key?(:company_scoped_only)
@@ -205,6 +239,7 @@ module Schematic
         query_params["plan_type"] = params[:plan_type] if params.key?(:plan_type)
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["scoped_to_company_id"] = params[:scoped_to_company_id] if params.key?(:scoped_to_company_id)
+        query_params["with_entitlements"] = params[:with_entitlements] if params.key?(:with_entitlements)
         query_params["without_entitlement_for"] = params[:without_entitlement_for] if params.key?(:without_entitlement_for)
         query_params["without_paid_product_id"] = params[:without_paid_product_id] if params.key?(:without_paid_product_id)
         query_params["limit"] = params[:limit] if params.key?(:limit)
@@ -540,6 +575,7 @@ module Schematic
       # @option params [Schematic::Types::PlanType, nil] :plan_type
       # @option params [String, nil] :q
       # @option params [String, nil] :scoped_to_company_id
+      # @option params [Boolean, nil] :with_entitlements
       # @option params [String, nil] :without_entitlement_for
       # @option params [Boolean, nil] :without_paid_product_id
       # @option params [Integer, nil] :limit
@@ -548,7 +584,7 @@ module Schematic
       # @return [Schematic::Plans::Types::CountPlansResponse]
       def count_plans(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[company_id company_scoped_only exclude_company_scoped for_fallback_plan for_initial_plan for_trial_expiry_plan has_product_id ids include_draft_versions plan_type q scoped_to_company_id without_entitlement_for without_paid_product_id limit offset]
+        query_param_names = %i[company_id company_scoped_only exclude_company_scoped for_fallback_plan for_initial_plan for_trial_expiry_plan has_product_id ids include_draft_versions plan_type q scoped_to_company_id with_entitlements without_entitlement_for without_paid_product_id limit offset]
         query_params = {}
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["company_scoped_only"] = params[:company_scoped_only] if params.key?(:company_scoped_only)
@@ -562,6 +598,7 @@ module Schematic
         query_params["plan_type"] = params[:plan_type] if params.key?(:plan_type)
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["scoped_to_company_id"] = params[:scoped_to_company_id] if params.key?(:scoped_to_company_id)
+        query_params["with_entitlements"] = params[:with_entitlements] if params.key?(:with_entitlements)
         query_params["without_entitlement_for"] = params[:without_entitlement_for] if params.key?(:without_entitlement_for)
         query_params["without_paid_product_id"] = params[:without_paid_product_id] if params.key?(:without_paid_product_id)
         query_params["limit"] = params[:limit] if params.key?(:limit)

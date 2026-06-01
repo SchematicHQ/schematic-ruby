@@ -25,6 +25,7 @@ module Schematic
       field :soft_limit, -> { Integer }, optional: true, nullable: false
       field :updated_at, -> { String }, optional: false, nullable: false
       field :usage_based_product, -> { Schematic::Types::BillingProductResponseData }, optional: true, nullable: false
+      field :usage_quantity, -> { Integer }, optional: true, nullable: false
       field :value_bool, -> { Internal::Types::Boolean }, optional: true, nullable: false
       field :value_credit, -> { Schematic::Types::BillingCreditResponseData }, optional: true, nullable: false
       field :value_numeric, -> { Integer }, optional: true, nullable: false

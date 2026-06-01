@@ -20,6 +20,7 @@ module Schematic
       field :quarterly_unit_price_decimal, -> { String }, optional: true, nullable: false
       field :soft_limit, -> { Integer }, optional: true, nullable: false
       field :tier_mode, -> { Schematic::Types::BillingTiersMode }, optional: true, nullable: false
+      field :usage_quantity, -> { Integer }, optional: true, nullable: false
       field :yearly_metered_price_id, -> { String }, optional: true, nullable: false
       field :yearly_price_tiers, -> { Internal::Types::Array[Schematic::Types::CreatePriceTierRequestBody] }, optional: true, nullable: false
       field :yearly_unit_price, -> { Integer }, optional: true, nullable: false

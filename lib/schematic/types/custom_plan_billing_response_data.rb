@@ -7,6 +7,7 @@ module Schematic
       field :company_id, -> { String }, optional: false, nullable: false
       field :created_at, -> { String }, optional: false, nullable: false
       field :days_until_due, -> { Integer }, optional: false, nullable: false
+      field :external_invoice_id, -> { String }, optional: true, nullable: false
       field :id, -> { String }, optional: false, nullable: false
       field :paid_at, -> { String }, optional: true, nullable: false
       field :plan_id, -> { String }, optional: false, nullable: false

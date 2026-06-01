@@ -29,6 +29,7 @@ module Schematic
         field :quarterly_unit_price_decimal, -> { String }, optional: true, nullable: false
         field :soft_limit, -> { Integer }, optional: true, nullable: false
         field :tier_mode, -> { Schematic::Types::BillingTiersMode }, optional: true, nullable: false
+        field :usage_quantity, -> { Integer }, optional: true, nullable: false
         field :value_bool, -> { Internal::Types::Boolean }, optional: true, nullable: false
         field :value_credit_id, -> { String }, optional: true, nullable: false
         field :value_numeric, -> { Integer }, optional: true, nullable: false
