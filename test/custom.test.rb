@@ -223,6 +223,26 @@ describe "ConsoleLogger" do
 
     assert_equal :debug, logger.level
   end
+
+  it "defaults to the warn level" do
+    assert_equal :warn, Schematic::ConsoleLogger.new.level
+  end
+
+  it "creates a default logger at the warn level when none is provided" do
+    client = Schematic::SchematicClient.new(offline: true)
+
+    assert_equal :warn, client.instance_variable_get(:@logger).level
+    client.close
+  end
+
+  it "leaves a custom logger's level untouched, ignoring log_level" do
+    custom = Schematic::ConsoleLogger.new(level: :debug)
+    client = Schematic::SchematicClient.new(offline: true, logger: custom, log_level: :error)
+
+    assert_same custom, client.instance_variable_get(:@logger)
+    assert_equal :debug, custom.level
+    client.close
+  end
 end
 
 # =============================================================================
@@ -489,6 +509,64 @@ describe "EventBuffer" do
     buffer.stop
   end
 
+  it "excludes unset optional fields from the capture payload" do
+    request_body = nil
+    stub_request(:post, CAPTURE_URL).to_return do |req|
+      request_body = JSON.parse(req.body, symbolize_names: true)
+      { status: 200 }
+    end
+
+    buffer = Schematic::EventBuffer.new(
+      api_key: "test_key",
+      logger: Schematic::ConsoleLogger.new(level: :error),
+      interval: 100,
+      offline: false
+    )
+
+    buffer.push({ event_type: "track", body: { event: "page_view" }, sent_at: "2024-01-01T00:00:00Z" })
+    buffer.flush
+
+    event = request_body[:events][0]
+
+    refute event.key?(:idempotency_key)
+    refute event.key?(:trusted_client_clock)
+    refute event.key?(:backfill)
+    buffer.stop
+  end
+
+  it "includes set optional fields in the capture payload" do
+    request_body = nil
+    stub_request(:post, CAPTURE_URL).to_return do |req|
+      request_body = JSON.parse(req.body, symbolize_names: true)
+      { status: 200 }
+    end
+
+    buffer = Schematic::EventBuffer.new(
+      api_key: "test_key",
+      logger: Schematic::ConsoleLogger.new(level: :error),
+      interval: 100,
+      offline: false
+    )
+
+    buffer.push({
+                  event_type: "track",
+                  body: { event: "page_view" },
+                  sent_at: "2024-01-01T00:00:00Z",
+                  idempotency_key: "evt_xyz",
+                  trusted_client_clock: true,
+                  backfill: false
+                })
+    buffer.flush
+
+    event = request_body[:events][0]
+
+    assert_equal "evt_xyz", event[:idempotency_key]
+    assert event[:trusted_client_clock]
+    assert event.key?(:backfill)
+    refute event[:backfill]
+    buffer.stop
+  end
+
   it "includes X-Schematic-Api-Key header" do
     stub = stub_request(:post, CAPTURE_URL).with(
       headers: { "X-Schematic-Api-Key" => "test_key" }
@@ -629,6 +707,142 @@ describe "DataStream Merge" do
     result = Schematic::DataStream::Merge.upsert_metrics(existing, incoming)
 
     assert_equal 2, result.size
+  end
+
+  it "partial_company syncs entitlement usage from updated metrics" do
+    existing = {
+      id: "comp_1",
+      metrics: [
+        { event_subtype: "api_call", period: "current_month", month_reset: "first_of_month", value: 5 }
+      ],
+      entitlements: [
+        {
+          feature_id: "feat_1",
+          feature_key: "api",
+          event_name: "api_call",
+          metric_period: "current_month",
+          month_reset: "first_of_month",
+          usage: 5
+        }
+      ]
+    }
+
+    partial = {
+      metrics: [
+        { event_subtype: "api_call", period: "current_month", month_reset: "first_of_month", value: 12 }
+      ]
+    }
+
+    result = Schematic::DataStream::Merge.partial_company(existing, partial)
+
+    assert_equal 12, result[:entitlements][0][:usage]
+  end
+
+  it "partial_company defaults metric_period and month_reset when matching usage" do
+    existing = {
+      id: "comp_1",
+      metrics: [
+        { event_subtype: "api_call", period: "all_time", month_reset: "first_of_month", value: 1 }
+      ],
+      entitlements: [
+        { feature_id: "feat_1", feature_key: "api", event_name: "api_call", usage: 1 }
+      ]
+    }
+
+    partial = {
+      metrics: [
+        { event_subtype: "api_call", period: "all_time", month_reset: "first_of_month", value: 9 }
+      ]
+    }
+
+    result = Schematic::DataStream::Merge.partial_company(existing, partial)
+
+    assert_equal 9, result[:entitlements][0][:usage]
+  end
+
+  it "partial_company syncs credit_remaining from updated credit_balances" do
+    existing = {
+      id: "comp_1",
+      credit_balances: { "credit_abc" => 100 },
+      entitlements: [
+        { feature_id: "feat_1", feature_key: "ai", credit_id: "credit_abc", credit_remaining: 100 }
+      ]
+    }
+
+    partial = {
+      credit_balances: { "credit_abc" => 40 }
+    }
+
+    result = Schematic::DataStream::Merge.partial_company(existing, partial)
+
+    assert_equal 40, result[:entitlements][0][:credit_remaining]
+  end
+
+  it "partial_company syncs credit_remaining for every entitlement sharing a credit_id" do
+    existing = {
+      id: "comp_1",
+      credit_balances: { "credit_abc" => 100 },
+      entitlements: [
+        { feature_id: "feat_1", feature_key: "ai-chat", credit_id: "credit_abc", credit_remaining: 100 },
+        { feature_id: "feat_2", feature_key: "ai-image", credit_id: "credit_abc", credit_remaining: 100 },
+        { feature_id: "feat_3", feature_key: "other", credit_id: "credit_xyz", credit_remaining: 7 }
+      ]
+    }
+
+    partial = {
+      credit_balances: { "credit_abc" => 40 }
+    }
+
+    result = Schematic::DataStream::Merge.partial_company(existing, partial)
+
+    assert_equal 40, result[:entitlements][0][:credit_remaining]
+    assert_equal 40, result[:entitlements][1][:credit_remaining]
+    # untouched: its credit wasn't in the partial
+    assert_equal 7, result[:entitlements][2][:credit_remaining]
+  end
+
+  it "partial_company does not derive entitlements when partial sends them wholesale" do
+    existing = {
+      id: "comp_1",
+      metrics: [
+        { event_subtype: "api_call", period: "current_month", month_reset: "first_of_month", value: 5 }
+      ],
+      entitlements: [
+        { feature_id: "feat_1", feature_key: "api", event_name: "api_call",
+          metric_period: "current_month", month_reset: "first_of_month", usage: 5 }
+      ]
+    }
+
+    partial = {
+      metrics: [
+        { event_subtype: "api_call", period: "current_month", month_reset: "first_of_month", value: 12 }
+      ],
+      entitlements: [
+        { feature_id: "feat_1", feature_key: "api", event_name: "api_call",
+          metric_period: "current_month", month_reset: "first_of_month", usage: 99 }
+      ]
+    }
+
+    result = Schematic::DataStream::Merge.partial_company(existing, partial)
+
+    # entitlements were sent wholesale, so the explicit value wins (no derivation)
+    assert_equal 99, result[:entitlements][0][:usage]
+  end
+
+  it "partial_company leaves entitlements untouched when neither metrics nor balances change" do
+    existing = {
+      id: "comp_1",
+      traits: { "plan" => "pro" },
+      entitlements: [
+        { feature_id: "feat_1", feature_key: "api", event_name: "api_call", usage: 5 }
+      ]
+    }
+
+    partial = { traits: { "seats" => "10" } }
+
+    result = Schematic::DataStream::Merge.partial_company(existing, partial)
+
+    assert_equal 5, result[:entitlements][0][:usage]
   end
 end
 
@@ -1453,6 +1667,113 @@ describe "SchematicClient - Track with Quantity" do
 
     client.close
     WebMock.reset!
+  end
+end
+
+# =============================================================================
+# SchematicClient - Track/Identify Event Options
+# =============================================================================
+describe "SchematicClient - Event Options" do
+  def capture_event(&block)
+    request_body = nil
+    stub_request(:post, CAPTURE_URL).to_return do |req|
+      request_body = JSON.parse(req.body, symbolize_names: true)
+      { status: 200 }
+    end
+
+    client = Schematic::SchematicClient.new(api_key: "api_test_key_123", cache_providers: [])
+    block.call(client)
+    client.instance_variable_get(:@event_buffer).flush
+    client.close
+
+    request_body[:events][0]
+  end
+
+  after { WebMock.reset! }
+
+  it "passes idempotency_key from track options to the wire payload" do
+    event = capture_event do |client|
+      client.track({ event: "credit-consumed", company: { "id" => "company_id" } },
+                   options: { idempotency_key: "evt_abc123" })
+    end
+
+    assert_equal "evt_abc123", event[:idempotency_key]
+    refute event.key?(:trusted_client_clock)
+    refute event.key?(:backfill)
+  end
+
+  it "passes all track options to the wire payload" do
+    sent_at = Time.utc(2026, 5, 21, 12, 0, 0)
+    event = capture_event do |client|
+      client.track({ event: "historical-import", company: { "id" => "company_id" } },
+                   options: {
+                     idempotency_key: "evt_xyz",
+                     sent_at: sent_at,
+                     trusted_client_clock: true,
+                     backfill: true
+                   })
+    end
+
+    assert_equal "evt_xyz", event[:idempotency_key]
+    assert_equal "2026-05-21T12:00:00Z", event[:sent_at]
+    assert event[:trusted_client_clock]
+    assert event[:backfill]
+  end
+
+  it "omits unset optional fields when track has no options" do
+    event = capture_event do |client|
+      client.track({ event: "some-event", company: { "id" => "company_id" } })
+    end
+
+    refute event.key?(:idempotency_key)
+    refute event.key?(:trusted_client_clock)
+    refute event.key?(:backfill)
+  end
+
+  it "sends explicitly false backfill on the wire" do
+    event = capture_event do |client|
+      client.track({ event: "some-event" }, options: { backfill: false, trusted_client_clock: false })
+    end
+
+    assert event.key?(:backfill)
+    refute event[:backfill]
+    assert event.key?(:trusted_client_clock)
+    refute event[:trusted_client_clock]
+  end
+
+  it "accepts a string sent_at without modification" do
+    event = capture_event do |client|
+      client.track({ event: "some-event" }, options: { sent_at: "2024-01-01T00:00:00Z" })
+    end
+
+    assert_equal "2024-01-01T00:00:00Z", event[:sent_at]
+  end
+
+  it "passes idempotency_key from identify options to the wire payload" do
+    event = capture_event do |client|
+      client.identify({ keys: { "id" => "user_id" } }, options: { idempotency_key: "ident_123" })
+    end
+
+    assert_equal "ident_123", event[:idempotency_key]
+  end
+
+  it "ignores track-only options on identify" do
+    event = capture_event do |client|
+      client.identify({ keys: { "id" => "user_id" } },
+                      options: { idempotency_key: "ident_123", trusted_client_clock: true, backfill: true })
+    end
+
+    assert_equal "ident_123", event[:idempotency_key]
+    refute event.key?(:trusted_client_clock)
+    refute event.key?(:backfill)
+  end
+
+  it "omits idempotency_key when identify has no options" do
+    event = capture_event do |client|
+      client.identify({ keys: { "id" => "user_id" }, name: "User Name" })
+    end
+
+    refute event.key?(:idempotency_key)
   end
 end
 

@@ -176,13 +176,19 @@ module Schematic
     # Transform to capture service payload format (differs from Fern API):
     # - Field is `type` not `event_type`
     # - Each event includes `api_key`
+    # Optional metadata (idempotency_key, trusted_client_clock, backfill) is
+    # only included when the caller set it, so we never send explicit nulls.
     def event_to_capture_payload(event)
-      {
+      payload = {
         api_key: @api_key,
         type: event[:event_type],
         body: event[:body],
         sent_at: event[:sent_at] || Time.now.utc.iso8601
       }
+      payload[:idempotency_key] = event[:idempotency_key] unless event[:idempotency_key].nil?
+      payload[:trusted_client_clock] = event[:trusted_client_clock] unless event[:trusted_client_clock].nil?
+      payload[:backfill] = event[:backfill] unless event[:backfill].nil?
+      payload
     end
   end
 end
