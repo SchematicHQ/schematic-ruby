@@ -8,6 +8,7 @@ module Schematic
       field :active_usage_based_entitlements, -> { Internal::Types::Array[Schematic::Types::UsageBasedEntitlementResponseData] }, optional: false, nullable: false
       field :available_credit_bundles, -> { Internal::Types::Array[Schematic::Types::BillingCreditBundleResponseData] }, optional: false, nullable: false
       field :company, -> { Schematic::Types::CompanyDetailResponseData }, optional: true, nullable: false
+      field :custom_checkout_fields, -> { Internal::Types::Array[Schematic::Types::CheckoutFieldWithValue] }, optional: false, nullable: false
       field :feature_usage, -> { Schematic::Types::FeatureUsageDetailResponseData }, optional: true, nullable: false
       field :selected_credit_bundles, -> { Internal::Types::Array[Schematic::Types::CreditBundlePurchaseResponseData] }, optional: false, nullable: false
       field :selected_plan, -> { Schematic::Types::PlanDetailResponseData }, optional: true, nullable: false

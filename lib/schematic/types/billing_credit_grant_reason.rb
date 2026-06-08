@@ -10,6 +10,7 @@ module Schematic
       FREE = "free"
       PLAN = "plan"
       PURCHASED = "purchased"
+      ROLLOVER = "rollover"
     end
   end
 end

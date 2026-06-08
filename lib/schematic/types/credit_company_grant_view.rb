@@ -28,7 +28,10 @@ module Schematic
       field :quantity_used, -> { Integer }, optional: false, nullable: false
       field :renewal_enabled, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :renewal_period, -> { Schematic::Types::BillingPlanCreditGrantResetCadence }, optional: true, nullable: false
+      field :reserved, -> { Integer }, optional: true, nullable: false
+      field :settled, -> { Integer }, optional: true, nullable: false
       field :singular_name, -> { String }, optional: true, nullable: false
+      field :source_grant_id, -> { String }, optional: true, nullable: false
       field :source_label, -> { String }, optional: false, nullable: false
       field :transfers, -> { Internal::Types::Array[Schematic::Types::CreditTransferView] }, optional: true, nullable: false
       field :updated_at, -> { String }, optional: false, nullable: false

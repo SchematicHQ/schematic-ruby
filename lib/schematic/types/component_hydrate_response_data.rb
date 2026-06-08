@@ -13,6 +13,7 @@ module Schematic
       field :component, -> { Schematic::Types::ComponentResponseData }, optional: true, nullable: false
       field :credit_bundles, -> { Internal::Types::Array[Schematic::Types::BillingCreditBundleView] }, optional: false, nullable: false
       field :credit_grants, -> { Internal::Types::Array[Schematic::Types::CreditCompanyGrantView] }, optional: false, nullable: false
+      field :custom_checkout_fields, -> { Internal::Types::Array[Schematic::Types::CheckoutFieldWithValue] }, optional: false, nullable: false
       field :default_plan, -> { Schematic::Types::PlanDetailResponseData }, optional: true, nullable: false
       field :display_settings, -> { Schematic::Types::ComponentDisplaySettings }, optional: false, nullable: false
       field :feature_usage, -> { Schematic::Types::FeatureUsageDetailResponseData }, optional: true, nullable: false

@@ -30,6 +30,7 @@ module Schematic
       field :reset_cadence, -> { Schematic::Types::BillingPlanCreditGrantResetCadence }, optional: true, nullable: false
       field :reset_start, -> { Schematic::Types::BillingPlanCreditGrantResetStart }, optional: true, nullable: false
       field :reset_type, -> { Schematic::Types::BillingPlanCreditGrantResetType }, optional: true, nullable: false
+      field :rollover_percentage, -> { Integer }, optional: false, nullable: false
       field :updated_at, -> { String }, optional: false, nullable: false
     end
   end

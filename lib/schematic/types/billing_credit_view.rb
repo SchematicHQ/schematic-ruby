@@ -15,6 +15,7 @@ module Schematic
       field :environment_id, -> { String }, optional: false, nullable: false
       field :icon, -> { String }, optional: true, nullable: false
       field :id, -> { String }, optional: false, nullable: false
+      field :ledger_authority, -> { Schematic::Types::BillingCreditLedgerAuthority }, optional: false, nullable: false
       field :name, -> { String }, optional: false, nullable: false
       field :plural_name, -> { String }, optional: true, nullable: false
       field :price, -> { Schematic::Types::BillingPriceView }, optional: true, nullable: false

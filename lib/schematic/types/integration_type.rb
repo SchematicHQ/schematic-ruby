@@ -6,6 +6,7 @@ module Schematic
       extend Schematic::Internal::Types::Enum
 
       CLERK = "clerk"
+      METRONOME = "metronome"
       ORB = "orb"
       STRIPE = "stripe"
       UNKNOWN = "unknown"

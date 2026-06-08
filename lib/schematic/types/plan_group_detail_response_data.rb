@@ -6,6 +6,7 @@ module Schematic
       field :add_ons, -> { Internal::Types::Array[Schematic::Types::PlanGroupPlanDetailResponseData] }, optional: false, nullable: false
       field :checkout_settings, -> { Schematic::Types::CheckoutSettingsResponseData }, optional: false, nullable: false
       field :component_settings, -> { Schematic::Types::ComponentSettingsResponseData }, optional: false, nullable: false
+      field :custom_checkout_fields, -> { Internal::Types::Array[Schematic::Types::CheckoutFieldResponseData] }, optional: false, nullable: false
       field :custom_plan_config, -> { Schematic::Types::CustomPlanViewConfigResponseData }, optional: true, nullable: false
       field :custom_plan_id, -> { String }, optional: true, nullable: false
       field :default_plan, -> { Schematic::Types::PlanGroupPlanDetailResponseData }, optional: true, nullable: false

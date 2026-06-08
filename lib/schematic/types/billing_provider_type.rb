@@ -5,6 +5,7 @@ module Schematic
     module BillingProviderType
       extend Schematic::Internal::Types::Enum
 
+      METRONOME = "metronome"
       ORB = "orb"
       SCHEMATIC = "schematic"
       STRIPE = "stripe"

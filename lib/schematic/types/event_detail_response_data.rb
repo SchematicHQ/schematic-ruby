@@ -17,6 +17,7 @@ module Schematic
       field :features, -> { Internal::Types::Array[Schematic::Types::PreviewObject] }, optional: false, nullable: false
       field :id, -> { String }, optional: false, nullable: false
       field :idempotency_key, -> { String }, optional: true, nullable: false
+      field :lease_id, -> { String }, optional: true, nullable: false
       field :loaded_at, -> { String }, optional: true, nullable: false
       field :processed_at, -> { String }, optional: true, nullable: false
       field :quantity, -> { Integer }, optional: false, nullable: false
