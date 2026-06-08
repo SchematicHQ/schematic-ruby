@@ -9,6 +9,7 @@ module Schematic
         field :checkout_collect_address, -> { Internal::Types::Boolean }, optional: false, nullable: false
         field :checkout_collect_email, -> { Internal::Types::Boolean }, optional: false, nullable: false
         field :checkout_collect_phone, -> { Internal::Types::Boolean }, optional: false, nullable: false
+        field :custom_checkout_fields, -> { Internal::Types::Array[Schematic::Types::CheckoutFieldInput] }, optional: true, nullable: false
         field :custom_plan_config, -> { Schematic::Types::CustomPlanConfig }, optional: true, nullable: false
         field :custom_plan_id, -> { String }, optional: true, nullable: false
         field :enable_tax_collection, -> { Internal::Types::Boolean }, optional: false, nullable: false

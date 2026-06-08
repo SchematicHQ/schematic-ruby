@@ -33,6 +33,7 @@ module Schematic
       field :source_id, -> { Integer }, optional: false, nullable: false
       field :to_grant_id, -> { String }, optional: true, nullable: false
       field :usage_event_id, -> { String }, optional: true, nullable: false
+      field :usage_reason, -> { Schematic::Types::CreditUsageReason }, optional: true, nullable: false
       field :zeroed_out_reason, -> { Schematic::Types::BillingCreditGrantZeroedOutReason }, optional: true, nullable: false
     end
   end

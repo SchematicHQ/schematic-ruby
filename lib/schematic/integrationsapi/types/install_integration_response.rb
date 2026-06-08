@@ -3,8 +3,8 @@
 module Schematic
   module Integrationsapi
     module Types
-      class LoadSampleDataSetV2Response < Internal::Types::Model
-        field :data, -> { Schematic::Types::IntegrationsDataSetResponseData }, optional: false, nullable: false
+      class InstallIntegrationResponse < Internal::Types::Model
+        field :data, -> { Schematic::Types::IntegrationInstallResponseData }, optional: false, nullable: false
         field :params, -> { Internal::Types::Hash[String, Object] }, optional: false, nullable: false
       end
     end

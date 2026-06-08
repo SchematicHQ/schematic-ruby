@@ -125,6 +125,83 @@ client.accounts.get_account_member(account_member_id: "account_member_id")
 </dl>
 </details>
 
+<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">count_account_members</a>() -> Schematic::Accounts::Types::CountAccountMembersResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.accounts.count_account_members(
+  ids: ["ids"],
+  q: "q",
+  limit: 1000000,
+  offset: 1000000
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**ids:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `String` — Search filter
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Integer` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `Integer` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Accounts::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">list_api_keys</a>() -> Schematic::Accounts::Types::ListApiKeysResponse</code></summary>
 <dl>
 <dd>
@@ -1452,7 +1529,7 @@ client.billing.upsert_billing_customer(
 client.billing.list_customers_with_subscriptions(
   company_ids: ["company_ids"],
   name: "name",
-  provider_type: "orb",
+  provider_type: "metronome",
   q: "q",
   limit: 1000000,
   offset: 1000000
@@ -1547,7 +1624,7 @@ client.billing.list_customers_with_subscriptions(
 client.billing.count_customers(
   company_ids: ["company_ids"],
   name: "name",
-  provider_type: "orb",
+  provider_type: "metronome",
   q: "q",
   limit: 1000000,
   offset: 1000000
@@ -2305,7 +2382,7 @@ client.billing.list_billing_prices(
   price: 1000000,
   product_id: "product_id",
   product_ids: ["product_ids"],
-  provider_type: "orb",
+  provider_type: "metronome",
   q: "q",
   tiers_mode: "graduated",
   usage_type: "licensed",
@@ -2727,7 +2804,7 @@ client.billing.list_billing_product_prices(
   price: 1000000,
   product_id: "product_id",
   product_ids: ["product_ids"],
-  provider_type: "orb",
+  provider_type: "metronome",
   q: "q",
   tiers_mode: "graduated",
   usage_type: "licensed",
@@ -3038,7 +3115,7 @@ client.billing.list_billing_products(
   is_active: true,
   name: "name",
   price_usage_type: "licensed",
-  provider_type: "orb",
+  provider_type: "metronome",
   q: "q",
   recurring_charges_only: true,
   with_one_time_charges: true,
@@ -3196,7 +3273,7 @@ client.billing.count_billing_products(
   is_active: true,
   name: "name",
   price_usage_type: "licensed",
-  provider_type: "orb",
+  provider_type: "metronome",
   q: "q",
   recurring_charges_only: true,
   with_one_time_charges: true,
@@ -6355,6 +6432,10 @@ client.checkout.internal(
     bundle_id: "bundle_id",
     quantity: 1000000
   }],
+  custom_field_values: [{
+    id: "id",
+    value: "value"
+  }],
   new_plan_id: "new_plan_id",
   new_price_id: "new_price_id",
   pay_in_advance: [{
@@ -6479,6 +6560,10 @@ client.checkout.preview_checkout_internal(
     bundle_id: "bundle_id",
     quantity: 1000000
   }],
+  custom_field_values: [{
+    id: "id",
+    value: "value"
+  }],
   new_plan_id: "new_plan_id",
   new_price_id: "new_price_id",
   pay_in_advance: [{
@@ -6543,6 +6628,10 @@ client.checkout.manage_plan(
     bundle_id: "bundle_id",
     quantity: 1000000
   }],
+  custom_field_values: [{
+    id: "id",
+    value: "value"
+  }],
   pay_in_advance_entitlements: [{
     price_id: "price_id",
     quantity: 1000000
@@ -6603,6 +6692,10 @@ client.checkout.preview_manage_plan(
   credit_bundles: [{
     bundle_id: "bundle_id",
     quantity: 1000000
+  }],
+  custom_field_values: [{
+    id: "id",
+    value: "value"
   }],
   pay_in_advance_entitlements: [{
     price_id: "price_id",
@@ -10285,7 +10378,7 @@ client.entitlements.list_feature_usage(
   company_id: "company_id",
   feature_ids: ["feature_ids"],
   include_usage_aggregation: true,
-  managed_by: "orb",
+  managed_by: "metronome",
   q: "q",
   without_negative_entitlements: true,
   limit: 1000000,
@@ -10492,7 +10585,7 @@ client.entitlements.count_feature_usage(
   company_id: "company_id",
   feature_ids: ["feature_ids"],
   include_usage_aggregation: true,
-  managed_by: "orb",
+  managed_by: "metronome",
   q: "q",
   without_negative_entitlements: true,
   limit: 1000000,
@@ -11599,7 +11692,7 @@ client.entitlements.delete_plan_entitlement(plan_entitlement_id: "plan_entitleme
 
 ```ruby
 client.entitlements.upsert_plan_entitlement_for_billing_product(
-  billing_provider: "orb",
+  billing_provider: "metronome",
   external_resource_id: "external_resource_id",
   feature_id: "feature_id",
   plan_id: "plan_id",
@@ -13039,7 +13132,7 @@ client.plans.upsert_billing_product_plan(
 
 ```ruby
 client.plans.upsert_plan_for_billing_product(
-  billing_provider: "orb",
+  billing_provider: "metronome",
   description: "description",
   external_resource_id: "external_resource_id",
   name: "name",
@@ -14898,7 +14991,7 @@ client.features.list_features(
   boolean_require_event: true,
   feature_type: ["boolean"],
   ids: ["ids"],
-  managed_by: "orb",
+  managed_by: "metronome",
   plan_version_id: "plan_version_id",
   q: "q",
   without_company_override_for: "without_company_override_for",
@@ -15390,7 +15483,7 @@ client.features.delete_feature(feature_id: "feature_id")
 
 ```ruby
 client.features.upsert_feature_for_billing_product(
-  billing_provider: "orb",
+  billing_provider: "metronome",
   description: "description",
   external_resource_id: "external_resource_id",
   feature_type: "boolean",
@@ -15543,7 +15636,7 @@ client.features.count_features(
   boolean_require_event: true,
   feature_type: ["boolean"],
   ids: ["ids"],
-  managed_by: "orb",
+  managed_by: "metronome",
   plan_version_id: "plan_version_id",
   q: "q",
   without_company_override_for: "without_company_override_for",
@@ -16829,6 +16922,54 @@ client.integrationsapi.get_integration_webhook_url(type: "type")
 </dl>
 </details>
 
+<details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">install_integration</a>(request) -> Schematic::Integrationsapi::Types::InstallIntegrationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.integrationsapi.install_integration(type: "clerk")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Schematic::Types::InstallIntegrationRequestBody` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Integrationsapi::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">start_data_import</a>(request) -> Schematic::Integrationsapi::Types::StartDataImportResponse</code></summary>
 <dl>
 <dd>
@@ -16893,7 +17034,7 @@ client.integrationsapi.start_data_import(integration_id: "integration_id")
 </dl>
 </details>
 
-<details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">load_sample_data_set_v_2</a>() -> Schematic::Integrationsapi::Types::LoadSampleDataSetV2Response</code></summary>
+<details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">load_sample_data_set</a>() -> Schematic::Integrationsapi::Types::LoadSampleDataSetResponse</code></summary>
 <dl>
 <dd>
 
@@ -16906,7 +17047,7 @@ client.integrationsapi.start_data_import(integration_id: "integration_id")
 <dd>
 
 ```ruby
-client.integrationsapi.load_sample_data_set_v_2
+client.integrationsapi.load_sample_data_set
 ```
 </dd>
 </dl>
@@ -16917,6 +17058,102 @@ client.integrationsapi.load_sample_data_set_v_2
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Integrationsapi::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">assume_stripe_installed</a>(request) -> Schematic::Integrationsapi::Types::AssumeStripeInstalledResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.integrationsapi.assume_stripe_installed(type: "clerk")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Schematic::Types::InstallIntegrationRequestBody` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Integrationsapi::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">install_stripe</a>(request) -> Schematic::Integrationsapi::Types::InstallStripeResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.integrationsapi.install_stripe(type: "clerk")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Schematic::Types::InstallIntegrationRequestBody` 
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -17116,6 +17353,14 @@ client.plangroups.create_plan_group(
 <dd>
 
 **checkout_collect_phone:** `Internal::Types::Boolean` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**custom_checkout_fields:** `Internal::Types::Array[Schematic::Types::CheckoutFieldInput]` 
     
 </dd>
 </dl>
@@ -17446,6 +17691,14 @@ client.plangroups.update_plan_group(
 <dd>
 
 **checkout_collect_phone:** `Internal::Types::Boolean` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**custom_checkout_fields:** `Internal::Types::Array[Schematic::Types::CheckoutFieldInput]` 
     
 </dd>
 </dl>
