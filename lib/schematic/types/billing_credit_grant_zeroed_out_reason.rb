@@ -9,6 +9,7 @@ module Schematic
       MANUAL = "manual"
       PLAN_CHANGE = "plan_change"
       PLAN_PERIOD_RESET = "plan_period_reset"
+      RECONCILED = "reconciled"
     end
   end
 end

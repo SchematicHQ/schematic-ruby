@@ -11,6 +11,7 @@ module Schematic
       field :custom_field_values, -> { Internal::Types::Array[Schematic::Types::CheckoutFieldValue] }, optional: false, nullable: false
       field :new_plan_id, -> { String }, optional: false, nullable: false
       field :new_price_id, -> { String }, optional: false, nullable: false
+      field :opt_in_accepted, -> { Internal::Types::Boolean }, optional: true, nullable: false
       field :pay_in_advance, -> { Internal::Types::Array[Schematic::Types::UpdatePayInAdvanceRequestBody] }, optional: false, nullable: false
       field :payment_method_id, -> { String }, optional: true, nullable: false
       field :promo_code, -> { String }, optional: true, nullable: false

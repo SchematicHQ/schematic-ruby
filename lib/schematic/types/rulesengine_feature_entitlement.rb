@@ -6,6 +6,8 @@ module Schematic
       field :allocation, -> { Integer }, optional: true, nullable: false
       field :credit_id, -> { String }, optional: true, nullable: false
       field :credit_remaining, -> { Integer }, optional: true, nullable: false
+      field :credit_reserved, -> { Integer }, optional: true, nullable: false
+      field :credit_settled, -> { Integer }, optional: true, nullable: false
       field :credit_total, -> { Integer }, optional: true, nullable: false
       field :credit_used, -> { Integer }, optional: true, nullable: false
       field :event_name, -> { String }, optional: true, nullable: false
