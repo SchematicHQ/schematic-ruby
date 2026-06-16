@@ -10,7 +10,6 @@ module Schematic
         field :days_until_due, -> { Integer }, optional: true, nullable: false
         field :excluded_company_ids, -> { Internal::Types::Array[String] }, optional: false, nullable: false
         field :migration_strategy, -> { Schematic::Types::PlanVersionMigrationStrategy }, optional: false, nullable: false
-        field :pay_in_advance, -> { Internal::Types::Array[Schematic::Types::UpdatePayInAdvanceRequestBody] }, optional: false, nullable: false
       end
     end
   end

@@ -8,6 +8,9 @@ module Schematic
       field :finance, -> { Schematic::Types::PreviewSubscriptionFinanceResponseData }, optional: true, nullable: false
       field :is_scheduled_downgrade, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :new_charges, -> { Integer }, optional: false, nullable: false
+      field :opt_in_required, -> { Internal::Types::Boolean }, optional: false, nullable: false
+      field :opt_in_text, -> { String }, optional: true, nullable: false
+      field :opt_in_title, -> { String }, optional: true, nullable: false
       field :payment_method_required, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :percent_off, -> { Integer }, optional: false, nullable: false
       field :period_start, -> { String }, optional: false, nullable: false

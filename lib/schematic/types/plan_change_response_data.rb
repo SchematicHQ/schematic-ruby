@@ -17,6 +17,7 @@ module Schematic
       field :created_at, -> { String }, optional: false, nullable: false
       field :environment_id, -> { String }, optional: false, nullable: false
       field :id, -> { String }, optional: false, nullable: false
+      field :is_version_upgrade, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :previous_base_plan, -> { Schematic::Types::PlanSnapshotView }, optional: true, nullable: false
       field :previous_base_plan_version, -> { Schematic::Types::PlanVersionSnapshotView }, optional: true, nullable: false
       field :request_id, -> { String }, optional: true, nullable: false

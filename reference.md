@@ -1,4 +1,44 @@
 # Reference
+<details><summary><code>client.<a href="/lib/schematic/client.rb">get_credit_ledger</a>() -> </code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.get_credit_ledger
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## accounts
 <details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">list_account_members</a>() -> Schematic::Accounts::Types::ListAccountMembersResponse</code></summary>
 <dl>
@@ -5487,232 +5527,6 @@ client.credits.release_credit_lease(
 <dd>
 
 **request:** `Internal::Types::Hash[String, Object]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `Schematic::Credits::RequestOptions` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">get_enriched_credit_ledger</a>() -> Schematic::Credits::Types::GetEnrichedCreditLedgerResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```ruby
-client.credits.get_enriched_credit_ledger(
-  company_id: "company_id",
-  billing_credit_id: "billing_credit_id",
-  feature_id: "feature_id",
-  period: "daily",
-  start_time: "start_time",
-  end_time: "end_time",
-  limit: 1000000,
-  offset: 1000000
-)
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**company_id:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**billing_credit_id:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**feature_id:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**period:** `Schematic::Types::CreditLedgerPeriod` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**start_time:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**end_time:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limit:** `Integer` — Page limit (default 100)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**offset:** `Integer` — Page offset (default 0)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `Schematic::Credits::RequestOptions` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">count_credit_ledger</a>() -> Schematic::Credits::Types::CountCreditLedgerResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```ruby
-client.credits.count_credit_ledger(
-  company_id: "company_id",
-  billing_credit_id: "billing_credit_id",
-  feature_id: "feature_id",
-  period: "daily",
-  start_time: "start_time",
-  end_time: "end_time",
-  limit: 1000000,
-  offset: 1000000
-)
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**company_id:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**billing_credit_id:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**feature_id:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**period:** `Schematic::Types::CreditLedgerPeriod` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**start_time:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**end_time:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limit:** `Integer` — Page limit (default 100)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**offset:** `Integer` — Page offset (default 0)
     
 </dd>
 </dl>
@@ -12490,11 +12304,7 @@ client.plans.mark_custom_plan_billing_paid(
 ```ruby
 client.plans.retry_custom_plan_billing(
   custom_plan_billing_id: "custom_plan_billing_id",
-  customer_email: "customer_email",
-  pay_in_advance: [{
-    price_id: "price_id",
-    quantity: 1000000
-  }]
+  customer_email: "customer_email"
 )
 ```
 </dd>
@@ -12535,14 +12345,6 @@ client.plans.retry_custom_plan_billing(
 <dd>
 
 **days_until_due:** `Integer` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**pay_in_advance:** `Internal::Types::Array[Schematic::Types::UpdatePayInAdvanceRequestBody]` 
     
 </dd>
 </dl>
@@ -13702,11 +13504,7 @@ client.plans.delete_plan_version(
 client.plans.publish_plan_version(
   plan_id: "plan_id",
   excluded_company_ids: ["excluded_company_ids"],
-  migration_strategy: "immediate",
-  pay_in_advance: [{
-    price_id: "price_id",
-    quantity: 1000000
-  }]
+  migration_strategy: "immediate"
 )
 ```
 </dd>
@@ -13763,14 +13561,6 @@ client.plans.publish_plan_version(
 <dd>
 
 **migration_strategy:** `Schematic::Types::PlanVersionMigrationStrategy` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**pay_in_advance:** `Internal::Types::Array[Schematic::Types::UpdatePayInAdvanceRequestBody]` 
     
 </dd>
 </dl>
@@ -17286,6 +17076,7 @@ client.plangroups.create_plan_group(
   checkout_collect_email: true,
   checkout_collect_phone: true,
   enable_tax_collection: true,
+  opt_in_enabled: true,
   ordered_add_ons: [{
     plan_id: "plan_id"
   }],
@@ -17409,6 +17200,30 @@ client.plangroups.create_plan_group(
 <dd>
 
 **initial_plan_price_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**opt_in_enabled:** `Internal::Types::Boolean` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**opt_in_text:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**opt_in_title:** `String` 
     
 </dd>
 </dl>
@@ -17616,6 +17431,7 @@ client.plangroups.update_plan_group(
   checkout_collect_email: true,
   checkout_collect_phone: true,
   enable_tax_collection: true,
+  opt_in_enabled: true,
   ordered_add_ons: [{
     plan_id: "plan_id"
   }],
@@ -17747,6 +17563,30 @@ client.plangroups.update_plan_group(
 <dd>
 
 **initial_plan_price_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**opt_in_enabled:** `Internal::Types::Boolean` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**opt_in_text:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**opt_in_title:** `String` 
     
 </dd>
 </dl>

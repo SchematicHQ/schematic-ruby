@@ -16,6 +16,9 @@ module Schematic
         field :fallback_plan_id, -> { String }, optional: true, nullable: false
         field :initial_plan_id, -> { String }, optional: true, nullable: false
         field :initial_plan_price_id, -> { String }, optional: true, nullable: false
+        field :opt_in_enabled, -> { Internal::Types::Boolean }, optional: false, nullable: false
+        field :opt_in_text, -> { String }, optional: true, nullable: false
+        field :opt_in_title, -> { String }, optional: true, nullable: false
         field :ordered_add_ons, -> { Internal::Types::Array[Schematic::Types::OrderedPlansInGroup] }, optional: false, nullable: false
         field :ordered_bundle_list, -> { Internal::Types::Array[Schematic::Types::PlanGroupBundleOrder] }, optional: false, nullable: false
         field :ordered_plans, -> { Internal::Types::Array[Schematic::Types::OrderedPlansInGroup] }, optional: false, nullable: false
