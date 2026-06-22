@@ -26,123 +26,40 @@ generations:
       fernapi/fern-ruby-sdk: 1.1.13
 current_generation: 7ff89cac80a7358534185779ed4992b755919d97
 patches:
-  - id: patch-6a2db2b5
-    content_hash: sha256:630a8c3df9ae971e973e4dcb3d71d0d9f28b8da9877b0ff27ff3cca2a1eb924a
-    original_commit: 6a2db2b584601e13f90302155d37a22e45542fab
-    original_message: handle partial messages properly
+  - id: patch-46462128
+    content_hash: sha256:416a511ede0736c55e936299b78f07a3935feedab63c1270dbb2230687fc6be4
+    original_commit: 46462128cacb25b73fac7770060cf427ff0d9e6d
+    original_message: add tests and address nits
     original_author: Christopher Brady <chris@schematichq.com>
-    base_generation: e75de47f4e4f08f8e683366dd9b3936bc5c6452f
+    base_generation: 7ff89cac80a7358534185779ed4992b755919d97
     files:
       - lib/schematic/datastream/merge.rb
     patch_content: |
       diff --git a/lib/schematic/datastream/merge.rb b/lib/schematic/datastream/merge.rb
-      index 0ab68fe..7f1084d 100644
+      index f4dd4e5..5c32683 100644
       --- a/lib/schematic/datastream/merge.rb
       +++ b/lib/schematic/datastream/merge.rb
-      @@ -16,25 +16,42 @@ module Schematic
-             COMPANY_MAP_FIELDS = %i[credit_balances keys traits].freeze
-             COMPANY_ARRAY_FIELDS = %i[billing_product_ids entitlements plan_ids plan_version_ids rules].freeze
-       
-      +      # Partials don't carry refreshed entitlements, so when their derived
-      +      # fields change in another part of the company we sync them here to match
-      +      # server behavior (see schematic-python merge.partial_company):
-      +      #   - credit_remaining <- credit_balances[credit_id]
-      +      #   - usage            <- metric value matching (event_name, metric_period, month_reset)
-      +      # Both are skipped when the partial also sends entitlements wholesale.
-             def partial_company(existing, partial_data)
-               return existing unless partial_data.is_a?(Hash)
-       
-               result = deep_copy(existing)
-      +        entitlements_in_partial = partial_data.key?(:entitlements) || partial_data.key?("entitlements")
-      +        updated_balances = nil
-      +        metrics_updated = false
-       
-               partial_data.each do |key, value|
-                 sym_key = key.to_sym
-                 if COMPANY_MAP_FIELDS.include?(sym_key)
-                   result[sym_key] ||= {}
-                   result[sym_key] = result[sym_key].merge(value) if value.is_a?(Hash)
-      +            updated_balances = (value.is_a?(Hash) ? value : {}) if sym_key == :credit_balances
-                 elsif COMPANY_ARRAY_FIELDS.include?(sym_key)
-                   result[sym_key] = value if value.is_a?(Array)
-                 elsif sym_key == :metrics
-                   result[sym_key] = upsert_metrics(result[sym_key] || [], value || [])
-      +            metrics_updated = true
-                 else
-                   result[sym_key] = value
+      @@ -46,7 +46,7 @@ module Schematic
                  end
                end
        
+      -        if (updated_balances&.any? || metrics_updated) && !entitlements_in_partial
       +        if (updated_balances || metrics_updated) && !entitlements_in_partial
-      +          result[:entitlements] = sync_entitlements(
-      +            result[:entitlements], result[:metrics], updated_balances, metrics_updated
-      +          )
-      +        end
-      +
-               result
+                 result[:entitlements] = sync_entitlements(
+                   result[:entitlements], result[:metrics], updated_balances, metrics_updated
+                 )
+      @@ -152,9 +152,8 @@ module Schematic
+               end
              end
        
-      @@ -90,6 +107,60 @@ module Schematic
-             def get_metric_field(metric, field)
-               metric[field] || metric[field.to_s]
-             end
-      +
-      +      # Re-derive entitlement usage / credit_remaining from the merged metrics
-      +      # and the just-updated credit balances. Mirrors schematic-python so that
-      +      # entitlement usage reflects DataStream track events immediately.
-      +      def sync_entitlements(entitlements, metrics, updated_balances, metrics_updated)
-      +        return entitlements unless entitlements.is_a?(Array) && !entitlements.empty?
-      +
-      +        metrics_lookup = {}
-      +        if metrics_updated && metrics.is_a?(Array)
-      +          metrics.each do |metric|
-      +            next unless metric.is_a?(Hash)
-      +
-      +            key = [
-      +              get_metric_field(metric, :event_subtype) || "",
-      +              get_metric_field(metric, :period) || "",
-      +              get_metric_field(metric, :month_reset) || ""
-      +            ]
-      +            value = get_metric_field(metric, :value)
-      +            metrics_lookup[key] = value.nil? ? 0 : value
-      +          end
-      +        end
-      +
-      +        entitlements.map do |ent|
-      +          next ent unless ent.is_a?(Hash)
-      +
-      +          new_ent = deep_copy(ent)
-      +
-      +          credit_id = get_metric_field(ent, :credit_id)
-      +          if updated_balances && credit_id
-      +            present, balance = fetch_balance(updated_balances, credit_id)
-      +            new_ent[:credit_remaining] = balance if present
-      +          end
-      +
-      +          event_name = get_metric_field(ent, :event_name)
-      +          unless metrics_lookup.empty? || event_name.nil?
-      +            period = get_metric_field(ent, :metric_period) || "all_time"
-      +            month_reset = get_metric_field(ent, :month_reset) || "first_of_month"
-      +            matched = metrics_lookup[[event_name, period, month_reset]]
-      +            new_ent[:usage] = matched unless matched.nil?
-      +          end
-      +
-      +          new_ent
-      +        end
-      +      end
-      +
+      -      # The partial's credit_balances may be keyed by string or symbol depending
+      -      # on how the message was parsed, while an entitlement's credit_id is a
+      -      # string value, so check both key forms.
       +      # credit_balances keys may be symbols (deep_copy symbolizes) while an
       +      # entitlement's credit_id is always a string, so check both forms.
-      +      def fetch_balance(balances, credit_id)
-      +        return [true, balances[credit_id]] if balances.key?(credit_id)
-      +        return [true, balances[credit_id.to_sym]] if balances.key?(credit_id.to_sym)
-      +        return [true, balances[credit_id.to_s]] if balances.key?(credit_id.to_s)
-      +
-      +        [false, nil]
-      +      end
-           end
-         end
-       end
+             def fetch_balance(balances, credit_id)
+               return [true, balances[credit_id]] if balances.key?(credit_id)
+               return [true, balances[credit_id.to_sym]] if balances.key?(credit_id.to_sym)
     theirs_snapshot:
       lib/schematic/datastream/merge.rb: |
         # frozen_string_literal: true
@@ -304,218 +221,9 @@ patches:
               def fetch_balance(balances, credit_id)
                 return [true, balances[credit_id]] if balances.key?(credit_id)
                 return [true, balances[credit_id.to_sym]] if balances.key?(credit_id.to_sym)
-                return [true, balances[credit_id.to_s]] if balances.key?(credit_id.to_s)
 
                 [false, nil]
               end
             end
           end
         end
-    status: unresolved
-  - id: patch-46462128
-    content_hash: sha256:94f06e4e687a0908d3f305a4d605d9dc1271db6ed83014a10b86be900187dd83
-    original_commit: 46462128cacb25b73fac7770060cf427ff0d9e6d
-    original_message: add tests and address nits
-    original_author: Christopher Brady <chris@schematichq.com>
-    base_generation: e75de47f4e4f08f8e683366dd9b3936bc5c6452f
-    files:
-      - lib/schematic/datastream/merge.rb
-    patch_content: |
-      diff --git a/lib/schematic/datastream/merge.rb b/lib/schematic/datastream/merge.rb
-      index 7f1084d..f4dd4e5 100644
-      --- a/lib/schematic/datastream/merge.rb
-      +++ b/lib/schematic/datastream/merge.rb
-      @@ -46,7 +46,7 @@ module Schematic
-                 end
-               end
-       
-      -        if (updated_balances || metrics_updated) && !entitlements_in_partial
-      +        if (updated_balances&.any? || metrics_updated) && !entitlements_in_partial
-                 result[:entitlements] = sync_entitlements(
-                   result[:entitlements], result[:metrics], updated_balances, metrics_updated
-                 )
-      @@ -152,12 +152,12 @@ module Schematic
-               end
-             end
-       
-      -      # credit_balances keys may be symbols (deep_copy symbolizes) while an
-      -      # entitlement's credit_id is always a string, so check both forms.
-      +      # The partial's credit_balances may be keyed by string or symbol depending
-      +      # on how the message was parsed, while an entitlement's credit_id is a
-      +      # string value, so check both key forms.
-             def fetch_balance(balances, credit_id)
-               return [true, balances[credit_id]] if balances.key?(credit_id)
-               return [true, balances[credit_id.to_sym]] if balances.key?(credit_id.to_sym)
-      -        return [true, balances[credit_id.to_s]] if balances.key?(credit_id.to_s)
-       
-               [false, nil]
-             end
-    theirs_snapshot:
-      lib/schematic/datastream/merge.rb: |
-        # frozen_string_literal: true
-
-        require "json"
-
-        module Schematic
-          module DataStream
-            module Merge
-              module_function
-
-              def deep_copy(obj)
-                JSON.parse(JSON.generate(obj), symbolize_names: true)
-              rescue StandardError
-                obj.dup
-              end
-
-              COMPANY_MAP_FIELDS = %i[credit_balances keys traits].freeze
-              COMPANY_ARRAY_FIELDS = %i[billing_product_ids entitlements plan_ids plan_version_ids rules].freeze
-
-              # Partials don't carry refreshed entitlements, so when their derived
-              # fields change in another part of the company we sync them here to match
-              # server behavior (see schematic-python merge.partial_company):
-              #   - credit_remaining <- credit_balances[credit_id]
-              #   - usage            <- metric value matching (event_name, metric_period, month_reset)
-              # Both are skipped when the partial also sends entitlements wholesale.
-              def partial_company(existing, partial_data)
-                return existing unless partial_data.is_a?(Hash)
-
-                result = deep_copy(existing)
-                entitlements_in_partial = partial_data.key?(:entitlements) || partial_data.key?("entitlements")
-                updated_balances = nil
-                metrics_updated = false
-
-                partial_data.each do |key, value|
-                  sym_key = key.to_sym
-                  if COMPANY_MAP_FIELDS.include?(sym_key)
-                    result[sym_key] ||= {}
-                    result[sym_key] = result[sym_key].merge(value) if value.is_a?(Hash)
-                    updated_balances = (value.is_a?(Hash) ? value : {}) if sym_key == :credit_balances
-                  elsif COMPANY_ARRAY_FIELDS.include?(sym_key)
-                    result[sym_key] = value if value.is_a?(Array)
-                  elsif sym_key == :metrics
-                    result[sym_key] = upsert_metrics(result[sym_key] || [], value || [])
-                    metrics_updated = true
-                  else
-                    result[sym_key] = value
-                  end
-                end
-
-                if (updated_balances&.any? || metrics_updated) && !entitlements_in_partial
-                  result[:entitlements] = sync_entitlements(
-                    result[:entitlements], result[:metrics], updated_balances, metrics_updated
-                  )
-                end
-
-                result
-              end
-
-              USER_MAP_FIELDS = %i[keys traits].freeze
-
-              def partial_user(existing, partial_data)
-                return existing unless partial_data.is_a?(Hash)
-
-                result = deep_copy(existing)
-
-                partial_data.each do |key, value|
-                  sym_key = key.to_sym
-                  if USER_MAP_FIELDS.include?(sym_key)
-                    result[sym_key] ||= {}
-                    result[sym_key] = result[sym_key].merge(value) if value.is_a?(Hash)
-                  elsif sym_key == :rules
-                    result[sym_key] = value if value.is_a?(Array)
-                  else
-                    result[sym_key] = value
-                  end
-                end
-
-                result
-              end
-
-              def upsert_metrics(existing, incoming)
-                return incoming if existing.nil? || existing.empty?
-                return existing if incoming.nil? || incoming.empty?
-
-                result = existing.map { |metric| deep_copy(metric) }
-
-                incoming.each do |inc_metric|
-                  match_idx = result.index do |ex|
-                    metrics_match?(ex, inc_metric)
-                  end
-
-                  if match_idx
-                    result[match_idx] = inc_metric
-                  else
-                    result << inc_metric
-                  end
-                end
-
-                result
-              end
-
-              def metrics_match?(left, right)
-                get_metric_field(left, :event_subtype) == get_metric_field(right, :event_subtype) &&
-                  get_metric_field(left, :period) == get_metric_field(right, :period) &&
-                  get_metric_field(left, :month_reset) == get_metric_field(right, :month_reset)
-              end
-
-              def get_metric_field(metric, field)
-                metric[field] || metric[field.to_s]
-              end
-
-              # Re-derive entitlement usage / credit_remaining from the merged metrics
-              # and the just-updated credit balances. Mirrors schematic-python so that
-              # entitlement usage reflects DataStream track events immediately.
-              def sync_entitlements(entitlements, metrics, updated_balances, metrics_updated)
-                return entitlements unless entitlements.is_a?(Array) && !entitlements.empty?
-
-                metrics_lookup = {}
-                if metrics_updated && metrics.is_a?(Array)
-                  metrics.each do |metric|
-                    next unless metric.is_a?(Hash)
-
-                    key = [
-                      get_metric_field(metric, :event_subtype) || "",
-                      get_metric_field(metric, :period) || "",
-                      get_metric_field(metric, :month_reset) || ""
-                    ]
-                    value = get_metric_field(metric, :value)
-                    metrics_lookup[key] = value.nil? ? 0 : value
-                  end
-                end
-
-                entitlements.map do |ent|
-                  next ent unless ent.is_a?(Hash)
-
-                  new_ent = deep_copy(ent)
-
-                  credit_id = get_metric_field(ent, :credit_id)
-                  if updated_balances && credit_id
-                    present, balance = fetch_balance(updated_balances, credit_id)
-                    new_ent[:credit_remaining] = balance if present
-                  end
-
-                  event_name = get_metric_field(ent, :event_name)
-                  unless metrics_lookup.empty? || event_name.nil?
-                    period = get_metric_field(ent, :metric_period) || "all_time"
-                    month_reset = get_metric_field(ent, :month_reset) || "first_of_month"
-                    matched = metrics_lookup[[event_name, period, month_reset]]
-                    new_ent[:usage] = matched unless matched.nil?
-                  end
-
-                  new_ent
-                end
-              end
-
-              # The partial's credit_balances may be keyed by string or symbol depending
-              # on how the message was parsed, while an entitlement's credit_id is a
-              # string value, so check both key forms.
-              def fetch_balance(balances, credit_id)
-                return [true, balances[credit_id]] if balances.key?(credit_id)
-                return [true, balances[credit_id.to_sym]] if balances.key?(credit_id.to_sym)
-
-                [false, nil]
-              end
-            end
-          end
-        end
-    status: unresolved

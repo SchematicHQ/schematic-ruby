@@ -46,7 +46,7 @@ module Schematic
           end
         end
 
-        if (updated_balances&.any? || metrics_updated) && !entitlements_in_partial
+        if (updated_balances || metrics_updated) && !entitlements_in_partial
           result[:entitlements] = sync_entitlements(
             result[:entitlements], result[:metrics], updated_balances, metrics_updated
           )
@@ -152,9 +152,8 @@ module Schematic
         end
       end
 
-      # The partial's credit_balances may be keyed by string or symbol depending
-      # on how the message was parsed, while an entitlement's credit_id is a
-      # string value, so check both key forms.
+      # credit_balances keys may be symbols (deep_copy symbolizes) while an
+      # entitlement's credit_id is always a string, so check both forms.
       def fetch_balance(balances, credit_id)
         return [true, balances[credit_id]] if balances.key?(credit_id)
         return [true, balances[credit_id.to_sym]] if balances.key?(credit_id.to_sym)
