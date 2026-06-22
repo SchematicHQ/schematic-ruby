@@ -5,7 +5,6 @@ module Schematic
     module AccountMemberPermission
       extend Schematic::Internal::Types::Enum
 
-      BILLING_CREDITS_EDIT = "billing_credits_edit"
       COMPANIES_EDIT = "companies_edit"
       COMPANY_USERS_EDIT = "company_users_edit"
       COMPONENTS_EDIT = "components_edit"
