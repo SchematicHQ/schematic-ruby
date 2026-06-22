@@ -1450,6 +1450,102 @@ client.billing.upsert_billing_coupon(
 </dl>
 </details>
 
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">delete_billing_coupon</a>(billing_id) -> Schematic::Billing::Types::DeleteBillingCouponResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.billing.delete_billing_coupon(billing_id: "billing_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_id:** `String` — billing_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Billing::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">delete_billing_customer</a>(billing_id) -> Schematic::Billing::Types::DeleteBillingCustomerResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.billing.delete_billing_customer(billing_id: "billing_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_id:** `String` — billing_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Billing::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">upsert_billing_customer</a>(request) -> Schematic::Billing::Types::UpsertBillingCustomerResponse</code></summary>
 <dl>
 <dd>
@@ -1962,6 +2058,54 @@ client.billing.upsert_invoice(
 <dd>
 
 **url:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Billing::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">delete_billing_invoice</a>(billing_id) -> Schematic::Billing::Types::DeleteBillingInvoiceResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.billing.delete_billing_invoice(billing_id: "billing_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_id:** `String` — billing_id
     
 </dd>
 </dl>
@@ -19294,6 +19438,65 @@ client.webhooks.delete_webhook(webhook_id: "webhook_id")
 <dd>
 
 **webhook_id:** `String` — webhook_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Webhooks::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.webhooks.<a href="/lib/schematic/webhooks/client.rb">send_test_webhook_action</a>(webhook_id, request) -> Schematic::Webhooks::Types::SendTestWebhookActionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.webhooks.send_test_webhook_action(
+  webhook_id: "webhook_id",
+  request_type: "subscription.trial.ended"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**webhook_id:** `String` — webhook_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_type:** `Schematic::Types::WebhookRequestType` 
     
 </dd>
 </dl>
