@@ -13,6 +13,7 @@ module Schematic
         field :is_active, -> { Internal::Types::Boolean }, optional: true, nullable: false
         field :limit, -> { Integer }, optional: true, nullable: false
         field :offset, -> { Integer }, optional: true, nullable: false
+        field :plan_version_id, -> { String }, optional: true, nullable: false
         field :price, -> { Integer }, optional: true, nullable: false
         field :product_id, -> { String }, optional: true, nullable: false
         field :product_ids, -> { Internal::Types::Array[String] }, optional: true, nullable: false
