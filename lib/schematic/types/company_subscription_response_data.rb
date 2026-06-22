@@ -10,6 +10,7 @@ module Schematic
       field :discounts, -> { Internal::Types::Array[Schematic::Types::BillingSubscriptionDiscountView] }, optional: false, nullable: false
       field :expired_at, -> { String }, optional: true, nullable: false
       field :interval, -> { String }, optional: false, nullable: false
+      field :is_initial, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :latest_invoice, -> { Schematic::Types::InvoiceResponseData }, optional: true, nullable: false
       field :payment_method, -> { Schematic::Types::PaymentMethodResponseData }, optional: true, nullable: false
       field :products, -> { Internal::Types::Array[Schematic::Types::BillingProductForSubscriptionResponseData] }, optional: false, nullable: false

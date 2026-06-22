@@ -2419,6 +2419,7 @@ client.billing.list_billing_prices(
   ids: ["ids"],
   interval: "interval",
   is_active: true,
+  plan_version_id: "plan_version_id",
   price: 1000000,
   product_id: "product_id",
   product_ids: ["product_ids"],
@@ -2485,6 +2486,14 @@ client.billing.list_billing_prices(
 <dd>
 
 **is_active:** `Internal::Types::Boolean` — Filter for active prices on active products (defaults to true if not specified)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_id:** `String` — Filter for prices belonging to a specific plan version (e.g. the latest published version)
     
 </dd>
 </dl>
@@ -2841,6 +2850,7 @@ client.billing.list_billing_product_prices(
   ids: ["ids"],
   interval: "interval",
   is_active: true,
+  plan_version_id: "plan_version_id",
   price: 1000000,
   product_id: "product_id",
   product_ids: ["product_ids"],
@@ -2907,6 +2917,14 @@ client.billing.list_billing_product_prices(
 <dd>
 
 **is_active:** `Internal::Types::Boolean` — Filter for active prices on active products (defaults to true if not specified)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_id:** `String` — Filter for prices belonging to a specific plan version (e.g. the latest published version)
     
 </dd>
 </dl>
