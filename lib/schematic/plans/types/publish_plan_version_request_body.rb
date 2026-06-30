@@ -6,6 +6,7 @@ module Schematic
       class PublishPlanVersionRequestBody < Internal::Types::Model
         field :plan_id, -> { String }, optional: false, nullable: false
         field :activation_strategy, -> { Schematic::Types::CustomPlanActivationStrategy }, optional: true, nullable: false
+        field :coupon_external_id, -> { String }, optional: true, nullable: false
         field :customer_email, -> { String }, optional: true, nullable: false
         field :days_until_due, -> { Integer }, optional: true, nullable: false
         field :excluded_company_ids, -> { Internal::Types::Array[String] }, optional: false, nullable: false
