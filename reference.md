@@ -6490,6 +6490,14 @@ client.checkout.get_checkout_data(company_id: "company_id")
 <dl>
 <dd>
 
+**currency:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **selected_plan_id:** `String` 
     
 </dd>
@@ -13691,6 +13699,14 @@ client.plans.publish_plan_version(
 <dd>
 
 **activation_strategy:** `Schematic::Types::CustomPlanActivationStrategy` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**coupon_external_id:** `String` 
     
 </dd>
 </dl>
