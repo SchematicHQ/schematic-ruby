@@ -13,11 +13,13 @@ module Schematic
       field :company_can_trial, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :company_count, -> { Integer }, optional: false, nullable: false
       field :company_id, -> { String }, optional: true, nullable: false
+      field :company_logo_url, -> { String }, optional: true, nullable: false
       field :company_name, -> { String }, optional: true, nullable: false
       field :compatible_plan_ids, -> { Internal::Types::Array[String] }, optional: false, nullable: false
       field :controlled_by, -> { Schematic::Types::BillingProviderType }, optional: false, nullable: false
       field :copied_from_plan_id, -> { String }, optional: true, nullable: false
       field :created_at, -> { String }, optional: false, nullable: false
+      field :credits, -> { Internal::Types::Array[Schematic::Types::BillingCreditResponseData] }, optional: false, nullable: false
       field :currency_prices, -> { Internal::Types::Array[Schematic::Types::PlanCurrencyPricesResponseData] }, optional: false, nullable: false
       field :current, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :custom, -> { Internal::Types::Boolean }, optional: false, nullable: false

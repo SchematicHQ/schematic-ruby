@@ -7,6 +7,7 @@ module Schematic
       field :base_plan_id, -> { String }, optional: true, nullable: false
       field :base_plan_price_id, -> { String }, optional: true, nullable: false
       field :base_plan_version_id, -> { String }, optional: true, nullable: false
+      field :billing_entity_id, -> { String }, optional: true, nullable: false
       field :cancel_immediately, -> { Internal::Types::Boolean }, optional: true, nullable: false
       field :company_id, -> { String }, optional: false, nullable: false
       field :coupon_external_id, -> { String }, optional: true, nullable: false
