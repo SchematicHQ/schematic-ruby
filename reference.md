@@ -3689,6 +3689,14 @@ client.billing.upsert_billing_subscription(
 <dl>
 <dd>
 
+**company_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **currency:** `String` 
     
 </dd>
@@ -7598,6 +7606,102 @@ client.companies.lookup_company(keys: {
 <dd>
 
 **keys:** `Internal::Types::Hash[String, String]` — Key/value pairs
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Companies::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">get_company_billing_entity</a>() -> Schematic::Companies::Types::GetCompanyBillingEntityResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.companies.get_company_billing_entity(company_id: "company_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Companies::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">get_billing_entity_child_subscriptions</a>() -> Schematic::Companies::Types::GetBillingEntityChildSubscriptionsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.companies.get_billing_entity_child_subscriptions(company_id: "company_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `String` 
     
 </dd>
 </dl>

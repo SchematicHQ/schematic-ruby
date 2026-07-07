@@ -5,6 +5,7 @@ module Schematic
     class CompanyPlanCreditGrantView < Internal::Types::Model
       field :billing_credit_auto_topup_amount, -> { Integer }, optional: true, nullable: false
       field :billing_credit_auto_topup_amount_type, -> { String }, optional: true, nullable: false
+      field :billing_credit_auto_topup_availability, -> { Schematic::Types::BillingCreditAutoTopupAvailability }, optional: true, nullable: false
       field :billing_credit_auto_topup_enabled, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :billing_credit_auto_topup_expiry_type, -> { Schematic::Types::BillingCreditExpiryType }, optional: true, nullable: false
       field :billing_credit_auto_topup_expiry_unit, -> { Schematic::Types::BillingCreditExpiryUnit }, optional: true, nullable: false
@@ -12,6 +13,7 @@ module Schematic
       field :billing_credit_auto_topup_self_service, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :billing_credit_auto_topup_threshold_credits, -> { Integer }, optional: true, nullable: false
       field :billing_credit_auto_topup_threshold_percent, -> { Integer }, optional: true, nullable: false
+      field :billing_credit_can_buy_bundles, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :company_auto_topup_amount, -> { Integer }, optional: true, nullable: false
       field :company_auto_topup_enabled, -> { Internal::Types::Boolean }, optional: true, nullable: false
       field :company_auto_topup_threshold_credits, -> { Integer }, optional: true, nullable: false

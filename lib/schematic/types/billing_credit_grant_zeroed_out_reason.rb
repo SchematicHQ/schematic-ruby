@@ -5,7 +5,9 @@ module Schematic
     module BillingCreditGrantZeroedOutReason
       extend Schematic::Internal::Types::Enum
 
+      CUSTOMER_ARCHIVED = "customer_archived"
       EXPIRED = "expired"
+      INTEGRATION_UNINSTALLED = "integration_uninstalled"
       MANUAL = "manual"
       PLAN_CHANGE = "plan_change"
       PLAN_PERIOD_RESET = "plan_period_reset"

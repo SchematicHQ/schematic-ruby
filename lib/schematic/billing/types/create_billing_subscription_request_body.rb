@@ -7,6 +7,7 @@ module Schematic
         field :application_id, -> { String }, optional: true, nullable: false
         field :cancel_at, -> { Integer }, optional: true, nullable: false
         field :cancel_at_period_end, -> { Internal::Types::Boolean }, optional: false, nullable: false
+        field :company_id, -> { String }, optional: true, nullable: false
         field :currency, -> { String }, optional: false, nullable: false
         field :customer_external_id, -> { String }, optional: false, nullable: false
         field :default_payment_method_external_id, -> { String }, optional: true, nullable: false

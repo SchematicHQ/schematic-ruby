@@ -5,6 +5,7 @@ module Schematic
     class ChangeSubscriptionRequestBody < Internal::Types::Model
       field :add_on_ids, -> { Internal::Types::Array[Schematic::Types::UpdateAddOnRequestBody] }, optional: false, nullable: false
       field :auto_topup_overrides, -> { Internal::Types::Array[Schematic::Types::UpdateAutoTopupOverrideRequestBody] }, optional: false, nullable: false
+      field :billing_entity_id, -> { String }, optional: true, nullable: false
       field :coupon_external_id, -> { String }, optional: true, nullable: false
       field :credit_bundles, -> { Internal::Types::Array[Schematic::Types::UpdateCreditBundleRequestBody] }, optional: false, nullable: false
       field :custom_field_values, -> { Internal::Types::Array[Schematic::Types::CheckoutFieldValue] }, optional: false, nullable: false
