@@ -7,6 +7,7 @@ module Schematic
 
       FLAG_CHECK = "flag_check"
       IDENTIFY = "identify"
+      INFERENCE = "inference"
       TRACK = "track"
     end
   end

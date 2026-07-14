@@ -10,7 +10,6 @@ module Schematic
         field :entitlements, -> { Internal::Types::Array[Schematic::Types::PlanBundleEntitlementRequestBody] }, optional: false, nullable: false
         field :plan, -> { Schematic::Types::UpdatePlanRequestBody }, optional: true, nullable: false
         field :plan_version_id, -> { String }, optional: true, nullable: false
-        field :traits, -> { Internal::Types::Array[Schematic::Types::UpdatePlanTraitTraitRequestBody] }, optional: true, nullable: false
       end
     end
   end
