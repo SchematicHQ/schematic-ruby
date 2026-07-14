@@ -11,8 +11,10 @@ module Schematic
         field :currency, -> { String }, optional: false, nullable: false
         field :customer_external_id, -> { String }, optional: false, nullable: false
         field :due_date, -> { String }, optional: true, nullable: false
+        field :ending_balance, -> { Integer }, optional: true, nullable: false
         field :external_id, -> { String }, optional: true, nullable: false
         field :payment_method_external_id, -> { String }, optional: true, nullable: false
+        field :starting_balance, -> { Integer }, optional: true, nullable: false
         field :status, -> { Schematic::Types::InvoiceStatus }, optional: true, nullable: false
         field :subscription_external_id, -> { String }, optional: true, nullable: false
         field :subtotal, -> { Integer }, optional: false, nullable: false

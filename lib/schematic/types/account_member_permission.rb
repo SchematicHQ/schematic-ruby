@@ -8,6 +8,7 @@ module Schematic
       COMPANIES_EDIT = "companies_edit"
       COMPANY_USERS_EDIT = "company_users_edit"
       COMPONENTS_EDIT = "components_edit"
+      CUSTOM_PLANS_EDIT = "custom_plans_edit"
       DATA_EXPORTS_EDIT = "data_exports_edit"
       FEATURES_EDIT = "features_edit"
       FLAG_RULES_EDIT = "flag_rules_edit"

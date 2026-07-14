@@ -32,6 +32,7 @@ module Schematic
       field :value_trait, -> { Schematic::Types::EntityTraitDefinitionResponseData }, optional: true, nullable: false
       field :value_trait_id, -> { String }, optional: true, nullable: false
       field :value_type, -> { Schematic::Types::EntitlementValueType }, optional: false, nullable: false
+      field :warning_tiers, -> { Internal::Types::Array[Schematic::Types::WarningTierResponseData] }, optional: false, nullable: false
     end
   end
 end

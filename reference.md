@@ -2017,6 +2017,14 @@ client.billing.upsert_invoice(
 <dl>
 <dd>
 
+**ending_balance:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **external_id:** `String` 
     
 </dd>
@@ -2026,6 +2034,14 @@ client.billing.upsert_invoice(
 <dd>
 
 **payment_method_external_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**starting_balance:** `Integer` 
     
 </dd>
 </dl>
@@ -11335,6 +11351,14 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
+**warning_tiers:** `Internal::Types::Array[Schematic::Types::WarningTierRequestBody]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **yearly_metered_price_id:** `String` 
     
 </dd>
@@ -11667,6 +11691,14 @@ client.entitlements.update_plan_entitlement(
 <dd>
 
 **value_type:** `Schematic::Types::EntitlementValueType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**warning_tiers:** `Internal::Types::Array[Schematic::Types::WarningTierRequestBody]` 
     
 </dd>
 </dl>
@@ -12041,6 +12073,14 @@ client.entitlements.upsert_plan_entitlement_for_billing_product(
 <dd>
 
 **value_type:** `Schematic::Types::EntitlementValueType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**warning_tiers:** `Internal::Types::Array[Schematic::Types::WarningTierRequestBody]` 
     
 </dd>
 </dl>
@@ -14430,14 +14470,6 @@ client.planbundle.create_plan_bundle(entitlements: [{
 <dl>
 <dd>
 
-**traits:** `Internal::Types::Array[Schematic::Types::UpdatePlanTraitTraitRequestBody]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **request_options:** `Schematic::Planbundle::RequestOptions` 
     
 </dd>
@@ -14524,14 +14556,6 @@ client.planbundle.update_plan_bundle(
 <dd>
 
 **plan_version_id:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**traits:** `Internal::Types::Array[Schematic::Types::UpdatePlanTraitTraitRequestBody]` 
     
 </dd>
 </dl>

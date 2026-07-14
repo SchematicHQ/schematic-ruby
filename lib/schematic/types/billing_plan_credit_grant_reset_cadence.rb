@@ -6,7 +6,9 @@ module Schematic
       extend Schematic::Internal::Types::Enum
 
       DAILY = "daily"
+      EVERY_6_MONTHS = "every_6_months"
       MONTHLY = "monthly"
+      QUARTERLY = "quarterly"
       WEEKLY = "weekly"
       YEARLY = "yearly"
     end
