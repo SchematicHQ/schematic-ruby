@@ -61,13 +61,14 @@ class RulesEngineClockTest < Minitest::Test
 
   def test_billing_metric_override_evaluates_without_trapping
     result = @engine.check_flag(flag, entitled_company)
-    assert_equal true, result[:value],
-                 "company override should grant the flag, not fall back to default false"
+
+    assert result[:value], "company override should grant the flag, not fall back to default false"
     assert_match(/override/i, result[:reason].to_s)
   end
 
   def test_billing_metric_override_populates_reset_at
     result = @engine.check_flag(flag, entitled_company)
+
     refute_nil result[:feature_usage_reset_at],
                "reset-at should be computed from the injected host time"
   end
