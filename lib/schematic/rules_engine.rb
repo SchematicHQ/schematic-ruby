@@ -15,6 +15,7 @@ module Schematic
       @alloc_fn = nil
       @dealloc_fn = nil
       @check_flag_fn = nil
+      @set_time_fn = nil
       @get_result_json_fn = nil
       @get_result_json_length_fn = nil
       @get_version_key_fn = nil
@@ -47,6 +48,11 @@ module Schematic
         @alloc_fn = export_func("alloc")
         @dealloc_fn = export_func("dealloc")
         @check_flag_fn = export_func("checkFlagCombined")
+        # Optional: feed the wasm the current wall-clock time before each check.
+        # The raw wasm32-unknown-unknown build has no clock under wasmtime
+        # (SCHY-471); without this, metric-period reset timestamps are omitted.
+        # Absent on older wasm — hence the safe-navigation call below.
+        @set_time_fn = @instance.export("setCurrentTimeMillis")&.to_func
         @get_result_json_fn = export_func("getResultJson")
         @get_result_json_length_fn = export_func("getResultJsonLength")
         @get_version_key_fn = export_func("get_version_key_wasm")
@@ -80,6 +86,11 @@ module Schematic
         ptr = @alloc_fn.call(json_bytes.bytesize)
         begin
           @memory.write(ptr, json_bytes)
+
+          # Supply the host's current time so the engine can compute
+          # metric-period reset timestamps (SCHY-471). No-op on older wasm.
+          @set_time_fn&.call((Time.now.to_f * 1000).to_i)
+
           result_len = @check_flag_fn.call(ptr, json_bytes.bytesize)
 
           raise "WASM checkFlagCombined returned error" if result_len.negative?
