@@ -21,6 +21,7 @@ module Schematic
       field :soft_limit, -> { Integer }, optional: true, nullable: false
       field :usage, -> { Integer }, optional: true, nullable: false
       field :value_type, -> { Schematic::Types::EntitlementValueType }, optional: false, nullable: false
+      field :warning_tiers, -> { Internal::Types::Array[Schematic::Types::WarningTier] }, optional: true, nullable: false
     end
   end
 end

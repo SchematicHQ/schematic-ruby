@@ -3,21 +3,10 @@
 module Schematic
   module Types
     module DataExportType
-      # DataExportType is an alias for Object
+      extend Schematic::Internal::Types::Enum
 
-      # @option str [String]
-      #
-      # @return [untyped]
-      def self.load(str)
-        ::JSON.parse(str)
-      end
-
-      # @option value [untyped]
-      #
-      # @return [String]
-      def self.dump(value)
-        ::JSON.generate(value)
-      end
+      AUDIT_LOG = "audit-log"
+      COMPANY_FEATURE_USAGE = "company-feature-usage"
     end
   end
 end

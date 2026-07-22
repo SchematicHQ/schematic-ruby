@@ -9,6 +9,7 @@ module Schematic
       field :billing_linked_resource, -> { Schematic::Types::BillingLinkedResourceResponseData }, optional: true, nullable: false
       field :billing_product, -> { Schematic::Types::BillingProductDetailResponseData }, optional: true, nullable: false
       field :billing_strategy, -> { Schematic::Types::BillingStrategy }, optional: false, nullable: false
+      field :catalogs, -> { Internal::Types::Array[Schematic::Types::PlanCatalogMembershipResponseData] }, optional: true, nullable: false
       field :charge_type, -> { Schematic::Types::ChargeType }, optional: false, nullable: false
       field :company_count, -> { Integer }, optional: false, nullable: false
       field :company_id, -> { String }, optional: true, nullable: false

@@ -10,7 +10,7 @@ module Schematic
       @raw_client = Schematic::Internal::Http::RawClient.new(
         base_url: base_url || Schematic::Environment::DEFAULT,
         headers: {
-          "User-Agent" => "schematichq/1.4.9",
+          "User-Agent" => "schematichq/1.4.10",
           "X-Fern-Language" => "Ruby",
           "X-Schematic-Api-Key" => api_key.to_s
         }
@@ -30,6 +30,11 @@ module Schematic
     # @return [Schematic::Credits::Client]
     def credits
       @credits ||= Schematic::Credits::Client.new(client: @raw_client)
+    end
+
+    # @return [Schematic::Catalogs::Client]
+    def catalogs
+      @catalogs ||= Schematic::Catalogs::Client.new(client: @raw_client)
     end
 
     # @return [Schematic::Checkout::Client]

@@ -32,6 +32,7 @@ module Schematic
       field :value_numeric, -> { Integer }, optional: true, nullable: false
       field :value_trait_id, -> { String }, optional: true, nullable: false
       field :value_type, -> { Schematic::Types::EntitlementValueType }, optional: false, nullable: false
+      field :warning_tiers, -> { Internal::Types::Array[Schematic::Types::WarningTierRequestBody] }, optional: true, nullable: false
       field :yearly_metered_price_id, -> { String }, optional: true, nullable: false
       field :yearly_price_tiers, -> { Internal::Types::Array[Schematic::Types::CreatePriceTierRequestBody] }, optional: true, nullable: false
       field :yearly_unit_price, -> { Integer }, optional: true, nullable: false

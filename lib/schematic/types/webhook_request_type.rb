@@ -17,6 +17,7 @@ module Schematic
       COMPANY_UPDATED = "company.updated"
       CREDIT_LIMIT_REACHED = "credit.limit.reached"
       CREDIT_LIMIT_WARNING = "credit.limit.warning"
+      CREDIT_PURCHASE_SUCCESS = "credit.purchase.success"
       ENTITLEMENT_LIMIT_REACHED = "entitlement.limit.reached"
       ENTITLEMENT_LIMIT_WARNING = "entitlement.limit.warning"
       ENTITLEMENT_SOFT_LIMIT_REACHED = "entitlement.soft_limit.reached"
@@ -44,6 +45,7 @@ module Schematic
       USER_UPDATED = "user.updated"
       AUTO_TOPUP_HARD_FAILURE = "auto.topup.hard.failure"
       AUTO_TOPUP_RETRY_EXCEEDED = "auto.topup.retry.exceeded"
+      AUTO_TOPUP_SUCCESS = "auto.topup.success"
     end
   end
 end
