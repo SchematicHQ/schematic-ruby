@@ -3,6 +3,8 @@
 module Schematic
   module Types
     class UpsertCompanyRequestBody < Internal::Types::Model
+      field :base_plan_id, -> { String }, optional: true, nullable: false
+      field :base_plan_price_id, -> { String }, optional: true, nullable: false
       field :id, -> { String }, optional: true, nullable: false
       field :keys, -> { Internal::Types::Hash[String, String] }, optional: false, nullable: false
       field :last_seen_at, -> { String }, optional: true, nullable: false

@@ -36,5 +36,347 @@ generations:
     cli_version: unknown
     generator_versions:
       fernapi/fern-ruby-sdk: 1.1.13
-current_generation: c93862aca1a52c6c033c908ebab873ca9ef6e401
-patches: []
+  - commit_sha: dfe70dc9f1f1787aa5b55f6802739898633c35c7
+    tree_hash: 114498346f315168be50ca9bf5c9f463bcfe3303
+    timestamp: 2026-07-22T19:30:43.525Z
+    cli_version: unknown
+    generator_versions:
+      fernapi/fern-ruby-sdk: 1.1.13
+current_generation: dfe70dc9f1f1787aa5b55f6802739898633c35c7
+patches:
+  - id: patch-5da692c2
+    content_hash: sha256:e652287219a0a709e16112ced444e6472c6fa8bdfe888edf868caaf9769a9472
+    original_commit: 5da692c20aef08577d900f9a860b5f78a549418e
+    original_message: inject host time into datastream wasm rules engine (SCHY-471)
+    original_author: Christopher Brady <chris@schematichq.com>
+    base_generation: dfe70dc9f1f1787aa5b55f6802739898633c35c7
+    files:
+      - test/rules_engine_clock_test.rb
+    patch_content: |
+      diff --git a/test/rules_engine_clock_test.rb b/test/rules_engine_clock_test.rb
+      new file mode 100644
+      index 0000000..8711b5e
+      --- /dev/null
+      +++ b/test/rules_engine_clock_test.rb
+      @@ -0,0 +1,75 @@
+      +# frozen_string_literal: true
+      +
+      +require_relative "test_helper"
+      +require "minitest/autorun"
+      +
+      +# Regression for SCHY-471.
+      +#
+      +# A company-override entitlement rule whose metric condition uses a
+      +# calendar/billing metric period drives the engine into the metric-period-reset
+      +# code path, which needs a wall clock. On the raw wasm32-unknown-unknown build
+      +# that path used to trap (+wasm unreachable+); the flag then wrongly fell back to
+      +# its default value for a company that is legitimately entitled. The host now
+      +# injects the current time via +setCurrentTimeMillis+ so this evaluates cleanly.
+      +class RulesEngineClockTest < Minitest::Test
+      +  def setup
+      +    @engine = Schematic::RulesEngine.new
+      +    @engine.initialize!
+      +    # The wasm binary is fetched via scripts/download-wasm.sh and may be absent
+      +    # (or the wasmtime gem missing) in some environments — skip rather than fail.
+      +    skip "WASM rules engine unavailable (wasm binary or wasmtime gem missing)" unless @engine.initialized?
+      +  end
+      +
+      +  def flag
+      +    {
+      +      "id" => "flag1", "key" => "mcp-access", "account_id" => "acc_1",
+      +      "environment_id" => "env_1", "default_value" => false, "rules" => []
+      +    }
+      +  end
+      +
+      +  # Usage 40 < allocation 100, so the override grants the feature.
+      +  def entitled_company
+      +    {
+      +      "id" => "co_entitled", "account_id" => "acc_1", "environment_id" => "env_1",
+      +      "keys" => { "id" => "co_entitled" },
+      +      "metrics" => [{
+      +        "account_id" => "acc_1", "environment_id" => "env_1", "company_id" => "co_entitled",
+      +        "event_subtype" => "api-calls", "period" => "current_month",
+      +        "month_reset" => "billing_cycle", "value" => 40, "created_at" => "2023-01-01T00:00:00Z"
+      +      }],
+      +      "rules" => [{
+      +        "id" => "rule_override", "flag_id" => "flag1", "account_id" => "acc_1",
+      +        "environment_id" => "env_1", "name" => "Company Override",
+      +        "rule_type" => "company_override", "priority" => 0, "value" => true,
+      +        "condition_groups" => [],
+      +        "conditions" => [
+      +          {
+      +            "id" => "cond_company", "account_id" => "acc_1", "environment_id" => "env_1",
+      +            "condition_type" => "company", "operator" => "eq",
+      +            "resource_ids" => ["co_entitled"], "trait_value" => ""
+      +          },
+      +          {
+      +            "id" => "cond_metric", "account_id" => "acc_1", "environment_id" => "env_1",
+      +            "condition_type" => "metric", "operator" => "lt", "event_subtype" => "api-calls",
+      +            "metric_value" => 100, "metric_period" => "current_month",
+      +            "metric_period_month_reset" => "billing_cycle", "trait_value" => "100"
+      +          }
+      +        ]
+      +      }]
+      +    }
+      +  end
+      +
+      +  def test_billing_metric_override_evaluates_without_trapping
+      +    result = @engine.check_flag(flag, entitled_company)
+      +
+      +    assert result[:value], "company override should grant the flag, not fall back to default false"
+      +    assert_match(/override/i, result[:reason].to_s)
+      +  end
+      +
+      +  def test_billing_metric_override_populates_reset_at
+      +    result = @engine.check_flag(flag, entitled_company)
+      +
+      +    refute_nil result[:feature_usage_reset_at],
+      +               "reset-at should be computed from the injected host time"
+      +  end
+      +end
+    theirs_snapshot:
+      test/rules_engine_clock_test.rb: |
+        # frozen_string_literal: true
+
+        require_relative "test_helper"
+        require "minitest/autorun"
+
+        # Regression for SCHY-471.
+        #
+        # A company-override entitlement rule whose metric condition uses a
+        # calendar/billing metric period drives the engine into the metric-period-reset
+        # code path, which needs a wall clock. On the raw wasm32-unknown-unknown build
+        # that path used to trap (+wasm unreachable+); the flag then wrongly fell back to
+        # its default value for a company that is legitimately entitled. The host now
+        # injects the current time via +setCurrentTimeMillis+ so this evaluates cleanly.
+        class RulesEngineClockTest < Minitest::Test
+          def setup
+            @engine = Schematic::RulesEngine.new
+            @engine.initialize!
+            # The wasm binary is fetched via scripts/download-wasm.sh and may be absent
+            # (or the wasmtime gem missing) in some environments — skip rather than fail.
+            skip "WASM rules engine unavailable (wasm binary or wasmtime gem missing)" unless @engine.initialized?
+          end
+
+          def flag
+            {
+              "id" => "flag1", "key" => "mcp-access", "account_id" => "acc_1",
+              "environment_id" => "env_1", "default_value" => false, "rules" => []
+            }
+          end
+
+          # Usage 40 < allocation 100, so the override grants the feature.
+          def entitled_company
+            {
+              "id" => "co_entitled", "account_id" => "acc_1", "environment_id" => "env_1",
+              "keys" => { "id" => "co_entitled" },
+              "metrics" => [{
+                "account_id" => "acc_1", "environment_id" => "env_1", "company_id" => "co_entitled",
+                "event_subtype" => "api-calls", "period" => "current_month",
+                "month_reset" => "billing_cycle", "value" => 40, "created_at" => "2023-01-01T00:00:00Z"
+              }],
+              "rules" => [{
+                "id" => "rule_override", "flag_id" => "flag1", "account_id" => "acc_1",
+                "environment_id" => "env_1", "name" => "Company Override",
+                "rule_type" => "company_override", "priority" => 0, "value" => true,
+                "condition_groups" => [],
+                "conditions" => [
+                  {
+                    "id" => "cond_company", "account_id" => "acc_1", "environment_id" => "env_1",
+                    "condition_type" => "company", "operator" => "eq",
+                    "resource_ids" => ["co_entitled"], "trait_value" => ""
+                  },
+                  {
+                    "id" => "cond_metric", "account_id" => "acc_1", "environment_id" => "env_1",
+                    "condition_type" => "metric", "operator" => "lt", "event_subtype" => "api-calls",
+                    "metric_value" => 100, "metric_period" => "current_month",
+                    "metric_period_month_reset" => "billing_cycle", "trait_value" => "100"
+                  }
+                ]
+              }]
+            }
+          end
+
+          def test_billing_metric_override_evaluates_without_trapping
+            result = @engine.check_flag(flag, entitled_company)
+
+            assert result[:value], "company override should grant the flag, not fall back to default false"
+            assert_match(/override/i, result[:reason].to_s)
+          end
+
+          def test_billing_metric_override_populates_reset_at
+            result = @engine.check_flag(flag, entitled_company)
+
+            refute_nil result[:feature_usage_reset_at],
+                       "reset-at should be computed from the injected host time"
+          end
+        end
+    user_owned: true
+  - id: patch-ee61788c
+    content_hash: sha256:e652287219a0a709e16112ced444e6472c6fa8bdfe888edf868caaf9769a9472
+    original_commit: ee61788c5a83fce5dd5768b2536391459550d176
+    original_message: fix rubocop offenses in clock regression test (SCHY-471)
+    original_author: Christopher Brady <chris@schematichq.com>
+    base_generation: dfe70dc9f1f1787aa5b55f6802739898633c35c7
+    files:
+      - test/rules_engine_clock_test.rb
+    patch_content: |
+      diff --git a/test/rules_engine_clock_test.rb b/test/rules_engine_clock_test.rb
+      new file mode 100644
+      index 0000000..8711b5e
+      --- /dev/null
+      +++ b/test/rules_engine_clock_test.rb
+      @@ -0,0 +1,75 @@
+      +# frozen_string_literal: true
+      +
+      +require_relative "test_helper"
+      +require "minitest/autorun"
+      +
+      +# Regression for SCHY-471.
+      +#
+      +# A company-override entitlement rule whose metric condition uses a
+      +# calendar/billing metric period drives the engine into the metric-period-reset
+      +# code path, which needs a wall clock. On the raw wasm32-unknown-unknown build
+      +# that path used to trap (+wasm unreachable+); the flag then wrongly fell back to
+      +# its default value for a company that is legitimately entitled. The host now
+      +# injects the current time via +setCurrentTimeMillis+ so this evaluates cleanly.
+      +class RulesEngineClockTest < Minitest::Test
+      +  def setup
+      +    @engine = Schematic::RulesEngine.new
+      +    @engine.initialize!
+      +    # The wasm binary is fetched via scripts/download-wasm.sh and may be absent
+      +    # (or the wasmtime gem missing) in some environments — skip rather than fail.
+      +    skip "WASM rules engine unavailable (wasm binary or wasmtime gem missing)" unless @engine.initialized?
+      +  end
+      +
+      +  def flag
+      +    {
+      +      "id" => "flag1", "key" => "mcp-access", "account_id" => "acc_1",
+      +      "environment_id" => "env_1", "default_value" => false, "rules" => []
+      +    }
+      +  end
+      +
+      +  # Usage 40 < allocation 100, so the override grants the feature.
+      +  def entitled_company
+      +    {
+      +      "id" => "co_entitled", "account_id" => "acc_1", "environment_id" => "env_1",
+      +      "keys" => { "id" => "co_entitled" },
+      +      "metrics" => [{
+      +        "account_id" => "acc_1", "environment_id" => "env_1", "company_id" => "co_entitled",
+      +        "event_subtype" => "api-calls", "period" => "current_month",
+      +        "month_reset" => "billing_cycle", "value" => 40, "created_at" => "2023-01-01T00:00:00Z"
+      +      }],
+      +      "rules" => [{
+      +        "id" => "rule_override", "flag_id" => "flag1", "account_id" => "acc_1",
+      +        "environment_id" => "env_1", "name" => "Company Override",
+      +        "rule_type" => "company_override", "priority" => 0, "value" => true,
+      +        "condition_groups" => [],
+      +        "conditions" => [
+      +          {
+      +            "id" => "cond_company", "account_id" => "acc_1", "environment_id" => "env_1",
+      +            "condition_type" => "company", "operator" => "eq",
+      +            "resource_ids" => ["co_entitled"], "trait_value" => ""
+      +          },
+      +          {
+      +            "id" => "cond_metric", "account_id" => "acc_1", "environment_id" => "env_1",
+      +            "condition_type" => "metric", "operator" => "lt", "event_subtype" => "api-calls",
+      +            "metric_value" => 100, "metric_period" => "current_month",
+      +            "metric_period_month_reset" => "billing_cycle", "trait_value" => "100"
+      +          }
+      +        ]
+      +      }]
+      +    }
+      +  end
+      +
+      +  def test_billing_metric_override_evaluates_without_trapping
+      +    result = @engine.check_flag(flag, entitled_company)
+      +
+      +    assert result[:value], "company override should grant the flag, not fall back to default false"
+      +    assert_match(/override/i, result[:reason].to_s)
+      +  end
+      +
+      +  def test_billing_metric_override_populates_reset_at
+      +    result = @engine.check_flag(flag, entitled_company)
+      +
+      +    refute_nil result[:feature_usage_reset_at],
+      +               "reset-at should be computed from the injected host time"
+      +  end
+      +end
+    theirs_snapshot:
+      test/rules_engine_clock_test.rb: |
+        # frozen_string_literal: true
+
+        require_relative "test_helper"
+        require "minitest/autorun"
+
+        # Regression for SCHY-471.
+        #
+        # A company-override entitlement rule whose metric condition uses a
+        # calendar/billing metric period drives the engine into the metric-period-reset
+        # code path, which needs a wall clock. On the raw wasm32-unknown-unknown build
+        # that path used to trap (+wasm unreachable+); the flag then wrongly fell back to
+        # its default value for a company that is legitimately entitled. The host now
+        # injects the current time via +setCurrentTimeMillis+ so this evaluates cleanly.
+        class RulesEngineClockTest < Minitest::Test
+          def setup
+            @engine = Schematic::RulesEngine.new
+            @engine.initialize!
+            # The wasm binary is fetched via scripts/download-wasm.sh and may be absent
+            # (or the wasmtime gem missing) in some environments — skip rather than fail.
+            skip "WASM rules engine unavailable (wasm binary or wasmtime gem missing)" unless @engine.initialized?
+          end
+
+          def flag
+            {
+              "id" => "flag1", "key" => "mcp-access", "account_id" => "acc_1",
+              "environment_id" => "env_1", "default_value" => false, "rules" => []
+            }
+          end
+
+          # Usage 40 < allocation 100, so the override grants the feature.
+          def entitled_company
+            {
+              "id" => "co_entitled", "account_id" => "acc_1", "environment_id" => "env_1",
+              "keys" => { "id" => "co_entitled" },
+              "metrics" => [{
+                "account_id" => "acc_1", "environment_id" => "env_1", "company_id" => "co_entitled",
+                "event_subtype" => "api-calls", "period" => "current_month",
+                "month_reset" => "billing_cycle", "value" => 40, "created_at" => "2023-01-01T00:00:00Z"
+              }],
+              "rules" => [{
+                "id" => "rule_override", "flag_id" => "flag1", "account_id" => "acc_1",
+                "environment_id" => "env_1", "name" => "Company Override",
+                "rule_type" => "company_override", "priority" => 0, "value" => true,
+                "condition_groups" => [],
+                "conditions" => [
+                  {
+                    "id" => "cond_company", "account_id" => "acc_1", "environment_id" => "env_1",
+                    "condition_type" => "company", "operator" => "eq",
+                    "resource_ids" => ["co_entitled"], "trait_value" => ""
+                  },
+                  {
+                    "id" => "cond_metric", "account_id" => "acc_1", "environment_id" => "env_1",
+                    "condition_type" => "metric", "operator" => "lt", "event_subtype" => "api-calls",
+                    "metric_value" => 100, "metric_period" => "current_month",
+                    "metric_period_month_reset" => "billing_cycle", "trait_value" => "100"
+                  }
+                ]
+              }]
+            }
+          end
+
+          def test_billing_metric_override_evaluates_without_trapping
+            result = @engine.check_flag(flag, entitled_company)
+
+            assert result[:value], "company override should grant the flag, not fall back to default false"
+            assert_match(/override/i, result[:reason].to_s)
+          end
+
+          def test_billing_metric_override_populates_reset_at
+            result = @engine.check_flag(flag, entitled_company)
+
+            refute_nil result[:feature_usage_reset_at],
+                       "reset-at should be computed from the injected host time"
+          end
+        end
+    user_owned: true

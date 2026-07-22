@@ -6405,6 +6405,867 @@ client.credits.count_credit_event_ledger(
 </dl>
 </details>
 
+## catalogs
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">list_catalogs</a>() -> Schematic::Catalogs::Types::ListCatalogsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.catalogs.list_catalogs(
+  is_default: true,
+  q: "q",
+  limit: 1000000,
+  offset: 1000000
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**is_default:** `Internal::Types::Boolean` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `String` — Search by catalog name
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Integer` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `Integer` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Catalogs::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">create_catalog</a>(request) -> Schematic::Catalogs::Types::CreateCatalogResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.catalogs.create_catalog(
+  is_default: true,
+  name: "name"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**description:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_default:** `Internal::Types::Boolean` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Catalogs::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">get_catalog</a>(catalog_id) -> Schematic::Catalogs::Types::GetCatalogResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.catalogs.get_catalog(catalog_id: "catalog_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalog_id:** `String` — catalog_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Catalogs::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">update_catalog</a>(catalog_id, request) -> Schematic::Catalogs::Types::UpdateCatalogResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.catalogs.update_catalog(catalog_id: "catalog_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalog_id:** `String` — catalog_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_default:** `Internal::Types::Boolean` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Catalogs::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">delete_catalog</a>(catalog_id) -> Schematic::Catalogs::Types::DeleteCatalogResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.catalogs.delete_catalog(catalog_id: "catalog_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalog_id:** `String` — catalog_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Catalogs::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">get_configuration</a>(catalog_id) -> Schematic::Catalogs::Types::GetConfigurationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.catalogs.get_configuration(catalog_id: "catalog_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalog_id:** `String` — catalog_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Catalogs::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">update_configuration</a>(catalog_id, request) -> Schematic::Catalogs::Types::UpdateConfigurationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.catalogs.update_configuration(catalog_id: "catalog_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalog_id:** `String` — catalog_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**custom_plan_cta_text:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**custom_plan_cta_url:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**custom_plan_price_text:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**custom_plans_visible:** `Internal::Types::Boolean` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ordered_add_ons:** `Internal::Types::Array[Schematic::Types::CatalogConfigOrderedPlan]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ordered_bundles:** `Internal::Types::Array[Schematic::Types::CatalogConfigOrderedBundle]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ordered_plans:** `Internal::Types::Array[Schematic::Types::CatalogConfigOrderedPlan]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pricing_model:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pricing_url:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Catalogs::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">get_credit_bundles_in_catalog</a>(catalog_id) -> Schematic::Catalogs::Types::GetCreditBundlesInCatalogResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.catalogs.get_credit_bundles_in_catalog(catalog_id: "catalog_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalog_id:** `String` — catalog_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Catalogs::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">add_credit_bundle</a>(catalog_id, credit_bundle_id) -> </code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.catalogs.add_credit_bundle(
+  catalog_id: "catalog_id",
+  credit_bundle_id: "credit_bundle_id"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalog_id:** `String` — catalog_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**credit_bundle_id:** `String` — credit_bundle_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Catalogs::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">remove_credit_bundle</a>(catalog_id, credit_bundle_id) -> </code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.catalogs.remove_credit_bundle(
+  catalog_id: "catalog_id",
+  credit_bundle_id: "credit_bundle_id"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalog_id:** `String` — catalog_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**credit_bundle_id:** `String` — credit_bundle_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Catalogs::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">get_derived_features</a>(catalog_id) -> Schematic::Catalogs::Types::GetDerivedFeaturesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.catalogs.get_derived_features(catalog_id: "catalog_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalog_id:** `String` — catalog_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Catalogs::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">get_plans_in_catalog</a>(catalog_id) -> Schematic::Catalogs::Types::GetPlansInCatalogResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.catalogs.get_plans_in_catalog(catalog_id: "catalog_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalog_id:** `String` — catalog_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Catalogs::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">add_plan</a>(catalog_id, plan_id) -> </code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.catalogs.add_plan(
+  catalog_id: "catalog_id",
+  plan_id: "plan_id"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalog_id:** `String` — catalog_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_id:** `String` — plan_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Catalogs::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">remove_plan</a>(catalog_id, plan_id) -> </code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.catalogs.remove_plan(
+  catalog_id: "catalog_id",
+  plan_id: "plan_id"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalog_id:** `String` — catalog_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_id:** `String` — plan_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Catalogs::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## checkout
 <details><summary><code>client.checkout.<a href="/lib/schematic/checkout/client.rb">internal</a>(request) -> Schematic::Checkout::Types::CheckoutInternalResponse</code></summary>
 <dl>
@@ -6595,6 +7456,140 @@ client.checkout.preview_checkout_internal(
 <dd>
 
 **request:** `Schematic::Types::ChangeSubscriptionInternalRequestBody` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Checkout::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.checkout.<a href="/lib/schematic/checkout/client.rb">get_company_billing_details</a>(company_id) -> Schematic::Checkout::Types::GetCompanyBillingDetailsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.checkout.get_company_billing_details(company_id: "company_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `String` — company_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Checkout::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.checkout.<a href="/lib/schematic/checkout/client.rb">update_company_billing_details</a>(company_id, request) -> Schematic::Checkout::Types::UpdateCompanyBillingDetailsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.checkout.update_company_billing_details(
+  company_id: "company_id",
+  values: [{
+    id: "id",
+    value: "value"
+  }]
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `String` — company_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**address:** `Schematic::Types::CustomerBillingAddress` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**email:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phone:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**values:** `Internal::Types::Array[Schematic::Types::CheckoutFieldValue]` 
     
 </dd>
 </dl>
@@ -14214,6 +15209,62 @@ client.components.delete_component(component_id: "component_id")
 </dl>
 </details>
 
+<details><summary><code>client.components.<a href="/lib/schematic/components/client.rb">bind_catalog</a>(component_id, request) -> Schematic::Components::Types::BindCatalogResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.components.bind_catalog(component_id: "component_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**component_id:** `String` — component_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**catalog_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Components::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.components.<a href="/lib/schematic/components/client.rb">count_components</a>() -> Schematic::Components::Types::CountComponentsResponse</code></summary>
 <dl>
 <dd>
@@ -14373,6 +15424,14 @@ client.planbundle.create_custom_plan_bundle(entitlements: [{
 <dd>
 
 **billing_product:** `Schematic::Types::UpsertBillingProductRequestBody` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**credit_grants:** `Internal::Types::Array[Schematic::Types::PlanBundleCreditGrantRequestBody]` 
     
 </dd>
 </dl>
@@ -14576,6 +15635,83 @@ client.planbundle.update_plan_bundle(
 </details>
 
 ## dataexports
+<details><summary><code>client.dataexports.<a href="/lib/schematic/dataexports/client.rb">list_data_exports</a>() -> Schematic::Dataexports::Types::ListDataExportsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.dataexports.list_data_exports(
+  export_type: "audit-log",
+  status: "failure",
+  limit: 1000000,
+  offset: 1000000
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**export_type:** `Schematic::Types::DataExportType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `Schematic::Types::DataExportStatus` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Integer` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `Integer` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Dataexports::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.dataexports.<a href="/lib/schematic/dataexports/client.rb">create_data_export</a>(request) -> Schematic::Dataexports::Types::CreateDataExportResponse</code></summary>
 <dl>
 <dd>
@@ -14590,8 +15726,7 @@ client.planbundle.update_plan_bundle(
 
 ```ruby
 client.dataexports.create_data_export(
-  export_type: "company-feature-usage",
-  metadata: "metadata",
+  export_type: "audit-log",
   output_file_type: "csv"
 )
 ```
@@ -14608,7 +15743,7 @@ client.dataexports.create_data_export(
 <dl>
 <dd>
 
-**export_type:** `String` 
+**export_type:** `Schematic::Types::DataExportType` 
     
 </dd>
 </dl>
@@ -14616,7 +15751,7 @@ client.dataexports.create_data_export(
 <dl>
 <dd>
 
-**metadata:** `String` 
+**metadata:** `Schematic::Types::DataExportMetadata` 
     
 </dd>
 </dl>
@@ -14624,7 +15759,55 @@ client.dataexports.create_data_export(
 <dl>
 <dd>
 
-**output_file_type:** `String` 
+**output_file_type:** `Schematic::Types::DataExportOutputFileType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Dataexports::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.dataexports.<a href="/lib/schematic/dataexports/client.rb">get_data_export</a>(data_export_id) -> Schematic::Dataexports::Types::GetDataExportResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.dataexports.get_data_export(data_export_id: "data_export_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**data_export_id:** `String` — data_export_id
     
 </dd>
 </dl>
