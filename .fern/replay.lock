@@ -42,14 +42,20 @@ generations:
     cli_version: unknown
     generator_versions:
       fernapi/fern-ruby-sdk: 1.1.13
-current_generation: dfe70dc9f1f1787aa5b55f6802739898633c35c7
+  - commit_sha: 6d4bb962eb2a83ad3a76662f58edbd07cc5fdadf
+    tree_hash: 9ec72264899730d464919a3605eb3a6667ba9464
+    timestamp: 2026-07-27T18:37:54.168Z
+    cli_version: unknown
+    generator_versions:
+      fernapi/fern-ruby-sdk: 1.1.13
+current_generation: 6d4bb962eb2a83ad3a76662f58edbd07cc5fdadf
 patches:
   - id: patch-5da692c2
     content_hash: sha256:e652287219a0a709e16112ced444e6472c6fa8bdfe888edf868caaf9769a9472
     original_commit: 5da692c20aef08577d900f9a860b5f78a549418e
     original_message: inject host time into datastream wasm rules engine (SCHY-471)
     original_author: Christopher Brady <chris@schematichq.com>
-    base_generation: dfe70dc9f1f1787aa5b55f6802739898633c35c7
+    base_generation: 6d4bb962eb2a83ad3a76662f58edbd07cc5fdadf
     files:
       - test/rules_engine_clock_test.rb
     patch_content: |
@@ -217,7 +223,7 @@ patches:
     original_commit: ee61788c5a83fce5dd5768b2536391459550d176
     original_message: fix rubocop offenses in clock regression test (SCHY-471)
     original_author: Christopher Brady <chris@schematichq.com>
-    base_generation: dfe70dc9f1f1787aa5b55f6802739898633c35c7
+    base_generation: 6d4bb962eb2a83ad3a76662f58edbd07cc5fdadf
     files:
       - test/rules_engine_clock_test.rb
     patch_content: |

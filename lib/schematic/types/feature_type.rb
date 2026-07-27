@@ -7,6 +7,7 @@ module Schematic
 
       BOOLEAN = "boolean"
       EVENT = "event"
+      LICENSE = "license"
       TRAIT = "trait"
     end
   end

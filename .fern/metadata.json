@@ -13,6 +13,6 @@
       "webrick": ">= 1.0"
     }
   },
-  "originGitCommit": "75191b40ce7af084ca4fb11f623ab59c57cf97e3",
-  "sdkVersion": "1.4.10"
+  "originGitCommit": "340529eacf4f1dcc5522e771872c1dd94b9c4891",
+  "sdkVersion": "1.4.11"
 }
