@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 module Schematic
-  module Accounts
+  module Licenses
     module Types
       # Input parameters
-      class CountAccountMembersParams < Internal::Types::Model
+      class CountLicensesParams < Internal::Types::Model
+        field :feature_ids, -> { Internal::Types::Array[String] }, optional: true, nullable: false
         field :ids, -> { Internal::Types::Array[String] }, optional: true, nullable: false
         field :limit, -> { Integer }, optional: true, nullable: false
+        field :name, -> { String }, optional: true, nullable: false
         field :offset, -> { Integer }, optional: true, nullable: false
-        field :q, -> { String }, optional: true, nullable: false
-        field :role, -> { Schematic::Types::AccountMemberRole }, optional: true, nullable: false
       end
     end
   end

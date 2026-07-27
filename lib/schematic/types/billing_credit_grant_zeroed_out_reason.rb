@@ -8,6 +8,7 @@ module Schematic
       CUSTOMER_ARCHIVED = "customer_archived"
       EXPIRED = "expired"
       INTEGRATION_UNINSTALLED = "integration_uninstalled"
+      LICENSE_RETIRED = "license_retired"
       MANUAL = "manual"
       PLAN_CHANGE = "plan_change"
       PLAN_PERIOD_RESET = "plan_period_reset"

@@ -12,6 +12,7 @@ module Schematic
       field :flags, -> { Internal::Types::Array[Schematic::Types::FlagInPlanResponseData] }, optional: false, nullable: false
       field :icon, -> { String }, optional: false, nullable: false
       field :id, -> { String }, optional: false, nullable: false
+      field :license_id, -> { String }, optional: true, nullable: false
       field :lifecycle_phase, -> { Schematic::Types::FeatureLifecyclePhase }, optional: true, nullable: false
       field :maintainer_account_member_id, -> { String }, optional: true, nullable: false
       field :name, -> { String }, optional: false, nullable: false
@@ -21,6 +22,7 @@ module Schematic
       field :trait, -> { Schematic::Types::EntityTraitDefinitionResponseData }, optional: true, nullable: false
       field :trait_id, -> { String }, optional: true, nullable: false
       field :updated_at, -> { String }, optional: false, nullable: false
+      field :usage_limit_trait_id, -> { String }, optional: true, nullable: false
     end
   end
 end

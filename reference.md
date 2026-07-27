@@ -56,6 +56,7 @@ client.get_credit_ledger
 client.accounts.list_account_members(
   ids: ["ids"],
   q: "q",
+  role: "admin",
   limit: 1000000,
   offset: 1000000
 )
@@ -82,6 +83,14 @@ client.accounts.list_account_members(
 <dd>
 
 **q:** `String` — Search filter
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**role:** `Schematic::Types::AccountMemberRole` — Filter by member role
     
 </dd>
 </dl>
@@ -181,6 +190,7 @@ client.accounts.get_account_member(account_member_id: "account_member_id")
 client.accounts.count_account_members(
   ids: ["ids"],
   q: "q",
+  role: "admin",
   limit: 1000000,
   offset: 1000000
 )
@@ -207,6 +217,14 @@ client.accounts.count_account_members(
 <dd>
 
 **q:** `String` — Search filter
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**role:** `Schematic::Types::AccountMemberRole` — Filter by member role
     
 </dd>
 </dl>
@@ -18497,6 +18515,227 @@ client.integrationsapi.uninstall_integration(integration_id: "integration_id")
 </dl>
 </details>
 
+## licenses
+<details><summary><code>client.licenses.<a href="/lib/schematic/licenses/client.rb">list_licenses</a>() -> Schematic::Licenses::Types::ListLicensesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.licenses.list_licenses(
+  feature_ids: ["feature_ids"],
+  ids: ["ids"],
+  name: "name",
+  limit: 1000000,
+  offset: 1000000
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**feature_ids:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ids:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Integer` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `Integer` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Licenses::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.licenses.<a href="/lib/schematic/licenses/client.rb">get_single_license</a>(license_id) -> Schematic::Licenses::Types::GetSingleLicenseResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.licenses.get_single_license(license_id: "license_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**license_id:** `String` — license_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Licenses::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.licenses.<a href="/lib/schematic/licenses/client.rb">count_licenses</a>() -> Schematic::Licenses::Types::CountLicensesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.licenses.count_licenses(
+  feature_ids: ["feature_ids"],
+  ids: ["ids"],
+  name: "name",
+  limit: 1000000,
+  offset: 1000000
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**feature_ids:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ids:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Integer` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `Integer` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Licenses::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## plangroups
 <details><summary><code>client.plangroups.<a href="/lib/schematic/plangroups/client.rb">get_plan_group</a>() -> Schematic::Plangroups::Types::GetPlanGroupResponse</code></summary>
 <dl>
@@ -19830,6 +20069,83 @@ client.planmigrations.count_migrations(
 <dd>
 
 **offset:** `Integer` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Planmigrations::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.planmigrations.<a href="/lib/schematic/planmigrations/client.rb">preview_migration</a>(request) -> Schematic::Planmigrations::Types::PreviewMigrationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.planmigrations.preview_migration(
+  company_ids: ["company_ids"],
+  plan_id: "plan_id",
+  plan_version_id_to: "plan_version_id_to",
+  target_plan_type: "plan"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_ids:** `Internal::Types::Array[String]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_id_to:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**target_plan_type:** `Schematic::Types::PlanType` 
     
 </dd>
 </dl>

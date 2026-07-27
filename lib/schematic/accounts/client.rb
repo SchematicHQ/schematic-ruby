@@ -19,16 +19,18 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String, nil] :ids
       # @option params [String, nil] :q
+      # @option params [Schematic::Types::AccountMemberRole, nil] :role
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
       # @return [Schematic::Accounts::Types::ListAccountMembersResponse]
       def list_account_members(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[ids q limit offset]
+        query_param_names = %i[ids q role limit offset]
         query_params = {}
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["q"] = params[:q] if params.key?(:q)
+        query_params["role"] = params[:role] if params.key?(:role)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
         params.except(*query_param_names)
@@ -95,16 +97,18 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String, nil] :ids
       # @option params [String, nil] :q
+      # @option params [Schematic::Types::AccountMemberRole, nil] :role
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
       # @return [Schematic::Accounts::Types::CountAccountMembersResponse]
       def count_account_members(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[ids q limit offset]
+        query_param_names = %i[ids q role limit offset]
         query_params = {}
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["q"] = params[:q] if params.key?(:q)
+        query_params["role"] = params[:role] if params.key?(:role)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
         params.except(*query_param_names)
