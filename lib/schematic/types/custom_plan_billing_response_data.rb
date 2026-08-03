@@ -12,6 +12,7 @@ module Schematic
       field :paid_at, -> { String }, optional: true, nullable: false
       field :plan_id, -> { String }, optional: false, nullable: false
       field :published_at, -> { String }, optional: true, nullable: false
+      field :send_invoice, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :status, -> { Schematic::Types::CustomPlanBillingStatus }, optional: false, nullable: false
       field :stripe_invoice_url, -> { String }, optional: true, nullable: false
       field :updated_at, -> { String }, optional: false, nullable: false

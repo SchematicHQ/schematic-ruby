@@ -582,6 +582,7 @@ module Schematic
       # @option params [Boolean, nil] :for_trial_expiry_plan
       # @option params [String, nil] :ids
       # @option params [String, nil] :interval
+      # @option params [Integer, nil] :interval_count
       # @option params [Boolean, nil] :is_active
       # @option params [String, nil] :plan_version_id
       # @option params [Integer, nil] :price
@@ -598,13 +599,14 @@ module Schematic
       # @return [Schematic::Billing::Types::ListBillingPricesResponse]
       def list_billing_prices(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[currency for_initial_plan for_trial_expiry_plan ids interval is_active plan_version_id price product_id product_ids provider_type q tiers_mode usage_type with_meter limit offset]
+        query_param_names = %i[currency for_initial_plan for_trial_expiry_plan ids interval interval_count is_active plan_version_id price product_id product_ids provider_type q tiers_mode usage_type with_meter limit offset]
         query_params = {}
         query_params["currency"] = params[:currency] if params.key?(:currency)
         query_params["for_initial_plan"] = params[:for_initial_plan] if params.key?(:for_initial_plan)
         query_params["for_trial_expiry_plan"] = params[:for_trial_expiry_plan] if params.key?(:for_trial_expiry_plan)
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["interval"] = params[:interval] if params.key?(:interval)
+        query_params["interval_count"] = params[:interval_count] if params.key?(:interval_count)
         query_params["is_active"] = params[:is_active] if params.key?(:is_active)
         query_params["plan_version_id"] = params[:plan_version_id] if params.key?(:plan_version_id)
         query_params["price"] = params[:price] if params.key?(:price)
@@ -716,6 +718,7 @@ module Schematic
       # @option params [Boolean, nil] :for_trial_expiry_plan
       # @option params [String, nil] :ids
       # @option params [String, nil] :interval
+      # @option params [Integer, nil] :interval_count
       # @option params [Boolean, nil] :is_active
       # @option params [String, nil] :plan_version_id
       # @option params [Integer, nil] :price
@@ -732,13 +735,14 @@ module Schematic
       # @return [Schematic::Billing::Types::ListBillingProductPricesResponse]
       def list_billing_product_prices(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[currency for_initial_plan for_trial_expiry_plan ids interval is_active plan_version_id price product_id product_ids provider_type q tiers_mode usage_type with_meter limit offset]
+        query_param_names = %i[currency for_initial_plan for_trial_expiry_plan ids interval interval_count is_active plan_version_id price product_id product_ids provider_type q tiers_mode usage_type with_meter limit offset]
         query_params = {}
         query_params["currency"] = params[:currency] if params.key?(:currency)
         query_params["for_initial_plan"] = params[:for_initial_plan] if params.key?(:for_initial_plan)
         query_params["for_trial_expiry_plan"] = params[:for_trial_expiry_plan] if params.key?(:for_trial_expiry_plan)
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["interval"] = params[:interval] if params.key?(:interval)
+        query_params["interval_count"] = params[:interval_count] if params.key?(:interval_count)
         query_params["is_active"] = params[:is_active] if params.key?(:is_active)
         query_params["plan_version_id"] = params[:plan_version_id] if params.key?(:plan_version_id)
         query_params["price"] = params[:price] if params.key?(:price)

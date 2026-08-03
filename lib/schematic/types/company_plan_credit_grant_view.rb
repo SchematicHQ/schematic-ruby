@@ -28,6 +28,7 @@ module Schematic
       field :expiry_unit, -> { Schematic::Types::BillingCreditExpiryUnit }, optional: true, nullable: false
       field :expiry_unit_count, -> { Integer }, optional: true, nullable: false
       field :id, -> { String }, optional: false, nullable: false
+      field :license_id, -> { String }, optional: true, nullable: false
       field :plan, -> { Schematic::Types::GenericPreviewObject }, optional: true, nullable: false
       field :plan_id, -> { String }, optional: false, nullable: false
       field :plan_version_id, -> { String }, optional: true, nullable: false
@@ -36,6 +37,7 @@ module Schematic
       field :reset_start, -> { Schematic::Types::BillingPlanCreditGrantResetStart }, optional: true, nullable: false
       field :reset_type, -> { Schematic::Types::BillingPlanCreditGrantResetType }, optional: false, nullable: false
       field :rollover_percentage, -> { Integer }, optional: false, nullable: false
+      field :scaling, -> { Schematic::Types::PlanCreditGrantScaling }, optional: false, nullable: false
       field :singular_name, -> { String }, optional: true, nullable: false
       field :updated_at, -> { String }, optional: false, nullable: false
     end

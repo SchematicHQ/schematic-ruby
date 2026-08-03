@@ -8,6 +8,7 @@ module Schematic
         field :address, -> { Schematic::Types::CustomerBillingAddress }, optional: true, nullable: false
         field :email, -> { String }, optional: true, nullable: false
         field :phone, -> { String }, optional: true, nullable: false
+        field :tax_id, -> { Schematic::Types::TaxIdInput }, optional: true, nullable: false
         field :values, -> { Internal::Types::Array[Schematic::Types::CheckoutFieldValue] }, optional: false, nullable: false
       end
     end
