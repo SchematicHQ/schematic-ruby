@@ -10,6 +10,7 @@ module Schematic
         field :for_trial_expiry_plan, -> { Internal::Types::Boolean }, optional: true, nullable: false
         field :ids, -> { Internal::Types::Array[String] }, optional: true, nullable: false
         field :interval, -> { String }, optional: true, nullable: false
+        field :interval_count, -> { Integer }, optional: true, nullable: false
         field :is_active, -> { Internal::Types::Boolean }, optional: true, nullable: false
         field :limit, -> { Integer }, optional: true, nullable: false
         field :offset, -> { Integer }, optional: true, nullable: false

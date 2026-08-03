@@ -11,6 +11,7 @@ module Schematic
       field :integration, -> { Schematic::Types::ApiKeyIntegrationResponseData }, optional: true, nullable: false
       field :last_used_at, -> { String }, optional: true, nullable: false
       field :name, -> { String }, optional: false, nullable: false
+      field :rate_limit_percent, -> { Integer }, optional: true, nullable: false
       field :readonly, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :scopes, -> { Internal::Types::Array[Schematic::Types::ApiKeyScope] }, optional: false, nullable: false
       field :updated_at, -> { String }, optional: false, nullable: false

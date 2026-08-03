@@ -8,6 +8,7 @@ module Schematic
       field :custom_fields, -> { Internal::Types::Array[Schematic::Types::CheckoutFieldWithValue] }, optional: false, nullable: false
       field :email, -> { String }, optional: true, nullable: false
       field :phone, -> { String }, optional: true, nullable: false
+      field :tax_ids, -> { Internal::Types::Array[Schematic::Types::CompanyTaxIdView] }, optional: false, nullable: false
     end
   end
 end

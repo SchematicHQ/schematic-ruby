@@ -10,7 +10,6 @@ module Schematic
       field :custom_plan_price_text, -> { String }, optional: true, nullable: false
       field :custom_plans_visible, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :description, -> { String }, optional: true, nullable: false
-      field :environment_id, -> { String }, optional: false, nullable: false
       field :id, -> { String }, optional: false, nullable: false
       field :is_default, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :name, -> { String }, optional: false, nullable: false

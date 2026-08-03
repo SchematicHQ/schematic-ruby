@@ -19,10 +19,12 @@ module Schematic
       field :expiry_type, -> { Schematic::Types::BillingCreditExpiryType }, optional: true, nullable: false
       field :expiry_unit, -> { Schematic::Types::BillingCreditExpiryUnit }, optional: true, nullable: false
       field :expiry_unit_count, -> { Integer }, optional: true, nullable: false
+      field :license_id, -> { String }, optional: true, nullable: false
       field :reset_cadence, -> { Schematic::Types::BillingPlanCreditGrantResetCadence }, optional: false, nullable: false
       field :reset_start, -> { Schematic::Types::BillingPlanCreditGrantResetStart }, optional: false, nullable: false
       field :reset_type, -> { Schematic::Types::BillingPlanCreditGrantResetType }, optional: true, nullable: false
       field :rollover_percentage, -> { Integer }, optional: true, nullable: false
+      field :scaling, -> { Schematic::Types::PlanCreditGrantScaling }, optional: true, nullable: false
     end
   end
 end

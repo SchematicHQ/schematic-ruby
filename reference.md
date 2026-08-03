@@ -389,6 +389,14 @@ client.accounts.create_api_key(name: "name")
 <dl>
 <dd>
 
+**rate_limit_percent:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **readonly:** `Internal::Types::Boolean` 
     
 </dd>
@@ -502,6 +510,14 @@ client.accounts.update_api_key(api_key_id: "api_key_id")
 <dd>
 
 **name:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**rate_limit_percent:** `Integer` 
     
 </dd>
 </dl>
@@ -2596,6 +2612,7 @@ client.billing.list_billing_prices(
   for_trial_expiry_plan: true,
   ids: ["ids"],
   interval: "interval",
+  interval_count: 1000000,
   is_active: true,
   plan_version_id: "plan_version_id",
   price: 1000000,
@@ -2656,6 +2673,14 @@ client.billing.list_billing_prices(
 <dd>
 
 **interval:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**interval_count:** `Integer` — Filter for prices billed every N intervals; combine with interval (e.g. interval=month, interval_count=3 for quarterly)
     
 </dd>
 </dl>
@@ -3027,6 +3052,7 @@ client.billing.list_billing_product_prices(
   for_trial_expiry_plan: true,
   ids: ["ids"],
   interval: "interval",
+  interval_count: 1000000,
   is_active: true,
   plan_version_id: "plan_version_id",
   price: 1000000,
@@ -3087,6 +3113,14 @@ client.billing.list_billing_product_prices(
 <dd>
 
 **interval:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**interval_count:** `Integer` — Filter for prices billed every N intervals; combine with interval (e.g. interval=month, interval_count=3 for quarterly)
     
 </dd>
 </dl>
@@ -6514,10 +6548,7 @@ client.catalogs.list_catalogs(
 <dd>
 
 ```ruby
-client.catalogs.create_catalog(
-  is_default: true,
-  name: "name"
-)
+client.catalogs.create_catalog(name: "name")
 ```
 </dd>
 </dl>
@@ -6533,14 +6564,6 @@ client.catalogs.create_catalog(
 <dd>
 
 **description:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**is_default:** `Internal::Types::Boolean` 
     
 </dd>
 </dl>
@@ -7600,6 +7623,14 @@ client.checkout.update_company_billing_details(
 <dd>
 
 **phone:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tax_id:** `Schematic::Types::TaxIdInput` 
     
 </dd>
 </dl>
@@ -13394,6 +13425,160 @@ client.entitlements.get_feature_usage_by_company(keys: {
 </dl>
 </details>
 
+<details><summary><code>client.entitlements.<a href="/lib/schematic/entitlements/client.rb">get_user_usage_by_company</a>() -> Schematic::Entitlements::Types::GetUserUsageByCompanyResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.entitlements.get_user_usage_by_company(
+  company_id: "company_id",
+  end_time: "2024-01-15T09:30:00Z",
+  feature_id: "feature_id",
+  start_time: "2024-01-15T09:30:00Z"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `String` — Company to break usage down for
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_time:** `String` — End of the usage window (exclusive); defaults to now
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**feature_id:** `String` — Restrict to a single event-based feature
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_time:** `String` — Start of the usage window; defaults to 30 days before the end
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Entitlements::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entitlements.<a href="/lib/schematic/entitlements/client.rb">get_user_usage_detail</a>() -> Schematic::Entitlements::Types::GetUserUsageDetailResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.entitlements.get_user_usage_detail(
+  company_id: "company_id",
+  end_time: "2024-01-15T09:30:00Z",
+  start_time: "2024-01-15T09:30:00Z",
+  user_id: "user_id"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `String` — Company the user belongs to
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_time:** `String` — End of the usage window (exclusive); defaults to now
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_time:** `String` — Start of the usage window; defaults to 30 days before the end
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**user_id:** `String` — User to break usage down for
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Entitlements::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## plans
 <details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">update_company_plans</a>(company_plan_id, request) -> Schematic::Plans::Types::UpdateCompanyPlansResponse</code></summary>
 <dl>
@@ -13672,6 +13857,14 @@ client.plans.retry_custom_plan_billing(
 <dd>
 
 **days_until_due:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**send_invoice:** `Internal::Types::Boolean` — Whether Stripe emails the invoice when it is finalized. Defaults to true.
     
 </dd>
 </dl>
@@ -14863,7 +15056,23 @@ client.plans.publish_plan_version(
 <dl>
 <dd>
 
+**address:** `Schematic::Types::CustomerBillingAddress` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **coupon_external_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**custom_field_values:** `Internal::Types::Array[Schematic::Types::CheckoutFieldValue]` 
     
 </dd>
 </dl>
@@ -14896,6 +15105,30 @@ client.plans.publish_plan_version(
 <dd>
 
 **migration_strategy:** `Schematic::Types::PlanVersionMigrationStrategy` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phone:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**send_invoice:** `Internal::Types::Boolean` — Whether Stripe emails the invoice when it is finalized. Defaults to true.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tax_id:** `Schematic::Types::TaxIdInput` 
     
 </dd>
 </dl>

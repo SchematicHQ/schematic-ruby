@@ -27,7 +27,7 @@ module Schematic
       field :id, -> { String }, optional: false, nullable: false
       field :included_credit_grants, -> { Internal::Types::Array[Schematic::Types::BillingPlanCreditGrantResponseData] }, optional: true, nullable: false
       field :is_default, -> { Internal::Types::Boolean }, optional: false, nullable: false
-      field :is_free, -> { Internal::Types::Boolean }, optional: false, nullable: false
+      field :is_free, -> { Internal::Types::Boolean }, optional: true, nullable: false
       field :is_trialable, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :monthly_price, -> { Schematic::Types::BillingPriceResponseData }, optional: true, nullable: false
       field :name, -> { String }, optional: false, nullable: false

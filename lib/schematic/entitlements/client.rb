@@ -931,6 +931,94 @@ module Schematic
           raise error_class.new(response.body, code: code)
         end
       end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :company_id
+      # @option params [String, nil] :end_time
+      # @option params [String, nil] :feature_id
+      # @option params [String, nil] :start_time
+      #
+      # @return [Schematic::Entitlements::Types::GetUserUsageByCompanyResponse]
+      def get_user_usage_by_company(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        query_param_names = %i[company_id end_time feature_id start_time]
+        query_params = {}
+        query_params["company_id"] = params[:company_id] if params.key?(:company_id)
+        query_params["end_time"] = params[:end_time] if params.key?(:end_time)
+        query_params["feature_id"] = params[:feature_id] if params.key?(:feature_id)
+        query_params["start_time"] = params[:start_time] if params.key?(:start_time)
+        params.except(*query_param_names)
+
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "GET",
+          path: "user-usage-by-company",
+          query: query_params,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          Schematic::Entitlements::Types::GetUserUsageByCompanyResponse.load(response.body)
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          raise error_class.new(response.body, code: code)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :company_id
+      # @option params [String, nil] :end_time
+      # @option params [String, nil] :start_time
+      # @option params [String] :user_id
+      #
+      # @return [Schematic::Entitlements::Types::GetUserUsageDetailResponse]
+      def get_user_usage_detail(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        query_param_names = %i[company_id end_time start_time user_id]
+        query_params = {}
+        query_params["company_id"] = params[:company_id] if params.key?(:company_id)
+        query_params["end_time"] = params[:end_time] if params.key?(:end_time)
+        query_params["start_time"] = params[:start_time] if params.key?(:start_time)
+        query_params["user_id"] = params[:user_id] if params.key?(:user_id)
+        params.except(*query_param_names)
+
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "GET",
+          path: "user-usage-detail",
+          query: query_params,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          Schematic::Entitlements::Types::GetUserUsageDetailResponse.load(response.body)
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          raise error_class.new(response.body, code: code)
+        end
+      end
     end
   end
 end

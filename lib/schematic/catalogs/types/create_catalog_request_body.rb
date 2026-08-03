@@ -5,7 +5,6 @@ module Schematic
     module Types
       class CreateCatalogRequestBody < Internal::Types::Model
         field :description, -> { String }, optional: true, nullable: false
-        field :is_default, -> { Internal::Types::Boolean }, optional: false, nullable: false
         field :name, -> { String }, optional: false, nullable: false
       end
     end
