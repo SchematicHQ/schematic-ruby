@@ -21,7 +21,7 @@ module Schematic
       field :price, -> { Schematic::Types::BillingPriceView }, optional: true, nullable: false
       field :price_per_unit, -> { Integer }, optional: true, nullable: false
       field :price_per_unit_decimal, -> { String }, optional: true, nullable: false
-      field :product, -> { Schematic::Types::BillingProductResponseData }, optional: true, nullable: false
+      field :product, -> { Schematic::Types::BillingProductRecordResponseData }, optional: true, nullable: false
       field :singular_name, -> { String }, optional: true, nullable: false
       field :updated_at, -> { String }, optional: false, nullable: false
     end
