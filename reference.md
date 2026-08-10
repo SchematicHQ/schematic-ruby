@@ -9181,6 +9181,54 @@ client.companies.list_entity_key_definitions(
 </dl>
 </details>
 
+<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">delete_entity_key_definition</a>(entity_key_definition_id) -> Schematic::Companies::Types::DeleteEntityKeyDefinitionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.companies.delete_entity_key_definition(entity_key_definition_id: "entity_key_definition_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_key_definition_id:** `String` — entity_key_definition_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Companies::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">count_entity_key_definitions</a>() -> Schematic::Companies::Types::CountEntityKeyDefinitionsResponse</code></summary>
 <dl>
 <dd>
@@ -9232,6 +9280,83 @@ client.companies.count_entity_key_definitions(
 <dd>
 
 **q:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Integer` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `Integer` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Companies::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">count_entity_keys</a>() -> Schematic::Companies::Types::CountEntityKeysResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.companies.count_entity_keys(
+  definition_id: "definition_id",
+  entity_type: "company",
+  limit: 1000000,
+  offset: 1000000
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**definition_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entity_type:** `Schematic::Types::EntityType` 
     
 </dd>
 </dl>

@@ -5,7 +5,7 @@ module Schematic
     class FeatureView < Internal::Types::Model
       field :account_id, -> { String }, optional: false, nullable: false
       field :billing_linked_resource, -> { Schematic::Types::BillingLinkedResourceResponseData }, optional: true, nullable: false
-      field :billing_product, -> { Schematic::Types::BillingProductResponseData }, optional: true, nullable: false
+      field :billing_product, -> { Schematic::Types::BillingProductRecordResponseData }, optional: true, nullable: false
       field :created_at, -> { String }, optional: false, nullable: false
       field :description, -> { String }, optional: false, nullable: false
       field :event_subtype, -> { String }, optional: true, nullable: false

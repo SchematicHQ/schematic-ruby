@@ -9,6 +9,7 @@ module Schematic
 
       member -> { Schematic::Types::AuditLogExportMetadata }, key: "AUDIT_LOG"
       member -> { Schematic::Types::CompanyFeatureUsageExportMetadata }, key: "COMPANY_FEATURE_USAGE"
+      member -> { Schematic::Types::EventExportMetadata }, key: "EVENT"
     end
   end
 end
