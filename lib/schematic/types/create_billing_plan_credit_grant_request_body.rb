@@ -15,6 +15,7 @@ module Schematic
       field :auto_topup_threshold_credits, -> { Integer }, optional: true, nullable: false
       field :auto_topup_threshold_percent, -> { Integer }, optional: true, nullable: false
       field :can_buy_bundles, -> { Internal::Types::Boolean }, optional: true, nullable: false
+      field :company_credit_amount, -> { Integer }, optional: true, nullable: false
       field :credit_amount, -> { Integer }, optional: false, nullable: false
       field :credit_id, -> { String }, optional: false, nullable: false
       field :expiry_type, -> { Schematic::Types::BillingCreditExpiryType }, optional: true, nullable: false

@@ -17,19 +17,19 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
-      # @option params [String] :company_plan_id
+      # @option params [String] :company_id
       #
       # @return [Schematic::Plans::Types::UpdateCompanyPlansResponse]
       def update_company_plans(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         request_data = Schematic::Plans::Types::UpdateCompanyPlansRequestBody.new(params).to_h
-        non_body_param_names = ["company_plan_id"]
+        non_body_param_names = ["company_id"]
         body = request_data.except(*non_body_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
           method: "PUT",
-          path: "company-plans/#{URI.encode_uri_component(params[:company_plan_id].to_s)}",
+          path: "company-plans/#{URI.encode_uri_component(params[:company_id].to_s)}",
           body: body,
           request_options: request_options
         )
@@ -56,6 +56,7 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String, nil] :company_id
       # @option params [String, nil] :plan_id
+      # @option params [Schematic::Types::PlanBillingSource, nil] :plan_billing_source
       # @option params [Schematic::Types::CustomPlanBillingStatus, nil] :status
       # @option params [Schematic::Types::CustomPlanBillingStatus, nil] :statuses
       # @option params [Integer, nil] :limit
@@ -64,10 +65,11 @@ module Schematic
       # @return [Schematic::Plans::Types::ListCustomPlanBillingsResponse]
       def list_custom_plan_billings(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[company_id plan_id status statuses limit offset]
+        query_param_names = %i[company_id plan_id plan_billing_source status statuses limit offset]
         query_params = {}
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["plan_id"] = params[:plan_id] if params.key?(:plan_id)
+        query_params["plan_billing_source"] = params[:plan_billing_source] if params.key?(:plan_billing_source)
         query_params["status"] = params[:status] if params.key?(:status)
         query_params["statuses"] = params[:statuses] if params.key?(:statuses)
         query_params["limit"] = params[:limit] if params.key?(:limit)
@@ -673,7 +675,7 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
-      # @option params [String] :plan_id
+      # @option params [String] :plan_version_id
       # @option params [Boolean, nil] :promote_archived_version
       #
       # @return [Schematic::Plans::Types::DeletePlanVersionResponse]
@@ -687,7 +689,7 @@ module Schematic
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
           method: "DELETE",
-          path: "plans/version/#{URI.encode_uri_component(params[:plan_id].to_s)}",
+          path: "plans/version/#{URI.encode_uri_component(params[:plan_version_id].to_s)}",
           query: query_params,
           request_options: request_options
         )
@@ -712,19 +714,19 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
-      # @option params [String] :plan_id
+      # @option params [String] :plan_version_id
       #
       # @return [Schematic::Plans::Types::PublishPlanVersionResponse]
       def publish_plan_version(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         request_data = Schematic::Plans::Types::PublishPlanVersionRequestBody.new(params).to_h
-        non_body_param_names = ["plan_id"]
+        non_body_param_names = ["plan_version_id"]
         body = request_data.except(*non_body_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
           method: "PUT",
-          path: "plans/version/#{URI.encode_uri_component(params[:plan_id].to_s)}/publish",
+          path: "plans/version/#{URI.encode_uri_component(params[:plan_version_id].to_s)}/publish",
           body: body,
           request_options: request_options
         )

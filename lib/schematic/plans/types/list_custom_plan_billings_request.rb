@@ -6,6 +6,7 @@ module Schematic
       class ListCustomPlanBillingsRequest < Internal::Types::Model
         field :company_id, -> { String }, optional: true, nullable: false
         field :plan_id, -> { String }, optional: true, nullable: false
+        field :plan_billing_source, -> { Schematic::Types::PlanBillingSource }, optional: true, nullable: false
         field :status, -> { Schematic::Types::CustomPlanBillingStatus }, optional: true, nullable: false
         field :statuses, -> { Schematic::Types::CustomPlanBillingStatus }, optional: true, nullable: false
         field :limit, -> { Integer }, optional: true, nullable: false

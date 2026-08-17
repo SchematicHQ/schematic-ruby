@@ -4,6 +4,7 @@ module Schematic
   module Types
     class BillingCreditBundleView < Internal::Types::Model
       field :bundle_type, -> { String }, optional: false, nullable: false
+      field :compatible_plan_ids, -> { Internal::Types::Array[String] }, optional: false, nullable: false
       field :created_at, -> { String }, optional: false, nullable: false
       field :credit_description, -> { String }, optional: true, nullable: false
       field :credit_icon, -> { String }, optional: true, nullable: false

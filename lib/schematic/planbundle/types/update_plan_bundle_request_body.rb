@@ -4,7 +4,7 @@ module Schematic
   module Planbundle
     module Types
       class UpdatePlanBundleRequestBody < Internal::Types::Model
-        field :plan_bundle_id, -> { String }, optional: false, nullable: false
+        field :plan_id, -> { String }, optional: false, nullable: false
         field :billing_product, -> { Schematic::Types::UpsertBillingProductRequestBody }, optional: true, nullable: false
         field :credit_grants, -> { Internal::Types::Array[Schematic::Types::PlanBundleCreditGrantRequestBody] }, optional: true, nullable: false
         field :entitlements, -> { Internal::Types::Array[Schematic::Types::PlanBundleEntitlementRequestBody] }, optional: false, nullable: false

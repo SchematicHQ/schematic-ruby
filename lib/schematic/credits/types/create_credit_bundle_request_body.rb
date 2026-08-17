@@ -6,6 +6,7 @@ module Schematic
       class CreateCreditBundleRequestBody < Internal::Types::Model
         field :bundle_name, -> { String }, optional: false, nullable: false
         field :bundle_type, -> { String }, optional: true, nullable: false
+        field :compatible_plan_ids, -> { Internal::Types::Array[String] }, optional: true, nullable: false
         field :credit_id, -> { String }, optional: false, nullable: false
         field :currency, -> { String }, optional: false, nullable: false
         field :currency_prices, -> { Internal::Types::Array[Schematic::Types::CreditBundleCurrencyPriceRequestBody] }, optional: true, nullable: false

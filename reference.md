@@ -1205,6 +1205,118 @@ client.accounts.delete_environment(environment_id: "environment_id")
 </dl>
 </details>
 
+<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">get_onboarding_state</a>() -> Schematic::Accounts::Types::GetOnboardingStateResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.accounts.get_onboarding_state
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Accounts::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">update_onboarding_state</a>(request) -> Schematic::Accounts::Types::UpdateOnboardingStateResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.accounts.update_onboarding_state
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**path:** `Schematic::Types::OnboardingPath` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pricing_page_url:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**track:** `Schematic::Types::OnboardingTrack` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**website_url:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Accounts::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">quickstart</a>() -> Schematic::Accounts::Types::QuickstartResponse</code></summary>
 <dl>
 <dd>
@@ -4575,6 +4687,14 @@ client.credits.create_credit_bundle(
 <dl>
 <dd>
 
+**compatible_plan_ids:** `Internal::Types::Array[String]` — Plans whose companies may purchase this bundle. Omitted or empty means the bundle is purchasable on every plan.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **credit_id:** `String` 
     
 </dd>
@@ -4756,6 +4876,14 @@ client.credits.update_credit_bundle_details(
 <dd>
 
 **bundle_name:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**compatible_plan_ids:** `Internal::Types::Array[String]` — Plans whose companies may purchase this bundle. Omitted leaves compatibility unchanged; empty resets the bundle to purchasable on every plan.
     
 </dd>
 </dl>
@@ -9687,6 +9815,102 @@ client.companies.update_entity_trait_definition(
 </dl>
 </details>
 
+<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">delete_entity_trait_definition</a>(entity_trait_definition_id) -> Schematic::Companies::Types::DeleteEntityTraitDefinitionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.companies.delete_entity_trait_definition(entity_trait_definition_id: "entity_trait_definition_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_trait_definition_id:** `String` — entity_trait_definition_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Companies::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">get_entity_trait_definition_usage</a>(entity_trait_definition_id) -> Schematic::Companies::Types::GetEntityTraitDefinitionUsageResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.companies.get_entity_trait_definition_usage(entity_trait_definition_id: "entity_trait_definition_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_trait_definition_id:** `String` — entity_trait_definition_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Companies::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">count_entity_trait_definitions</a>() -> Schematic::Companies::Types::CountEntityTraitDefinitionsResponse</code></summary>
 <dl>
 <dd>
@@ -9868,6 +10092,83 @@ client.companies.get_entity_trait_values(
 </dl>
 </details>
 
+<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">count_entity_traits</a>() -> Schematic::Companies::Types::CountEntityTraitsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.companies.count_entity_traits(
+  definition_id: "definition_id",
+  entity_type: "company",
+  limit: 1000000,
+  offset: 1000000
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**definition_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entity_type:** `Schematic::Types::EntityType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Integer` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `Integer` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Companies::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">list_plan_changes</a>() -> Schematic::Companies::Types::ListPlanChangesResponse</code></summary>
 <dl>
 <dd>
@@ -9886,7 +10187,6 @@ client.companies.list_plan_changes(
   base_plan_action: "fallback",
   company_id: "company_id",
   company_ids: ["company_ids"],
-  plan_ids: ["plan_ids"],
   limit: 1000000,
   offset: 1000000
 )
@@ -9929,14 +10229,6 @@ client.companies.list_plan_changes(
 <dd>
 
 **company_ids:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**plan_ids:** `String` 
     
 </dd>
 </dl>
@@ -13705,7 +13997,7 @@ client.entitlements.get_user_usage_detail(
 </details>
 
 ## plans
-<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">update_company_plans</a>(company_plan_id, request) -> Schematic::Plans::Types::UpdateCompanyPlansResponse</code></summary>
+<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">update_company_plans</a>(company_id, request) -> Schematic::Plans::Types::UpdateCompanyPlansResponse</code></summary>
 <dl>
 <dd>
 
@@ -13719,7 +14011,7 @@ client.entitlements.get_user_usage_detail(
 
 ```ruby
 client.plans.update_company_plans(
-  company_plan_id: "company_plan_id",
+  company_id: "company_id",
   add_on_ids: ["add_on_ids"]
 )
 ```
@@ -13736,7 +14028,7 @@ client.plans.update_company_plans(
 <dl>
 <dd>
 
-**company_plan_id:** `String` — company_plan_id
+**company_id:** `String` — company_id
     
 </dd>
 </dl>
@@ -13788,6 +14080,7 @@ client.plans.update_company_plans(
 client.plans.list_custom_plan_billings(
   company_id: "company_id",
   plan_id: "plan_id",
+  plan_billing_source: "custom_plan",
   status: "active",
   statuses: ["active"],
   limit: 1000000,
@@ -13816,6 +14109,14 @@ client.plans.list_custom_plan_billings(
 <dd>
 
 **plan_id:** `String` — Filter by plan ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_billing_source:** `Schematic::Types::PlanBillingSource` — Filter by the flow that created the billing record. Defaults to custom_plan.
     
 </dd>
 </dl>
@@ -15074,7 +15375,7 @@ client.plans.list_plan_issues(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">delete_plan_version</a>(plan_id) -> Schematic::Plans::Types::DeletePlanVersionResponse</code></summary>
+<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">delete_plan_version</a>(plan_version_id) -> Schematic::Plans::Types::DeletePlanVersionResponse</code></summary>
 <dl>
 <dd>
 
@@ -15088,7 +15389,7 @@ client.plans.list_plan_issues(
 
 ```ruby
 client.plans.delete_plan_version(
-  plan_id: "plan_id",
+  plan_version_id: "plan_version_id",
   promote_archived_version: true
 )
 ```
@@ -15105,7 +15406,7 @@ client.plans.delete_plan_version(
 <dl>
 <dd>
 
-**plan_id:** `String` — plan_id
+**plan_version_id:** `String` — plan_version_id
     
 </dd>
 </dl>
@@ -15133,7 +15434,7 @@ client.plans.delete_plan_version(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">publish_plan_version</a>(plan_id, request) -> Schematic::Plans::Types::PublishPlanVersionResponse</code></summary>
+<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">publish_plan_version</a>(plan_version_id, request) -> Schematic::Plans::Types::PublishPlanVersionResponse</code></summary>
 <dl>
 <dd>
 
@@ -15147,7 +15448,7 @@ client.plans.delete_plan_version(
 
 ```ruby
 client.plans.publish_plan_version(
-  plan_id: "plan_id",
+  plan_version_id: "plan_version_id",
   excluded_company_ids: ["excluded_company_ids"],
   migration_strategy: "immediate"
 )
@@ -15165,7 +15466,7 @@ client.plans.publish_plan_version(
 <dl>
 <dd>
 
-**plan_id:** `String` — plan_id
+**plan_version_id:** `String` — plan_version_id
     
 </dd>
 </dl>
@@ -15238,6 +15539,14 @@ client.plans.publish_plan_version(
 <dd>
 
 **phone:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**proration_behavior:** `Schematic::Types::MigrationProrationBehavior` 
     
 </dd>
 </dl>
@@ -15917,7 +16226,7 @@ client.planbundle.create_plan_bundle(entitlements: [{
 </dl>
 </details>
 
-<details><summary><code>client.planbundle.<a href="/lib/schematic/planbundle/client.rb">update_plan_bundle</a>(plan_bundle_id, request) -> Schematic::Planbundle::Types::UpdatePlanBundleResponse</code></summary>
+<details><summary><code>client.planbundle.<a href="/lib/schematic/planbundle/client.rb">update_plan_bundle</a>(plan_id, request) -> Schematic::Planbundle::Types::UpdatePlanBundleResponse</code></summary>
 <dl>
 <dd>
 
@@ -15931,7 +16240,7 @@ client.planbundle.create_plan_bundle(entitlements: [{
 
 ```ruby
 client.planbundle.update_plan_bundle(
-  plan_bundle_id: "plan_bundle_id",
+  plan_id: "plan_id",
   entitlements: [{
     action: "create"
   }]
@@ -15950,7 +16259,7 @@ client.planbundle.update_plan_bundle(
 <dl>
 <dd>
 
-**plan_bundle_id:** `String` — plan_bundle_id
+**plan_id:** `String` — plan_id
     
 </dd>
 </dl>
@@ -19158,9 +19467,11 @@ client.plangroups.get_plan_group(include_company_counts: true)
 ```ruby
 client.plangroups.create_plan_group(
   add_on_ids: ["add_on_ids"],
+  checkout_bundle_purchase_behavior: "individual",
   checkout_collect_address: true,
   checkout_collect_email: true,
   checkout_collect_phone: true,
+  checkout_collect_tax_id: true,
   enable_tax_collection: true,
   opt_in_enabled: true,
   ordered_add_ons: [{
@@ -19213,6 +19524,14 @@ client.plangroups.create_plan_group(
 <dl>
 <dd>
 
+**checkout_bundle_purchase_behavior:** `Schematic::Types::CheckoutBundlePurchaseBehavior` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **checkout_collect_address:** `Internal::Types::Boolean` 
     
 </dd>
@@ -19230,6 +19549,14 @@ client.plangroups.create_plan_group(
 <dd>
 
 **checkout_collect_phone:** `Internal::Types::Boolean` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**checkout_collect_tax_id:** `Internal::Types::Boolean` 
     
 </dd>
 </dl>
@@ -19513,9 +19840,11 @@ client.plangroups.create_plan_group(
 client.plangroups.update_plan_group(
   plan_group_id: "plan_group_id",
   add_on_ids: ["add_on_ids"],
+  checkout_bundle_purchase_behavior: "individual",
   checkout_collect_address: true,
   checkout_collect_email: true,
   checkout_collect_phone: true,
+  checkout_collect_tax_id: true,
   enable_tax_collection: true,
   opt_in_enabled: true,
   ordered_add_ons: [{
@@ -19576,6 +19905,14 @@ client.plangroups.update_plan_group(
 <dl>
 <dd>
 
+**checkout_bundle_purchase_behavior:** `Schematic::Types::CheckoutBundlePurchaseBehavior` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **checkout_collect_address:** `Internal::Types::Boolean` 
     
 </dd>
@@ -19593,6 +19930,14 @@ client.plangroups.update_plan_group(
 <dd>
 
 **checkout_collect_phone:** `Internal::Types::Boolean` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**checkout_collect_tax_id:** `Internal::Types::Boolean` 
     
 </dd>
 </dl>
@@ -20172,11 +20517,8 @@ client.planmigrations.list_migrations(
 
 ```ruby
 client.planmigrations.create_migration(
-  company_ids: ["company_ids"],
-  excluded_company_ids: ["excluded_company_ids"],
   plan_id: "plan_id",
   plan_version_id_to: "plan_version_id_to",
-  plan_version_ids_from: ["plan_version_ids_from"],
   strategy: "immediate",
   target_plan_type: "plan"
 )
@@ -20227,6 +20569,14 @@ client.planmigrations.create_migration(
 <dd>
 
 **plan_version_ids_from:** `Internal::Types::Array[String]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**proration_behavior:** `Schematic::Types::MigrationProrationBehavior` 
     
 </dd>
 </dl>
@@ -20460,7 +20810,6 @@ client.planmigrations.count_migrations(
 
 ```ruby
 client.planmigrations.preview_migration(
-  company_ids: ["company_ids"],
   plan_id: "plan_id",
   plan_version_id_to: "plan_version_id_to",
   target_plan_type: "plan"
@@ -20496,6 +20845,14 @@ client.planmigrations.preview_migration(
 <dd>
 
 **plan_version_id_to:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_ids_from:** `Internal::Types::Array[String]` 
     
 </dd>
 </dl>

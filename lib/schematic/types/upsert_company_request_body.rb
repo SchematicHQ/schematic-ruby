@@ -10,6 +10,7 @@ module Schematic
       field :last_seen_at, -> { String }, optional: true, nullable: false
       field :name, -> { String }, optional: true, nullable: false
       field :prevent_key_remap, -> { Internal::Types::Boolean }, optional: true, nullable: false
+      field :remove_keys, -> { Internal::Types::Array[String] }, optional: true, nullable: false
       field :traits, -> { Internal::Types::Hash[String, Object] }, optional: true, nullable: false
       field :update_only, -> { Internal::Types::Boolean }, optional: true, nullable: false
     end

@@ -6,6 +6,7 @@ module Schematic
       field :billing_credit_bundle_id, -> { String }, optional: true, nullable: false
       field :billing_credit_id, -> { String }, optional: false, nullable: false
       field :company_id, -> { String }, optional: false, nullable: false
+      field :company_license_id, -> { String }, optional: true, nullable: false
       field :company_name, -> { String }, optional: false, nullable: false
       field :created_at, -> { String }, optional: false, nullable: false
       field :credit_description, -> { String }, optional: false, nullable: false
@@ -19,6 +20,7 @@ module Schematic
       field :expiry_unit_count, -> { Integer }, optional: true, nullable: false
       field :grant_reason, -> { Schematic::Types::BillingCreditGrantReason }, optional: false, nullable: false
       field :id, -> { String }, optional: false, nullable: false
+      field :license_name, -> { String }, optional: true, nullable: false
       field :plan_id, -> { String }, optional: true, nullable: false
       field :plan_name, -> { String }, optional: true, nullable: false
       field :plural_name, -> { String }, optional: true, nullable: false

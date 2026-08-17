@@ -4,6 +4,7 @@ module Schematic
   module Types
     class PreviewSubscriptionFinanceResponseData < Internal::Types::Model
       field :amount_off, -> { Integer }, optional: false, nullable: false
+      field :discount_amount, -> { Integer }, optional: false, nullable: false
       field :discounts, -> { Internal::Types::Array[Schematic::Types::PreviewSubscriptionDiscountResponseData] }, optional: false, nullable: false
       field :due_now, -> { Integer }, optional: false, nullable: false
       field :new_charges, -> { Integer }, optional: false, nullable: false

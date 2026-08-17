@@ -6,6 +6,7 @@ module Schematic
       class UpdateCreditBundleDetailsRequestBody < Internal::Types::Model
         field :bundle_id, -> { String }, optional: false, nullable: false
         field :bundle_name, -> { String }, optional: false, nullable: false
+        field :compatible_plan_ids, -> { Internal::Types::Array[String] }, optional: true, nullable: false
         field :currency_prices, -> { Internal::Types::Array[Schematic::Types::CreditBundleCurrencyPriceRequestBody] }, optional: true, nullable: false
         field :expiry_type, -> { Schematic::Types::BillingCreditExpiryType }, optional: true, nullable: false
         field :expiry_unit, -> { Schematic::Types::BillingCreditExpiryUnit }, optional: true, nullable: false

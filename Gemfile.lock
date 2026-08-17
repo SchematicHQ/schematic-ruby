@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    schematichq (1.4.13)
+    schematichq (1.4.14)
       wasmtime (>= 19.0)
       websocket (>= 1.2)
 

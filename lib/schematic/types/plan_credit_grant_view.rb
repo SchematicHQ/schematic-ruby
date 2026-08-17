@@ -14,6 +14,7 @@ module Schematic
       field :billing_credit_auto_topup_threshold_credits, -> { Integer }, optional: true, nullable: false
       field :billing_credit_auto_topup_threshold_percent, -> { Integer }, optional: true, nullable: false
       field :billing_credit_can_buy_bundles, -> { Internal::Types::Boolean }, optional: false, nullable: false
+      field :company_credit_amount, -> { Integer }, optional: false, nullable: false
       field :created_at, -> { String }, optional: false, nullable: false
       field :credit, -> { Schematic::Types::BillingCreditView }, optional: true, nullable: false
       field :credit_amount, -> { Integer }, optional: false, nullable: false

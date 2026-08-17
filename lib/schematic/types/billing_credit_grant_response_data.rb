@@ -4,6 +4,7 @@ module Schematic
   module Types
     class BillingCreditGrantResponseData < Internal::Types::Model
       field :company_id, -> { String }, optional: false, nullable: false
+      field :company_license_id, -> { String }, optional: true, nullable: false
       field :company_name, -> { String }, optional: false, nullable: false
       field :created_at, -> { String }, optional: false, nullable: false
       field :credit_icon, -> { String }, optional: true, nullable: false
@@ -13,6 +14,7 @@ module Schematic
       field :expires_at, -> { String }, optional: true, nullable: false
       field :grant_reason, -> { Schematic::Types::BillingCreditGrantReason }, optional: false, nullable: false
       field :id, -> { String }, optional: false, nullable: false
+      field :license_name, -> { String }, optional: true, nullable: false
       field :plan_id, -> { String }, optional: true, nullable: false
       field :plan_name, -> { String }, optional: true, nullable: false
       field :price, -> { Schematic::Types::BillingPriceResponseData }, optional: true, nullable: false

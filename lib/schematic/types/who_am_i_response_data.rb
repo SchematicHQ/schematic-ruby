@@ -9,6 +9,7 @@ module Schematic
       field :api_key_id, -> { String }, optional: true, nullable: false
       field :environment_id, -> { String }, optional: true, nullable: false
       field :environments, -> { Internal::Types::Array[Schematic::Types::EnvironmentResponseData] }, optional: false, nullable: false
+      field :onboarding_complete, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :stripe_user_id, -> { String }, optional: true, nullable: false
       field :user_id, -> { String }, optional: true, nullable: false
       field :user_name, -> { String }, optional: true, nullable: false
