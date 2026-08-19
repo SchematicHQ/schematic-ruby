@@ -8,6 +8,10 @@ module Schematic
   class EventBuffer
     DEFAULT_FLUSH_INTERVAL = 5.0 # seconds (canonical Go value)
     DEFAULT_MAX_BATCH_SIZE = 100
+    # The capture service rejects any batch larger than this with
+    # `400 {"error": "batch too large", "max_size": 100}`. @max_batch_size is
+    # only a flush trigger, so the cap is enforced again at send time.
+    MAX_EVENTS_PER_REQUEST = 100
     DEFAULT_MAX_RETRIES = 3
     DEFAULT_INITIAL_RETRY_DELAY = 1.0 # seconds
     JITTER_FACTOR = 0.25
@@ -59,7 +63,7 @@ module Schematic
 
       return unless events_to_send&.any?
 
-      send_batch(events_to_send)
+      send_capped(events_to_send)
 
       # Events may have accumulated while we were sending. Drain them so
       # a size-triggered flush that lost the race doesn't have to wait for
@@ -122,7 +126,17 @@ module Schematic
         batch
       end
 
-      send_batch(events_to_send) if events_to_send&.any?
+      send_capped(events_to_send) if events_to_send&.any?
+    end
+
+    # A flush drains however much has piled up, which is not bounded by
+    # @max_batch_size: push appends unconditionally and its size-triggered
+    # flush is a no-op while @flushing is set, so every event pushed during an
+    # in-flight send accumulates. Split the drained set so an oversized buffer
+    # is never turned into an oversized request. Each chunk retries on its own,
+    # since retrying the whole set would resend chunks already delivered.
+    def send_capped(events)
+      events.each_slice(MAX_EVENTS_PER_REQUEST) { |chunk| send_batch(chunk) }
     end
 
     def send_batch(events)

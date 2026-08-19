@@ -3445,3 +3445,80 @@ describe "DataStream Client - redis_client convenience" do
     WebMock.reset!
   end
 end
+
+# =============================================================================
+# EventBuffer batch size cap
+# =============================================================================
+describe "EventBuffer batch size cap" do
+  after do
+    WebMock.reset!
+  end
+
+  def build_buffer
+    Schematic::EventBuffer.new(
+      api_key: "test_key",
+      logger: Schematic::ConsoleLogger.new(level: :error),
+      interval: 3600, # never fires; these tests drive the flush themselves
+      offline: false
+    )
+  end
+
+  it "splits a drained backlog into requests of at most 100 events" do
+    sizes = []
+    stub_request(:post, CAPTURE_URL).to_return do |req|
+      sizes << JSON.parse(req.body)["events"].size
+      { status: 200 }
+    end
+
+    buffer = build_buffer
+    # Seeded directly rather than pushed: pushing would flush at every 100th
+    # event, which is exactly the backlog this test needs to already exist.
+    buffer.instance_variable_set(
+      :@events,
+      (1..250).map { |i| { event_type: "track", body: { event: "e#{i}" } } }
+    )
+    buffer.flush
+    buffer.stop
+
+    assert_equal [100, 100, 50], sizes
+  end
+
+  it "never sends more than 100 events when events pile up behind an in-flight send" do
+    # push appends unconditionally and its size-triggered flush is a no-op
+    # while @flushing is set, so everything pushed during a send accumulates
+    # and drain_pending would send it as one oversized request.
+    sizes = []
+    sizes_mutex = Mutex.new
+    started = Queue.new
+    release = Queue.new
+
+    stub_request(:post, CAPTURE_URL).to_return do |req|
+      is_first = sizes_mutex.synchronize do
+        sizes << JSON.parse(req.body)["events"].size
+        sizes.size == 1
+      end
+      if is_first
+        started << true
+        release.pop
+      end
+      { status: 200 }
+    end
+
+    buffer = build_buffer
+
+    # The 100th push triggers a flush; hold that request open.
+    producer = Thread.new do
+      100.times { |i| buffer.push({ event_type: "track", body: { event: "a#{i}" } }) }
+    end
+
+    started.pop
+    150.times { |i| buffer.push({ event_type: "track", body: { event: "b#{i}" } }) }
+    release << true
+    producer.join
+    buffer.stop
+
+    assert_equal 250, sizes.sum
+    assert sizes.all? { |size| size <= 100 },
+           "expected every request to carry at most 100 events, got #{sizes.inspect}"
+  end
+end
