@@ -3,9 +3,11 @@
 module Schematic
   module Types
     class ComponentCheckoutSettings < Internal::Types::Model
+      field :bundle_purchase_behavior, -> { Schematic::Types::CheckoutBundlePurchaseBehavior }, optional: false, nullable: false
       field :collect_address, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :collect_email, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :collect_phone, -> { Internal::Types::Boolean }, optional: false, nullable: false
+      field :collect_tax_id, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :proration_behavior, -> { Schematic::Types::ProrationBehavior }, optional: false, nullable: false
       field :tax_collection_enabled, -> { Internal::Types::Boolean }, optional: false, nullable: false
     end

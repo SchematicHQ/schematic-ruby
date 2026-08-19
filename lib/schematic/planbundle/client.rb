@@ -81,19 +81,19 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
-      # @option params [String] :plan_bundle_id
+      # @option params [String] :plan_id
       #
       # @return [Schematic::Planbundle::Types::UpdatePlanBundleResponse]
       def update_plan_bundle(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         request_data = Schematic::Planbundle::Types::UpdatePlanBundleRequestBody.new(params).to_h
-        non_body_param_names = ["plan_bundle_id"]
+        non_body_param_names = ["plan_id"]
         body = request_data.except(*non_body_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
           method: "PUT",
-          path: "plan-bundles/#{URI.encode_uri_component(params[:plan_bundle_id].to_s)}",
+          path: "plan-bundles/#{URI.encode_uri_component(params[:plan_id].to_s)}",
           body: body,
           request_options: request_options
         )

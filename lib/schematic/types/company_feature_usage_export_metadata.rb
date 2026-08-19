@@ -5,6 +5,8 @@ module Schematic
     class CompanyFeatureUsageExportMetadata < Internal::Types::Model
       field :company_ids, -> { Internal::Types::Array[String] }, optional: true, nullable: false
       field :credit_type_ids, -> { Internal::Types::Array[String] }, optional: true, nullable: false
+      field :entity_key_definition_ids, -> { Internal::Types::Array[String] }, optional: true, nullable: false
+      field :entity_trait_definition_ids, -> { Internal::Types::Array[String] }, optional: true, nullable: false
       field :feature_ids, -> { Internal::Types::Array[String] }, optional: true, nullable: false
       field :has_scheduled_downgrade, -> { Internal::Types::Boolean }, optional: true, nullable: false
       field :monetized_subscriptions, -> { Internal::Types::Boolean }, optional: true, nullable: false

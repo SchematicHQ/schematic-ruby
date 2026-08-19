@@ -670,6 +670,69 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       #
+      # @return [Schematic::Accounts::Types::GetOnboardingStateResponse]
+      def get_onboarding_state(request_options: {}, **params)
+        Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "GET",
+          path: "onboarding-state",
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          Schematic::Accounts::Types::GetOnboardingStateResponse.load(response.body)
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          raise error_class.new(response.body, code: code)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Schematic::Accounts::Types::UpdateOnboardingStateRequestBody]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @return [Schematic::Accounts::Types::UpdateOnboardingStateResponse]
+      def update_onboarding_state(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "POST",
+          path: "onboarding-state",
+          body: Schematic::Accounts::Types::UpdateOnboardingStateRequestBody.new(params).to_h,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          Schematic::Accounts::Types::UpdateOnboardingStateResponse.load(response.body)
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          raise error_class.new(response.body, code: code)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      #
       # @return [Schematic::Accounts::Types::QuickstartResponse]
       def quickstart(request_options: {}, **params)
         Schematic::Internal::Types::Utils.normalize_keys(params)

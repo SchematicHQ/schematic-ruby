@@ -3,9 +3,11 @@
 module Schematic
   module Types
     class CheckoutSettingsResponseData < Internal::Types::Model
+      field :bundle_purchase_behavior, -> { Schematic::Types::CheckoutBundlePurchaseBehavior }, optional: false, nullable: false
       field :collect_address, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :collect_email, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :collect_phone, -> { Internal::Types::Boolean }, optional: false, nullable: false
+      field :collect_tax_id, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :opt_in_enabled, -> { Internal::Types::Boolean }, optional: false, nullable: false
       field :opt_in_text, -> { String }, optional: true, nullable: false
       field :opt_in_title, -> { String }, optional: true, nullable: false

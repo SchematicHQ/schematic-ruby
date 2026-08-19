@@ -13,6 +13,7 @@ module Schematic
       field :plan_version_id_from, -> { String }, optional: true, nullable: false
       field :plan_version_id_to, -> { String }, optional: false, nullable: false
       field :plan_version_ids_from, -> { Internal::Types::Array[String] }, optional: false, nullable: false
+      field :proration_behavior, -> { Schematic::Types::MigrationProrationBehavior }, optional: true, nullable: false
       field :skipped_companies, -> { Integer }, optional: false, nullable: false
       field :started_at, -> { String }, optional: true, nullable: false
       field :status, -> { Schematic::Types::PlanVersionMigrationStatus }, optional: false, nullable: false
