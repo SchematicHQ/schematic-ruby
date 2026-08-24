@@ -5,6 +5,7 @@ module Schematic
     module Types
       class BindCatalogRequestBody < Internal::Types::Model
         field :component_id, -> { String }, optional: false, nullable: false
+
         field :catalog_id, -> { String }, optional: true, nullable: false
       end
     end

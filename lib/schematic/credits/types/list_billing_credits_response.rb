@@ -5,6 +5,7 @@ module Schematic
     module Types
       class ListBillingCreditsResponse < Internal::Types::Model
         field :data, -> { Internal::Types::Array[Schematic::Types::BillingCreditResponseData] }, optional: false, nullable: false
+
         field :params, -> { Schematic::Credits::Types::ListBillingCreditsParams }, optional: false, nullable: false
       end
     end

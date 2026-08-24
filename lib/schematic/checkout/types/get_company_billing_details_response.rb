@@ -5,6 +5,7 @@ module Schematic
     module Types
       class GetCompanyBillingDetailsResponse < Internal::Types::Model
         field :data, -> { Schematic::Types::CompanyBillingDetailsResponseData }, optional: false, nullable: false
+
         field :params, -> { Internal::Types::Hash[String, Object] }, optional: false, nullable: false
       end
     end

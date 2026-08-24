@@ -5,6 +5,7 @@ module Schematic
     module Types
       class GetOrCreateCompanyMembershipRequestBody < Internal::Types::Model
         field :company_id, -> { String }, optional: false, nullable: false
+
         field :user_id, -> { String }, optional: false, nullable: false
       end
     end

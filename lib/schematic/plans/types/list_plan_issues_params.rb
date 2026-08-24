@@ -6,6 +6,7 @@ module Schematic
       # Input parameters
       class ListPlanIssuesParams < Internal::Types::Model
         field :plan_id, -> { String }, optional: true, nullable: false
+
         field :plan_version_id, -> { String }, optional: true, nullable: false
       end
     end

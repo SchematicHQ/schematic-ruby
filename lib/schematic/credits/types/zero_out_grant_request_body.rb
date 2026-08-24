@@ -5,6 +5,7 @@ module Schematic
     module Types
       class ZeroOutGrantRequestBody < Internal::Types::Model
         field :grant_id, -> { String }, optional: false, nullable: false
+
         field :reason, -> { Schematic::Types::BillingCreditGrantZeroedOutReason }, optional: true, nullable: false
       end
     end

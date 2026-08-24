@@ -28,10 +28,23 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.features.list_features(
+      #     boolean_require_event: true,
+      #     feature_type: ["boolean"],
+      #     ids: ["ids"],
+      #     managed_by: "metronome",
+      #     plan_version_id: "plan_version_id",
+      #     q: "q",
+      #     without_company_override_for: "without_company_override_for",
+      #     without_plan_entitlement_for: "without_plan_entitlement_for",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Features::Types::ListFeaturesResponse]
       def list_features(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[boolean_require_event feature_type ids managed_by plan_version_id q without_company_override_for without_plan_entitlement_for limit offset]
         query_params = {}
         query_params["boolean_require_event"] = params[:boolean_require_event] if params.key?(:boolean_require_event)
         query_params["feature_type"] = params[:feature_type] if params.key?(:feature_type)
@@ -43,7 +56,6 @@ module Schematic
         query_params["without_plan_entitlement_for"] = params[:without_plan_entitlement_for] if params.key?(:without_plan_entitlement_for)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -73,6 +85,13 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.features.create_feature(
+      #     description: "description",
+      #     feature_type: "boolean",
+      #     name: "name"
+      #   )
       #
       # @return [Schematic::Features::Types::CreateFeatureResponse]
       def create_feature(request_options: {}, **params)
@@ -107,6 +126,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :feature_id
       #
+      # @example
+      #   client.features.get_feature(feature_id: "feature_id")
+      #
       # @return [Schematic::Features::Types::GetFeatureResponse]
       def get_feature(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -139,11 +161,14 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :feature_id
       #
+      # @example
+      #   client.features.update_feature(feature_id: "feature_id")
+      #
       # @return [Schematic::Features::Types::UpdateFeatureResponse]
       def update_feature(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         request_data = Schematic::Features::Types::UpdateFeatureRequestBody.new(params).to_h
-        non_body_param_names = ["feature_id"]
+        non_body_param_names = %w[feature_id]
         body = request_data.except(*non_body_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
@@ -176,6 +201,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :feature_id
       #
+      # @example
+      #   client.features.delete_feature(feature_id: "feature_id")
+      #
       # @return [Schematic::Features::Types::DeleteFeatureResponse]
       def delete_feature(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -206,6 +234,15 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.features.upsert_feature_for_billing_product(
+      #     billing_provider: "metronome",
+      #     description: "description",
+      #     external_resource_id: "external_resource_id",
+      #     feature_type: "boolean",
+      #     name: "name"
+      #   )
       #
       # @return [Schematic::Features::Types::UpsertFeatureForBillingProductResponse]
       def upsert_feature_for_billing_product(request_options: {}, **params)
@@ -249,10 +286,23 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.features.count_features(
+      #     boolean_require_event: true,
+      #     feature_type: ["boolean"],
+      #     ids: ["ids"],
+      #     managed_by: "metronome",
+      #     plan_version_id: "plan_version_id",
+      #     q: "q",
+      #     without_company_override_for: "without_company_override_for",
+      #     without_plan_entitlement_for: "without_plan_entitlement_for",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Features::Types::CountFeaturesResponse]
       def count_features(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[boolean_require_event feature_type ids managed_by plan_version_id q without_company_override_for without_plan_entitlement_for limit offset]
         query_params = {}
         query_params["boolean_require_event"] = params[:boolean_require_event] if params.key?(:boolean_require_event)
         query_params["feature_type"] = params[:feature_type] if params.key?(:feature_type)
@@ -264,7 +314,6 @@ module Schematic
         query_params["without_plan_entitlement_for"] = params[:without_plan_entitlement_for] if params.key?(:without_plan_entitlement_for)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -300,17 +349,24 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.features.list_flags(
+      #     feature_id: "feature_id",
+      #     ids: ["ids"],
+      #     q: "q",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Features::Types::ListFlagsResponse]
       def list_flags(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[feature_id ids q limit offset]
         query_params = {}
         query_params["feature_id"] = params[:feature_id] if params.key?(:feature_id)
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -340,6 +396,15 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.features.create_flag(
+      #     default_value: true,
+      #     description: "description",
+      #     flag_type: "boolean",
+      #     key: "key",
+      #     name: "name"
+      #   )
       #
       # @return [Schematic::Features::Types::CreateFlagResponse]
       def create_flag(request_options: {}, **params)
@@ -374,6 +439,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :flag_id
       #
+      # @example
+      #   client.features.get_flag(flag_id: "flag_id")
+      #
       # @return [Schematic::Features::Types::GetFlagResponse]
       def get_flag(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -406,14 +474,27 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :flag_id
       #
+      # @example
+      #   client.features.update_flag(
+      #     flag_id: "flag_id",
+      #     default_value: true,
+      #     description: "description",
+      #     flag_type: "boolean",
+      #     key: "key",
+      #     name: "name"
+      #   )
+      #
       # @return [Schematic::Features::Types::UpdateFlagResponse]
       def update_flag(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        path_param_names = %i[flag_id]
+        body_params = params.except(*path_param_names)
+
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
           method: "PUT",
           path: "flags/#{URI.encode_uri_component(params[:flag_id].to_s)}",
-          body: Schematic::Types::CreateFlagRequestBody.new(params).to_h,
+          body: Schematic::Types::CreateFlagRequestBody.new(body_params).to_h,
           request_options: request_options
         )
         begin
@@ -438,6 +519,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :flag_id
+      #
+      # @example
+      #   client.features.delete_flag(flag_id: "flag_id")
       #
       # @return [Schematic::Features::Types::DeleteFlagResponse]
       def delete_flag(request_options: {}, **params)
@@ -471,11 +555,33 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :flag_id
       #
+      # @example
+      #   client.features.update_flag_rules(
+      #     flag_id: "flag_id",
+      #     rules: [{
+      #       condition_groups: [{
+      #         conditions: [{
+      #           condition_type: "base_plan",
+      #           operator: "eq",
+      #           resource_ids: ["resource_ids"]
+      #         }]
+      #       }],
+      #       conditions: [{
+      #         condition_type: "base_plan",
+      #         operator: "eq",
+      #         resource_ids: ["resource_ids"]
+      #       }],
+      #       name: "name",
+      #       priority: 1000000,
+      #       value: true
+      #     }]
+      #   )
+      #
       # @return [Schematic::Features::Types::UpdateFlagRulesResponse]
       def update_flag_rules(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         request_data = Schematic::Features::Types::UpdateFlagRulesRequestBody.new(params).to_h
-        non_body_param_names = ["flag_id"]
+        non_body_param_names = %w[flag_id]
         body = request_data.except(*non_body_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
@@ -508,14 +614,20 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :key
       #
+      # @example
+      #   client.features.check_flag(key: "key")
+      #
       # @return [Schematic::Features::Types::CheckFlagResponse]
       def check_flag(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        path_param_names = %i[key]
+        body_params = params.except(*path_param_names)
+
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
           method: "POST",
           path: "flags/#{URI.encode_uri_component(params[:key].to_s)}/check",
-          body: Schematic::Types::CheckFlagRequestBody.new(params).to_h,
+          body: Schematic::Types::CheckFlagRequestBody.new(body_params).to_h,
           request_options: request_options
         )
         begin
@@ -539,6 +651,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.features.check_flags
       #
       # @return [Schematic::Features::Types::CheckFlagsResponse]
       def check_flags(request_options: {}, **params)
@@ -571,6 +686,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.features.check_flags_bulk(contexts: [{}])
       #
       # @return [Schematic::Features::Types::CheckFlagsBulkResponse]
       def check_flags_bulk(request_options: {}, **params)
@@ -609,17 +727,24 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.features.count_flags(
+      #     feature_id: "feature_id",
+      #     ids: ["ids"],
+      #     q: "q",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Features::Types::CountFlagsResponse]
       def count_flags(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[feature_id ids q limit offset]
         query_params = {}
         query_params["feature_id"] = params[:feature_id] if params.key?(:feature_id)
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],

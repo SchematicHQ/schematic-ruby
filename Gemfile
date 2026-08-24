@@ -5,18 +5,13 @@ source "https://rubygems.org"
 gemspec
 
 group :test, :development do
-  gem "rake", "~> 13.0"
-
   gem "minitest", "~> 5.16"
   gem "minitest-rg"
-
+  gem "pry"
+  gem "rake", "~> 13.0"
   gem "rubocop", "~> 1.21"
   gem "rubocop-minitest"
-
-  gem "pry"
-
   gem "webmock"
-
   gem "webrick", ">= 1.0"
 end
 

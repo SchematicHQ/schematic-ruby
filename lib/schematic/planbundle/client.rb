@@ -18,6 +18,21 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       #
+      # @example
+      #   client.planbundle.create_custom_plan_bundle(
+      #     billing_product: {
+      #       charge_type: "free",
+      #       is_trialable: true
+      #     },
+      #     entitlements: [{
+      #       action: "create"
+      #     }],
+      #     plan: {
+      #       company_id: "company_id",
+      #       name: "name"
+      #     }
+      #   )
+      #
       # @return [Schematic::Planbundle::Types::CreateCustomPlanBundleResponse]
       def create_custom_plan_bundle(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -49,6 +64,17 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.planbundle.create_plan_bundle(
+      #     entitlements: [{
+      #       action: "create"
+      #     }],
+      #     plan: {
+      #       name: "name",
+      #       plan_type: "plan"
+      #     }
+      #   )
       #
       # @return [Schematic::Planbundle::Types::CreatePlanBundleResponse]
       def create_plan_bundle(request_options: {}, **params)
@@ -83,11 +109,22 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :plan_id
       #
+      # @example
+      #   client.planbundle.update_plan_bundle(
+      #     plan_id: "plan_id",
+      #     entitlements: [{
+      #       action: "create"
+      #     }],
+      #     plan: {
+      #       name: "name"
+      #     }
+      #   )
+      #
       # @return [Schematic::Planbundle::Types::UpdatePlanBundleResponse]
       def update_plan_bundle(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         request_data = Schematic::Planbundle::Types::UpdatePlanBundleRequestBody.new(params).to_h
-        non_body_param_names = ["plan_id"]
+        non_body_param_names = %w[plan_id]
         body = request_data.except(*non_body_param_names)
 
         request = Schematic::Internal::JSON::Request.new(

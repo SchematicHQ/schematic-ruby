@@ -1,7 +1,7 @@
 {
   "cliVersion": "5.50.0",
   "generatorName": "fernapi/fern-ruby-sdk",
-  "generatorVersion": "1.1.13",
+  "generatorVersion": "1.23.2",
   "generatorConfig": {
     "module": "SchematicHQ",
     "rubocopVariableNumberStyle": "disabled",
@@ -13,6 +13,10 @@
       "webrick": ">= 1.0"
     }
   },
-  "originGitCommit": "1ab5d36abb4de887dde605f8b82a71dce464a26b",
-  "sdkVersion": "1.4.14"
+  "originGitCommit": "008b7147a27272499bf4b17fa96d4357ca3b62e9",
+  "originGitCommitIsDirty": false,
+  "invokedBy": "ci",
+  "requestedVersion": "1.4.15",
+  "ciProvider": "github",
+  "sdkVersion": "1.4.15"
 }

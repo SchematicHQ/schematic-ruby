@@ -5,6 +5,7 @@ module Schematic
     module Types
       class GetPlanGrowthResponse < Internal::Types::Model
         field :data, -> { Schematic::Types::PlanGrowthResponseData }, optional: false, nullable: false
+
         field :params, -> { Schematic::Insights::Types::GetPlanGrowthParams }, optional: false, nullable: false
       end
     end

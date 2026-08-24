@@ -5,6 +5,7 @@ module Schematic
     module Types
       class ListFlagsResponse < Internal::Types::Model
         field :data, -> { Internal::Types::Array[Schematic::Types::FlagDetailResponseData] }, optional: false, nullable: false
+
         field :params, -> { Schematic::Features::Types::ListFlagsParams }, optional: false, nullable: false
       end
     end

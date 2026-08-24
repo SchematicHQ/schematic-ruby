@@ -19,13 +19,14 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [Boolean, nil] :include_company_counts
       #
+      # @example
+      #   client.plangroups.get_plan_group(include_company_counts: true)
+      #
       # @return [Schematic::Plangroups::Types::GetPlanGroupResponse]
       def get_plan_group(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[include_company_counts]
         query_params = {}
         query_params["include_company_counts"] = params[:include_company_counts] if params.key?(:include_company_counts)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -55,6 +56,36 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.plangroups.create_plan_group(
+      #     add_on_ids: ["add_on_ids"],
+      #     checkout_collect_address: true,
+      #     checkout_collect_email: true,
+      #     checkout_collect_phone: true,
+      #     checkout_collect_tax_id: true,
+      #     enable_tax_collection: true,
+      #     opt_in_enabled: true,
+      #     ordered_add_ons: [{
+      #       plan_id: "plan_id"
+      #     }],
+      #     ordered_bundle_list: [{
+      #       bundle_id: "bundleId"
+      #     }],
+      #     ordered_plans: [{
+      #       plan_id: "plan_id"
+      #     }],
+      #     prevent_downgrades_when_over_limit: true,
+      #     prevent_self_service_downgrade: true,
+      #     proration_behavior: "create_prorations",
+      #     show_as_monthly_prices: true,
+      #     show_credits: true,
+      #     show_feature_description: true,
+      #     show_hard_limit: true,
+      #     show_period_toggle: true,
+      #     show_zero_price_as_free: true,
+      #     sync_customer_billing_details: true
+      #   )
       #
       # @return [Schematic::Plangroups::Types::CreatePlanGroupResponse]
       def create_plan_group(request_options: {}, **params)
@@ -89,11 +120,42 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :plan_group_id
       #
+      # @example
+      #   client.plangroups.update_plan_group(
+      #     plan_group_id: "plan_group_id",
+      #     add_on_ids: ["add_on_ids"],
+      #     checkout_collect_address: true,
+      #     checkout_collect_email: true,
+      #     checkout_collect_phone: true,
+      #     checkout_collect_tax_id: true,
+      #     enable_tax_collection: true,
+      #     opt_in_enabled: true,
+      #     ordered_add_ons: [{
+      #       plan_id: "plan_id"
+      #     }],
+      #     ordered_bundle_list: [{
+      #       bundle_id: "bundleId"
+      #     }],
+      #     ordered_plans: [{
+      #       plan_id: "plan_id"
+      #     }],
+      #     prevent_downgrades_when_over_limit: true,
+      #     prevent_self_service_downgrade: true,
+      #     proration_behavior: "create_prorations",
+      #     show_as_monthly_prices: true,
+      #     show_credits: true,
+      #     show_feature_description: true,
+      #     show_hard_limit: true,
+      #     show_period_toggle: true,
+      #     show_zero_price_as_free: true,
+      #     sync_customer_billing_details: true
+      #   )
+      #
       # @return [Schematic::Plangroups::Types::UpdatePlanGroupResponse]
       def update_plan_group(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         request_data = Schematic::Plangroups::Types::UpdatePlanGroupRequestBody.new(params).to_h
-        non_body_param_names = ["plan_group_id"]
+        non_body_param_names = %w[plan_group_id]
         body = request_data.except(*non_body_param_names)
 
         request = Schematic::Internal::JSON::Request.new(

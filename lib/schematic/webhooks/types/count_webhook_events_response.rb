@@ -5,6 +5,7 @@ module Schematic
     module Types
       class CountWebhookEventsResponse < Internal::Types::Model
         field :data, -> { Schematic::Types::CountResponse }, optional: false, nullable: false
+
         field :params, -> { Schematic::Webhooks::Types::CountWebhookEventsParams }, optional: false, nullable: false
       end
     end

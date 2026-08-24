@@ -5,6 +5,7 @@ module Schematic
     module Types
       class GetFeatureUsageTimeSeriesResponse < Internal::Types::Model
         field :data, -> { Schematic::Types::FeatureUsageTimeSeriesResponseData }, optional: false, nullable: false
+
         field :params, -> { Schematic::Entitlements::Types::GetFeatureUsageTimeSeriesParams }, optional: false, nullable: false
       end
     end

@@ -18,6 +18,11 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       #
+      # @example
+      #   client.events.create_event_batch(events: [{
+      #     event_type: "flag_check"
+      #   }])
+      #
       # @return [Schematic::Events::Types::CreateEventBatchResponse]
       def create_event_batch(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -54,16 +59,22 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.events.get_event_summaries(
+      #     q: "q",
+      #     event_subtypes: ["event_subtypes"],
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Events::Types::GetEventSummariesResponse]
       def get_event_summaries(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[q event_subtypes limit offset]
         query_params = {}
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["event_subtypes"] = params[:event_subtypes] if params.key?(:event_subtypes)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -102,10 +113,21 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.events.list_events(
+      #     company_id: "company_id",
+      #     event_subtype: "event_subtype",
+      #     event_types: ["flag_check"],
+      #     flag_id: "flag_id",
+      #     idempotency_key: "idempotency_key",
+      #     user_id: "user_id",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Events::Types::ListEventsResponse]
       def list_events(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[company_id event_subtype event_types flag_id idempotency_key user_id limit offset]
         query_params = {}
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["event_subtype"] = params[:event_subtype] if params.key?(:event_subtype)
@@ -115,7 +137,6 @@ module Schematic
         query_params["user_id"] = params[:user_id] if params.key?(:user_id)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -145,6 +166,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.events.create_event(event_type: "flag_check")
       #
       # @return [Schematic::Events::Types::CreateEventResponse]
       def create_event(request_options: {}, **params)
@@ -179,6 +203,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :event_id
       #
+      # @example
+      #   client.events.get_event(event_id: "event_id")
+      #
       # @return [Schematic::Events::Types::GetEventResponse]
       def get_event(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -203,16 +230,18 @@ module Schematic
       end
 
       # @param request_options [Hash]
-      # @param params [Hash]
+      # @param _params [Hash]
       # @option request_options [String] :base_url
       # @option request_options [Hash{String => Object}] :additional_headers
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       #
+      # @example
+      #   client.events.get_segment_integration_status
+      #
       # @return [Schematic::Events::Types::GetSegmentIntegrationStatusResponse]
-      def get_segment_integration_status(request_options: {}, **params)
-        Schematic::Internal::Types::Utils.normalize_keys(params)
+      def get_segment_integration_status(request_options: {}, **_params)
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
           method: "GET",

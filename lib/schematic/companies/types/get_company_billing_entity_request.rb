@@ -4,7 +4,7 @@ module Schematic
   module Companies
     module Types
       class GetCompanyBillingEntityRequest < Internal::Types::Model
-        field :company_id, -> { String }, optional: true, nullable: false
+        field :company_id, -> { String }, optional: false, nullable: false
       end
     end
   end

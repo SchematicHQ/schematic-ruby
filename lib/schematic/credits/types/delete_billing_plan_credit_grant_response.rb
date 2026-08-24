@@ -5,6 +5,7 @@ module Schematic
     module Types
       class DeleteBillingPlanCreditGrantResponse < Internal::Types::Model
         field :data, -> { Schematic::Types::DeleteResponse }, optional: false, nullable: false
+
         field :params, -> { Schematic::Credits::Types::DeleteBillingPlanCreditGrantParams }, optional: false, nullable: false
       end
     end

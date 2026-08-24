@@ -5,6 +5,7 @@ module Schematic
     module Types
       class PreviewComponentDataRequest < Internal::Types::Model
         field :company_id, -> { String }, optional: true, nullable: false
+
         field :component_id, -> { String }, optional: true, nullable: false
       end
     end

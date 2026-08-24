@@ -22,16 +22,22 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.billing.list_coupons(
+      #     is_active: true,
+      #     q: "q",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Billing::Types::ListCouponsResponse]
       def list_coupons(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[is_active q limit offset]
         query_params = {}
         query_params["is_active"] = params[:is_active] if params.key?(:is_active)
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -61,6 +67,18 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.billing.upsert_billing_coupon(
+      #     amount_off: 1000000,
+      #     duration: "duration",
+      #     duration_in_months: 1000000,
+      #     external_id: "external_id",
+      #     max_redemptions: 1000000,
+      #     name: "name",
+      #     percent_off: 1.1,
+      #     times_redeemed: 1000000
+      #   )
       #
       # @return [Schematic::Billing::Types::UpsertBillingCouponResponse]
       def upsert_billing_coupon(request_options: {}, **params)
@@ -95,6 +113,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :billing_id
       #
+      # @example
+      #   client.billing.delete_billing_coupon(billing_id: "billing_id")
+      #
       # @return [Schematic::Billing::Types::DeleteBillingCouponResponse]
       def delete_billing_coupon(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -127,6 +148,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :billing_id
       #
+      # @example
+      #   client.billing.delete_billing_customer(billing_id: "billing_id")
+      #
       # @return [Schematic::Billing::Types::DeleteBillingCustomerResponse]
       def delete_billing_customer(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -157,6 +181,16 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.billing.upsert_billing_customer(
+      #     email: "email",
+      #     external_id: "external_id",
+      #     meta: {
+      #       key: "value"
+      #     },
+      #     name: "name"
+      #   )
       #
       # @return [Schematic::Billing::Types::UpsertBillingCustomerResponse]
       def upsert_billing_customer(request_options: {}, **params)
@@ -196,10 +230,19 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.billing.list_customers_with_subscriptions(
+      #     company_ids: ["company_ids"],
+      #     name: "name",
+      #     provider_type: "metronome",
+      #     q: "q",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Billing::Types::ListCustomersWithSubscriptionsResponse]
       def list_customers_with_subscriptions(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[company_ids name provider_type q limit offset]
         query_params = {}
         query_params["company_ids"] = params[:company_ids] if params.key?(:company_ids)
         query_params["name"] = params[:name] if params.key?(:name)
@@ -207,7 +250,6 @@ module Schematic
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -244,10 +286,19 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.billing.count_customers(
+      #     company_ids: ["company_ids"],
+      #     name: "name",
+      #     provider_type: "metronome",
+      #     q: "q",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Billing::Types::CountCustomersResponse]
       def count_customers(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[company_ids name provider_type q limit offset]
         query_params = {}
         query_params["company_ids"] = params[:company_ids] if params.key?(:company_ids)
         query_params["name"] = params[:name] if params.key?(:name)
@@ -255,7 +306,6 @@ module Schematic
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -291,17 +341,24 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.billing.list_invoices(
+      #     company_id: "company_id",
+      #     customer_external_id: "customer_external_id",
+      #     subscription_external_id: "subscription_external_id",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Billing::Types::ListInvoicesResponse]
       def list_invoices(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[company_id customer_external_id subscription_external_id limit offset]
         query_params = {}
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["customer_external_id"] = params[:customer_external_id] if params.key?(:customer_external_id)
         query_params["subscription_external_id"] = params[:subscription_external_id] if params.key?(:subscription_external_id)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -331,6 +388,17 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.billing.upsert_invoice(
+      #     amount_due: 1000000,
+      #     amount_paid: 1000000,
+      #     amount_remaining: 1000000,
+      #     collection_method: "collection_method",
+      #     currency: "currency",
+      #     customer_external_id: "customer_external_id",
+      #     subtotal: 1000000
+      #   )
       #
       # @return [Schematic::Billing::Types::UpsertInvoiceResponse]
       def upsert_invoice(request_options: {}, **params)
@@ -364,6 +432,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :billing_id
+      #
+      # @example
+      #   client.billing.delete_billing_invoice(billing_id: "billing_id")
       #
       # @return [Schematic::Billing::Types::DeleteBillingInvoiceResponse]
       def delete_billing_invoice(request_options: {}, **params)
@@ -399,15 +470,20 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.billing.list_meters(
+      #     display_name: "display_name",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Billing::Types::ListMetersResponse]
       def list_meters(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[display_name limit offset]
         query_params = {}
         query_params["display_name"] = params[:display_name] if params.key?(:display_name)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -437,6 +513,14 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.billing.upsert_billing_meter(
+      #     display_name: "display_name",
+      #     event_name: "event_name",
+      #     event_payload_key: "event_payload_key",
+      #     external_id: "external_id"
+      #   )
       #
       # @return [Schematic::Billing::Types::UpsertBillingMeterResponse]
       def upsert_billing_meter(request_options: {}, **params)
@@ -474,16 +558,22 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.billing.list_payment_methods(
+      #     company_id: "company_id",
+      #     customer_external_id: "customer_external_id",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Billing::Types::ListPaymentMethodsResponse]
       def list_payment_methods(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[company_id customer_external_id limit offset]
         query_params = {}
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["customer_external_id"] = params[:customer_external_id] if params.key?(:customer_external_id)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -513,6 +603,13 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.billing.upsert_payment_method(
+      #     customer_external_id: "customer_external_id",
+      #     external_id: "external_id",
+      #     payment_method_type: "payment_method_type"
+      #   )
       #
       # @return [Schematic::Billing::Types::UpsertPaymentMethodResponse]
       def upsert_payment_method(request_options: {}, **params)
@@ -546,6 +643,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :billing_id
+      #
+      # @example
+      #   client.billing.delete_payment_method_by_external_id(billing_id: "billing_id")
       #
       # @return [Schematic::Billing::Types::DeletePaymentMethodByExternalIdResponse]
       def delete_payment_method_by_external_id(request_options: {}, **params)
@@ -596,10 +696,31 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.billing.list_billing_prices(
+      #     currency: "currency",
+      #     for_initial_plan: true,
+      #     for_trial_expiry_plan: true,
+      #     ids: ["ids"],
+      #     interval: "interval",
+      #     interval_count: 1000000,
+      #     is_active: true,
+      #     plan_version_id: "plan_version_id",
+      #     price: 1000000,
+      #     product_id: "product_id",
+      #     product_ids: ["product_ids"],
+      #     provider_type: "metronome",
+      #     q: "q",
+      #     tiers_mode: "graduated",
+      #     usage_type: "licensed",
+      #     with_meter: true,
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Billing::Types::ListBillingPricesResponse]
       def list_billing_prices(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[currency for_initial_plan for_trial_expiry_plan ids interval interval_count is_active plan_version_id price product_id product_ids provider_type q tiers_mode usage_type with_meter limit offset]
         query_params = {}
         query_params["currency"] = params[:currency] if params.key?(:currency)
         query_params["for_initial_plan"] = params[:for_initial_plan] if params.key?(:for_initial_plan)
@@ -619,7 +740,6 @@ module Schematic
         query_params["with_meter"] = params[:with_meter] if params.key?(:with_meter)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -649,6 +769,22 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.billing.upsert_billing_price(
+      #     billing_scheme: "per_unit",
+      #     currency: "currency",
+      #     external_account_id: "external_account_id",
+      #     interval: "interval",
+      #     is_active: true,
+      #     price: 1000000,
+      #     price_external_id: "price_external_id",
+      #     price_tiers: [{
+      #       price_external_id: "price_external_id"
+      #     }],
+      #     product_external_id: "product_external_id",
+      #     usage_type: "licensed"
+      #   )
       #
       # @return [Schematic::Billing::Types::UpsertBillingPriceResponse]
       def upsert_billing_price(request_options: {}, **params)
@@ -682,6 +818,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :billing_id
+      #
+      # @example
+      #   client.billing.delete_billing_product(billing_id: "billing_id")
       #
       # @return [Schematic::Billing::Types::DeleteBillingProductResponse]
       def delete_billing_product(request_options: {}, **params)
@@ -732,10 +871,31 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.billing.list_billing_product_prices(
+      #     currency: "currency",
+      #     for_initial_plan: true,
+      #     for_trial_expiry_plan: true,
+      #     ids: ["ids"],
+      #     interval: "interval",
+      #     interval_count: 1000000,
+      #     is_active: true,
+      #     plan_version_id: "plan_version_id",
+      #     price: 1000000,
+      #     product_id: "product_id",
+      #     product_ids: ["product_ids"],
+      #     provider_type: "metronome",
+      #     q: "q",
+      #     tiers_mode: "graduated",
+      #     usage_type: "licensed",
+      #     with_meter: true,
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Billing::Types::ListBillingProductPricesResponse]
       def list_billing_product_prices(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[currency for_initial_plan for_trial_expiry_plan ids interval interval_count is_active plan_version_id price product_id product_ids provider_type q tiers_mode usage_type with_meter limit offset]
         query_params = {}
         query_params["currency"] = params[:currency] if params.key?(:currency)
         query_params["for_initial_plan"] = params[:for_initial_plan] if params.key?(:for_initial_plan)
@@ -755,7 +915,6 @@ module Schematic
         query_params["with_meter"] = params[:with_meter] if params.key?(:with_meter)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -787,6 +946,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :billing_id
       #
+      # @example
+      #   client.billing.delete_product_price(billing_id: "billing_id")
+      #
       # @return [Schematic::Billing::Types::DeleteProductPriceResponse]
       def delete_product_price(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -817,6 +979,12 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.billing.upsert_billing_product(
+      #     external_id: "external_id",
+      #     price: 1.1
+      #   )
       #
       # @return [Schematic::Billing::Types::UpsertBillingProductResponse]
       def upsert_billing_product(request_options: {}, **params)
@@ -863,10 +1031,26 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.billing.list_billing_products(
+      #     ids: ["ids"],
+      #     is_active: true,
+      #     name: "name",
+      #     price_usage_type: "licensed",
+      #     provider_type: "metronome",
+      #     q: "q",
+      #     recurring_charges_only: true,
+      #     with_one_time_charges: true,
+      #     with_prices_only: true,
+      #     with_zero_price: true,
+      #     without_linked_to_plan: true,
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Billing::Types::ListBillingProductsResponse]
       def list_billing_products(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[ids is_active name price_usage_type provider_type q recurring_charges_only with_one_time_charges with_prices_only with_zero_price without_linked_to_plan limit offset]
         query_params = {}
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["is_active"] = params[:is_active] if params.key?(:is_active)
@@ -881,7 +1065,6 @@ module Schematic
         query_params["without_linked_to_plan"] = params[:without_linked_to_plan] if params.key?(:without_linked_to_plan)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -925,10 +1108,26 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.billing.count_billing_products(
+      #     ids: ["ids"],
+      #     is_active: true,
+      #     name: "name",
+      #     price_usage_type: "licensed",
+      #     provider_type: "metronome",
+      #     q: "q",
+      #     recurring_charges_only: true,
+      #     with_one_time_charges: true,
+      #     with_prices_only: true,
+      #     with_zero_price: true,
+      #     without_linked_to_plan: true,
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Billing::Types::CountBillingProductsResponse]
       def count_billing_products(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[ids is_active name price_usage_type provider_type q recurring_charges_only with_one_time_charges with_prices_only with_zero_price without_linked_to_plan limit offset]
         query_params = {}
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["is_active"] = params[:is_active] if params.key?(:is_active)
@@ -943,7 +1142,6 @@ module Schematic
         query_params["without_linked_to_plan"] = params[:without_linked_to_plan] if params.key?(:without_linked_to_plan)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -973,6 +1171,31 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.billing.upsert_billing_subscription(
+      #     cancel_at_period_end: true,
+      #     currency: "currency",
+      #     customer_external_id: "customer_external_id",
+      #     discounts: [{
+      #       coupon_external_id: "coupon_external_id",
+      #       external_id: "external_id",
+      #       is_active: true,
+      #       started_at: "2024-01-15T09:30:00Z"
+      #     }],
+      #     expired_at: "2024-01-15T09:30:00Z",
+      #     product_external_ids: [{
+      #       currency: "currency",
+      #       interval: "interval",
+      #       price: 1000000,
+      #       price_external_id: "price_external_id",
+      #       product_external_id: "product_external_id",
+      #       quantity: 1000000,
+      #       usage_type: "licensed"
+      #     }],
+      #     subscription_external_id: "subscription_external_id",
+      #     total_price: 1000000
+      #   )
       #
       # @return [Schematic::Billing::Types::UpsertBillingSubscriptionResponse]
       def upsert_billing_subscription(request_options: {}, **params)

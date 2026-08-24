@@ -5,6 +5,7 @@ module Schematic
     module Types
       class ListIntegrationsResponse < Internal::Types::Model
         field :data, -> { Internal::Types::Array[Schematic::Types::IntegrationsListResponseData] }, optional: false, nullable: false
+
         field :params, -> { Schematic::Integrationsapi::Types::ListIntegrationsParams }, optional: false, nullable: false
       end
     end

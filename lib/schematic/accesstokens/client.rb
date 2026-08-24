@@ -18,6 +18,14 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       #
+      # @example
+      #   client.accesstokens.issue_temporary_access_token(
+      #     lookup: {
+      #       key: "value"
+      #     },
+      #     resource_type: "company"
+      #   )
+      #
       # @return [Schematic::Accesstokens::Types::IssueTemporaryAccessTokenResponse]
       def issue_temporary_access_token(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)

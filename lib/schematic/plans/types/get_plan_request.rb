@@ -5,6 +5,7 @@ module Schematic
     module Types
       class GetPlanRequest < Internal::Types::Model
         field :plan_id, -> { String }, optional: false, nullable: false
+
         field :plan_version_id, -> { String }, optional: true, nullable: false
       end
     end

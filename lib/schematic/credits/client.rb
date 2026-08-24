@@ -22,16 +22,22 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.credits.list_billing_credits(
+      #     ids: ["ids"],
+      #     name: "name",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Credits::Types::ListBillingCreditsResponse]
       def list_billing_credits(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[ids name limit offset]
         query_params = {}
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["name"] = params[:name] if params.key?(:name)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -61,6 +67,13 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.credits.create_billing_credit(
+      #     currency: "currency",
+      #     description: "description",
+      #     name: "name"
+      #   )
       #
       # @return [Schematic::Credits::Types::CreateBillingCreditResponse]
       def create_billing_credit(request_options: {}, **params)
@@ -95,6 +108,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :credit_id
       #
+      # @example
+      #   client.credits.get_single_billing_credit(credit_id: "credit_id")
+      #
       # @return [Schematic::Credits::Types::GetSingleBillingCreditResponse]
       def get_single_billing_credit(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -127,11 +143,18 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :credit_id
       #
+      # @example
+      #   client.credits.update_billing_credit(
+      #     credit_id: "credit_id",
+      #     description: "description",
+      #     name: "name"
+      #   )
+      #
       # @return [Schematic::Credits::Types::UpdateBillingCreditResponse]
       def update_billing_credit(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         request_data = Schematic::Credits::Types::UpdateBillingCreditRequestBody.new(params).to_h
-        non_body_param_names = ["credit_id"]
+        non_body_param_names = %w[credit_id]
         body = request_data.except(*non_body_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
@@ -163,6 +186,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :credit_id
+      #
+      # @example
+      #   client.credits.soft_delete_billing_credit(credit_id: "credit_id")
       #
       # @return [Schematic::Credits::Types::SoftDeleteBillingCreditResponse]
       def soft_delete_billing_credit(request_options: {}, **params)
@@ -196,13 +222,14 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :company_id
       #
+      # @example
+      #   client.credits.list_company_credit_balances(company_id: "company_id")
+      #
       # @return [Schematic::Credits::Types::ListCompanyCreditBalancesResponse]
       def list_company_credit_balances(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[company_id]
         query_params = {}
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -239,10 +266,19 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.credits.list_credit_bundles(
+      #     ids: ["ids"],
+      #     credit_id: "credit_id",
+      #     status: "active",
+      #     bundle_type: "fixed",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Credits::Types::ListCreditBundlesResponse]
       def list_credit_bundles(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[ids credit_id status bundle_type limit offset]
         query_params = {}
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["credit_id"] = params[:credit_id] if params.key?(:credit_id)
@@ -250,7 +286,6 @@ module Schematic
         query_params["bundle_type"] = params[:bundle_type] if params.key?(:bundle_type)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -280,6 +315,14 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.credits.create_credit_bundle(
+      #     bundle_name: "bundle_name",
+      #     credit_id: "credit_id",
+      #     currency: "currency",
+      #     price_per_unit: 1000000
+      #   )
       #
       # @return [Schematic::Credits::Types::CreateCreditBundleResponse]
       def create_credit_bundle(request_options: {}, **params)
@@ -314,6 +357,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :bundle_id
       #
+      # @example
+      #   client.credits.get_credit_bundle(bundle_id: "bundle_id")
+      #
       # @return [Schematic::Credits::Types::GetCreditBundleResponse]
       def get_credit_bundle(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -346,11 +392,18 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :bundle_id
       #
+      # @example
+      #   client.credits.update_credit_bundle_details(
+      #     bundle_id: "bundle_id",
+      #     bundle_name: "bundle_name",
+      #     price_per_unit: 1000000
+      #   )
+      #
       # @return [Schematic::Credits::Types::UpdateCreditBundleDetailsResponse]
       def update_credit_bundle_details(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         request_data = Schematic::Credits::Types::UpdateCreditBundleDetailsRequestBody.new(params).to_h
-        non_body_param_names = ["bundle_id"]
+        non_body_param_names = %w[bundle_id]
         body = request_data.except(*non_body_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
@@ -382,6 +435,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :bundle_id
+      #
+      # @example
+      #   client.credits.delete_credit_bundle(bundle_id: "bundle_id")
       #
       # @return [Schematic::Credits::Types::DeleteCreditBundleResponse]
       def delete_credit_bundle(request_options: {}, **params)
@@ -420,10 +476,19 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.credits.count_credit_bundles(
+      #     ids: ["ids"],
+      #     credit_id: "credit_id",
+      #     status: "active",
+      #     bundle_type: "fixed",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Credits::Types::CountCreditBundlesResponse]
       def count_credit_bundles(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[ids credit_id status bundle_type limit offset]
         query_params = {}
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["credit_id"] = params[:credit_id] if params.key?(:credit_id)
@@ -431,7 +496,6 @@ module Schematic
         query_params["bundle_type"] = params[:bundle_type] if params.key?(:bundle_type)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -466,16 +530,22 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.credits.count_billing_credits(
+      #     ids: ["ids"],
+      #     name: "name",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Credits::Types::CountBillingCreditsResponse]
       def count_billing_credits(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[ids name limit offset]
         query_params = {}
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["name"] = params[:name] if params.key?(:name)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -507,11 +577,14 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :grant_id
       #
+      # @example
+      #   client.credits.zero_out_grant(grant_id: "grant_id")
+      #
       # @return [Schematic::Credits::Types::ZeroOutGrantResponse]
       def zero_out_grant(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         request_data = Schematic::Credits::Types::ZeroOutGrantRequestBody.new(params).to_h
-        non_body_param_names = ["grant_id"]
+        non_body_param_names = %w[grant_id]
         body = request_data.except(*non_body_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
@@ -542,6 +615,14 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.credits.grant_billing_credits_to_company(
+      #     company_id: "company_id",
+      #     credit_id: "credit_id",
+      #     quantity: 1000000,
+      #     reason: "adjustment"
+      #   )
       #
       # @return [Schematic::Credits::Types::GrantBillingCreditsToCompanyResponse]
       def grant_billing_credits_to_company(request_options: {}, **params)
@@ -574,23 +655,30 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
-      # @option params [String, nil] :company_id
+      # @option params [String] :company_id
       # @option params [Schematic::Types::CreditGrantSortOrder, nil] :order
       # @option params [Schematic::Types::SortDirection, nil] :dir
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.credits.count_company_grants(
+      #     company_id: "company_id",
+      #     order: "created_at",
+      #     dir: "asc",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Credits::Types::CountCompanyGrantsResponse]
       def count_company_grants(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[company_id order dir limit offset]
         query_params = {}
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["order"] = params[:order] if params.key?(:order)
         query_params["dir"] = params[:dir] if params.key?(:dir)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -620,23 +708,30 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
-      # @option params [String, nil] :company_id
+      # @option params [String] :company_id
       # @option params [Schematic::Types::CreditGrantSortOrder, nil] :order
       # @option params [Schematic::Types::SortDirection, nil] :dir
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.credits.list_company_grants(
+      #     company_id: "company_id",
+      #     order: "created_at",
+      #     dir: "asc",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Credits::Types::ListCompanyGrantsResponse]
       def list_company_grants(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[company_id order dir limit offset]
         query_params = {}
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["order"] = params[:order] if params.key?(:order)
         query_params["dir"] = params[:dir] if params.key?(:dir)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -671,16 +766,22 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.credits.count_billing_credits_grants(
+      #     credit_id: "credit_id",
+      #     ids: ["ids"],
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Credits::Types::CountBillingCreditsGrantsResponse]
       def count_billing_credits_grants(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[credit_id ids limit offset]
         query_params = {}
         query_params["credit_id"] = params[:credit_id] if params.key?(:credit_id)
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -715,16 +816,22 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.credits.list_grants_for_credit(
+      #     credit_id: "credit_id",
+      #     ids: ["ids"],
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Credits::Types::ListGrantsForCreditResponse]
       def list_grants_for_credit(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[credit_id ids limit offset]
         query_params = {}
         query_params["credit_id"] = params[:credit_id] if params.key?(:credit_id)
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -754,6 +861,13 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.credits.acquire_credit_lease(
+      #     company_id: "company_id",
+      #     credit_type_id: "credit_type_id",
+      #     requested_amount: 1.1
+      #   )
       #
       # @return [Schematic::Credits::Types::AcquireCreditLeaseResponse]
       def acquire_credit_lease(request_options: {}, **params)
@@ -788,11 +902,17 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :lease_id
       #
+      # @example
+      #   client.credits.extend_credit_lease(
+      #     lease_id: "lease_id",
+      #     additional_amount: 1.1
+      #   )
+      #
       # @return [Schematic::Credits::Types::ExtendCreditLeaseResponse]
       def extend_credit_lease(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         request_data = Schematic::Credits::Types::ExtendCreditLeaseRequestBody.new(params).to_h
-        non_body_param_names = ["lease_id"]
+        non_body_param_names = %w[lease_id]
         body = request_data.except(*non_body_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
@@ -825,14 +945,25 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :lease_id
       #
+      # @example
+      #   client.credits.release_credit_lease(
+      #     lease_id: "lease_id",
+      #     request: {
+      #       key: "value"
+      #     }
+      #   )
+      #
       # @return [Schematic::Credits::Types::ReleaseCreditLeaseResponse]
       def release_credit_lease(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        path_param_names = %i[lease_id]
+        body_params = params.except(*path_param_names)
+
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
           method: "PUT",
           path: "billing/credits/lease/#{URI.encode_uri_component(params[:lease_id].to_s)}/release",
-          body: params,
+          body: body_params,
           request_options: request_options
         )
         begin
@@ -865,10 +996,21 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.credits.list_billing_plan_credit_grants(
+      #     credit_id: "credit_id",
+      #     ids: ["ids"],
+      #     plan_id: "plan_id",
+      #     plan_ids: ["plan_ids"],
+      #     plan_version_id: "plan_version_id",
+      #     plan_version_ids: ["plan_version_ids"],
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Credits::Types::ListBillingPlanCreditGrantsResponse]
       def list_billing_plan_credit_grants(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[credit_id ids plan_id plan_ids plan_version_id plan_version_ids limit offset]
         query_params = {}
         query_params["credit_id"] = params[:credit_id] if params.key?(:credit_id)
         query_params["ids"] = params[:ids] if params.key?(:ids)
@@ -878,7 +1020,6 @@ module Schematic
         query_params["plan_version_ids"] = params[:plan_version_ids] if params.key?(:plan_version_ids)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -908,6 +1049,15 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.credits.create_billing_plan_credit_grant(
+      #     credit_amount: 1000000,
+      #     credit_id: "credit_id",
+      #     plan_id: "plan_id",
+      #     reset_cadence: "daily",
+      #     reset_start: "billing_period"
+      #   )
       #
       # @return [Schematic::Credits::Types::CreateBillingPlanCreditGrantResponse]
       def create_billing_plan_credit_grant(request_options: {}, **params)
@@ -942,6 +1092,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :plan_grant_id
       #
+      # @example
+      #   client.credits.get_single_billing_plan_credit_grant(plan_grant_id: "plan_grant_id")
+      #
       # @return [Schematic::Credits::Types::GetSingleBillingPlanCreditGrantResponse]
       def get_single_billing_plan_credit_grant(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -974,14 +1127,24 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :plan_grant_id
       #
+      # @example
+      #   client.credits.update_billing_plan_credit_grant(
+      #     plan_grant_id: "plan_grant_id",
+      #     reset_cadence: "daily",
+      #     reset_start: "billing_period"
+      #   )
+      #
       # @return [Schematic::Credits::Types::UpdateBillingPlanCreditGrantResponse]
       def update_billing_plan_credit_grant(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        path_param_names = %i[plan_grant_id]
+        body_params = params.except(*path_param_names)
+
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
           method: "PUT",
           path: "billing/credits/plan-grants/#{URI.encode_uri_component(params[:plan_grant_id].to_s)}",
-          body: Schematic::Types::UpdateBillingPlanCreditGrantRequestBody.new(params).to_h,
+          body: Schematic::Types::UpdateBillingPlanCreditGrantRequestBody.new(body_params).to_h,
           request_options: request_options
         )
         begin
@@ -1008,13 +1171,17 @@ module Schematic
       # @option params [String] :plan_grant_id
       # @option params [Boolean, nil] :apply_to_existing
       #
+      # @example
+      #   client.credits.delete_billing_plan_credit_grant(
+      #     plan_grant_id: "plan_grant_id",
+      #     apply_to_existing: true
+      #   )
+      #
       # @return [Schematic::Credits::Types::DeleteBillingPlanCreditGrantResponse]
       def delete_billing_plan_credit_grant(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[apply_to_existing]
         query_params = {}
         query_params["apply_to_existing"] = params[:apply_to_existing] if params.key?(:apply_to_existing)
-        params = params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -1053,10 +1220,21 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.credits.count_billing_plan_credit_grants(
+      #     credit_id: "credit_id",
+      #     ids: ["ids"],
+      #     plan_id: "plan_id",
+      #     plan_ids: ["plan_ids"],
+      #     plan_version_id: "plan_version_id",
+      #     plan_version_ids: ["plan_version_ids"],
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Credits::Types::CountBillingPlanCreditGrantsResponse]
       def count_billing_plan_credit_grants(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[credit_id ids plan_id plan_ids plan_version_id plan_version_ids limit offset]
         query_params = {}
         query_params["credit_id"] = params[:credit_id] if params.key?(:credit_id)
         query_params["ids"] = params[:ids] if params.key?(:ids)
@@ -1066,7 +1244,6 @@ module Schematic
         query_params["plan_version_ids"] = params[:plan_version_ids] if params.key?(:plan_version_ids)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -1105,10 +1282,21 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.credits.list_credit_event_ledger(
+      #     billing_credit_id: "billing_credit_id",
+      #     company_id: "company_id",
+      #     end_time: "end_time",
+      #     event_type: "grant",
+      #     feature_id: "feature_id",
+      #     start_time: "start_time",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Credits::Types::ListCreditEventLedgerResponse]
       def list_credit_event_ledger(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[billing_credit_id company_id end_time event_type feature_id start_time limit offset]
         query_params = {}
         query_params["billing_credit_id"] = params[:billing_credit_id] if params.key?(:billing_credit_id)
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
@@ -1118,7 +1306,6 @@ module Schematic
         query_params["start_time"] = params[:start_time] if params.key?(:start_time)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -1157,10 +1344,21 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.credits.count_credit_event_ledger(
+      #     billing_credit_id: "billing_credit_id",
+      #     company_id: "company_id",
+      #     end_time: "end_time",
+      #     event_type: "grant",
+      #     feature_id: "feature_id",
+      #     start_time: "start_time",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Credits::Types::CountCreditEventLedgerResponse]
       def count_credit_event_ledger(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[billing_credit_id company_id end_time event_type feature_id start_time limit offset]
         query_params = {}
         query_params["billing_credit_id"] = params[:billing_credit_id] if params.key?(:billing_credit_id)
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
@@ -1170,7 +1368,6 @@ module Schematic
         query_params["start_time"] = params[:start_time] if params.key?(:start_time)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],

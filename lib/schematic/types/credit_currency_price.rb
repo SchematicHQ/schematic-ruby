@@ -4,6 +4,7 @@ module Schematic
   module Types
     class CreditCurrencyPrice < Internal::Types::Model
       field :currency, -> { String }, optional: false, nullable: false
+
       field :price, -> { Schematic::Types::BillingPriceView }, optional: true, nullable: false
     end
   end

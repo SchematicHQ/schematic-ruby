@@ -5,6 +5,7 @@ module Schematic
     module Types
       class GetEntityTraitValuesResponse < Internal::Types::Model
         field :data, -> { Internal::Types::Array[Schematic::Types::EntityTraitValue] }, optional: false, nullable: false
+
         field :params, -> { Schematic::Companies::Types::GetEntityTraitValuesParams }, optional: false, nullable: false
       end
     end

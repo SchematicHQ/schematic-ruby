@@ -5,6 +5,7 @@ module Schematic
     module Types
       class ListAccountMembersResponse < Internal::Types::Model
         field :data, -> { Internal::Types::Array[Schematic::Types::AccountMemberResponseData] }, optional: false, nullable: false
+
         field :params, -> { Schematic::Accounts::Types::ListAccountMembersParams }, optional: false, nullable: false
       end
     end

@@ -5,6 +5,7 @@ module Schematic
     module Types
       class GetPlanChangeResponse < Internal::Types::Model
         field :data, -> { Schematic::Types::PlanChangeResponseData }, optional: false, nullable: false
+
         field :params, -> { Internal::Types::Hash[String, Object] }, optional: false, nullable: false
       end
     end

@@ -4,13 +4,21 @@ module Schematic
   module Types
     class CreateEntitlementReqCommon < Internal::Types::Model
       field :credit_consumption_rate, -> { Integer }, optional: true, nullable: false
+
       field :feature_id, -> { String }, optional: false, nullable: false
+
       field :metric_period, -> { Schematic::Types::MetricPeriod }, optional: true, nullable: false
+
       field :metric_period_month_reset, -> { Schematic::Types::MetricPeriodMonthReset }, optional: true, nullable: false
+
       field :value_bool, -> { Internal::Types::Boolean }, optional: true, nullable: false
+
       field :value_credit_id, -> { String }, optional: true, nullable: false
+
       field :value_numeric, -> { Integer }, optional: true, nullable: false
+
       field :value_trait_id, -> { String }, optional: true, nullable: false
+
       field :value_type, -> { Schematic::Types::EntitlementValueType }, optional: false, nullable: false
     end
   end

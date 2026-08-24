@@ -5,6 +5,7 @@ module Schematic
     module Types
       class GetActivityResponse < Internal::Types::Model
         field :data, -> { Schematic::Types::ActivityResponseResponseData }, optional: false, nullable: false
+
         field :params, -> { Schematic::Insights::Types::GetActivityParams }, optional: false, nullable: false
       end
     end

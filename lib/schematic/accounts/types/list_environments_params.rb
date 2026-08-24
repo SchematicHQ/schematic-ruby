@@ -6,7 +6,9 @@ module Schematic
       # Input parameters
       class ListEnvironmentsParams < Internal::Types::Model
         field :ids, -> { Internal::Types::Array[String] }, optional: true, nullable: false
+
         field :limit, -> { Integer }, optional: true, nullable: false
+
         field :offset, -> { Integer }, optional: true, nullable: false
       end
     end

@@ -25,6 +25,7 @@ module Schematic
       # @option params [String, nil] :plan_ids
       # @option params [String, nil] :plan_version_id
       # @option params [String, nil] :plan_version_ids
+      # @option params [Boolean, nil] :plan_version_unpublished
       # @option params [String, nil] :q
       # @option params [String, nil] :sort_order_column
       # @option params [Schematic::Types::SortDirection, nil] :sort_order_direction
@@ -38,10 +39,34 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.companies.list_companies(
+      #     credit_type_ids: ["credit_type_ids"],
+      #     has_scheduled_downgrade: true,
+      #     ids: ["ids"],
+      #     monetized_subscriptions: true,
+      #     plan_id: "plan_id",
+      #     plan_ids: ["plan_ids"],
+      #     plan_version_id: "plan_version_id",
+      #     plan_version_ids: ["plan_version_ids"],
+      #     plan_version_unpublished: true,
+      #     q: "q",
+      #     sort_order_column: "sort_order_column",
+      #     sort_order_direction: "asc",
+      #     subscription_statuses: ["active"],
+      #     subscription_types: ["free"],
+      #     with_entitlement_for: "with_entitlement_for",
+      #     without_feature_override_for: "without_feature_override_for",
+      #     without_plan: true,
+      #     without_subscription: true,
+      #     with_subscription: true,
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Companies::Types::ListCompaniesResponse]
       def list_companies(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[credit_type_ids has_scheduled_downgrade ids monetized_subscriptions plan_id plan_ids plan_version_id plan_version_ids q sort_order_column sort_order_direction subscription_statuses subscription_types with_entitlement_for without_feature_override_for without_plan without_subscription with_subscription limit offset]
         query_params = {}
         query_params["credit_type_ids"] = params[:credit_type_ids] if params.key?(:credit_type_ids)
         query_params["has_scheduled_downgrade"] = params[:has_scheduled_downgrade] if params.key?(:has_scheduled_downgrade)
@@ -51,6 +76,7 @@ module Schematic
         query_params["plan_ids"] = params[:plan_ids] if params.key?(:plan_ids)
         query_params["plan_version_id"] = params[:plan_version_id] if params.key?(:plan_version_id)
         query_params["plan_version_ids"] = params[:plan_version_ids] if params.key?(:plan_version_ids)
+        query_params["plan_version_unpublished"] = params[:plan_version_unpublished] if params.key?(:plan_version_unpublished)
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["sort_order_column"] = params[:sort_order_column] if params.key?(:sort_order_column)
         query_params["sort_order_direction"] = params[:sort_order_direction] if params.key?(:sort_order_direction)
@@ -63,7 +89,6 @@ module Schematic
         query_params["with_subscription"] = params[:with_subscription] if params.key?(:with_subscription)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -93,6 +118,11 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.companies.upsert_company(keys: {
+      #     key: "value"
+      #   })
       #
       # @return [Schematic::Companies::Types::UpsertCompanyResponse]
       def upsert_company(request_options: {}, **params)
@@ -126,6 +156,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :company_id
+      #
+      # @example
+      #   client.companies.get_company(company_id: "company_id")
       #
       # @return [Schematic::Companies::Types::GetCompanyResponse]
       def get_company(request_options: {}, **params)
@@ -161,14 +194,19 @@ module Schematic
       # @option params [Boolean, nil] :cancel_subscription
       # @option params [Boolean, nil] :prorate
       #
+      # @example
+      #   client.companies.delete_company(
+      #     company_id: "company_id",
+      #     cancel_subscription: true,
+      #     prorate: true
+      #   )
+      #
       # @return [Schematic::Companies::Types::DeleteCompanyResponse]
       def delete_company(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[cancel_subscription prorate]
         query_params = {}
         query_params["cancel_subscription"] = params[:cancel_subscription] if params.key?(:cancel_subscription)
         query_params["prorate"] = params[:prorate] if params.key?(:prorate)
-        params = params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -206,6 +244,7 @@ module Schematic
       # @option params [String, nil] :plan_ids
       # @option params [String, nil] :plan_version_id
       # @option params [String, nil] :plan_version_ids
+      # @option params [Boolean, nil] :plan_version_unpublished
       # @option params [String, nil] :q
       # @option params [String, nil] :sort_order_column
       # @option params [Schematic::Types::SortDirection, nil] :sort_order_direction
@@ -219,10 +258,34 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.companies.count_companies(
+      #     credit_type_ids: ["credit_type_ids"],
+      #     has_scheduled_downgrade: true,
+      #     ids: ["ids"],
+      #     monetized_subscriptions: true,
+      #     plan_id: "plan_id",
+      #     plan_ids: ["plan_ids"],
+      #     plan_version_id: "plan_version_id",
+      #     plan_version_ids: ["plan_version_ids"],
+      #     plan_version_unpublished: true,
+      #     q: "q",
+      #     sort_order_column: "sort_order_column",
+      #     sort_order_direction: "asc",
+      #     subscription_statuses: ["active"],
+      #     subscription_types: ["free"],
+      #     with_entitlement_for: "with_entitlement_for",
+      #     without_feature_override_for: "without_feature_override_for",
+      #     without_plan: true,
+      #     without_subscription: true,
+      #     with_subscription: true,
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Companies::Types::CountCompaniesResponse]
       def count_companies(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[credit_type_ids has_scheduled_downgrade ids monetized_subscriptions plan_id plan_ids plan_version_id plan_version_ids q sort_order_column sort_order_direction subscription_statuses subscription_types with_entitlement_for without_feature_override_for without_plan without_subscription with_subscription limit offset]
         query_params = {}
         query_params["credit_type_ids"] = params[:credit_type_ids] if params.key?(:credit_type_ids)
         query_params["has_scheduled_downgrade"] = params[:has_scheduled_downgrade] if params.key?(:has_scheduled_downgrade)
@@ -232,6 +295,7 @@ module Schematic
         query_params["plan_ids"] = params[:plan_ids] if params.key?(:plan_ids)
         query_params["plan_version_id"] = params[:plan_version_id] if params.key?(:plan_version_id)
         query_params["plan_version_ids"] = params[:plan_version_ids] if params.key?(:plan_version_ids)
+        query_params["plan_version_unpublished"] = params[:plan_version_unpublished] if params.key?(:plan_version_unpublished)
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["sort_order_column"] = params[:sort_order_column] if params.key?(:sort_order_column)
         query_params["sort_order_direction"] = params[:sort_order_direction] if params.key?(:sort_order_direction)
@@ -244,7 +308,6 @@ module Schematic
         query_params["with_subscription"] = params[:with_subscription] if params.key?(:with_subscription)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -274,6 +337,11 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.companies.create_company(keys: {
+      #     key: "value"
+      #   })
       #
       # @return [Schematic::Companies::Types::CreateCompanyResponse]
       def create_company(request_options: {}, **params)
@@ -306,6 +374,11 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.companies.delete_company_by_keys(keys: {
+      #     key: "value"
+      #   })
       #
       # @return [Schematic::Companies::Types::DeleteCompanyByKeysResponse]
       def delete_company_by_keys(request_options: {}, **params)
@@ -346,13 +419,16 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [Hash[String, String]] :keys
       #
+      # @example
+      #   client.companies.lookup_company(keys: {
+      #     keys: "keys"
+      #   })
+      #
       # @return [Schematic::Companies::Types::LookupCompanyResponse]
       def lookup_company(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[keys]
         query_params = {}
         query_params["keys"] = params[:keys] if params.key?(:keys)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -382,15 +458,16 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
-      # @option params [String, nil] :company_id
+      # @option params [String] :company_id
+      #
+      # @example
+      #   client.companies.get_company_billing_entity(company_id: "company_id")
       #
       # @return [Schematic::Companies::Types::GetCompanyBillingEntityResponse]
       def get_company_billing_entity(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[company_id]
         query_params = {}
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -420,15 +497,16 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
-      # @option params [String, nil] :company_id
+      # @option params [String] :company_id
+      #
+      # @example
+      #   client.companies.get_billing_entity_child_subscriptions(company_id: "company_id")
       #
       # @return [Schematic::Companies::Types::GetBillingEntityChildSubscriptionsResponse]
       def get_billing_entity_child_subscriptions(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[company_id]
         query_params = {}
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -463,16 +541,22 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.companies.list_company_memberships(
+      #     company_id: "company_id",
+      #     user_id: "user_id",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Companies::Types::ListCompanyMembershipsResponse]
       def list_company_memberships(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[company_id user_id limit offset]
         query_params = {}
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["user_id"] = params[:user_id] if params.key?(:user_id)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -502,6 +586,12 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.companies.get_or_create_company_membership(
+      #     company_id: "company_id",
+      #     user_id: "user_id"
+      #   )
       #
       # @return [Schematic::Companies::Types::GetOrCreateCompanyMembershipResponse]
       def get_or_create_company_membership(request_options: {}, **params)
@@ -535,6 +625,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :company_membership_id
+      #
+      # @example
+      #   client.companies.delete_company_membership(company_membership_id: "company_membership_id")
       #
       # @return [Schematic::Companies::Types::DeleteCompanyMembershipResponse]
       def delete_company_membership(request_options: {}, **params)
@@ -571,16 +664,22 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.companies.get_active_company_subscription(
+      #     company_id: "company_id",
+      #     company_ids: ["company_ids"],
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Companies::Types::GetActiveCompanySubscriptionResponse]
       def get_active_company_subscription(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[company_id company_ids limit offset]
         query_params = {}
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["company_ids"] = params[:company_ids] if params.key?(:company_ids)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -610,6 +709,14 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.companies.upsert_company_trait(
+      #     keys: {
+      #       key: "value"
+      #     },
+      #     trait: "trait"
+      #   )
       #
       # @return [Schematic::Companies::Types::UpsertCompanyTraitResponse]
       def upsert_company_trait(request_options: {}, **params)
@@ -648,17 +755,24 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.companies.list_entity_key_definitions(
+      #     entity_type: "company",
+      #     ids: ["ids"],
+      #     q: "q",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Companies::Types::ListEntityKeyDefinitionsResponse]
       def list_entity_key_definitions(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[entity_type ids q limit offset]
         query_params = {}
         query_params["entity_type"] = params[:entity_type] if params.key?(:entity_type)
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -689,6 +803,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :entity_key_definition_id
+      #
+      # @example
+      #   client.companies.delete_entity_key_definition(entity_key_definition_id: "entity_key_definition_id")
       #
       # @return [Schematic::Companies::Types::DeleteEntityKeyDefinitionResponse]
       def delete_entity_key_definition(request_options: {}, **params)
@@ -726,17 +843,24 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.companies.count_entity_key_definitions(
+      #     entity_type: "company",
+      #     ids: ["ids"],
+      #     q: "q",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Companies::Types::CountEntityKeyDefinitionsResponse]
       def count_entity_key_definitions(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[entity_type ids q limit offset]
         query_params = {}
         query_params["entity_type"] = params[:entity_type] if params.key?(:entity_type)
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -771,16 +895,22 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.companies.count_entity_keys(
+      #     definition_id: "definition_id",
+      #     entity_type: "company",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Companies::Types::CountEntityKeysResponse]
       def count_entity_keys(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[definition_id entity_type limit offset]
         query_params = {}
         query_params["definition_id"] = params[:definition_id] if params.key?(:definition_id)
         query_params["entity_type"] = params[:entity_type] if params.key?(:entity_type)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -818,10 +948,20 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.companies.list_entity_trait_definitions(
+      #     entity_type: "company",
+      #     ids: ["ids"],
+      #     q: "q",
+      #     trait_type: "boolean",
+      #     trait_types: ["boolean"],
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Companies::Types::ListEntityTraitDefinitionsResponse]
       def list_entity_trait_definitions(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[entity_type ids q trait_type trait_types limit offset]
         query_params = {}
         query_params["entity_type"] = params[:entity_type] if params.key?(:entity_type)
         query_params["ids"] = params[:ids] if params.key?(:ids)
@@ -830,7 +970,6 @@ module Schematic
         query_params["trait_types"] = params[:trait_types] if params.key?(:trait_types)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -860,6 +999,13 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.companies.get_or_create_entity_trait_definition(
+      #     entity_type: "company",
+      #     hierarchy: ["hierarchy"],
+      #     trait_type: "boolean"
+      #   )
       #
       # @return [Schematic::Companies::Types::GetOrCreateEntityTraitDefinitionResponse]
       def get_or_create_entity_trait_definition(request_options: {}, **params)
@@ -894,6 +1040,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :entity_trait_definition_id
       #
+      # @example
+      #   client.companies.get_entity_trait_definition(entity_trait_definition_id: "entity_trait_definition_id")
+      #
       # @return [Schematic::Companies::Types::GetEntityTraitDefinitionResponse]
       def get_entity_trait_definition(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -926,11 +1075,17 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :entity_trait_definition_id
       #
+      # @example
+      #   client.companies.update_entity_trait_definition(
+      #     entity_trait_definition_id: "entity_trait_definition_id",
+      #     trait_type: "boolean"
+      #   )
+      #
       # @return [Schematic::Companies::Types::UpdateEntityTraitDefinitionResponse]
       def update_entity_trait_definition(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         request_data = Schematic::Companies::Types::UpdateEntityTraitDefinitionRequestBody.new(params).to_h
-        non_body_param_names = ["entity_trait_definition_id"]
+        non_body_param_names = %w[entity_trait_definition_id]
         body = request_data.except(*non_body_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
@@ -963,6 +1118,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :entity_trait_definition_id
       #
+      # @example
+      #   client.companies.delete_entity_trait_definition(entity_trait_definition_id: "entity_trait_definition_id")
+      #
       # @return [Schematic::Companies::Types::DeleteEntityTraitDefinitionResponse]
       def delete_entity_trait_definition(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -994,6 +1152,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :entity_trait_definition_id
+      #
+      # @example
+      #   client.companies.get_entity_trait_definition_usage(entity_trait_definition_id: "entity_trait_definition_id")
       #
       # @return [Schematic::Companies::Types::GetEntityTraitDefinitionUsageResponse]
       def get_entity_trait_definition_usage(request_options: {}, **params)
@@ -1033,10 +1194,20 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.companies.count_entity_trait_definitions(
+      #     entity_type: "company",
+      #     ids: ["ids"],
+      #     q: "q",
+      #     trait_type: "boolean",
+      #     trait_types: ["boolean"],
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Companies::Types::CountEntityTraitDefinitionsResponse]
       def count_entity_trait_definitions(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[entity_type ids q trait_type trait_types limit offset]
         query_params = {}
         query_params["entity_type"] = params[:entity_type] if params.key?(:entity_type)
         query_params["ids"] = params[:ids] if params.key?(:ids)
@@ -1045,7 +1216,6 @@ module Schematic
         query_params["trait_types"] = params[:trait_types] if params.key?(:trait_types)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -1080,16 +1250,22 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.companies.get_entity_trait_values(
+      #     definition_id: "definition_id",
+      #     q: "q",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Companies::Types::GetEntityTraitValuesResponse]
       def get_entity_trait_values(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[definition_id q limit offset]
         query_params = {}
         query_params["definition_id"] = params[:definition_id] if params.key?(:definition_id)
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -1124,16 +1300,22 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.companies.count_entity_traits(
+      #     definition_id: "definition_id",
+      #     entity_type: "company",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Companies::Types::CountEntityTraitsResponse]
       def count_entity_traits(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[definition_id entity_type limit offset]
         query_params = {}
         query_params["definition_id"] = params[:definition_id] if params.key?(:definition_id)
         query_params["entity_type"] = params[:entity_type] if params.key?(:entity_type)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -1170,10 +1352,19 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.companies.list_plan_changes(
+      #     action: "checkout",
+      #     base_plan_action: "fallback",
+      #     company_id: "company_id",
+      #     company_ids: ["company_ids"],
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Companies::Types::ListPlanChangesResponse]
       def list_plan_changes(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[action base_plan_action company_id company_ids limit offset]
         query_params = {}
         query_params["action"] = params[:action] if params.key?(:action)
         query_params["base_plan_action"] = params[:base_plan_action] if params.key?(:base_plan_action)
@@ -1181,7 +1372,6 @@ module Schematic
         query_params["company_ids"] = params[:company_ids] if params.key?(:company_ids)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -1212,6 +1402,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :plan_change_id
+      #
+      # @example
+      #   client.companies.get_plan_change(plan_change_id: "plan_change_id")
       #
       # @return [Schematic::Companies::Types::GetPlanChangeResponse]
       def get_plan_change(request_options: {}, **params)
@@ -1250,10 +1443,19 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.companies.list_plan_traits(
+      #     ids: ["ids"],
+      #     plan_id: "plan_id",
+      #     trait_id: "trait_id",
+      #     trait_ids: ["trait_ids"],
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Companies::Types::ListPlanTraitsResponse]
       def list_plan_traits(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[ids plan_id trait_id trait_ids limit offset]
         query_params = {}
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["plan_id"] = params[:plan_id] if params.key?(:plan_id)
@@ -1261,7 +1463,6 @@ module Schematic
         query_params["trait_ids"] = params[:trait_ids] if params.key?(:trait_ids)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -1293,6 +1494,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :plan_trait_id
       #
+      # @example
+      #   client.companies.get_plan_trait(plan_trait_id: "plan_trait_id")
+      #
       # @return [Schematic::Companies::Types::GetPlanTraitResponse]
       def get_plan_trait(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -1323,6 +1527,16 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.companies.update_plan_traits_bulk(
+      #     apply_to_existing_companies: true,
+      #     plan_id: "plan_id",
+      #     traits: [{
+      #       trait_id: "trait_id",
+      #       trait_value: "trait_value"
+      #     }]
+      #   )
       #
       # @return [Schematic::Companies::Types::UpdatePlanTraitsBulkResponse]
       def update_plan_traits_bulk(request_options: {}, **params)
@@ -1362,10 +1576,19 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.companies.count_plan_traits(
+      #     ids: ["ids"],
+      #     plan_id: "plan_id",
+      #     trait_id: "trait_id",
+      #     trait_ids: ["trait_ids"],
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Companies::Types::CountPlanTraitsResponse]
       def count_plan_traits(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[ids plan_id trait_id trait_ids limit offset]
         query_params = {}
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["plan_id"] = params[:plan_id] if params.key?(:plan_id)
@@ -1373,7 +1596,6 @@ module Schematic
         query_params["trait_ids"] = params[:trait_ids] if params.key?(:trait_ids)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -1403,6 +1625,14 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.companies.upsert_user_trait(
+      #     keys: {
+      #       key: "value"
+      #     },
+      #     trait: "trait"
+      #   )
       #
       # @return [Schematic::Companies::Types::UpsertUserTraitResponse]
       def upsert_user_trait(request_options: {}, **params)
@@ -1442,10 +1672,19 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.companies.list_users(
+      #     company_id: "company_id",
+      #     ids: ["ids"],
+      #     plan_id: "plan_id",
+      #     q: "q",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Companies::Types::ListUsersResponse]
       def list_users(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[company_id ids plan_id q limit offset]
         query_params = {}
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["ids"] = params[:ids] if params.key?(:ids)
@@ -1453,7 +1692,6 @@ module Schematic
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -1483,6 +1721,11 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.companies.upsert_user(keys: {
+      #     key: "value"
+      #   })
       #
       # @return [Schematic::Companies::Types::UpsertUserResponse]
       def upsert_user(request_options: {}, **params)
@@ -1517,6 +1760,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :user_id
       #
+      # @example
+      #   client.companies.get_user(user_id: "user_id")
+      #
       # @return [Schematic::Companies::Types::GetUserResponse]
       def get_user(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -1548,6 +1794,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :user_id
+      #
+      # @example
+      #   client.companies.delete_user(user_id: "user_id")
       #
       # @return [Schematic::Companies::Types::DeleteUserResponse]
       def delete_user(request_options: {}, **params)
@@ -1586,10 +1835,19 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.companies.count_users(
+      #     company_id: "company_id",
+      #     ids: ["ids"],
+      #     plan_id: "plan_id",
+      #     q: "q",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Companies::Types::CountUsersResponse]
       def count_users(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[company_id ids plan_id q limit offset]
         query_params = {}
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["ids"] = params[:ids] if params.key?(:ids)
@@ -1597,7 +1855,6 @@ module Schematic
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -1627,6 +1884,11 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.companies.create_user(keys: {
+      #     key: "value"
+      #   })
       #
       # @return [Schematic::Companies::Types::CreateUserResponse]
       def create_user(request_options: {}, **params)
@@ -1659,6 +1921,11 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.companies.delete_user_by_keys(keys: {
+      #     key: "value"
+      #   })
       #
       # @return [Schematic::Companies::Types::DeleteUserByKeysResponse]
       def delete_user_by_keys(request_options: {}, **params)
@@ -1693,13 +1960,16 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [Hash[String, String]] :keys
       #
+      # @example
+      #   client.companies.lookup_user(keys: {
+      #     keys: "keys"
+      #   })
+      #
       # @return [Schematic::Companies::Types::LookupUserResponse]
       def lookup_user(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[keys]
         query_params = {}
         query_params["keys"] = params[:keys] if params.key?(:keys)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],

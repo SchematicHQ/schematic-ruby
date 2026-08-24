@@ -17,23 +17,30 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
-      # @option params [String, nil] :migration_id
+      # @option params [String] :migration_id
       # @option params [String, nil] :q
       # @option params [Schematic::Types::PlanVersionCompanyMigrationStatus, nil] :status
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.planmigrations.list_company_migrations(
+      #     migration_id: "migration_id",
+      #     q: "q",
+      #     status: "completed",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Planmigrations::Types::ListCompanyMigrationsResponse]
       def list_company_migrations(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[migration_id q status limit offset]
         query_params = {}
         query_params["migration_id"] = params[:migration_id] if params.key?(:migration_id)
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["status"] = params[:status] if params.key?(:status)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -65,6 +72,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :plan_version_company_migration_id
       #
+      # @example
+      #   client.planmigrations.retry_company_migration(plan_version_company_migration_id: "plan_version_company_migration_id")
+      #
       # @return [Schematic::Planmigrations::Types::RetryCompanyMigrationResponse]
       def retry_company_migration(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -95,23 +105,30 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
-      # @option params [String, nil] :migration_id
+      # @option params [String] :migration_id
       # @option params [String, nil] :q
       # @option params [Schematic::Types::PlanVersionCompanyMigrationStatus, nil] :status
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.planmigrations.count_company_migrations(
+      #     migration_id: "migration_id",
+      #     q: "q",
+      #     status: "completed",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Planmigrations::Types::CountCompanyMigrationsResponse]
       def count_company_migrations(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[migration_id q status limit offset]
         query_params = {}
         query_params["migration_id"] = params[:migration_id] if params.key?(:migration_id)
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["status"] = params[:status] if params.key?(:status)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -141,21 +158,27 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
-      # @option params [String, nil] :plan_version_id
+      # @option params [String] :plan_version_id
       # @option params [Schematic::Types::PlanVersionMigrationStatus, nil] :status
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.planmigrations.list_migrations(
+      #     plan_version_id: "plan_version_id",
+      #     status: "completed",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Planmigrations::Types::ListMigrationsResponse]
       def list_migrations(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[plan_version_id status limit offset]
         query_params = {}
         query_params["plan_version_id"] = params[:plan_version_id] if params.key?(:plan_version_id)
         query_params["status"] = params[:status] if params.key?(:status)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -185,6 +208,14 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.planmigrations.create_migration(
+      #     plan_id: "plan_id",
+      #     plan_version_id_to: "plan_version_id_to",
+      #     strategy: "immediate",
+      #     target_plan_type: "plan"
+      #   )
       #
       # @return [Schematic::Planmigrations::Types::CreateMigrationResponse]
       def create_migration(request_options: {}, **params)
@@ -219,6 +250,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :plan_version_migration_id
       #
+      # @example
+      #   client.planmigrations.get_migration(plan_version_migration_id: "plan_version_migration_id")
+      #
       # @return [Schematic::Planmigrations::Types::GetMigrationResponse]
       def get_migration(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -251,11 +285,17 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :plan_version_migration_id
       #
+      # @example
+      #   client.planmigrations.retry_migration(
+      #     plan_version_migration_id: "plan_version_migration_id",
+      #     error_codes: ["ambiguous_subscription_item"]
+      #   )
+      #
       # @return [Schematic::Planmigrations::Types::RetryMigrationResponse]
       def retry_migration(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         request_data = Schematic::Planmigrations::Types::RetryMigrationRequestBody.new(params).to_h
-        non_body_param_names = ["plan_version_migration_id"]
+        non_body_param_names = %w[plan_version_migration_id]
         body = request_data.except(*non_body_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
@@ -286,21 +326,27 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
-      # @option params [String, nil] :plan_version_id
+      # @option params [String] :plan_version_id
       # @option params [Schematic::Types::PlanVersionMigrationStatus, nil] :status
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.planmigrations.count_migrations(
+      #     plan_version_id: "plan_version_id",
+      #     status: "completed",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Planmigrations::Types::CountMigrationsResponse]
       def count_migrations(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[plan_version_id status limit offset]
         query_params = {}
         query_params["plan_version_id"] = params[:plan_version_id] if params.key?(:plan_version_id)
         query_params["status"] = params[:status] if params.key?(:status)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -330,6 +376,13 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.planmigrations.preview_migration(
+      #     plan_id: "plan_id",
+      #     plan_version_id_to: "plan_version_id_to",
+      #     target_plan_type: "plan"
+      #   )
       #
       # @return [Schematic::Planmigrations::Types::PreviewMigrationResponse]
       def preview_migration(request_options: {}, **params)

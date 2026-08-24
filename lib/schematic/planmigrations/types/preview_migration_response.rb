@@ -5,6 +5,7 @@ module Schematic
     module Types
       class PreviewMigrationResponse < Internal::Types::Model
         field :data, -> { Schematic::Types::PlanVersionMigrationPreviewResponseData }, optional: false, nullable: false
+
         field :params, -> { Internal::Types::Hash[String, Object] }, optional: false, nullable: false
       end
     end

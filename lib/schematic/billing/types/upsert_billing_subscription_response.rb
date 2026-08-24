@@ -5,6 +5,7 @@ module Schematic
     module Types
       class UpsertBillingSubscriptionResponse < Internal::Types::Model
         field :data, -> { Schematic::Types::BillingSubscriptionResponseData }, optional: false, nullable: false
+
         field :params, -> { Internal::Types::Hash[String, Object] }, optional: false, nullable: false
       end
     end
