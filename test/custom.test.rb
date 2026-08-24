@@ -549,13 +549,13 @@ describe "EventBuffer" do
     )
 
     buffer.push({
-                  event_type: "track",
-                  body: { event: "page_view" },
-                  sent_at: "2024-01-01T00:00:00Z",
-                  idempotency_key: "evt_xyz",
-                  trusted_client_clock: true,
-                  backfill: false
-                })
+      event_type: "track",
+      body: { event: "page_view" },
+      sent_at: "2024-01-01T00:00:00Z",
+      idempotency_key: "evt_xyz",
+      trusted_client_clock: true,
+      backfill: false
+    })
     buffer.flush
 
     event = request_body[:events][0]
@@ -1650,11 +1650,11 @@ describe "SchematicClient - Track with Quantity" do
     )
 
     client.track({
-                   event: "query-tokens",
-                   company: { "org_id" => "abc" },
-                   user: { "email" => "test@test.com" },
-                   quantity: 1500
-                 })
+      event: "query-tokens",
+      company: { "org_id" => "abc" },
+      user: { "email" => "test@test.com" },
+      quantity: 1500
+    })
 
     buffer = client.instance_variable_get(:@event_buffer)
     buffer.flush
@@ -2744,10 +2744,10 @@ describe "DataStream Client - Full Entity Messages" do
 
     company_data = { id: "comp_1", keys: { "org_id" => "abc" }, traits: { "plan" => "pro" }, name: "Acme" }
     ds.send(:handle_message, {
-              entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
-              message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
-              data: company_data
-            })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
+      message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
+      data: company_data
+    })
 
     cached = ds.instance_variable_get(:@company_cache).get_by_id("comp_1")
 
@@ -2763,10 +2763,10 @@ describe "DataStream Client - Full Entity Messages" do
 
     user_data = { id: "user_1", keys: { "email" => "test@test.com" }, traits: { "role" => "admin" } }
     ds.send(:handle_message, {
-              entity_type: Schematic::DataStream::ENTITY_TYPE_USER,
-              message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
-              data: user_data
-            })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_USER,
+      message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
+      data: user_data
+    })
 
     cached = ds.instance_variable_get(:@user_cache).get_by_id("user_1")
 
@@ -2782,10 +2782,10 @@ describe "DataStream Client - Full Entity Messages" do
 
     flag_data = { key: "my-flag", type: "boolean", default_value: true, rules: [] }
     ds.send(:handle_message, {
-              entity_type: Schematic::DataStream::ENTITY_TYPE_FLAG,
-              message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
-              data: flag_data
-            })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_FLAG,
+      message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
+      data: flag_data
+    })
 
     # Flags are stored with versioned keys: "flags:{version}:{key}"
     versioned_key = ds.send(:flag_cache_key, "my-flag")
@@ -2810,10 +2810,10 @@ describe "DataStream Client - Full Entity Messages" do
       { key: "flag-b", type: "boolean", default_value: false, rules: [] }
     ]
     ds.send(:handle_message, {
-              entity_type: Schematic::DataStream::ENTITY_TYPE_FLAGS,
-              message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
-              data: flags
-            })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_FLAGS,
+      message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
+      data: flags
+    })
 
     refute_nil ctx[:flag_cache].get(ds.send(:flag_cache_key, "flag-a"))
     refute_nil ctx[:flag_cache].get(ds.send(:flag_cache_key, "flag-b"))
@@ -2831,19 +2831,19 @@ describe "DataStream Client - Partial Entity Messages" do
     # Seed a company
     existing = { id: "comp_1", keys: { "org_id" => "abc" }, traits: { "plan" => "pro" } }
     ds.send(:handle_message, {
-              entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
-              message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
-              data: existing
-            })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
+      message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
+      data: existing
+    })
 
     # Send a partial update. The cache lookup uses entity_id from the envelope;
     # data is the wrapped partial payload with no top-level id.
     ds.send(:handle_message, {
-              entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
-              entity_id: "comp_1",
-              message_type: Schematic::DataStream::MESSAGE_TYPE_PARTIAL,
-              data: { traits: { "seats" => "25" } }
-            })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
+      entity_id: "comp_1",
+      message_type: Schematic::DataStream::MESSAGE_TYPE_PARTIAL,
+      data: { traits: { "seats" => "25" } }
+    })
 
     cached = ds.instance_variable_get(:@company_cache).get_by_id("comp_1")
 
@@ -2862,19 +2862,19 @@ describe "DataStream Client - Partial Entity Messages" do
 
     existing = { id: "user_1", keys: { "email" => "old@test.com" }, traits: { "role" => "viewer" } }
     ds.send(:handle_message, {
-              entity_type: Schematic::DataStream::ENTITY_TYPE_USER,
-              message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
-              data: existing
-            })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_USER,
+      message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
+      data: existing
+    })
 
     # Send a partial update. Cache lookup uses entity_id from the envelope;
     # data is the wrapped partial payload with no top-level id.
     ds.send(:handle_message, {
-              entity_type: Schematic::DataStream::ENTITY_TYPE_USER,
-              entity_id: "user_1",
-              message_type: Schematic::DataStream::MESSAGE_TYPE_PARTIAL,
-              data: { keys: { "user_id" => "u123" } }
-            })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_USER,
+      entity_id: "user_1",
+      message_type: Schematic::DataStream::MESSAGE_TYPE_PARTIAL,
+      data: { keys: { "user_id" => "u123" } }
+    })
 
     cached = ds.instance_variable_get(:@user_cache).get_by_id("user_1")
     keys = cached[:keys]
@@ -2891,11 +2891,11 @@ describe "DataStream Client - Partial Entity Messages" do
 
     # No FULL message for new_comp; partial should be dropped on cache miss.
     ds.send(:handle_message, {
-              entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
-              entity_id: "new_comp",
-              message_type: Schematic::DataStream::MESSAGE_TYPE_PARTIAL,
-              data: { traits: { "tier" => "free" } }
-            })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
+      entity_id: "new_comp",
+      message_type: Schematic::DataStream::MESSAGE_TYPE_PARTIAL,
+      data: { traits: { "tier" => "free" } }
+    })
 
     cached = ds.instance_variable_get(:@company_cache).get_by_id("new_comp")
 
@@ -2909,11 +2909,11 @@ describe "DataStream Client - Partial Entity Messages" do
     ds = ctx[:client]
 
     ds.send(:handle_message, {
-              entity_type: Schematic::DataStream::ENTITY_TYPE_USER,
-              entity_id: "new_user",
-              message_type: Schematic::DataStream::MESSAGE_TYPE_PARTIAL,
-              data: { keys: { "email" => "new@test.com" } }
-            })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_USER,
+      entity_id: "new_user",
+      message_type: Schematic::DataStream::MESSAGE_TYPE_PARTIAL,
+      data: { keys: { "email" => "new@test.com" } }
+    })
 
     cached = ds.instance_variable_get(:@user_cache).get_by_id("new_user")
 
@@ -2930,18 +2930,18 @@ describe "DataStream Client - Delete Messages" do
 
     company = { id: "comp_del", keys: { "org_id" => "del-me" } }
     ds.send(:handle_message, {
-              entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
-              message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
-              data: company
-            })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
+      message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
+      data: company
+    })
 
     refute_nil ds.instance_variable_get(:@company_cache).get_by_id("comp_del")
 
     ds.send(:handle_message, {
-              entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
-              message_type: Schematic::DataStream::MESSAGE_TYPE_DELETE,
-              data: company
-            })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
+      message_type: Schematic::DataStream::MESSAGE_TYPE_DELETE,
+      data: company
+    })
 
     assert_nil ds.instance_variable_get(:@company_cache).get_by_id("comp_del")
 
@@ -2954,18 +2954,18 @@ describe "DataStream Client - Delete Messages" do
 
     user = { id: "user_del", keys: { "email" => "del@test.com" } }
     ds.send(:handle_message, {
-              entity_type: Schematic::DataStream::ENTITY_TYPE_USER,
-              message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
-              data: user
-            })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_USER,
+      message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
+      data: user
+    })
 
     refute_nil ds.instance_variable_get(:@user_cache).get_by_id("user_del")
 
     ds.send(:handle_message, {
-              entity_type: Schematic::DataStream::ENTITY_TYPE_USER,
-              message_type: Schematic::DataStream::MESSAGE_TYPE_DELETE,
-              data: user
-            })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_USER,
+      message_type: Schematic::DataStream::MESSAGE_TYPE_DELETE,
+      data: user
+    })
 
     assert_nil ds.instance_variable_get(:@user_cache).get_by_id("user_del")
 
@@ -2978,20 +2978,20 @@ describe "DataStream Client - Delete Messages" do
 
     flag = { key: "del-flag", type: "boolean", default_value: false, rules: [] }
     ds.send(:handle_message, {
-              entity_type: Schematic::DataStream::ENTITY_TYPE_FLAG,
-              message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
-              data: flag
-            })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_FLAG,
+      message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
+      data: flag
+    })
 
     versioned_key = ds.send(:flag_cache_key, "del-flag")
 
     refute_nil ctx[:flag_cache].get(versioned_key)
 
     ds.send(:handle_message, {
-              entity_type: Schematic::DataStream::ENTITY_TYPE_FLAG,
-              message_type: Schematic::DataStream::MESSAGE_TYPE_DELETE,
-              data: flag
-            })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_FLAG,
+      message_type: Schematic::DataStream::MESSAGE_TYPE_DELETE,
+      data: flag
+    })
 
     assert_nil ctx[:flag_cache].get(versioned_key)
 
@@ -3006,10 +3006,10 @@ describe "DataStream Client - Deep Copy / Mutation Prevention" do
 
     company = { id: "comp_immut", keys: { "org_id" => "abc" }, traits: { "plan" => "pro" } }
     ds.send(:handle_message, {
-              entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
-              message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
-              data: company
-            })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
+      message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
+      data: company
+    })
 
     # Retrieve and mutate
     retrieved = ds.instance_variable_get(:@company_cache).get_by_id("comp_immut")
@@ -3040,10 +3040,10 @@ describe "DataStream Client - Deep Copy / Mutation Prevention" do
       ]
     }
     ds.send(:handle_message, {
-              entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
-              message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
-              data: company
-            })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
+      message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
+      data: company
+    })
 
     # Get a reference to the cached data before update
     before = ds.instance_variable_get(:@company_cache).get_by_keys({ "org_id" => "metrics-co" })
@@ -3069,9 +3069,9 @@ describe "DataStream Client - Error Message Handling" do
 
     # Should not raise
     ds.send(:handle_message, {
-              error: "something went wrong",
-              entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY
-            })
+      error: "something went wrong",
+      entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY
+    })
 
     ds.close
   end
@@ -3082,10 +3082,10 @@ describe "DataStream Client - Error Message Handling" do
 
     # Should not raise
     ds.send(:handle_message, {
-              entity_type: "unknown.Type",
-              message_type: "full",
-              data: { id: "x" }
-            })
+      entity_type: "unknown.Type",
+      message_type: "full",
+      data: { id: "x" }
+    })
 
     ds.close
   end
@@ -3109,10 +3109,10 @@ describe "DataStream Client - Entity Lookup via Keys" do
 
     company = { id: "comp_lookup", keys: { "org_id" => "lookup-org", "slug" => "acme" }, name: "Lookup Co" }
     ds.send(:handle_message, {
-              entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
-              message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
-              data: company
-            })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
+      message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
+      data: company
+    })
 
     # Look up by either key
     by_org = ds.instance_variable_get(:@company_cache).get_by_keys({ "org_id" => "lookup-org" })
@@ -3134,10 +3134,10 @@ describe "DataStream Client - Entity Lookup via Keys" do
 
     user = { id: "user_lookup", keys: { "email" => "lookup@test.com", "user_id" => "uid_1" } }
     ds.send(:handle_message, {
-              entity_type: Schematic::DataStream::ENTITY_TYPE_USER,
-              message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
-              data: user
-            })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_USER,
+      message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
+      data: user
+    })
 
     by_email = ds.instance_variable_get(:@user_cache).get_by_keys({ "email" => "lookup@test.com" })
 
@@ -3153,18 +3153,18 @@ describe "DataStream Client - Entity Lookup via Keys" do
 
     company = { id: "comp_keydel", keys: { "org_id" => "keydel-org" } }
     ds.send(:handle_message, {
-              entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
-              message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
-              data: company
-            })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
+      message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
+      data: company
+    })
 
     refute_nil ds.instance_variable_get(:@company_cache).get_by_keys({ "org_id" => "keydel-org" })
 
     ds.send(:handle_message, {
-              entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
-              message_type: Schematic::DataStream::MESSAGE_TYPE_DELETE,
-              data: company
-            })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
+      message_type: Schematic::DataStream::MESSAGE_TYPE_DELETE,
+      data: company
+    })
 
     assert_nil ds.instance_variable_get(:@company_cache).get_by_keys({ "org_id" => "keydel-org" })
 
@@ -3180,10 +3180,10 @@ describe "DataStream Client - String-Keyed Messages" do
     ds = ctx[:client]
 
     ds.send(:handle_message, {
-              "entity_type" => Schematic::DataStream::ENTITY_TYPE_COMPANY,
-              "message_type" => Schematic::DataStream::MESSAGE_TYPE_FULL,
-              "data" => { "id" => "str_comp", "keys" => { "org_id" => "str-org" }, "name" => "Str Co" }
-            })
+      "entity_type" => Schematic::DataStream::ENTITY_TYPE_COMPANY,
+      "message_type" => Schematic::DataStream::MESSAGE_TYPE_FULL,
+      "data" => { "id" => "str_comp", "keys" => { "org_id" => "str-org" }, "name" => "Str Co" }
+    })
 
     cached = ds.instance_variable_get(:@company_cache).get_by_id("str_comp")
 
@@ -3197,10 +3197,10 @@ describe "DataStream Client - String-Keyed Messages" do
     ds = ctx[:client]
 
     ds.send(:handle_message, {
-              "entity_type" => Schematic::DataStream::ENTITY_TYPE_FLAG,
-              "message_type" => Schematic::DataStream::MESSAGE_TYPE_FULL,
-              "data" => { "key" => "str-flag", "type" => "boolean", "default_value" => true, "rules" => [] }
-            })
+      "entity_type" => Schematic::DataStream::ENTITY_TYPE_FLAG,
+      "message_type" => Schematic::DataStream::MESSAGE_TYPE_FULL,
+      "data" => { "key" => "str-flag", "type" => "boolean", "default_value" => true, "rules" => [] }
+    })
 
     versioned_key = ds.send(:flag_cache_key, "str-flag")
     cached = ctx[:flag_cache].get(versioned_key)
@@ -3225,10 +3225,10 @@ describe "DataStream Client - update_company_metrics" do
       ]
     }
     ds.send(:handle_message, {
-              entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
-              message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
-              data: company
-            })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
+      message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
+      data: company
+    })
 
     ds.update_company_metrics({ "org_id" => "met-org" }, "api_call", 10)
 
@@ -3267,10 +3267,10 @@ describe "DataStream Client - update_company_metrics" do
       ]
     }
     ds.send(:handle_message, {
-              entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
-              message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
-              data: company
-            })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
+      message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
+      data: company
+    })
 
     ds.update_company_metrics({ "org_id" => "nomatch-org" }, "unknown_event", 10)
 
@@ -3382,10 +3382,10 @@ describe "DataStream Client - redis_client convenience" do
     # Cache a company via handle_message
     company = { id: "comp_redis", keys: { "org_id" => "redis-org" }, name: "Redis Co" }
     ds_client.send(:handle_message, {
-                     entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
-                     message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
-                     data: company
-                   })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
+      message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
+      data: company
+    })
 
     # Verify data landed in the mock Redis store (not just local memory)
     redis_keys = @store.keys.select { |k| k.start_with?("schematic:") }
@@ -3411,10 +3411,10 @@ describe "DataStream Client - redis_client convenience" do
 
     company = { id: "comp_prefix", keys: { "org_id" => "pfx-org" }, name: "Prefix Co" }
     ds_client.send(:handle_message, {
-                     entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
-                     message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
-                     data: company
-                   })
+      entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
+      message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
+      data: company
+    })
 
     redis_keys = @store.keys.select { |k| k.start_with?("myapp:") }
 

@@ -262,8 +262,8 @@ module Schematic
 
         if first_request
           @ws_client&.send_message({
-                                     data: { entity_type: entity_type, keys: keys }
-                                   })
+            data: { entity_type: entity_type, keys: keys }
+          })
         end
 
         # Wait for response with timeout
@@ -288,8 +288,8 @@ module Schematic
         @logger.info("DataStream connection is ready")
         @logger.debug("Requesting initial flag data")
         @ws_client&.send_message({
-                                   data: { entity_type: ENTITY_TYPE_FLAGS }
-                                 })
+          data: { entity_type: ENTITY_TYPE_FLAGS }
+        })
       end
 
       def handle_message(message)

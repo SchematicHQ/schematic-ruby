@@ -542,10 +542,10 @@ module Schematic
       body[:user] = user if user&.any?
 
       @event_buffer.push({
-                           event_type: "flag_check",
-                           body: body,
-                           sent_at: Time.now.utc.iso8601
-                         })
+        event_type: "flag_check",
+        body: body,
+        sent_at: Time.now.utc.iso8601
+      })
     end
 
     def setup_datastream(options)
