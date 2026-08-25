@@ -5,6 +5,7 @@ module Schematic
     module Types
       class GetEnvironmentFeatureUsageTimeSeriesResponse < Internal::Types::Model
         field :data, -> { Schematic::Types::EnvironmentFeatureUsageTimeSeriesResponseData }, optional: false, nullable: false
+
         field :params, -> { Schematic::Insights::Types::GetEnvironmentFeatureUsageTimeSeriesParams }, optional: false, nullable: false
       end
     end

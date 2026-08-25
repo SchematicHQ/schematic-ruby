@@ -5,6 +5,7 @@ module Schematic
     module Types
       class UpdateFlagRulesRequestBody < Internal::Types::Model
         field :flag_id, -> { String }, optional: false, nullable: false
+
         field :rules, -> { Internal::Types::Array[Schematic::Types::CreateOrUpdateRuleRequestBody] }, optional: false, nullable: false
       end
     end

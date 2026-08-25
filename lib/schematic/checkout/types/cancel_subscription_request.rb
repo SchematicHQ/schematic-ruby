@@ -5,7 +5,9 @@ module Schematic
     module Types
       class CancelSubscriptionRequest < Internal::Types::Model
         field :cancel_immediately, -> { Internal::Types::Boolean }, optional: true, nullable: false
+
         field :company_id, -> { String }, optional: false, nullable: false
+
         field :prorate, -> { Internal::Types::Boolean }, optional: true, nullable: false
       end
     end

@@ -5,6 +5,7 @@ module Schematic
     module Types
       class GetAuditLogResponse < Internal::Types::Model
         field :data, -> { Schematic::Types::AuditLogResponseData }, optional: false, nullable: false
+
         field :params, -> { Internal::Types::Hash[String, Object] }, optional: false, nullable: false
       end
     end

@@ -5,6 +5,7 @@ module Schematic
     module Types
       class ListCompanyMigrationsResponse < Internal::Types::Model
         field :data, -> { Internal::Types::Array[Schematic::Types::PlanVersionCompanyMigrationResponseData] }, optional: false, nullable: false
+
         field :params, -> { Schematic::Planmigrations::Types::ListCompanyMigrationsParams }, optional: false, nullable: false
       end
     end

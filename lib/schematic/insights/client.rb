@@ -19,13 +19,14 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [Integer, nil] :limit
       #
+      # @example
+      #   client.insights.get_activity(limit: 1000000)
+      #
       # @return [Schematic::Insights::Types::GetActivityResponse]
       def get_activity(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[limit]
         query_params = {}
         query_params["limit"] = params[:limit] if params.key?(:limit)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -60,16 +61,22 @@ module Schematic
       # @option params [Schematic::Types::TimeSeriesGranularity, nil] :granularity
       # @option params [String] :start_time
       #
+      # @example
+      #   client.insights.get_environment_feature_usage_time_series(
+      #     end_time: "2024-01-15T09:30:00Z",
+      #     feature_id: "feature_id",
+      #     granularity: "daily",
+      #     start_time: "2024-01-15T09:30:00Z"
+      #   )
+      #
       # @return [Schematic::Insights::Types::GetEnvironmentFeatureUsageTimeSeriesResponse]
       def get_environment_feature_usage_time_series(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[end_time feature_id granularity start_time]
         query_params = {}
         query_params["end_time"] = params[:end_time] if params.key?(:end_time)
         query_params["feature_id"] = params[:feature_id] if params.key?(:feature_id)
         query_params["granularity"] = params[:granularity] if params.key?(:granularity)
         query_params["start_time"] = params[:start_time] if params.key?(:start_time)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -101,13 +108,14 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [Integer, nil] :months
       #
+      # @example
+      #   client.insights.get_plan_growth(months: 1000000)
+      #
       # @return [Schematic::Insights::Types::GetPlanGrowthResponse]
       def get_plan_growth(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[months]
         query_params = {}
         query_params["months"] = params[:months] if params.key?(:months)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -131,16 +139,18 @@ module Schematic
       end
 
       # @param request_options [Hash]
-      # @param params [Hash]
+      # @param _params [Hash]
       # @option request_options [String] :base_url
       # @option request_options [Hash{String => Object}] :additional_headers
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       #
+      # @example
+      #   client.insights.get_summary
+      #
       # @return [Schematic::Insights::Types::GetSummaryResponse]
-      def get_summary(request_options: {}, **params)
-        Schematic::Internal::Types::Utils.normalize_keys(params)
+      def get_summary(request_options: {}, **_params)
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
           method: "GET",
@@ -172,15 +182,20 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [String] :start_time
       #
+      # @example
+      #   client.insights.get_top_features_by_usage(
+      #     end_time: "2024-01-15T09:30:00Z",
+      #     limit: 1000000,
+      #     start_time: "2024-01-15T09:30:00Z"
+      #   )
+      #
       # @return [Schematic::Insights::Types::GetTopFeaturesByUsageResponse]
       def get_top_features_by_usage(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[end_time limit start_time]
         query_params = {}
         query_params["end_time"] = params[:end_time] if params.key?(:end_time)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["start_time"] = params[:start_time] if params.key?(:start_time)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -215,16 +230,22 @@ module Schematic
       # @option params [Schematic::Types::TimeSeriesGranularity, nil] :granularity
       # @option params [String] :start_time
       #
+      # @example
+      #   client.insights.get_environment_trait_usage_time_series(
+      #     end_time: "2024-01-15T09:30:00Z",
+      #     feature_id: "feature_id",
+      #     granularity: "daily",
+      #     start_time: "2024-01-15T09:30:00Z"
+      #   )
+      #
       # @return [Schematic::Insights::Types::GetEnvironmentTraitUsageTimeSeriesResponse]
       def get_environment_trait_usage_time_series(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[end_time feature_id granularity start_time]
         query_params = {}
         query_params["end_time"] = params[:end_time] if params.key?(:end_time)
         query_params["feature_id"] = params[:feature_id] if params.key?(:feature_id)
         query_params["granularity"] = params[:granularity] if params.key?(:granularity)
         query_params["start_time"] = params[:start_time] if params.key?(:start_time)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],

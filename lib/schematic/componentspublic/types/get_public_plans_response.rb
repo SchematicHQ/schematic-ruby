@@ -5,6 +5,7 @@ module Schematic
     module Types
       class GetPublicPlansResponse < Internal::Types::Model
         field :data, -> { Schematic::Types::PublicPlansResponseData }, optional: false, nullable: false
+
         field :params, -> { Internal::Types::Hash[String, Object] }, optional: false, nullable: false
       end
     end

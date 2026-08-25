@@ -5,21 +5,37 @@ module Schematic
     module Types
       class CreateBillingPriceRequestBody < Internal::Types::Model
         field :billing_scheme, -> { Schematic::Types::BillingPriceScheme }, optional: false, nullable: false
+
         field :currency, -> { String }, optional: false, nullable: false
+
         field :external_account_id, -> { String }, optional: false, nullable: false
+
         field :interval, -> { String }, optional: false, nullable: false
+
         field :interval_count, -> { Integer }, optional: true, nullable: false
+
         field :is_active, -> { Internal::Types::Boolean }, optional: false, nullable: false
+
         field :meter_id, -> { String }, optional: true, nullable: false
+
         field :nickname, -> { String }, optional: true, nullable: false
+
         field :package_size, -> { Integer }, optional: true, nullable: false
+
         field :price, -> { Integer }, optional: false, nullable: false
+
         field :price_decimal, -> { String }, optional: true, nullable: false
+
         field :price_external_id, -> { String }, optional: false, nullable: false
+
         field :price_tiers, -> { Internal::Types::Array[Schematic::Types::CreateBillingPriceTierRequestBody] }, optional: false, nullable: false
+
         field :product_external_id, -> { String }, optional: false, nullable: false
+
         field :provider_type, -> { Schematic::Types::BillingProviderType }, optional: true, nullable: false
+
         field :tiers_mode, -> { Schematic::Types::BillingTiersMode }, optional: true, nullable: false
+
         field :usage_type, -> { Schematic::Types::BillingPriceUsageType }, optional: false, nullable: false
       end
     end

@@ -5,6 +5,7 @@ module Schematic
     module Types
       class GetSummaryResponse < Internal::Types::Model
         field :data, -> { Schematic::Types::InsightsSummaryResponseData }, optional: false, nullable: false
+
         field :params, -> { Internal::Types::Hash[String, Object] }, optional: false, nullable: false
       end
     end

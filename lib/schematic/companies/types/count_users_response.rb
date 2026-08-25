@@ -5,6 +5,7 @@ module Schematic
     module Types
       class CountUsersResponse < Internal::Types::Model
         field :data, -> { Schematic::Types::CountResponse }, optional: false, nullable: false
+
         field :params, -> { Schematic::Companies::Types::CountUsersParams }, optional: false, nullable: false
       end
     end

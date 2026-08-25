@@ -7,6 +7,7 @@ module Schematic
 
       ALWAYS_INVOICE = "always_invoice"
       CREATE_PRORATIONS = "create_prorations"
+      NONE = "none"
     end
   end
 end

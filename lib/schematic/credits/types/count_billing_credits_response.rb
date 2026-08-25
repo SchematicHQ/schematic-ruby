@@ -5,6 +5,7 @@ module Schematic
     module Types
       class CountBillingCreditsResponse < Internal::Types::Model
         field :data, -> { Schematic::Types::CountResponse }, optional: false, nullable: false
+
         field :params, -> { Schematic::Credits::Types::CountBillingCreditsParams }, optional: false, nullable: false
       end
     end

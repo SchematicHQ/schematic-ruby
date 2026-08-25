@@ -5,6 +5,7 @@ module Schematic
     module Types
       class DeletePlanVersionRequest < Internal::Types::Model
         field :plan_version_id, -> { String }, optional: false, nullable: false
+
         field :promote_archived_version, -> { Internal::Types::Boolean }, optional: true, nullable: false
       end
     end

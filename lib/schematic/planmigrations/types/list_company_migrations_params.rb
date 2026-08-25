@@ -6,9 +6,13 @@ module Schematic
       # Input parameters
       class ListCompanyMigrationsParams < Internal::Types::Model
         field :limit, -> { Integer }, optional: true, nullable: false
+
         field :migration_id, -> { String }, optional: true, nullable: false
+
         field :offset, -> { Integer }, optional: true, nullable: false
+
         field :q, -> { String }, optional: true, nullable: false
+
         field :status, -> { Schematic::Types::PlanVersionCompanyMigrationStatus }, optional: true, nullable: false
       end
     end

@@ -5,6 +5,7 @@ module Schematic
     module Types
       class CountFeaturesResponse < Internal::Types::Model
         field :data, -> { Schematic::Types::CountResponse }, optional: false, nullable: false
+
         field :params, -> { Schematic::Features::Types::CountFeaturesParams }, optional: false, nullable: false
       end
     end

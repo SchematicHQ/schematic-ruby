@@ -5,8 +5,11 @@ module Schematic
     module Types
       class ListGrantsForCreditRequest < Internal::Types::Model
         field :credit_id, -> { String }, optional: true, nullable: false
+
         field :ids, -> { String }, optional: true, nullable: false
+
         field :limit, -> { Integer }, optional: true, nullable: false
+
         field :offset, -> { Integer }, optional: true, nullable: false
       end
     end

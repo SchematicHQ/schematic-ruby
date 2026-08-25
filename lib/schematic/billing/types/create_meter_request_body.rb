@@ -5,9 +5,13 @@ module Schematic
     module Types
       class CreateMeterRequestBody < Internal::Types::Model
         field :display_name, -> { String }, optional: false, nullable: false
+
         field :event_name, -> { String }, optional: false, nullable: false
+
         field :event_payload_key, -> { String }, optional: false, nullable: false
+
         field :external_id, -> { String }, optional: false, nullable: false
+
         field :provider_type, -> { Schematic::Types::BillingProviderType }, optional: true, nullable: false
       end
     end

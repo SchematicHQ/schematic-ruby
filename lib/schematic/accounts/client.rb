@@ -23,17 +23,24 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.accounts.list_account_members(
+      #     ids: ["ids"],
+      #     q: "q",
+      #     role: "admin",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Accounts::Types::ListAccountMembersResponse]
       def list_account_members(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[ids q role limit offset]
         query_params = {}
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["role"] = params[:role] if params.key?(:role)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -64,6 +71,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :account_member_id
+      #
+      # @example
+      #   client.accounts.get_account_member(account_member_id: "account_member_id")
       #
       # @return [Schematic::Accounts::Types::GetAccountMemberResponse]
       def get_account_member(request_options: {}, **params)
@@ -101,17 +111,24 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.accounts.count_account_members(
+      #     ids: ["ids"],
+      #     q: "q",
+      #     role: "admin",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Accounts::Types::CountAccountMembersResponse]
       def count_account_members(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[ids q role limit offset]
         query_params = {}
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["role"] = params[:role] if params.key?(:role)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -146,16 +163,22 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.accounts.list_api_keys(
+      #     environment_id: "environment_id",
+      #     require_environment: true,
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Accounts::Types::ListApiKeysResponse]
       def list_api_keys(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[environment_id require_environment limit offset]
         query_params = {}
         query_params["environment_id"] = params[:environment_id] if params.key?(:environment_id)
         query_params["require_environment"] = params[:require_environment] if params.key?(:require_environment)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -185,6 +208,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.accounts.create_api_key(name: "name")
       #
       # @return [Schematic::Accounts::Types::CreateApiKeyResponse]
       def create_api_key(request_options: {}, **params)
@@ -219,6 +245,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :api_key_id
       #
+      # @example
+      #   client.accounts.get_api_key(api_key_id: "api_key_id")
+      #
       # @return [Schematic::Accounts::Types::GetApiKeyResponse]
       def get_api_key(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -251,11 +280,14 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :api_key_id
       #
+      # @example
+      #   client.accounts.update_api_key(api_key_id: "api_key_id")
+      #
       # @return [Schematic::Accounts::Types::UpdateApiKeyResponse]
       def update_api_key(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         request_data = Schematic::Accounts::Types::UpdateApiKeyRequestBody.new(params).to_h
-        non_body_param_names = ["api_key_id"]
+        non_body_param_names = %w[api_key_id]
         body = request_data.except(*non_body_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
@@ -287,6 +319,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :api_key_id
+      #
+      # @example
+      #   client.accounts.delete_api_key(api_key_id: "api_key_id")
       #
       # @return [Schematic::Accounts::Types::DeleteApiKeyResponse]
       def delete_api_key(request_options: {}, **params)
@@ -323,16 +358,22 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.accounts.count_api_keys(
+      #     environment_id: "environment_id",
+      #     require_environment: true,
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Accounts::Types::CountApiKeysResponse]
       def count_api_keys(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[environment_id require_environment limit offset]
         query_params = {}
         query_params["environment_id"] = params[:environment_id] if params.key?(:environment_id)
         query_params["require_environment"] = params[:require_environment] if params.key?(:require_environment)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -370,10 +411,20 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.accounts.list_audit_logs(
+      #     actor_type: "api_key",
+      #     end_time: "2024-01-15T09:30:00Z",
+      #     environment_id: "environment_id",
+      #     q: "q",
+      #     start_time: "2024-01-15T09:30:00Z",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Accounts::Types::ListAuditLogsResponse]
       def list_audit_logs(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[actor_type end_time environment_id q start_time limit offset]
         query_params = {}
         query_params["actor_type"] = params[:actor_type] if params.key?(:actor_type)
         query_params["end_time"] = params[:end_time] if params.key?(:end_time)
@@ -382,7 +433,6 @@ module Schematic
         query_params["start_time"] = params[:start_time] if params.key?(:start_time)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -413,6 +463,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :audit_log_id
+      #
+      # @example
+      #   client.accounts.get_audit_log(audit_log_id: "audit_log_id")
       #
       # @return [Schematic::Accounts::Types::GetAuditLogResponse]
       def get_audit_log(request_options: {}, **params)
@@ -452,10 +505,20 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.accounts.count_audit_logs(
+      #     actor_type: "api_key",
+      #     end_time: "2024-01-15T09:30:00Z",
+      #     environment_id: "environment_id",
+      #     q: "q",
+      #     start_time: "2024-01-15T09:30:00Z",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Accounts::Types::CountAuditLogsResponse]
       def count_audit_logs(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[actor_type end_time environment_id q start_time limit offset]
         query_params = {}
         query_params["actor_type"] = params[:actor_type] if params.key?(:actor_type)
         query_params["end_time"] = params[:end_time] if params.key?(:end_time)
@@ -464,7 +527,6 @@ module Schematic
         query_params["start_time"] = params[:start_time] if params.key?(:start_time)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -498,15 +560,20 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.accounts.list_environments(
+      #     ids: ["ids"],
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Accounts::Types::ListEnvironmentsResponse]
       def list_environments(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[ids limit offset]
         query_params = {}
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -536,6 +603,12 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.accounts.create_environment(
+      #     environment_type: "development",
+      #     name: "name"
+      #   )
       #
       # @return [Schematic::Accounts::Types::CreateEnvironmentResponse]
       def create_environment(request_options: {}, **params)
@@ -570,6 +643,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :environment_id
       #
+      # @example
+      #   client.accounts.get_environment(environment_id: "environment_id")
+      #
       # @return [Schematic::Accounts::Types::GetEnvironmentResponse]
       def get_environment(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -602,11 +678,14 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :environment_id
       #
+      # @example
+      #   client.accounts.update_environment(environment_id: "environment_id")
+      #
       # @return [Schematic::Accounts::Types::UpdateEnvironmentResponse]
       def update_environment(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         request_data = Schematic::Accounts::Types::UpdateEnvironmentRequestBody.new(params).to_h
-        non_body_param_names = ["environment_id"]
+        non_body_param_names = %w[environment_id]
         body = request_data.except(*non_body_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
@@ -639,6 +718,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :environment_id
       #
+      # @example
+      #   client.accounts.delete_environment(environment_id: "environment_id")
+      #
       # @return [Schematic::Accounts::Types::DeleteEnvironmentResponse]
       def delete_environment(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -663,16 +745,18 @@ module Schematic
       end
 
       # @param request_options [Hash]
-      # @param params [Hash]
+      # @param _params [Hash]
       # @option request_options [String] :base_url
       # @option request_options [Hash{String => Object}] :additional_headers
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       #
+      # @example
+      #   client.accounts.get_onboarding_state
+      #
       # @return [Schematic::Accounts::Types::GetOnboardingStateResponse]
-      def get_onboarding_state(request_options: {}, **params)
-        Schematic::Internal::Types::Utils.normalize_keys(params)
+      def get_onboarding_state(request_options: {}, **_params)
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
           method: "GET",
@@ -701,6 +785,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       #
+      # @example
+      #   client.accounts.update_onboarding_state
+      #
       # @return [Schematic::Accounts::Types::UpdateOnboardingStateResponse]
       def update_onboarding_state(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -726,16 +813,18 @@ module Schematic
       end
 
       # @param request_options [Hash]
-      # @param params [Hash]
+      # @param _params [Hash]
       # @option request_options [String] :base_url
       # @option request_options [Hash{String => Object}] :additional_headers
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       #
+      # @example
+      #   client.accounts.quickstart
+      #
       # @return [Schematic::Accounts::Types::QuickstartResponse]
-      def quickstart(request_options: {}, **params)
-        Schematic::Internal::Types::Utils.normalize_keys(params)
+      def quickstart(request_options: {}, **_params)
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
           method: "POST",
@@ -757,16 +846,18 @@ module Schematic
       end
 
       # @param request_options [Hash]
-      # @param params [Hash]
+      # @param _params [Hash]
       # @option request_options [String] :base_url
       # @option request_options [Hash{String => Object}] :additional_headers
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       #
+      # @example
+      #   client.accounts.get_who_am_i
+      #
       # @return [Schematic::Accounts::Types::GetWhoAmIResponse]
-      def get_who_am_i(request_options: {}, **params)
-        Schematic::Internal::Types::Utils.normalize_keys(params)
+      def get_who_am_i(request_options: {}, **_params)
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
           method: "GET",

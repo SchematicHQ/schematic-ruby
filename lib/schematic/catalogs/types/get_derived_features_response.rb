@@ -5,6 +5,7 @@ module Schematic
     module Types
       class GetDerivedFeaturesResponse < Internal::Types::Model
         field :data, -> { Schematic::Types::CatalogDerivedFeaturesResponseData }, optional: false, nullable: false
+
         field :params, -> { Internal::Types::Hash[String, Object] }, optional: false, nullable: false
       end
     end

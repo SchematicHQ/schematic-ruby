@@ -19,6 +19,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :integration_id
       #
+      # @example
+      #   client.integrationsapi.run_integration(integration_id: "integration_id")
+      #
       # @return [Schematic::Integrationsapi::Types::RunIntegrationResponse]
       def run_integration(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -57,10 +60,20 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.integrationsapi.list_integrations(
+      #     billing_only: true,
+      #     exclude_ids: ["exclude_ids"],
+      #     id: "id",
+      #     state: "active",
+      #     type: "clerk",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Integrationsapi::Types::ListIntegrationsResponse]
       def list_integrations(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[billing_only exclude_ids id state type limit offset]
         query_params = {}
         query_params["billing_only"] = params[:billing_only] if params.key?(:billing_only)
         query_params["exclude_ids"] = params[:exclude_ids] if params.key?(:exclude_ids)
@@ -69,7 +82,6 @@ module Schematic
         query_params["type"] = params[:type] if params.key?(:type)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -101,6 +113,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :type
       #
+      # @example
+      #   client.integrationsapi.get_integration_webhook_url(type: "type")
+      #
       # @return [Schematic::Integrationsapi::Types::GetIntegrationWebhookUrlResponse]
       def get_integration_webhook_url(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -131,6 +146,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.integrationsapi.install_integration(type: "clerk")
       #
       # @return [Schematic::Integrationsapi::Types::InstallIntegrationResponse]
       def install_integration(request_options: {}, **params)
@@ -164,6 +182,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       #
+      # @example
+      #   client.integrationsapi.start_data_import(integration_id: "integration_id")
+      #
       # @return [Schematic::Integrationsapi::Types::StartDataImportResponse]
       def start_data_import(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -189,16 +210,18 @@ module Schematic
       end
 
       # @param request_options [Hash]
-      # @param params [Hash]
+      # @param _params [Hash]
       # @option request_options [String] :base_url
       # @option request_options [Hash{String => Object}] :additional_headers
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       #
+      # @example
+      #   client.integrationsapi.load_sample_data_set
+      #
       # @return [Schematic::Integrationsapi::Types::LoadSampleDataSetResponse]
-      def load_sample_data_set(request_options: {}, **params)
-        Schematic::Internal::Types::Utils.normalize_keys(params)
+      def load_sample_data_set(request_options: {}, **_params)
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
           method: "GET",
@@ -226,6 +249,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.integrationsapi.assume_stripe_installed(type: "clerk")
       #
       # @return [Schematic::Integrationsapi::Types::AssumeStripeInstalledResponse]
       def assume_stripe_installed(request_options: {}, **params)
@@ -259,6 +285,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       #
+      # @example
+      #   client.integrationsapi.install_stripe(type: "clerk")
+      #
       # @return [Schematic::Integrationsapi::Types::InstallStripeResponse]
       def install_stripe(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -291,6 +320,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :integration_id
+      #
+      # @example
+      #   client.integrationsapi.uninstall_integration(integration_id: "integration_id")
       #
       # @return [Schematic::Integrationsapi::Types::UninstallIntegrationResponse]
       def uninstall_integration(request_options: {}, **params)

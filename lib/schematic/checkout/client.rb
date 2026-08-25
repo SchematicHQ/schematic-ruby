@@ -18,6 +18,33 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       #
+      # @example
+      #   client.checkout.internal(
+      #     add_on_ids: [{
+      #       add_on_id: "add_on_id",
+      #       price_id: "price_id"
+      #     }],
+      #     auto_topup_overrides: [{
+      #       plan_credit_grant_id: "plan_credit_grant_id"
+      #     }],
+      #     company_id: "company_id",
+      #     credit_bundles: [{
+      #       bundle_id: "bundle_id",
+      #       quantity: 1000000
+      #     }],
+      #     custom_field_values: [{
+      #       id: "id",
+      #       value: "value"
+      #     }],
+      #     new_plan_id: "new_plan_id",
+      #     new_price_id: "new_price_id",
+      #     pay_in_advance: [{
+      #       price_id: "price_id",
+      #       quantity: 1000000
+      #     }],
+      #     skip_trial: true
+      #   )
+      #
       # @return [Schematic::Checkout::Types::CheckoutInternalResponse]
       def internal(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -50,6 +77,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       #
+      # @example
+      #   client.checkout.get_checkout_data(company_id: "company_id")
+      #
       # @return [Schematic::Checkout::Types::GetCheckoutDataResponse]
       def get_checkout_data(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -81,6 +111,33 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.checkout.preview_checkout_internal(
+      #     add_on_ids: [{
+      #       add_on_id: "add_on_id",
+      #       price_id: "price_id"
+      #     }],
+      #     auto_topup_overrides: [{
+      #       plan_credit_grant_id: "plan_credit_grant_id"
+      #     }],
+      #     company_id: "company_id",
+      #     credit_bundles: [{
+      #       bundle_id: "bundle_id",
+      #       quantity: 1000000
+      #     }],
+      #     custom_field_values: [{
+      #       id: "id",
+      #       value: "value"
+      #     }],
+      #     new_plan_id: "new_plan_id",
+      #     new_price_id: "new_price_id",
+      #     pay_in_advance: [{
+      #       price_id: "price_id",
+      #       quantity: 1000000
+      #     }],
+      #     skip_trial: true
+      #   )
       #
       # @return [Schematic::Checkout::Types::PreviewCheckoutInternalResponse]
       def preview_checkout_internal(request_options: {}, **params)
@@ -115,6 +172,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :company_id
       #
+      # @example
+      #   client.checkout.get_company_billing_details(company_id: "company_id")
+      #
       # @return [Schematic::Checkout::Types::GetCompanyBillingDetailsResponse]
       def get_company_billing_details(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -147,11 +207,20 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :company_id
       #
+      # @example
+      #   client.checkout.update_company_billing_details(
+      #     company_id: "company_id",
+      #     values: [{
+      #       id: "id",
+      #       value: "value"
+      #     }]
+      #   )
+      #
       # @return [Schematic::Checkout::Types::UpdateCompanyBillingDetailsResponse]
       def update_company_billing_details(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         request_data = Schematic::Checkout::Types::UpdateCompanyBillingDetailsRequestBody.new(params).to_h
-        non_body_param_names = ["company_id"]
+        non_body_param_names = %w[company_id]
         body = request_data.except(*non_body_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
@@ -182,6 +251,26 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.checkout.manage_plan(
+      #     add_on_selections: [{
+      #       plan_id: "plan_id"
+      #     }],
+      #     company_id: "company_id",
+      #     credit_bundles: [{
+      #       bundle_id: "bundle_id",
+      #       quantity: 1000000
+      #     }],
+      #     custom_field_values: [{
+      #       id: "id",
+      #       value: "value"
+      #     }],
+      #     pay_in_advance_entitlements: [{
+      #       price_id: "price_id",
+      #       quantity: 1000000
+      #     }]
+      #   )
       #
       # @return [Schematic::Checkout::Types::ManagePlanResponse]
       def manage_plan(request_options: {}, **params)
@@ -215,6 +304,26 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       #
+      # @example
+      #   client.checkout.preview_manage_plan(
+      #     add_on_selections: [{
+      #       plan_id: "plan_id"
+      #     }],
+      #     company_id: "company_id",
+      #     credit_bundles: [{
+      #       bundle_id: "bundle_id",
+      #       quantity: 1000000
+      #     }],
+      #     custom_field_values: [{
+      #       id: "id",
+      #       value: "value"
+      #     }],
+      #     pay_in_advance_entitlements: [{
+      #       price_id: "price_id",
+      #       quantity: 1000000
+      #     }]
+      #   )
+      #
       # @return [Schematic::Checkout::Types::PreviewManagePlanResponse]
       def preview_manage_plan(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -246,6 +355,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.checkout.cancel_subscription(company_id: "company_id")
       #
       # @return [Schematic::Checkout::Types::CancelSubscriptionResponse]
       def cancel_subscription(request_options: {}, **params)
@@ -280,11 +392,14 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :subscription_id
       #
+      # @example
+      #   client.checkout.update_customer_subscription_trial_end(subscription_id: "subscription_id")
+      #
       # @return [Schematic::Checkout::Types::UpdateCustomerSubscriptionTrialEndResponse]
       def update_customer_subscription_trial_end(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         request_data = Schematic::Checkout::Types::UpdateTrialEndRequestBody.new(params).to_h
-        non_body_param_names = ["subscription_id"]
+        non_body_param_names = %w[subscription_id]
         body = request_data.except(*non_body_param_names)
 
         request = Schematic::Internal::JSON::Request.new(

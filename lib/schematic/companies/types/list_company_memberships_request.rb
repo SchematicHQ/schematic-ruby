@@ -5,8 +5,11 @@ module Schematic
     module Types
       class ListCompanyMembershipsRequest < Internal::Types::Model
         field :company_id, -> { String }, optional: true, nullable: false
+
         field :user_id, -> { String }, optional: true, nullable: false
+
         field :limit, -> { Integer }, optional: true, nullable: false
+
         field :offset, -> { Integer }, optional: true, nullable: false
       end
     end

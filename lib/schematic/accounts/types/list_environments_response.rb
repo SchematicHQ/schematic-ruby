@@ -5,6 +5,7 @@ module Schematic
     module Types
       class ListEnvironmentsResponse < Internal::Types::Model
         field :data, -> { Internal::Types::Array[Schematic::Types::EnvironmentResponseData] }, optional: false, nullable: false
+
         field :params, -> { Schematic::Accounts::Types::ListEnvironmentsParams }, optional: false, nullable: false
       end
     end

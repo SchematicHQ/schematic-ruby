@@ -6,6 +6,7 @@ module Schematic
       # Input parameters
       class PreviewComponentDataParams < Internal::Types::Model
         field :company_id, -> { String }, optional: true, nullable: false
+
         field :component_id, -> { String }, optional: true, nullable: false
       end
     end

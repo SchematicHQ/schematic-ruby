@@ -5,6 +5,7 @@ module Schematic
     module Types
       class CreateBillingCreditResponse < Internal::Types::Model
         field :data, -> { Schematic::Types::BillingCreditResponseData }, optional: false, nullable: false
+
         field :params, -> { Internal::Types::Hash[String, Object] }, optional: false, nullable: false
       end
     end

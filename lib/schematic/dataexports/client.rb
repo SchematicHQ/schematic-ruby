@@ -22,16 +22,22 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.dataexports.list_data_exports(
+      #     export_type: "audit-log",
+      #     status: "failure",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Dataexports::Types::ListDataExportsResponse]
       def list_data_exports(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[export_type status limit offset]
         query_params = {}
         query_params["export_type"] = params[:export_type] if params.key?(:export_type)
         query_params["status"] = params[:status] if params.key?(:status)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -61,6 +67,12 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.dataexports.create_data_export(
+      #     export_type: "audit-log",
+      #     output_file_type: "csv"
+      #   )
       #
       # @return [Schematic::Dataexports::Types::CreateDataExportResponse]
       def create_data_export(request_options: {}, **params)
@@ -95,6 +107,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :data_export_id
       #
+      # @example
+      #   client.dataexports.get_data_export(data_export_id: "data_export_id")
+      #
       # @return [Schematic::Dataexports::Types::GetDataExportResponse]
       def get_data_export(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -126,6 +141,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :data_export_id
+      #
+      # @example
+      #   client.dataexports.get_data_export_artifact(data_export_id: "data_export_id")
       #
       # @return [untyped]
       def get_data_export_artifact(request_options: {}, **params)

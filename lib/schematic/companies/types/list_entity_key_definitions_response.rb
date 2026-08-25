@@ -5,6 +5,7 @@ module Schematic
     module Types
       class ListEntityKeyDefinitionsResponse < Internal::Types::Model
         field :data, -> { Internal::Types::Array[Schematic::Types::EntityKeyDefinitionResponseData] }, optional: false, nullable: false
+
         field :params, -> { Schematic::Companies::Types::ListEntityKeyDefinitionsParams }, optional: false, nullable: false
       end
     end

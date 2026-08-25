@@ -4,11 +4,17 @@ module Schematic
   module Types
     class EntityTraitDetailResponseData < Internal::Types::Model
       field :created_at, -> { String }, optional: false, nullable: false
+
       field :definition, -> { Schematic::Types::EntityTraitDefinitionResponseData }, optional: true, nullable: false
+
       field :definition_id, -> { String }, optional: false, nullable: false
+
       field :environment_id, -> { String }, optional: false, nullable: false
+
       field :id, -> { String }, optional: false, nullable: false
+
       field :updated_at, -> { String }, optional: false, nullable: false
+
       field :value, -> { String }, optional: false, nullable: false
     end
   end

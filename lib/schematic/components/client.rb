@@ -21,15 +21,20 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.components.list_components(
+      #     q: "q",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Components::Types::ListComponentsResponse]
       def list_components(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[q limit offset]
         query_params = {}
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -59,6 +64,12 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.components.create_component(
+      #     entity_type: "billing",
+      #     name: "name"
+      #   )
       #
       # @return [Schematic::Components::Types::CreateComponentResponse]
       def create_component(request_options: {}, **params)
@@ -93,6 +104,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :component_id
       #
+      # @example
+      #   client.components.get_component(component_id: "component_id")
+      #
       # @return [Schematic::Components::Types::GetComponentResponse]
       def get_component(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -125,11 +139,14 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :component_id
       #
+      # @example
+      #   client.components.update_component(component_id: "component_id")
+      #
       # @return [Schematic::Components::Types::UpdateComponentResponse]
       def update_component(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         request_data = Schematic::Components::Types::UpdateComponentRequestBody.new(params).to_h
-        non_body_param_names = ["component_id"]
+        non_body_param_names = %w[component_id]
         body = request_data.except(*non_body_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
@@ -161,6 +178,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :component_id
+      #
+      # @example
+      #   client.components.delete_component(component_id: "component_id")
       #
       # @return [Schematic::Components::Types::DeleteComponentResponse]
       def delete_component(request_options: {}, **params)
@@ -194,11 +214,14 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :component_id
       #
+      # @example
+      #   client.components.bind_catalog(component_id: "component_id")
+      #
       # @return [Schematic::Components::Types::BindCatalogResponse]
       def bind_catalog(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         request_data = Schematic::Components::Types::BindCatalogRequestBody.new(params).to_h
-        non_body_param_names = ["component_id"]
+        non_body_param_names = %w[component_id]
         body = request_data.except(*non_body_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
@@ -233,15 +256,20 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.components.count_components(
+      #     q: "q",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Components::Types::CountComponentsResponse]
       def count_components(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[q limit offset]
         query_params = {}
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -274,14 +302,18 @@ module Schematic
       # @option params [String, nil] :company_id
       # @option params [String, nil] :component_id
       #
+      # @example
+      #   client.components.preview_component_data(
+      #     company_id: "company_id",
+      #     component_id: "component_id"
+      #   )
+      #
       # @return [Schematic::Components::Types::PreviewComponentDataResponse]
       def preview_component_data(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[company_id component_id]
         query_params = {}
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["component_id"] = params[:component_id] if params.key?(:component_id)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],

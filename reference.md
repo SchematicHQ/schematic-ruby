@@ -126,7 +126,7 @@ client.accounts.list_account_members(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">get_account_member</a>(account_member_id) -> Schematic::Accounts::Types::GetAccountMemberResponse</code></summary>
+<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">get_account_member</a>(account_member_id:) -> Schematic::Accounts::Types::GetAccountMemberResponse</code></summary>
 <dl>
 <dd>
 
@@ -417,7 +417,7 @@ client.accounts.create_api_key(name: "name")
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">get_api_key</a>(api_key_id) -> Schematic::Accounts::Types::GetApiKeyResponse</code></summary>
+<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">get_api_key</a>(api_key_id:) -> Schematic::Accounts::Types::GetApiKeyResponse</code></summary>
 <dl>
 <dd>
 
@@ -465,7 +465,7 @@ client.accounts.get_api_key(api_key_id: "api_key_id")
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">update_api_key</a>(api_key_id, request) -> Schematic::Accounts::Types::UpdateApiKeyResponse</code></summary>
+<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">update_api_key</a>(api_key_id:, request) -> Schematic::Accounts::Types::UpdateApiKeyResponse</code></summary>
 <dl>
 <dd>
 
@@ -537,7 +537,7 @@ client.accounts.update_api_key(api_key_id: "api_key_id")
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">delete_api_key</a>(api_key_id) -> Schematic::Accounts::Types::DeleteApiKeyResponse</code></summary>
+<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">delete_api_key</a>(api_key_id:) -> Schematic::Accounts::Types::DeleteApiKeyResponse</code></summary>
 <dl>
 <dd>
 
@@ -766,7 +766,7 @@ client.accounts.list_audit_logs(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">get_audit_log</a>(audit_log_id) -> Schematic::Accounts::Types::GetAuditLogResponse</code></summary>
+<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">get_audit_log</a>(audit_log_id:) -> Schematic::Accounts::Types::GetAuditLogResponse</code></summary>
 <dl>
 <dd>
 
@@ -1045,7 +1045,7 @@ client.accounts.create_environment(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">get_environment</a>(environment_id) -> Schematic::Accounts::Types::GetEnvironmentResponse</code></summary>
+<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">get_environment</a>(environment_id:) -> Schematic::Accounts::Types::GetEnvironmentResponse</code></summary>
 <dl>
 <dd>
 
@@ -1093,7 +1093,7 @@ client.accounts.get_environment(environment_id: "environment_id")
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">update_environment</a>(environment_id, request) -> Schematic::Accounts::Types::UpdateEnvironmentResponse</code></summary>
+<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">update_environment</a>(environment_id:, request) -> Schematic::Accounts::Types::UpdateEnvironmentResponse</code></summary>
 <dl>
 <dd>
 
@@ -1157,7 +1157,7 @@ client.accounts.update_environment(environment_id: "environment_id")
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">delete_environment</a>(environment_id) -> Schematic::Accounts::Types::DeleteEnvironmentResponse</code></summary>
+<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">delete_environment</a>(environment_id:) -> Schematic::Accounts::Types::DeleteEnvironmentResponse</code></summary>
 <dl>
 <dd>
 
@@ -1596,7 +1596,7 @@ client.billing.upsert_billing_coupon(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">delete_billing_coupon</a>(billing_id) -> Schematic::Billing::Types::DeleteBillingCouponResponse</code></summary>
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">delete_billing_coupon</a>(billing_id:) -> Schematic::Billing::Types::DeleteBillingCouponResponse</code></summary>
 <dl>
 <dd>
 
@@ -1644,7 +1644,7 @@ client.billing.delete_billing_coupon(billing_id: "billing_id")
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">delete_billing_customer</a>(billing_id) -> Schematic::Billing::Types::DeleteBillingCustomerResponse</code></summary>
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">delete_billing_customer</a>(billing_id:) -> Schematic::Billing::Types::DeleteBillingCustomerResponse</code></summary>
 <dl>
 <dd>
 
@@ -2239,7 +2239,7 @@ client.billing.upsert_invoice(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">delete_billing_invoice</a>(billing_id) -> Schematic::Billing::Types::DeleteBillingInvoiceResponse</code></summary>
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">delete_billing_invoice</a>(billing_id:) -> Schematic::Billing::Types::DeleteBillingInvoiceResponse</code></summary>
 <dl>
 <dd>
 
@@ -2657,7 +2657,7 @@ client.billing.upsert_payment_method(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">delete_payment_method_by_external_id</a>(billing_id) -> Schematic::Billing::Types::DeletePaymentMethodByExternalIdResponse</code></summary>
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">delete_payment_method_by_external_id</a>(billing_id:) -> Schematic::Billing::Types::DeletePaymentMethodByExternalIdResponse</code></summary>
 <dl>
 <dd>
 
@@ -3097,7 +3097,7 @@ client.billing.upsert_billing_price(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">delete_billing_product</a>(billing_id) -> Schematic::Billing::Types::DeleteBillingProductResponse</code></summary>
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">delete_billing_product</a>(billing_id:) -> Schematic::Billing::Types::DeleteBillingProductResponse</code></summary>
 <dl>
 <dd>
 
@@ -3348,7 +3348,7 @@ client.billing.list_billing_product_prices(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">delete_product_price</a>(billing_id) -> Schematic::Billing::Types::DeleteProductPriceResponse</code></summary>
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">delete_product_price</a>(billing_id:) -> Schematic::Billing::Types::DeleteProductPriceResponse</code></summary>
 <dl>
 <dd>
 
@@ -4251,7 +4251,7 @@ client.credits.create_billing_credit(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">get_single_billing_credit</a>(credit_id) -> Schematic::Credits::Types::GetSingleBillingCreditResponse</code></summary>
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">get_single_billing_credit</a>(credit_id:) -> Schematic::Credits::Types::GetSingleBillingCreditResponse</code></summary>
 <dl>
 <dd>
 
@@ -4299,7 +4299,7 @@ client.credits.get_single_billing_credit(credit_id: "credit_id")
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">update_billing_credit</a>(credit_id, request) -> Schematic::Credits::Types::UpdateBillingCreditResponse</code></summary>
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">update_billing_credit</a>(credit_id:, request) -> Schematic::Credits::Types::UpdateBillingCreditResponse</code></summary>
 <dl>
 <dd>
 
@@ -4447,7 +4447,7 @@ client.credits.update_billing_credit(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">soft_delete_billing_credit</a>(credit_id) -> Schematic::Credits::Types::SoftDeleteBillingCreditResponse</code></summary>
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">soft_delete_billing_credit</a>(credit_id:) -> Schematic::Credits::Types::SoftDeleteBillingCreditResponse</code></summary>
 <dl>
 <dd>
 
@@ -4787,7 +4787,7 @@ client.credits.create_credit_bundle(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">get_credit_bundle</a>(bundle_id) -> Schematic::Credits::Types::GetCreditBundleResponse</code></summary>
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">get_credit_bundle</a>(bundle_id:) -> Schematic::Credits::Types::GetCreditBundleResponse</code></summary>
 <dl>
 <dd>
 
@@ -4835,7 +4835,7 @@ client.credits.get_credit_bundle(bundle_id: "bundle_id")
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">update_credit_bundle_details</a>(bundle_id, request) -> Schematic::Credits::Types::UpdateCreditBundleDetailsResponse</code></summary>
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">update_credit_bundle_details</a>(bundle_id:, request) -> Schematic::Credits::Types::UpdateCreditBundleDetailsResponse</code></summary>
 <dl>
 <dd>
 
@@ -4967,7 +4967,7 @@ client.credits.update_credit_bundle_details(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">delete_credit_bundle</a>(bundle_id) -> Schematic::Credits::Types::DeleteCreditBundleResponse</code></summary>
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">delete_credit_bundle</a>(bundle_id:) -> Schematic::Credits::Types::DeleteCreditBundleResponse</code></summary>
 <dl>
 <dd>
 
@@ -5187,7 +5187,7 @@ client.credits.count_billing_credits(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">zero_out_grant</a>(grant_id, request) -> Schematic::Credits::Types::ZeroOutGrantResponse</code></summary>
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">zero_out_grant</a>(grant_id:, request) -> Schematic::Credits::Types::ZeroOutGrantResponse</code></summary>
 <dl>
 <dd>
 
@@ -5786,7 +5786,7 @@ client.credits.acquire_credit_lease(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">extend_credit_lease</a>(lease_id, request) -> Schematic::Credits::Types::ExtendCreditLeaseResponse</code></summary>
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">extend_credit_lease</a>(lease_id:, request) -> Schematic::Credits::Types::ExtendCreditLeaseResponse</code></summary>
 <dl>
 <dd>
 
@@ -5853,7 +5853,7 @@ client.credits.extend_credit_lease(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">release_credit_lease</a>(lease_id, request) -> Schematic::Credits::Types::ReleaseCreditLeaseResponse</code></summary>
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">release_credit_lease</a>(lease_id:, request) -> Schematic::Credits::Types::ReleaseCreditLeaseResponse</code></summary>
 <dl>
 <dd>
 
@@ -5868,7 +5868,9 @@ client.credits.extend_credit_lease(
 ```ruby
 client.credits.release_credit_lease(
   lease_id: "lease_id",
-  request: {}
+  request: {
+    key: "value"
+  }
 )
 ```
 </dd>
@@ -6079,7 +6081,7 @@ client.credits.create_billing_plan_credit_grant(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">get_single_billing_plan_credit_grant</a>(plan_grant_id) -> Schematic::Credits::Types::GetSingleBillingPlanCreditGrantResponse</code></summary>
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">get_single_billing_plan_credit_grant</a>(plan_grant_id:) -> Schematic::Credits::Types::GetSingleBillingPlanCreditGrantResponse</code></summary>
 <dl>
 <dd>
 
@@ -6127,7 +6129,7 @@ client.credits.get_single_billing_plan_credit_grant(plan_grant_id: "plan_grant_i
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">update_billing_plan_credit_grant</a>(plan_grant_id, request) -> Schematic::Credits::Types::UpdateBillingPlanCreditGrantResponse</code></summary>
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">update_billing_plan_credit_grant</a>(plan_grant_id:, request) -> Schematic::Credits::Types::UpdateBillingPlanCreditGrantResponse</code></summary>
 <dl>
 <dd>
 
@@ -6187,7 +6189,7 @@ client.credits.update_billing_plan_credit_grant(
 </dl>
 </details>
 
-<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">delete_billing_plan_credit_grant</a>(plan_grant_id) -> Schematic::Credits::Types::DeleteBillingPlanCreditGrantResponse</code></summary>
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">delete_billing_plan_credit_grant</a>(plan_grant_id:) -> Schematic::Credits::Types::DeleteBillingPlanCreditGrantResponse</code></summary>
 <dl>
 <dd>
 
@@ -6719,7 +6721,7 @@ client.catalogs.create_catalog(name: "name")
 </dl>
 </details>
 
-<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">get_catalog</a>(catalog_id) -> Schematic::Catalogs::Types::GetCatalogResponse</code></summary>
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">get_catalog</a>(catalog_id:) -> Schematic::Catalogs::Types::GetCatalogResponse</code></summary>
 <dl>
 <dd>
 
@@ -6767,7 +6769,7 @@ client.catalogs.get_catalog(catalog_id: "catalog_id")
 </dl>
 </details>
 
-<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">update_catalog</a>(catalog_id, request) -> Schematic::Catalogs::Types::UpdateCatalogResponse</code></summary>
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">update_catalog</a>(catalog_id:, request) -> Schematic::Catalogs::Types::UpdateCatalogResponse</code></summary>
 <dl>
 <dd>
 
@@ -6839,7 +6841,7 @@ client.catalogs.update_catalog(catalog_id: "catalog_id")
 </dl>
 </details>
 
-<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">delete_catalog</a>(catalog_id) -> Schematic::Catalogs::Types::DeleteCatalogResponse</code></summary>
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">delete_catalog</a>(catalog_id:) -> Schematic::Catalogs::Types::DeleteCatalogResponse</code></summary>
 <dl>
 <dd>
 
@@ -6887,7 +6889,7 @@ client.catalogs.delete_catalog(catalog_id: "catalog_id")
 </dl>
 </details>
 
-<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">get_configuration</a>(catalog_id) -> Schematic::Catalogs::Types::GetConfigurationResponse</code></summary>
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">get_configuration</a>(catalog_id:) -> Schematic::Catalogs::Types::GetConfigurationResponse</code></summary>
 <dl>
 <dd>
 
@@ -6935,7 +6937,7 @@ client.catalogs.get_configuration(catalog_id: "catalog_id")
 </dl>
 </details>
 
-<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">update_configuration</a>(catalog_id, request) -> Schematic::Catalogs::Types::UpdateConfigurationResponse</code></summary>
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">update_configuration</a>(catalog_id:, request) -> Schematic::Catalogs::Types::UpdateConfigurationResponse</code></summary>
 <dl>
 <dd>
 
@@ -7055,7 +7057,7 @@ client.catalogs.update_configuration(catalog_id: "catalog_id")
 </dl>
 </details>
 
-<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">get_credit_bundles_in_catalog</a>(catalog_id) -> Schematic::Catalogs::Types::GetCreditBundlesInCatalogResponse</code></summary>
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">get_credit_bundles_in_catalog</a>(catalog_id:) -> Schematic::Catalogs::Types::GetCreditBundlesInCatalogResponse</code></summary>
 <dl>
 <dd>
 
@@ -7103,7 +7105,7 @@ client.catalogs.get_credit_bundles_in_catalog(catalog_id: "catalog_id")
 </dl>
 </details>
 
-<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">add_credit_bundle</a>(catalog_id, credit_bundle_id) -> </code></summary>
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">add_credit_bundle</a>(catalog_id:, credit_bundle_id:) -> </code></summary>
 <dl>
 <dd>
 
@@ -7162,7 +7164,7 @@ client.catalogs.add_credit_bundle(
 </dl>
 </details>
 
-<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">remove_credit_bundle</a>(catalog_id, credit_bundle_id) -> </code></summary>
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">remove_credit_bundle</a>(catalog_id:, credit_bundle_id:) -> </code></summary>
 <dl>
 <dd>
 
@@ -7221,7 +7223,7 @@ client.catalogs.remove_credit_bundle(
 </dl>
 </details>
 
-<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">get_derived_features</a>(catalog_id) -> Schematic::Catalogs::Types::GetDerivedFeaturesResponse</code></summary>
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">get_derived_features</a>(catalog_id:) -> Schematic::Catalogs::Types::GetDerivedFeaturesResponse</code></summary>
 <dl>
 <dd>
 
@@ -7269,7 +7271,7 @@ client.catalogs.get_derived_features(catalog_id: "catalog_id")
 </dl>
 </details>
 
-<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">get_plans_in_catalog</a>(catalog_id) -> Schematic::Catalogs::Types::GetPlansInCatalogResponse</code></summary>
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">get_plans_in_catalog</a>(catalog_id:) -> Schematic::Catalogs::Types::GetPlansInCatalogResponse</code></summary>
 <dl>
 <dd>
 
@@ -7317,7 +7319,7 @@ client.catalogs.get_plans_in_catalog(catalog_id: "catalog_id")
 </dl>
 </details>
 
-<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">add_plan</a>(catalog_id, plan_id) -> </code></summary>
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">add_plan</a>(catalog_id:, plan_id:) -> </code></summary>
 <dl>
 <dd>
 
@@ -7376,7 +7378,7 @@ client.catalogs.add_plan(
 </dl>
 </details>
 
-<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">remove_plan</a>(catalog_id, plan_id) -> </code></summary>
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">remove_plan</a>(catalog_id:, plan_id:) -> </code></summary>
 <dl>
 <dd>
 
@@ -7644,7 +7646,7 @@ client.checkout.preview_checkout_internal(
 </dl>
 </details>
 
-<details><summary><code>client.checkout.<a href="/lib/schematic/checkout/client.rb">get_company_billing_details</a>(company_id) -> Schematic::Checkout::Types::GetCompanyBillingDetailsResponse</code></summary>
+<details><summary><code>client.checkout.<a href="/lib/schematic/checkout/client.rb">get_company_billing_details</a>(company_id:) -> Schematic::Checkout::Types::GetCompanyBillingDetailsResponse</code></summary>
 <dl>
 <dd>
 
@@ -7692,7 +7694,7 @@ client.checkout.get_company_billing_details(company_id: "company_id")
 </dl>
 </details>
 
-<details><summary><code>client.checkout.<a href="/lib/schematic/checkout/client.rb">update_company_billing_details</a>(company_id, request) -> Schematic::Checkout::Types::UpdateCompanyBillingDetailsResponse</code></summary>
+<details><summary><code>client.checkout.<a href="/lib/schematic/checkout/client.rb">update_company_billing_details</a>(company_id:, request) -> Schematic::Checkout::Types::UpdateCompanyBillingDetailsResponse</code></summary>
 <dl>
 <dd>
 
@@ -7980,7 +7982,7 @@ client.checkout.cancel_subscription(company_id: "company_id")
 </dl>
 </details>
 
-<details><summary><code>client.checkout.<a href="/lib/schematic/checkout/client.rb">update_customer_subscription_trial_end</a>(subscription_id, request) -> Schematic::Checkout::Types::UpdateCustomerSubscriptionTrialEndResponse</code></summary>
+<details><summary><code>client.checkout.<a href="/lib/schematic/checkout/client.rb">update_customer_subscription_trial_end</a>(subscription_id:, request) -> Schematic::Checkout::Types::UpdateCustomerSubscriptionTrialEndResponse</code></summary>
 <dl>
 <dd>
 
@@ -8059,6 +8061,7 @@ client.companies.list_companies(
   plan_ids: ["plan_ids"],
   plan_version_id: "plan_version_id",
   plan_version_ids: ["plan_version_ids"],
+  plan_version_unpublished: true,
   q: "q",
   sort_order_column: "sort_order_column",
   sort_order_direction: "asc",
@@ -8143,6 +8146,14 @@ client.companies.list_companies(
 <dd>
 
 **plan_version_ids:** `String` — Filter companies by one or more plan version IDs (each ID starts with plvr_). Takes precedence over plan_version_id when set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_unpublished:** `Internal::Types::Boolean` — Filter companies assigned to a plan version that is no longer published, meaning the plan has since moved on to a newer version
     
 </dd>
 </dl>
@@ -8308,7 +8319,7 @@ client.companies.upsert_company(keys: {
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">get_company</a>(company_id) -> Schematic::Companies::Types::GetCompanyResponse</code></summary>
+<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">get_company</a>(company_id:) -> Schematic::Companies::Types::GetCompanyResponse</code></summary>
 <dl>
 <dd>
 
@@ -8356,7 +8367,7 @@ client.companies.get_company(company_id: "company_id")
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">delete_company</a>(company_id) -> Schematic::Companies::Types::DeleteCompanyResponse</code></summary>
+<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">delete_company</a>(company_id:) -> Schematic::Companies::Types::DeleteCompanyResponse</code></summary>
 <dl>
 <dd>
 
@@ -8446,6 +8457,7 @@ client.companies.count_companies(
   plan_ids: ["plan_ids"],
   plan_version_id: "plan_version_id",
   plan_version_ids: ["plan_version_ids"],
+  plan_version_unpublished: true,
   q: "q",
   sort_order_column: "sort_order_column",
   sort_order_direction: "asc",
@@ -8530,6 +8542,14 @@ client.companies.count_companies(
 <dd>
 
 **plan_version_ids:** `String` — Filter companies by one or more plan version IDs (each ID starts with plvr_). Takes precedence over plan_version_id when set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_version_unpublished:** `Internal::Types::Boolean` — Filter companies assigned to a plan version that is no longer published, meaning the plan has since moved on to a newer version
     
 </dd>
 </dl>
@@ -9045,7 +9065,7 @@ client.companies.get_or_create_company_membership(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">delete_company_membership</a>(company_membership_id) -> Schematic::Companies::Types::DeleteCompanyMembershipResponse</code></summary>
+<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">delete_company_membership</a>(company_membership_id:) -> Schematic::Companies::Types::DeleteCompanyMembershipResponse</code></summary>
 <dl>
 <dd>
 
@@ -9309,7 +9329,7 @@ client.companies.list_entity_key_definitions(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">delete_entity_key_definition</a>(entity_key_definition_id) -> Schematic::Companies::Types::DeleteEntityKeyDefinitionResponse</code></summary>
+<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">delete_entity_key_definition</a>(entity_key_definition_id:) -> Schematic::Companies::Types::DeleteEntityKeyDefinitionResponse</code></summary>
 <dl>
 <dd>
 
@@ -9700,7 +9720,7 @@ client.companies.get_or_create_entity_trait_definition(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">get_entity_trait_definition</a>(entity_trait_definition_id) -> Schematic::Companies::Types::GetEntityTraitDefinitionResponse</code></summary>
+<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">get_entity_trait_definition</a>(entity_trait_definition_id:) -> Schematic::Companies::Types::GetEntityTraitDefinitionResponse</code></summary>
 <dl>
 <dd>
 
@@ -9748,7 +9768,7 @@ client.companies.get_entity_trait_definition(entity_trait_definition_id: "entity
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">update_entity_trait_definition</a>(entity_trait_definition_id, request) -> Schematic::Companies::Types::UpdateEntityTraitDefinitionResponse</code></summary>
+<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">update_entity_trait_definition</a>(entity_trait_definition_id:, request) -> Schematic::Companies::Types::UpdateEntityTraitDefinitionResponse</code></summary>
 <dl>
 <dd>
 
@@ -9815,7 +9835,7 @@ client.companies.update_entity_trait_definition(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">delete_entity_trait_definition</a>(entity_trait_definition_id) -> Schematic::Companies::Types::DeleteEntityTraitDefinitionResponse</code></summary>
+<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">delete_entity_trait_definition</a>(entity_trait_definition_id:) -> Schematic::Companies::Types::DeleteEntityTraitDefinitionResponse</code></summary>
 <dl>
 <dd>
 
@@ -9863,7 +9883,7 @@ client.companies.delete_entity_trait_definition(entity_trait_definition_id: "ent
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">get_entity_trait_definition_usage</a>(entity_trait_definition_id) -> Schematic::Companies::Types::GetEntityTraitDefinitionUsageResponse</code></summary>
+<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">get_entity_trait_definition_usage</a>(entity_trait_definition_id:) -> Schematic::Companies::Types::GetEntityTraitDefinitionUsageResponse</code></summary>
 <dl>
 <dd>
 
@@ -10264,7 +10284,7 @@ client.companies.list_plan_changes(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">get_plan_change</a>(plan_change_id) -> Schematic::Companies::Types::GetPlanChangeResponse</code></summary>
+<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">get_plan_change</a>(plan_change_id:) -> Schematic::Companies::Types::GetPlanChangeResponse</code></summary>
 <dl>
 <dd>
 
@@ -10407,7 +10427,7 @@ client.companies.list_plan_traits(
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">get_plan_trait</a>(plan_trait_id) -> Schematic::Companies::Types::GetPlanTraitResponse</code></summary>
+<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">get_plan_trait</a>(plan_trait_id:) -> Schematic::Companies::Types::GetPlanTraitResponse</code></summary>
 <dl>
 <dd>
 
@@ -10819,7 +10839,7 @@ client.companies.upsert_user(keys: {
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">get_user</a>(user_id) -> Schematic::Companies::Types::GetUserResponse</code></summary>
+<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">get_user</a>(user_id:) -> Schematic::Companies::Types::GetUserResponse</code></summary>
 <dl>
 <dd>
 
@@ -10867,7 +10887,7 @@ client.companies.get_user(user_id: "user_id")
 </dl>
 </details>
 
-<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">delete_user</a>(user_id) -> Schematic::Companies::Types::DeleteUserResponse</code></summary>
+<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">delete_user</a>(user_id:) -> Schematic::Companies::Types::DeleteUserResponse</code></summary>
 <dl>
 <dd>
 
@@ -11423,7 +11443,7 @@ client.entitlements.create_company_override(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="/lib/schematic/entitlements/client.rb">get_company_override</a>(company_override_id) -> Schematic::Entitlements::Types::GetCompanyOverrideResponse</code></summary>
+<details><summary><code>client.entitlements.<a href="/lib/schematic/entitlements/client.rb">get_company_override</a>(company_override_id:) -> Schematic::Entitlements::Types::GetCompanyOverrideResponse</code></summary>
 <dl>
 <dd>
 
@@ -11471,7 +11491,7 @@ client.entitlements.get_company_override(company_override_id: "company_override_
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="/lib/schematic/entitlements/client.rb">update_company_override</a>(company_override_id, request) -> Schematic::Entitlements::Types::UpdateCompanyOverrideResponse</code></summary>
+<details><summary><code>client.entitlements.<a href="/lib/schematic/entitlements/client.rb">update_company_override</a>(company_override_id:, request) -> Schematic::Entitlements::Types::UpdateCompanyOverrideResponse</code></summary>
 <dl>
 <dd>
 
@@ -11602,7 +11622,7 @@ client.entitlements.update_company_override(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="/lib/schematic/entitlements/client.rb">delete_company_override</a>(company_override_id) -> Schematic::Entitlements::Types::DeleteCompanyOverrideResponse</code></summary>
+<details><summary><code>client.entitlements.<a href="/lib/schematic/entitlements/client.rb">delete_company_override</a>(company_override_id:) -> Schematic::Entitlements::Types::DeleteCompanyOverrideResponse</code></summary>
 <dl>
 <dd>
 
@@ -12012,6 +12032,110 @@ client.entitlements.list_feature_usage(
 <dd>
 
 **without_negative_entitlements:** `Internal::Types::Boolean` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Integer` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `Integer` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Entitlements::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entitlements.<a href="/lib/schematic/entitlements/client.rb">list_feature_usage_history</a>() -> Schematic::Entitlements::Types::ListFeatureUsageHistoryResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.entitlements.list_feature_usage_history(
+  company_ids: ["company_ids"],
+  end_time: "2024-01-15T09:30:00Z",
+  feature_ids: ["feature_ids"],
+  granularity: "daily",
+  start_time: "2024-01-15T09:30:00Z",
+  limit: 1000000,
+  offset: 1000000
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_ids:** `String` — Restrict to these company IDs; omit for every company in the environment
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_time:** `String` — Exclusive end of the window; must fall on an hour boundary
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**feature_ids:** `String` — Restrict to these event features; omit for every event feature in the environment. Where several features measure the same event, each is reported separately and a page may carry more rows than the requested limit
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**granularity:** `Schematic::Types::TimeSeriesGranularity` — Bucket the window; omit for a single total per company and feature
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_time:** `String` — Inclusive start of the window; must fall on an hour boundary
     
 </dd>
 </dl>
@@ -12864,7 +12988,7 @@ client.entitlements.create_plan_entitlement(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="/lib/schematic/entitlements/client.rb">get_plan_entitlement</a>(plan_entitlement_id) -> Schematic::Entitlements::Types::GetPlanEntitlementResponse</code></summary>
+<details><summary><code>client.entitlements.<a href="/lib/schematic/entitlements/client.rb">get_plan_entitlement</a>(plan_entitlement_id:) -> Schematic::Entitlements::Types::GetPlanEntitlementResponse</code></summary>
 <dl>
 <dd>
 
@@ -12912,7 +13036,7 @@ client.entitlements.get_plan_entitlement(plan_entitlement_id: "plan_entitlement_
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="/lib/schematic/entitlements/client.rb">update_plan_entitlement</a>(plan_entitlement_id, request) -> Schematic::Entitlements::Types::UpdatePlanEntitlementResponse</code></summary>
+<details><summary><code>client.entitlements.<a href="/lib/schematic/entitlements/client.rb">update_plan_entitlement</a>(plan_entitlement_id:, request) -> Schematic::Entitlements::Types::UpdatePlanEntitlementResponse</code></summary>
 <dl>
 <dd>
 
@@ -13211,7 +13335,7 @@ client.entitlements.update_plan_entitlement(
 </dl>
 </details>
 
-<details><summary><code>client.entitlements.<a href="/lib/schematic/entitlements/client.rb">delete_plan_entitlement</a>(plan_entitlement_id) -> Schematic::Entitlements::Types::DeletePlanEntitlementResponse</code></summary>
+<details><summary><code>client.entitlements.<a href="/lib/schematic/entitlements/client.rb">delete_plan_entitlement</a>(plan_entitlement_id:) -> Schematic::Entitlements::Types::DeletePlanEntitlementResponse</code></summary>
 <dl>
 <dd>
 
@@ -13997,7 +14121,7 @@ client.entitlements.get_user_usage_detail(
 </details>
 
 ## plans
-<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">update_company_plans</a>(company_id, request) -> Schematic::Plans::Types::UpdateCompanyPlansResponse</code></summary>
+<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">update_company_plans</a>(company_id:, request) -> Schematic::Plans::Types::UpdateCompanyPlansResponse</code></summary>
 <dl>
 <dd>
 
@@ -14168,7 +14292,7 @@ client.plans.list_custom_plan_billings(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">mark_custom_plan_billing_paid</a>(custom_plan_billing_id, request) -> Schematic::Plans::Types::MarkCustomPlanBillingPaidResponse</code></summary>
+<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">mark_custom_plan_billing_paid</a>(custom_plan_billing_id:, request) -> Schematic::Plans::Types::MarkCustomPlanBillingPaidResponse</code></summary>
 <dl>
 <dd>
 
@@ -14183,7 +14307,9 @@ client.plans.list_custom_plan_billings(
 ```ruby
 client.plans.mark_custom_plan_billing_paid(
   custom_plan_billing_id: "custom_plan_billing_id",
-  request: {}
+  request: {
+    key: "value"
+  }
 )
 ```
 </dd>
@@ -14227,7 +14353,7 @@ client.plans.mark_custom_plan_billing_paid(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">retry_custom_plan_billing</a>(custom_plan_billing_id, request) -> Schematic::Plans::Types::RetryCustomPlanBillingResponse</code></summary>
+<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">retry_custom_plan_billing</a>(custom_plan_billing_id:, request) -> Schematic::Plans::Types::RetryCustomPlanBillingResponse</code></summary>
 <dl>
 <dd>
 
@@ -14325,7 +14451,6 @@ client.plans.retry_custom_plan_billing(
 ```ruby
 client.plans.create_custom_plan(
   company_id: "company_id",
-  description: "description",
   name: "name"
 )
 ```
@@ -14351,6 +14476,14 @@ client.plans.create_custom_plan(
 <dd>
 
 **copied_from_plan_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**copied_price_id:** `String` 
     
 </dd>
 </dl>
@@ -14602,7 +14735,6 @@ client.plans.list_plans(
 
 ```ruby
 client.plans.create_plan(
-  description: "description",
   name: "name",
   plan_type: "plan"
 )
@@ -14640,7 +14772,7 @@ client.plans.create_plan(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">get_plan</a>(plan_id) -> Schematic::Plans::Types::GetPlanResponse</code></summary>
+<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">get_plan</a>(plan_id:) -> Schematic::Plans::Types::GetPlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -14699,7 +14831,7 @@ client.plans.get_plan(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">update_plan</a>(plan_id, request) -> Schematic::Plans::Types::UpdatePlanResponse</code></summary>
+<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">update_plan</a>(plan_id:, request) -> Schematic::Plans::Types::UpdatePlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -14758,7 +14890,7 @@ client.plans.update_plan(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">delete_plan</a>(plan_id) -> Schematic::Plans::Types::DeletePlanResponse</code></summary>
+<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">delete_plan</a>(plan_id:) -> Schematic::Plans::Types::DeletePlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -14806,7 +14938,7 @@ client.plans.delete_plan(plan_id: "plan_id")
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">upsert_billing_product_plan</a>(plan_id, request) -> Schematic::Plans::Types::UpsertBillingProductPlanResponse</code></summary>
+<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">upsert_billing_product_plan</a>(plan_id:, request) -> Schematic::Plans::Types::UpsertBillingProductPlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -14881,7 +15013,6 @@ client.plans.upsert_billing_product_plan(
 ```ruby
 client.plans.upsert_plan_for_billing_product(
   billing_provider: "metronome",
-  description: "description",
   external_resource_id: "external_resource_id",
   name: "name",
   plan_type: "plan"
@@ -15375,7 +15506,7 @@ client.plans.list_plan_issues(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">delete_plan_version</a>(plan_version_id) -> Schematic::Plans::Types::DeletePlanVersionResponse</code></summary>
+<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">delete_plan_version</a>(plan_version_id:) -> Schematic::Plans::Types::DeletePlanVersionResponse</code></summary>
 <dl>
 <dd>
 
@@ -15434,7 +15565,7 @@ client.plans.delete_plan_version(
 </dl>
 </details>
 
-<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">publish_plan_version</a>(plan_version_id, request) -> Schematic::Plans::Types::PublishPlanVersionResponse</code></summary>
+<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">publish_plan_version</a>(plan_version_id:, request) -> Schematic::Plans::Types::PublishPlanVersionResponse</code></summary>
 <dl>
 <dd>
 
@@ -15547,6 +15678,14 @@ client.plans.publish_plan_version(
 <dd>
 
 **proration_behavior:** `Schematic::Types::MigrationProrationBehavior` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**require_no_migration:** `Internal::Types::Boolean` — Refuse the publish if any company would be migrated onto the new version
     
 </dd>
 </dl>
@@ -15718,7 +15857,7 @@ client.components.create_component(
 </dl>
 </details>
 
-<details><summary><code>client.components.<a href="/lib/schematic/components/client.rb">get_component</a>(component_id) -> Schematic::Components::Types::GetComponentResponse</code></summary>
+<details><summary><code>client.components.<a href="/lib/schematic/components/client.rb">get_component</a>(component_id:) -> Schematic::Components::Types::GetComponentResponse</code></summary>
 <dl>
 <dd>
 
@@ -15766,7 +15905,7 @@ client.components.get_component(component_id: "component_id")
 </dl>
 </details>
 
-<details><summary><code>client.components.<a href="/lib/schematic/components/client.rb">update_component</a>(component_id, request) -> Schematic::Components::Types::UpdateComponentResponse</code></summary>
+<details><summary><code>client.components.<a href="/lib/schematic/components/client.rb">update_component</a>(component_id:, request) -> Schematic::Components::Types::UpdateComponentResponse</code></summary>
 <dl>
 <dd>
 
@@ -15846,7 +15985,7 @@ client.components.update_component(component_id: "component_id")
 </dl>
 </details>
 
-<details><summary><code>client.components.<a href="/lib/schematic/components/client.rb">delete_component</a>(component_id) -> Schematic::Components::Types::DeleteComponentResponse</code></summary>
+<details><summary><code>client.components.<a href="/lib/schematic/components/client.rb">delete_component</a>(component_id:) -> Schematic::Components::Types::DeleteComponentResponse</code></summary>
 <dl>
 <dd>
 
@@ -15894,7 +16033,7 @@ client.components.delete_component(component_id: "component_id")
 </dl>
 </details>
 
-<details><summary><code>client.components.<a href="/lib/schematic/components/client.rb">bind_catalog</a>(component_id, request) -> Schematic::Components::Types::BindCatalogResponse</code></summary>
+<details><summary><code>client.components.<a href="/lib/schematic/components/client.rb">bind_catalog</a>(component_id:, request) -> Schematic::Components::Types::BindCatalogResponse</code></summary>
 <dl>
 <dd>
 
@@ -16091,9 +16230,19 @@ client.components.preview_component_data(
 <dd>
 
 ```ruby
-client.planbundle.create_custom_plan_bundle(entitlements: [{
-  action: "create"
-}])
+client.planbundle.create_custom_plan_bundle(
+  billing_product: {
+    charge_type: "free",
+    is_trialable: true
+  },
+  entitlements: [{
+    action: "create"
+  }],
+  plan: {
+    company_id: "company_id",
+    name: "name"
+  }
+)
 ```
 </dd>
 </dl>
@@ -16165,9 +16314,15 @@ client.planbundle.create_custom_plan_bundle(entitlements: [{
 <dd>
 
 ```ruby
-client.planbundle.create_plan_bundle(entitlements: [{
-  action: "create"
-}])
+client.planbundle.create_plan_bundle(
+  entitlements: [{
+    action: "create"
+  }],
+  plan: {
+    name: "name",
+    plan_type: "plan"
+  }
+)
 ```
 </dd>
 </dl>
@@ -16226,7 +16381,7 @@ client.planbundle.create_plan_bundle(entitlements: [{
 </dl>
 </details>
 
-<details><summary><code>client.planbundle.<a href="/lib/schematic/planbundle/client.rb">update_plan_bundle</a>(plan_id, request) -> Schematic::Planbundle::Types::UpdatePlanBundleResponse</code></summary>
+<details><summary><code>client.planbundle.<a href="/lib/schematic/planbundle/client.rb">update_plan_bundle</a>(plan_id:, request) -> Schematic::Planbundle::Types::UpdatePlanBundleResponse</code></summary>
 <dl>
 <dd>
 
@@ -16243,7 +16398,10 @@ client.planbundle.update_plan_bundle(
   plan_id: "plan_id",
   entitlements: [{
     action: "create"
-  }]
+  }],
+  plan: {
+    name: "name"
+  }
 )
 ```
 </dd>
@@ -16464,7 +16622,7 @@ client.dataexports.create_data_export(
 </dl>
 </details>
 
-<details><summary><code>client.dataexports.<a href="/lib/schematic/dataexports/client.rb">get_data_export</a>(data_export_id) -> Schematic::Dataexports::Types::GetDataExportResponse</code></summary>
+<details><summary><code>client.dataexports.<a href="/lib/schematic/dataexports/client.rb">get_data_export</a>(data_export_id:) -> Schematic::Dataexports::Types::GetDataExportResponse</code></summary>
 <dl>
 <dd>
 
@@ -16512,7 +16670,7 @@ client.dataexports.get_data_export(data_export_id: "data_export_id")
 </dl>
 </details>
 
-<details><summary><code>client.dataexports.<a href="/lib/schematic/dataexports/client.rb">get_data_export_artifact</a>(data_export_id) -> String</code></summary>
+<details><summary><code>client.dataexports.<a href="/lib/schematic/dataexports/client.rb">get_data_export_artifact</a>(data_export_id:) -> String</code></summary>
 <dl>
 <dd>
 
@@ -16849,7 +17007,7 @@ client.events.create_event(event_type: "flag_check")
 </dl>
 </details>
 
-<details><summary><code>client.events.<a href="/lib/schematic/events/client.rb">get_event</a>(event_id) -> Schematic::Events::Types::GetEventResponse</code></summary>
+<details><summary><code>client.events.<a href="/lib/schematic/events/client.rb">get_event</a>(event_id:) -> Schematic::Events::Types::GetEventResponse</code></summary>
 <dl>
 <dd>
 
@@ -17201,7 +17359,7 @@ client.features.create_feature(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="/lib/schematic/features/client.rb">get_feature</a>(feature_id) -> Schematic::Features::Types::GetFeatureResponse</code></summary>
+<details><summary><code>client.features.<a href="/lib/schematic/features/client.rb">get_feature</a>(feature_id:) -> Schematic::Features::Types::GetFeatureResponse</code></summary>
 <dl>
 <dd>
 
@@ -17249,7 +17407,7 @@ client.features.get_feature(feature_id: "feature_id")
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="/lib/schematic/features/client.rb">update_feature</a>(feature_id, request) -> Schematic::Features::Types::UpdateFeatureResponse</code></summary>
+<details><summary><code>client.features.<a href="/lib/schematic/features/client.rb">update_feature</a>(feature_id:, request) -> Schematic::Features::Types::UpdateFeatureResponse</code></summary>
 <dl>
 <dd>
 
@@ -17385,7 +17543,7 @@ client.features.update_feature(feature_id: "feature_id")
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="/lib/schematic/features/client.rb">delete_feature</a>(feature_id) -> Schematic::Features::Types::DeleteFeatureResponse</code></summary>
+<details><summary><code>client.features.<a href="/lib/schematic/features/client.rb">delete_feature</a>(feature_id:) -> Schematic::Features::Types::DeleteFeatureResponse</code></summary>
 <dl>
 <dd>
 
@@ -17854,7 +18012,7 @@ client.features.create_flag(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="/lib/schematic/features/client.rb">get_flag</a>(flag_id) -> Schematic::Features::Types::GetFlagResponse</code></summary>
+<details><summary><code>client.features.<a href="/lib/schematic/features/client.rb">get_flag</a>(flag_id:) -> Schematic::Features::Types::GetFlagResponse</code></summary>
 <dl>
 <dd>
 
@@ -17902,7 +18060,7 @@ client.features.get_flag(flag_id: "flag_id")
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="/lib/schematic/features/client.rb">update_flag</a>(flag_id, request) -> Schematic::Features::Types::UpdateFlagResponse</code></summary>
+<details><summary><code>client.features.<a href="/lib/schematic/features/client.rb">update_flag</a>(flag_id:, request) -> Schematic::Features::Types::UpdateFlagResponse</code></summary>
 <dl>
 <dd>
 
@@ -17965,7 +18123,7 @@ client.features.update_flag(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="/lib/schematic/features/client.rb">delete_flag</a>(flag_id) -> Schematic::Features::Types::DeleteFlagResponse</code></summary>
+<details><summary><code>client.features.<a href="/lib/schematic/features/client.rb">delete_flag</a>(flag_id:) -> Schematic::Features::Types::DeleteFlagResponse</code></summary>
 <dl>
 <dd>
 
@@ -18013,7 +18171,7 @@ client.features.delete_flag(flag_id: "flag_id")
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="/lib/schematic/features/client.rb">update_flag_rules</a>(flag_id, request) -> Schematic::Features::Types::UpdateFlagRulesResponse</code></summary>
+<details><summary><code>client.features.<a href="/lib/schematic/features/client.rb">update_flag_rules</a>(flag_id:, request) -> Schematic::Features::Types::UpdateFlagRulesResponse</code></summary>
 <dl>
 <dd>
 
@@ -18088,7 +18246,7 @@ client.features.update_flag_rules(
 </dl>
 </details>
 
-<details><summary><code>client.features.<a href="/lib/schematic/features/client.rb">check_flag</a>(key, request) -> Schematic::Features::Types::CheckFlagResponse</code></summary>
+<details><summary><code>client.features.<a href="/lib/schematic/features/client.rb">check_flag</a>(key:, request) -> Schematic::Features::Types::CheckFlagResponse</code></summary>
 <dl>
 <dd>
 
@@ -18686,7 +18844,7 @@ client.insights.get_environment_trait_usage_time_series(
 </details>
 
 ## integrationsapi
-<details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">run_integration</a>(integration_id) -> Schematic::Integrationsapi::Types::RunIntegrationResponse</code></summary>
+<details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">run_integration</a>(integration_id:) -> Schematic::Integrationsapi::Types::RunIntegrationResponse</code></summary>
 <dl>
 <dd>
 
@@ -18838,7 +18996,7 @@ client.integrationsapi.list_integrations(
 </dl>
 </details>
 
-<details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">get_integration_webhook_url</a>(type) -> Schematic::Integrationsapi::Types::GetIntegrationWebhookUrlResponse</code></summary>
+<details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">get_integration_webhook_url</a>(type:) -> Schematic::Integrationsapi::Types::GetIntegrationWebhookUrlResponse</code></summary>
 <dl>
 <dd>
 
@@ -19134,7 +19292,7 @@ client.integrationsapi.install_stripe(type: "clerk")
 </dl>
 </details>
 
-<details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">uninstall_integration</a>(integration_id) -> Schematic::Integrationsapi::Types::UninstallIntegrationResponse</code></summary>
+<details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">uninstall_integration</a>(integration_id:) -> Schematic::Integrationsapi::Types::UninstallIntegrationResponse</code></summary>
 <dl>
 <dd>
 
@@ -19269,7 +19427,7 @@ client.licenses.list_licenses(
 </dl>
 </details>
 
-<details><summary><code>client.licenses.<a href="/lib/schematic/licenses/client.rb">get_single_license</a>(license_id) -> Schematic::Licenses::Types::GetSingleLicenseResponse</code></summary>
+<details><summary><code>client.licenses.<a href="/lib/schematic/licenses/client.rb">get_single_license</a>(license_id:) -> Schematic::Licenses::Types::GetSingleLicenseResponse</code></summary>
 <dl>
 <dd>
 
@@ -19467,7 +19625,6 @@ client.plangroups.get_plan_group(include_company_counts: true)
 ```ruby
 client.plangroups.create_plan_group(
   add_on_ids: ["add_on_ids"],
-  checkout_bundle_purchase_behavior: "individual",
   checkout_collect_address: true,
   checkout_collect_email: true,
   checkout_collect_phone: true,
@@ -19824,7 +19981,7 @@ client.plangroups.create_plan_group(
 </dl>
 </details>
 
-<details><summary><code>client.plangroups.<a href="/lib/schematic/plangroups/client.rb">update_plan_group</a>(plan_group_id, request) -> Schematic::Plangroups::Types::UpdatePlanGroupResponse</code></summary>
+<details><summary><code>client.plangroups.<a href="/lib/schematic/plangroups/client.rb">update_plan_group</a>(plan_group_id:, request) -> Schematic::Plangroups::Types::UpdatePlanGroupResponse</code></summary>
 <dl>
 <dd>
 
@@ -19840,7 +19997,6 @@ client.plangroups.create_plan_group(
 client.plangroups.update_plan_group(
   plan_group_id: "plan_group_id",
   add_on_ids: ["add_on_ids"],
-  checkout_bundle_purchase_behavior: "individual",
   checkout_collect_address: true,
   checkout_collect_email: true,
   checkout_collect_phone: true,
@@ -20292,7 +20448,7 @@ client.planmigrations.list_company_migrations(
 </dl>
 </details>
 
-<details><summary><code>client.planmigrations.<a href="/lib/schematic/planmigrations/client.rb">retry_company_migration</a>(plan_version_company_migration_id) -> Schematic::Planmigrations::Types::RetryCompanyMigrationResponse</code></summary>
+<details><summary><code>client.planmigrations.<a href="/lib/schematic/planmigrations/client.rb">retry_company_migration</a>(plan_version_company_migration_id:) -> Schematic::Planmigrations::Types::RetryCompanyMigrationResponse</code></summary>
 <dl>
 <dd>
 
@@ -20612,7 +20768,7 @@ client.planmigrations.create_migration(
 </dl>
 </details>
 
-<details><summary><code>client.planmigrations.<a href="/lib/schematic/planmigrations/client.rb">get_migration</a>(plan_version_migration_id) -> Schematic::Planmigrations::Types::GetMigrationResponse</code></summary>
+<details><summary><code>client.planmigrations.<a href="/lib/schematic/planmigrations/client.rb">get_migration</a>(plan_version_migration_id:) -> Schematic::Planmigrations::Types::GetMigrationResponse</code></summary>
 <dl>
 <dd>
 
@@ -20660,7 +20816,7 @@ client.planmigrations.get_migration(plan_version_migration_id: "plan_version_mig
 </dl>
 </details>
 
-<details><summary><code>client.planmigrations.<a href="/lib/schematic/planmigrations/client.rb">retry_migration</a>(plan_version_migration_id, request) -> Schematic::Planmigrations::Types::RetryMigrationResponse</code></summary>
+<details><summary><code>client.planmigrations.<a href="/lib/schematic/planmigrations/client.rb">retry_migration</a>(plan_version_migration_id:, request) -> Schematic::Planmigrations::Types::RetryMigrationResponse</code></summary>
 <dl>
 <dd>
 
@@ -21076,7 +21232,7 @@ client.scheduledcheckout.create_scheduled_checkout(
 </dl>
 </details>
 
-<details><summary><code>client.scheduledcheckout.<a href="/lib/schematic/scheduledcheckout/client.rb">get_scheduled_checkout</a>(scheduled_checkout_id) -> Schematic::Scheduledcheckout::Types::GetScheduledCheckoutResponse</code></summary>
+<details><summary><code>client.scheduledcheckout.<a href="/lib/schematic/scheduledcheckout/client.rb">get_scheduled_checkout</a>(scheduled_checkout_id:) -> Schematic::Scheduledcheckout::Types::GetScheduledCheckoutResponse</code></summary>
 <dl>
 <dd>
 
@@ -21124,7 +21280,7 @@ client.scheduledcheckout.get_scheduled_checkout(scheduled_checkout_id: "schedule
 </dl>
 </details>
 
-<details><summary><code>client.scheduledcheckout.<a href="/lib/schematic/scheduledcheckout/client.rb">update_scheduled_checkout</a>(scheduled_checkout_id, request) -> Schematic::Scheduledcheckout::Types::UpdateScheduledCheckoutResponse</code></summary>
+<details><summary><code>client.scheduledcheckout.<a href="/lib/schematic/scheduledcheckout/client.rb">update_scheduled_checkout</a>(scheduled_checkout_id:, request) -> Schematic::Scheduledcheckout::Types::UpdateScheduledCheckoutResponse</code></summary>
 <dl>
 <dd>
 
@@ -21337,7 +21493,7 @@ client.webhooks.list_webhook_events(
 </dl>
 </details>
 
-<details><summary><code>client.webhooks.<a href="/lib/schematic/webhooks/client.rb">get_webhook_event</a>(webhook_event_id) -> Schematic::Webhooks::Types::GetWebhookEventResponse</code></summary>
+<details><summary><code>client.webhooks.<a href="/lib/schematic/webhooks/client.rb">get_webhook_event</a>(webhook_event_id:) -> Schematic::Webhooks::Types::GetWebhookEventResponse</code></summary>
 <dl>
 <dd>
 
@@ -21623,7 +21779,7 @@ client.webhooks.create_webhook(
 </dl>
 </details>
 
-<details><summary><code>client.webhooks.<a href="/lib/schematic/webhooks/client.rb">get_webhook</a>(webhook_id) -> Schematic::Webhooks::Types::GetWebhookResponse</code></summary>
+<details><summary><code>client.webhooks.<a href="/lib/schematic/webhooks/client.rb">get_webhook</a>(webhook_id:) -> Schematic::Webhooks::Types::GetWebhookResponse</code></summary>
 <dl>
 <dd>
 
@@ -21671,7 +21827,7 @@ client.webhooks.get_webhook(webhook_id: "webhook_id")
 </dl>
 </details>
 
-<details><summary><code>client.webhooks.<a href="/lib/schematic/webhooks/client.rb">update_webhook</a>(webhook_id, request) -> Schematic::Webhooks::Types::UpdateWebhookResponse</code></summary>
+<details><summary><code>client.webhooks.<a href="/lib/schematic/webhooks/client.rb">update_webhook</a>(webhook_id:, request) -> Schematic::Webhooks::Types::UpdateWebhookResponse</code></summary>
 <dl>
 <dd>
 
@@ -21767,7 +21923,7 @@ client.webhooks.update_webhook(webhook_id: "webhook_id")
 </dl>
 </details>
 
-<details><summary><code>client.webhooks.<a href="/lib/schematic/webhooks/client.rb">delete_webhook</a>(webhook_id) -> Schematic::Webhooks::Types::DeleteWebhookResponse</code></summary>
+<details><summary><code>client.webhooks.<a href="/lib/schematic/webhooks/client.rb">delete_webhook</a>(webhook_id:) -> Schematic::Webhooks::Types::DeleteWebhookResponse</code></summary>
 <dl>
 <dd>
 
@@ -21815,7 +21971,7 @@ client.webhooks.delete_webhook(webhook_id: "webhook_id")
 </dl>
 </details>
 
-<details><summary><code>client.webhooks.<a href="/lib/schematic/webhooks/client.rb">send_test_webhook_action</a>(webhook_id, request) -> Schematic::Webhooks::Types::SendTestWebhookActionResponse</code></summary>
+<details><summary><code>client.webhooks.<a href="/lib/schematic/webhooks/client.rb">send_test_webhook_action</a>(webhook_id:, request) -> Schematic::Webhooks::Types::SendTestWebhookActionResponse</code></summary>
 <dl>
 <dd>
 

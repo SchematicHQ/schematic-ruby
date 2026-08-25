@@ -5,6 +5,7 @@ module Schematic
     module Types
       class GetPlanGroupResponse < Internal::Types::Model
         field :data, -> { Schematic::Types::PlanGroupDetailResponseData }, optional: false, nullable: false
+
         field :params, -> { Schematic::Plangroups::Types::GetPlanGroupParams }, optional: false, nullable: false
       end
     end

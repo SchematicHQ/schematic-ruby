@@ -4,6 +4,7 @@ module Schematic
   module Types
     class WorkOsIntegrationConfig < Internal::Types::Model
       field :first_events_received, -> { Internal::Types::Boolean }, optional: true, nullable: false
+
       field :webhook_url, -> { String }, optional: true, nullable: false
     end
   end

@@ -6,8 +6,11 @@ module Schematic
       extend Schematic::Internal::Types::Union
 
       member -> { Schematic::Types::EventBodyTrack }
+
       member -> { Schematic::Types::EventBodyFlagCheck }
+
       member -> { Schematic::Types::EventBodyIdentify }
+
       member -> { Schematic::Types::EventBodyInference }
     end
   end

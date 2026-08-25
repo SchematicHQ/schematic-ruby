@@ -23,17 +23,24 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.licenses.list_licenses(
+      #     feature_ids: ["feature_ids"],
+      #     ids: ["ids"],
+      #     name: "name",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Licenses::Types::ListLicensesResponse]
       def list_licenses(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[feature_ids ids name limit offset]
         query_params = {}
         query_params["feature_ids"] = params[:feature_ids] if params.key?(:feature_ids)
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["name"] = params[:name] if params.key?(:name)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -64,6 +71,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :license_id
+      #
+      # @example
+      #   client.licenses.get_single_license(license_id: "license_id")
       #
       # @return [Schematic::Licenses::Types::GetSingleLicenseResponse]
       def get_single_license(request_options: {}, **params)
@@ -101,17 +111,24 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.licenses.count_licenses(
+      #     feature_ids: ["feature_ids"],
+      #     ids: ["ids"],
+      #     name: "name",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Licenses::Types::CountLicensesResponse]
       def count_licenses(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[feature_ids ids name limit offset]
         query_params = {}
         query_params["feature_ids"] = params[:feature_ids] if params.key?(:feature_ids)
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["name"] = params[:name] if params.key?(:name)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],

@@ -5,6 +5,7 @@ module Schematic
     module Types
       class UpdateEnvironmentResponse < Internal::Types::Model
         field :data, -> { Schematic::Types::EnvironmentResponseData }, optional: false, nullable: false
+
         field :params, -> { Internal::Types::Hash[String, Object] }, optional: false, nullable: false
       end
     end

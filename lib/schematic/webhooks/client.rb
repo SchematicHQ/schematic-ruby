@@ -23,17 +23,24 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.webhooks.list_webhook_events(
+      #     ids: ["ids"],
+      #     q: "q",
+      #     webhook_id: "webhook_id",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Webhooks::Types::ListWebhookEventsResponse]
       def list_webhook_events(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[ids q webhook_id limit offset]
         query_params = {}
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["webhook_id"] = params[:webhook_id] if params.key?(:webhook_id)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -64,6 +71,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :webhook_event_id
+      #
+      # @example
+      #   client.webhooks.get_webhook_event(webhook_event_id: "webhook_event_id")
       #
       # @return [Schematic::Webhooks::Types::GetWebhookEventResponse]
       def get_webhook_event(request_options: {}, **params)
@@ -101,17 +111,24 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.webhooks.count_webhook_events(
+      #     ids: ["ids"],
+      #     q: "q",
+      #     webhook_id: "webhook_id",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Webhooks::Types::CountWebhookEventsResponse]
       def count_webhook_events(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[ids q webhook_id limit offset]
         query_params = {}
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["webhook_id"] = params[:webhook_id] if params.key?(:webhook_id)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -145,15 +162,20 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.webhooks.list_webhooks(
+      #     q: "q",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Webhooks::Types::ListWebhooksResponse]
       def list_webhooks(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[q limit offset]
         query_params = {}
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -183,6 +205,13 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.webhooks.create_webhook(
+      #     name: "name",
+      #     request_types: ["subscription.trial.ended"],
+      #     url: "url"
+      #   )
       #
       # @return [Schematic::Webhooks::Types::CreateWebhookResponse]
       def create_webhook(request_options: {}, **params)
@@ -217,6 +246,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :webhook_id
       #
+      # @example
+      #   client.webhooks.get_webhook(webhook_id: "webhook_id")
+      #
       # @return [Schematic::Webhooks::Types::GetWebhookResponse]
       def get_webhook(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
@@ -249,11 +281,14 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :webhook_id
       #
+      # @example
+      #   client.webhooks.update_webhook(webhook_id: "webhook_id")
+      #
       # @return [Schematic::Webhooks::Types::UpdateWebhookResponse]
       def update_webhook(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         request_data = Schematic::Webhooks::Types::UpdateWebhookRequestBody.new(params).to_h
-        non_body_param_names = ["webhook_id"]
+        non_body_param_names = %w[webhook_id]
         body = request_data.except(*non_body_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
@@ -285,6 +320,9 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :webhook_id
+      #
+      # @example
+      #   client.webhooks.delete_webhook(webhook_id: "webhook_id")
       #
       # @return [Schematic::Webhooks::Types::DeleteWebhookResponse]
       def delete_webhook(request_options: {}, **params)
@@ -318,11 +356,17 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String] :webhook_id
       #
+      # @example
+      #   client.webhooks.send_test_webhook_action(
+      #     webhook_id: "webhook_id",
+      #     request_type: "subscription.trial.ended"
+      #   )
+      #
       # @return [Schematic::Webhooks::Types::SendTestWebhookActionResponse]
       def send_test_webhook_action(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         request_data = Schematic::Webhooks::Types::TestWebhookRequestBody.new(params).to_h
-        non_body_param_names = ["webhook_id"]
+        non_body_param_names = %w[webhook_id]
         body = request_data.except(*non_body_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
@@ -357,15 +401,20 @@ module Schematic
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
+      # @example
+      #   client.webhooks.count_webhooks(
+      #     q: "q",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
       # @return [Schematic::Webhooks::Types::CountWebhooksResponse]
       def count_webhooks(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        query_param_names = %i[q limit offset]
         query_params = {}
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
-        params.except(*query_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
