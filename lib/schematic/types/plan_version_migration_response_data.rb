@@ -15,6 +15,8 @@ module Schematic
 
       field :id, -> { String }, optional: false, nullable: false
 
+      field :next_due_at, -> { String }, optional: true, nullable: false
+
       field :plan_id, -> { String }, optional: false, nullable: false
 
       field :plan_version_id_from, -> { String }, optional: true, nullable: false

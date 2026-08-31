@@ -17,6 +17,8 @@ module Schematic
 
       field :released_at, -> { String }, optional: true, nullable: false
 
+      field :tracked_amount, -> { Integer }, optional: false, nullable: false
+
       field :updated_at, -> { String }, optional: false, nullable: false
     end
   end

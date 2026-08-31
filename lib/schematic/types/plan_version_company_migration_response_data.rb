@@ -21,6 +21,8 @@ module Schematic
 
       field :plan_version_id_from, -> { String }, optional: true, nullable: false
 
+      field :scheduled_for, -> { String }, optional: true, nullable: false
+
       field :started_at, -> { String }, optional: true, nullable: false
 
       field :status, -> { Schematic::Types::PlanVersionCompanyMigrationStatus }, optional: false, nullable: false

@@ -856,7 +856,7 @@ module Schematic
       #   client.plans.publish_plan_version(
       #     plan_version_id: "plan_version_id",
       #     excluded_company_ids: ["excluded_company_ids"],
-      #     migration_strategy: "immediate"
+      #     migration_strategy: "end_of_billing_period"
       #   )
       #
       # @return [Schematic::Plans::Types::PublishPlanVersionResponse]
