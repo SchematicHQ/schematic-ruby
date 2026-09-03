@@ -5,6 +5,7 @@ module Schematic
     module PlanVersionMigrationStatus
       extend Schematic::Internal::Types::Enum
 
+      CANCELLED = "cancelled"
       COMPLETED = "completed"
       FAILED = "failed"
       IN_PROGRESS = "in_progress"

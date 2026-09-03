@@ -27,7 +27,7 @@ module Schematic
       #   client.planmigrations.list_company_migrations(
       #     migration_id: "migration_id",
       #     q: "q",
-      #     status: "completed",
+      #     status: "cancelled",
       #     limit: 1000000,
       #     offset: 1000000
       #   )
@@ -115,7 +115,7 @@ module Schematic
       #   client.planmigrations.count_company_migrations(
       #     migration_id: "migration_id",
       #     q: "q",
-      #     status: "completed",
+      #     status: "cancelled",
       #     limit: 1000000,
       #     offset: 1000000
       #   )
@@ -166,7 +166,7 @@ module Schematic
       # @example
       #   client.planmigrations.list_migrations(
       #     plan_version_id: "plan_version_id",
-      #     status: "completed",
+      #     status: "cancelled",
       #     limit: 1000000,
       #     offset: 1000000
       #   )
@@ -213,7 +213,7 @@ module Schematic
       #   client.planmigrations.create_migration(
       #     plan_id: "plan_id",
       #     plan_version_id_to: "plan_version_id_to",
-      #     strategy: "immediate",
+      #     strategy: "end_of_billing_period",
       #     target_plan_type: "plan"
       #   )
       #
@@ -270,6 +270,81 @@ module Schematic
         code = response.code.to_i
         if code.between?(200, 299)
           Schematic::Planmigrations::Types::GetMigrationResponse.load(response.body)
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          raise error_class.new(response.body, code: code)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :plan_version_migration_id
+      #
+      # @example
+      #   client.planmigrations.cancel_migration(plan_version_migration_id: "plan_version_migration_id")
+      #
+      # @return [Schematic::Planmigrations::Types::CancelMigrationResponse]
+      def cancel_migration(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "POST",
+          path: "plan-version-migrations/#{URI.encode_uri_component(params[:plan_version_migration_id].to_s)}/cancel",
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          Schematic::Planmigrations::Types::CancelMigrationResponse.load(response.body)
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          raise error_class.new(response.body, code: code)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Schematic::Planmigrations::Types::CompleteMigrationNowRequestBody]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :plan_version_migration_id
+      #
+      # @example
+      #   client.planmigrations.complete_migration_now(plan_version_migration_id: "plan_version_migration_id")
+      #
+      # @return [Schematic::Planmigrations::Types::CompleteMigrationNowResponse]
+      def complete_migration_now(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request_data = Schematic::Planmigrations::Types::CompleteMigrationNowRequestBody.new(params).to_h
+        non_body_param_names = %w[plan_version_migration_id]
+        body = request_data.except(*non_body_param_names)
+
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "POST",
+          path: "plan-version-migrations/#{URI.encode_uri_component(params[:plan_version_migration_id].to_s)}/complete-now",
+          body: body,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          Schematic::Planmigrations::Types::CompleteMigrationNowResponse.load(response.body)
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -334,7 +409,7 @@ module Schematic
       # @example
       #   client.planmigrations.count_migrations(
       #     plan_version_id: "plan_version_id",
-      #     status: "completed",
+      #     status: "cancelled",
       #     limit: 1000000,
       #     offset: 1000000
       #   )

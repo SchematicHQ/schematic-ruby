@@ -10,6 +10,8 @@ module Schematic
 
         field :address, -> { Schematic::Types::CustomerBillingAddress }, optional: true, nullable: false
 
+        field :billing_cycle_anchor, -> { String }, optional: true, nullable: false
+
         field :coupon_external_id, -> { String }, optional: true, nullable: false
 
         field :custom_field_values, -> { Internal::Types::Array[Schematic::Types::CheckoutFieldValue] }, optional: true, nullable: false
@@ -23,6 +25,8 @@ module Schematic
         field :migration_strategy, -> { Schematic::Types::PlanVersionMigrationStrategy }, optional: false, nullable: false
 
         field :phone, -> { String }, optional: true, nullable: false
+
+        field :prorate_first_period, -> { Internal::Types::Boolean }, optional: true, nullable: false
 
         field :proration_behavior, -> { Schematic::Types::MigrationProrationBehavior }, optional: true, nullable: false
 

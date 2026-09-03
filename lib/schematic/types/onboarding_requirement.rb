@@ -5,6 +5,7 @@ module Schematic
     module OnboardingRequirement
       extend Schematic::Internal::Types::Enum
 
+      CONNECT_AGENT = "connect_agent"
       CONNECT_BILLING = "connect_billing"
       CREATE_API_KEY = "create_api_key"
       FIRST_FLAG_CHECK = "first_flag_check"

@@ -37,6 +37,8 @@ module Schematic
 
       field :payment_methods, -> { Internal::Types::Array[Schematic::Types::PaymentMethodResponseData] }, optional: false, nullable: false
 
+      field :pending_migration, -> { Schematic::Types::PendingMigrationResponseData }, optional: true, nullable: false
+
       field :plan, -> { Schematic::Types::CompanyPlanWithBillingSubView }, optional: true, nullable: false
 
       field :plans, -> { Internal::Types::Array[Schematic::Types::GenericPreviewObject] }, optional: false, nullable: false

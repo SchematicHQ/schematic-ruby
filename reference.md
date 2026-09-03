@@ -1273,6 +1273,14 @@ client.accounts.update_onboarding_state
 <dl>
 <dd>
 
+**dismissed:** `Internal::Types::Boolean` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **path:** `Schematic::Types::OnboardingPath` 
     
 </dd>
@@ -14400,6 +14408,14 @@ client.plans.retry_custom_plan_billing(
 <dl>
 <dd>
 
+**billing_cycle_anchor:** `String` — The date the subscription's billing period renews on. Only honored when the retry creates a subscription.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **customer_email:** `String` 
     
 </dd>
@@ -14409,6 +14425,14 @@ client.plans.retry_custom_plan_billing(
 <dd>
 
 **days_until_due:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**prorate_first_period:** `Internal::Types::Boolean` — When true, the partial period between the subscription starting and its renewal date is billed pro rata straight away. When false that period is free and no invoice is raised until the renewal date. Only applies alongside billing_cycle_anchor. Defaults to true.
     
 </dd>
 </dl>
@@ -15581,7 +15605,7 @@ client.plans.delete_plan_version(
 client.plans.publish_plan_version(
   plan_version_id: "plan_version_id",
   excluded_company_ids: ["excluded_company_ids"],
-  migration_strategy: "immediate"
+  migration_strategy: "end_of_billing_period"
 )
 ```
 </dd>
@@ -15614,6 +15638,14 @@ client.plans.publish_plan_version(
 <dd>
 
 **address:** `Schematic::Types::CustomerBillingAddress` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billing_cycle_anchor:** `String` — The date the subscription's billing period renews on. Only honored on a first publish that starts a subscription.
     
 </dd>
 </dl>
@@ -15670,6 +15702,14 @@ client.plans.publish_plan_version(
 <dd>
 
 **phone:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**prorate_first_period:** `Internal::Types::Boolean` — When true, the partial period between the subscription starting and its renewal date is billed pro rata straight away. When false that period is free and no invoice is raised until the renewal date. Only applies alongside billing_cycle_anchor. Defaults to true.
     
 </dd>
 </dl>
@@ -20378,7 +20418,7 @@ client.plangroups.update_plan_group(
 client.planmigrations.list_company_migrations(
   migration_id: "migration_id",
   q: "q",
-  status: "completed",
+  status: "cancelled",
   limit: 1000000,
   offset: 1000000
 )
@@ -20512,7 +20552,7 @@ client.planmigrations.retry_company_migration(plan_version_company_migration_id:
 client.planmigrations.count_company_migrations(
   migration_id: "migration_id",
   q: "q",
-  status: "completed",
+  status: "cancelled",
   limit: 1000000,
   offset: 1000000
 )
@@ -20597,7 +20637,7 @@ client.planmigrations.count_company_migrations(
 ```ruby
 client.planmigrations.list_migrations(
   plan_version_id: "plan_version_id",
-  status: "completed",
+  status: "cancelled",
   limit: 1000000,
   offset: 1000000
 )
@@ -20675,7 +20715,7 @@ client.planmigrations.list_migrations(
 client.planmigrations.create_migration(
   plan_id: "plan_id",
   plan_version_id_to: "plan_version_id_to",
-  strategy: "immediate",
+  strategy: "end_of_billing_period",
   target_plan_type: "plan"
 )
 ```
@@ -20816,6 +20856,110 @@ client.planmigrations.get_migration(plan_version_migration_id: "plan_version_mig
 </dl>
 </details>
 
+<details><summary><code>client.planmigrations.<a href="/lib/schematic/planmigrations/client.rb">cancel_migration</a>(plan_version_migration_id:) -> Schematic::Planmigrations::Types::CancelMigrationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.planmigrations.cancel_migration(plan_version_migration_id: "plan_version_migration_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_version_migration_id:** `String` — plan_version_migration_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Planmigrations::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.planmigrations.<a href="/lib/schematic/planmigrations/client.rb">complete_migration_now</a>(plan_version_migration_id:, request) -> Schematic::Planmigrations::Types::CompleteMigrationNowResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.planmigrations.complete_migration_now(plan_version_migration_id: "plan_version_migration_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_version_migration_id:** `String` — plan_version_migration_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**proration_behavior:** `Schematic::Types::MigrationProrationBehavior` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Planmigrations::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.planmigrations.<a href="/lib/schematic/planmigrations/client.rb">retry_migration</a>(plan_version_migration_id:, request) -> Schematic::Planmigrations::Types::RetryMigrationResponse</code></summary>
 <dl>
 <dd>
@@ -20890,7 +21034,7 @@ client.planmigrations.retry_migration(
 ```ruby
 client.planmigrations.count_migrations(
   plan_version_id: "plan_version_id",
-  status: "completed",
+  status: "cancelled",
   limit: 1000000,
   offset: 1000000
 )
