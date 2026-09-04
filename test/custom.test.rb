@@ -3522,3 +3522,56 @@ describe "EventBuffer batch size cap" do
            "expected every request to carry at most 100 events, got #{sizes.inspect}"
   end
 end
+
+# =============================================================================
+# SchematicClient - Serializing cache providers hand back a Hash
+# =============================================================================
+describe "SchematicClient - cached flag responses from a serializing provider" do
+  # Mimics RedisCacheProvider: values round-trip through JSON, so #get returns
+  # a symbol-keyed Hash rather than the CheckFlagResponse that was stored.
+  class HashReturningCache
+    def initialize
+      @store = {}
+    end
+
+    def get(key)
+      raw = @store[key]
+      raw && JSON.parse(raw, symbolize_names: true)
+    end
+
+    def set(key, value, ttl: nil)
+      @store[key] = JSON.generate(value.respond_to?(:to_h) ? value.to_h : value)
+    end
+
+    def delete(key)
+      @store.delete(key)
+    end
+  end
+
+  after { WebMock.reset! }
+
+  it "serves check_flag and check_flags from a Hash-returning cache" do
+    base_url = "https://api.schematichq.com"
+    client = Schematic::SchematicClient.new(api_key: "api_test_key_123", cache_providers: [HashReturningCache.new])
+
+    stub_request(:post, "#{base_url}/flags/hash-cached-flag/check")
+      .to_return(
+        status: 200,
+        headers: { "Content-Type" => "application/json" },
+        body: { data: { value: true, flag: "hash-cached-flag", reason: "match" }, params: {} }.to_json
+      )
+
+    assert client.check_flag("hash-cached-flag")
+    # Second call is served from the cache as a Hash; must not raise.
+    resp = client.check_flag_with_entitlement("hash-cached-flag")
+    assert_equal true, resp.value
+    assert_equal "match", resp.reason
+    assert_requested(:post, "#{base_url}/flags/hash-cached-flag/check", times: 1)
+
+    results = client.check_flags(keys: ["hash-cached-flag"])
+    assert_equal [{ flag: "hash-cached-flag", value: true, reason: "match" }], results
+    assert_requested(:post, "#{base_url}/flags/hash-cached-flag/check", times: 1)
+
+    client.close
+  end
+end
