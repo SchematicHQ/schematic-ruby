@@ -114,7 +114,11 @@ def handle_configure(request, response)
   if config["useDataStream"]
     opts[:use_data_stream] = true
 
-    datastream_opts = { cache_ttl: CACHE_TTL }
+    # Entity caches keep the SDK default TTL, matching the Go testapp. The short
+    # CACHE_TTL is only for the flag-check cache above; in replicator mode the
+    # replicator owns the Redis entries and a short TTL on the SDK's write-back
+    # (track -> update_company_metrics) would expire them.
+    datastream_opts = {}
     datastream_opts[:redis_client] = redis_client if redis_client
 
     if config["replicatorUrl"]
