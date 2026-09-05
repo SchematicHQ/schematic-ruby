@@ -1165,6 +1165,102 @@ module Schematic
       end
 
       # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String, nil] :company_id
+      # @option params [Boolean, nil] :is_default
+      # @option params [Schematic::Types::BillingProviderType, nil] :provider_type
+      # @option params [Integer, nil] :limit
+      # @option params [Integer, nil] :offset
+      #
+      # @example
+      #   client.billing.list_company_billing_profiles(
+      #     company_id: "company_id",
+      #     is_default: true,
+      #     provider_type: "metronome",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
+      # @return [Schematic::Billing::Types::ListCompanyBillingProfilesResponse]
+      def list_company_billing_profiles(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        query_params = {}
+        query_params["company_id"] = params[:company_id] if params.key?(:company_id)
+        query_params["is_default"] = params[:is_default] if params.key?(:is_default)
+        query_params["provider_type"] = params[:provider_type] if params.key?(:provider_type)
+        query_params["limit"] = params[:limit] if params.key?(:limit)
+        query_params["offset"] = params[:offset] if params.key?(:offset)
+
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "GET",
+          path: "billing/profiles",
+          query: query_params,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          Schematic::Billing::Types::ListCompanyBillingProfilesResponse.load(response.body)
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          raise error_class.new(response.body, code: code)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Schematic::Billing::Types::UpdateCompanyBillingProfileRequestBody]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :billing_profile_id
+      #
+      # @example
+      #   client.billing.update_company_billing_profile(
+      #     billing_profile_id: "billing_profile_id",
+      #     collection_method: "charge_automatically"
+      #   )
+      #
+      # @return [Schematic::Billing::Types::UpdateCompanyBillingProfileResponse]
+      def update_company_billing_profile(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request_data = Schematic::Billing::Types::UpdateCompanyBillingProfileRequestBody.new(params).to_h
+        non_body_param_names = %w[billing_profile_id]
+        body = request_data.except(*non_body_param_names)
+
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "PUT",
+          path: "billing/profiles/#{URI.encode_uri_component(params[:billing_profile_id].to_s)}",
+          body: body,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          Schematic::Billing::Types::UpdateCompanyBillingProfileResponse.load(response.body)
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          raise error_class.new(response.body, code: code)
+        end
+      end
+
+      # @param request_options [Hash]
       # @param params [Schematic::Billing::Types::CreateBillingSubscriptionRequestBody]
       # @option request_options [String] :base_url
       # @option request_options [Hash{String => Object}] :additional_headers

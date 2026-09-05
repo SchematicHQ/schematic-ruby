@@ -42,7 +42,7 @@ module Schematic
       @raw_client = Schematic::Internal::Http::RawClient.new(
         base_url: base_url || Schematic::Environment::DEFAULT,
         headers: {
-          "User-Agent" => "schematichq/1.4.16",
+          "User-Agent" => "schematichq/1.4.17",
           "X-Fern-Language" => "Ruby",
           "X-Schematic-Api-Key" => api_key.to_s
         },

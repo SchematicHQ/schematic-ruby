@@ -3,6 +3,8 @@
 module Schematic
   module Types
     class EventBodyInference < Internal::Types::Model
+      field :cache_creation_input_tokens, -> { Integer }, optional: true, nullable: false
+
       field :cached_input_tokens, -> { Integer }, optional: true, nullable: false
 
       field :company, -> { Internal::Types::Hash[String, String] }, optional: false, nullable: false

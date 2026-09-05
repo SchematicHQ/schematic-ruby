@@ -29,6 +29,8 @@ module Schematic
 
       field :operator, -> { Schematic::Types::ComparableOperator }, optional: false, nullable: false
 
+      field :plan_versions, -> { Internal::Types::Array[Schematic::Types::RuleConditionPlanVersionResponseData] }, optional: true, nullable: false
+
       field :resource_ids, -> { Internal::Types::Array[String] }, optional: false, nullable: false
 
       field :resources, -> { Internal::Types::Array[Schematic::Types::PreviewObjectResponseData] }, optional: false, nullable: false
