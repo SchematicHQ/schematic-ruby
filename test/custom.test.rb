@@ -1002,6 +1002,33 @@ describe "DataStream ResourceCache" do
     assert_nil @cache.get_by_id("comp_1")
     assert_nil @cache.get_by_keys({ "org_id" => "abc" })
   end
+
+  it "writes replicator-layout keys through a prefixing Redis provider" do
+    # The replicator writes schematic:company:<version>:<id> and
+    # schematic:company:<version>:<key>:<value> (key and value lowercased).
+    # RedisCacheProvider supplies the "schematic:" prefix, so ResourceCache
+    # must not add another one or lookups against a replicator miss.
+    store = {}
+    redis = Object.new
+    redis.define_singleton_method(:get) { |key| store[key] }
+    redis.define_singleton_method(:set) { |key, value| store[key] = value }
+    redis.define_singleton_method(:setex) { |key, _ttl, value| store[key] = value }
+    redis.define_singleton_method(:del) { |*keys| keys.flatten.each { |k| store.delete(k) } }
+    provider = Schematic::RedisCacheProvider.new(client: redis, ttl: 300, key_prefix: "schematic:")
+
+    cache = Schematic::DataStream::ResourceCache.new(
+      primary_cache: provider,
+      lookup_cache: provider,
+      key_prefix: "company",
+      get_id: ->(c) { c[:id] },
+      get_keys: ->(c) { c[:keys] || {} },
+      cache_version: "v1"
+    )
+    cache.cache_entity({ id: "comp_1", keys: { "externalId" => "Acme-Co" } })
+
+    assert_equal ["schematic:company:v1:comp_1", "schematic:company:v1:externalid:acme-co"], store.keys.sort
+    assert_equal "comp_1", cache.get_by_keys({ "externalId" => "ACME-CO" })[:id]
+  end
 end
 
 # =============================================================================
