@@ -5,6 +5,8 @@ module Schematic
     class GetOnboardingStateResp < Internal::Types::Model
       field :agent_connected_at, -> { String }, optional: true, nullable: false
 
+      field :country, -> { String }, optional: true, nullable: false
+
       field :dismissed_at, -> { String }, optional: true, nullable: false
 
       field :environment_id, -> { String }, optional: true, nullable: false

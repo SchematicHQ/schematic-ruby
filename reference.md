@@ -1273,6 +1273,14 @@ client.accounts.update_onboarding_state
 <dl>
 <dd>
 
+**country:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **dismissed:** `Internal::Types::Boolean` 
     
 </dd>
@@ -3784,6 +3792,191 @@ client.billing.count_billing_products(
 <dd>
 
 **offset:** `Integer` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Billing::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">list_company_billing_profiles</a>() -> Schematic::Billing::Types::ListCompanyBillingProfilesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.billing.list_company_billing_profiles(
+  company_id: "company_id",
+  is_default: true,
+  provider_type: "metronome",
+  limit: 1000000,
+  offset: 1000000
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_default:** `Internal::Types::Boolean` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**provider_type:** `Schematic::Types::BillingProviderType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Integer` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `Integer` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Billing::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">update_company_billing_profile</a>(billing_profile_id:, request) -> Schematic::Billing::Types::UpdateCompanyBillingProfileResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.billing.update_company_billing_profile(
+  billing_profile_id: "billing_profile_id",
+  collection_method: "charge_automatically"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_profile_id:** `String` — billing_profile_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**collection_method:** `Schematic::Types::BillingCollectionMethod` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**days_until_due:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_default:** `Internal::Types::Boolean` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_method_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**proration_behavior:** `Schematic::Types::ProrationBehavior` 
     
 </dd>
 </dl>
@@ -6334,6 +6527,457 @@ client.credits.count_billing_plan_credit_grants(
 <dd>
 
 **plan_version_ids:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Integer` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `Integer` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Credits::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">list_credit_spend_policies</a>() -> Schematic::Credits::Types::ListCreditSpendPoliciesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.credits.list_credit_spend_policies(
+  billing_credit_id: "billing_credit_id",
+  company_id: "company_id",
+  scope_type: "company",
+  user_id: "user_id",
+  user_ids: ["user_ids"],
+  limit: 1000000,
+  offset: 1000000
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_credit_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scope_type:** `Schematic::Types::CreditSpendPolicyScope` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**user_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**user_ids:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Integer` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `Integer` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Credits::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">create_credit_spend_policy</a>(request) -> Schematic::Credits::Types::CreateCreditSpendPolicyResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.credits.create_credit_spend_policy(
+  billing_credit_id: "billing_credit_id",
+  max_per_draw: 1.1
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_credit_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_id:** `String` — The company the cap applies to. Set exactly one of company_id and user_id.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**label:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**max_per_draw:** `Integer` — The largest number of credits a single draw may spend.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**user_id:** `String` — The user the cap applies to. Set exactly one of company_id and user_id.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Credits::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">get_credit_spend_policy</a>(spend_policy_id:) -> Schematic::Credits::Types::GetCreditSpendPolicyResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.credits.get_credit_spend_policy(spend_policy_id: "spend_policy_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**spend_policy_id:** `String` — spend_policy_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Credits::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">update_credit_spend_policy</a>(spend_policy_id:, request) -> Schematic::Credits::Types::UpdateCreditSpendPolicyResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.credits.update_credit_spend_policy(spend_policy_id: "spend_policy_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**spend_policy_id:** `String` — spend_policy_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**label:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**max_per_draw:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Credits::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">delete_credit_spend_policy</a>(spend_policy_id:) -> Schematic::Credits::Types::DeleteCreditSpendPolicyResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.credits.delete_credit_spend_policy(spend_policy_id: "spend_policy_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**spend_policy_id:** `String` — spend_policy_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Credits::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">count_credit_spend_policies</a>() -> Schematic::Credits::Types::CountCreditSpendPoliciesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.credits.count_credit_spend_policies(
+  billing_credit_id: "billing_credit_id",
+  company_id: "company_id",
+  scope_type: "company",
+  user_id: "user_id",
+  user_ids: ["user_ids"],
+  limit: 1000000,
+  offset: 1000000
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_credit_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scope_type:** `Schematic::Types::CreditSpendPolicyScope` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**user_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**user_ids:** `String` 
     
 </dd>
 </dl>
@@ -17095,6 +17739,166 @@ client.events.get_event(event_id: "event_id")
 </dl>
 </details>
 
+<details><summary><code>client.events.<a href="/lib/schematic/events/client.rb">get_otlp_environment_settings</a>() -> Schematic::Events::Types::GetOtlpEnvironmentSettingsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.events.get_otlp_environment_settings
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Events::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.events.<a href="/lib/schematic/events/client.rb">upsert_otlp_environment_settings</a>(request) -> Schematic::Events::Types::UpsertOtlpEnvironmentSettingsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.events.upsert_otlp_environment_settings(tool_events_enabled: true)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_attribute:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_key:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tool_events_enabled:** `Internal::Types::Boolean` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**user_attribute:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**user_key:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Events::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.events.<a href="/lib/schematic/events/client.rb">delete_otlp_environment_settings</a>() -> Schematic::Events::Types::DeleteOtlpEnvironmentSettingsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.events.delete_otlp_environment_settings
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Events::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.events.<a href="/lib/schematic/events/client.rb">get_segment_integration_status</a>() -> Schematic::Events::Types::GetSegmentIntegrationStatusResponse</code></summary>
 <dl>
 <dd>
@@ -19236,6 +20040,134 @@ client.integrationsapi.load_sample_data_set
 </dl>
 </details>
 
+<details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">get_stripe_sandbox_claim_link</a>() -> Schematic::Integrationsapi::Types::GetStripeSandboxClaimLinkResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.integrationsapi.get_stripe_sandbox_claim_link
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Integrationsapi::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">get_stripe_sandbox_keys</a>() -> Schematic::Integrationsapi::Types::GetStripeSandboxKeysResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.integrationsapi.get_stripe_sandbox_keys
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Integrationsapi::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">claim_stripe_sandbox_keys</a>(request) -> Schematic::Integrationsapi::Types::ClaimStripeSandboxKeysResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.integrationsapi.claim_stripe_sandbox_keys(token: "token")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**token:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Integrationsapi::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">assume_stripe_installed</a>(request) -> Schematic::Integrationsapi::Types::AssumeStripeInstalledResponse</code></summary>
 <dl>
 <dd>
@@ -19316,6 +20248,118 @@ client.integrationsapi.install_stripe(type: "clerk")
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Integrationsapi::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">install_stripe_claimable_sandbox</a>(request) -> Schematic::Integrationsapi::Types::InstallStripeClaimableSandboxResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.integrationsapi.install_stripe_claimable_sandbox(email: "email")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**country:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**email:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**seed_sample_data:** `Internal::Types::Boolean` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Integrationsapi::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">list_stripe_sandbox_countries</a>() -> Schematic::Integrationsapi::Types::ListStripeSandboxCountriesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.integrationsapi.list_stripe_sandbox_countries
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
 
 <dl>
 <dd>

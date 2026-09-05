@@ -7,6 +7,12 @@ module Schematic
 
       field :account_name, -> { String }, optional: true, nullable: false
 
+      field :claimable_sandbox_expires_at, -> { String }, optional: true, nullable: false
+
+      field :claimable_sandbox_id, -> { String }, optional: true, nullable: false
+
+      field :claimable_sandbox_status, -> { String }, optional: true, nullable: false
+
       field :company_update_only, -> { Internal::Types::Boolean }, optional: true, nullable: false
 
       field :is_sandbox, -> { Internal::Types::Boolean }, optional: false, nullable: false

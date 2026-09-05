@@ -7,6 +7,10 @@ module Schematic
 
       field :billing_credit_balances, -> { Internal::Types::Hash[String, Integer] }, optional: true, nullable: false
 
+      field :billing_profile, -> { Schematic::Types::CompanyBillingProfileResponseData }, optional: true, nullable: false
+
+      field :billing_profiles, -> { Internal::Types::Array[Schematic::Types::CompanyBillingProfileResponseData] }, optional: true, nullable: false
+
       field :billing_subscription, -> { Schematic::Types::BillingSubscriptionView }, optional: true, nullable: false
 
       field :billing_subscriptions, -> { Internal::Types::Array[Schematic::Types::BillingSubscriptionView] }, optional: false, nullable: false

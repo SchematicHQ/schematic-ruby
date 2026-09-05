@@ -35,6 +35,10 @@ module Schematic
 
       field :value_bool, -> { Internal::Types::Boolean }, optional: true, nullable: false
 
+      field :value_credit, -> { Schematic::Types::BillingCreditResponseData }, optional: true, nullable: false
+
+      field :value_credit_id, -> { String }, optional: true, nullable: false
+
       field :value_numeric, -> { Integer }, optional: true, nullable: false
 
       field :value_trait, -> { Schematic::Types::EntityTraitDefinitionResponseData }, optional: true, nullable: false

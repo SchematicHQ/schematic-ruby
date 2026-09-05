@@ -4,6 +4,8 @@ module Schematic
   module Accounts
     module Types
       class UpdateOnboardingStateRequestBody < Internal::Types::Model
+        field :country, -> { String }, optional: true, nullable: false
+
         field :dismissed, -> { Internal::Types::Boolean }, optional: true, nullable: false
 
         field :path, -> { Schematic::Types::OnboardingPath }, optional: true, nullable: false
