@@ -202,7 +202,7 @@ module Schematic
           cache_key = build_cache_key(key, company, user)
           found = false
           @flag_check_cache_providers.each do |provider|
-            cached = provider.get(cache_key)
+            cached = coerce_cached_response(provider.get(cache_key))
             next unless cached
 
             cached_results[key] = { flag: key, value: cached.value, reason: cached.reason }
@@ -384,11 +384,20 @@ module Schematic
 
     # --- Internal Flag Checking ---
 
+    # Cache providers that serialize (RedisCacheProvider) hand back a Hash, not
+    # the CheckFlagResponse that was stored; the in-memory cache returns the
+    # object itself. Normalize so callers can use the response API either way.
+    def coerce_cached_response(cached)
+      return cached unless cached.is_a?(Hash)
+
+      CheckFlagResponse.new(cached)
+    end
+
     def check_flag_via_api(flag_key, company, user)
       # Check cache
       cache_key = build_cache_key(flag_key, company, user)
       @flag_check_cache_providers.each do |provider|
-        cached = provider.get(cache_key)
+        cached = coerce_cached_response(provider.get(cache_key))
         if cached
           @logger.debug("Flag '#{flag_key}' found in cache (value=#{cached.value})")
           return cached
