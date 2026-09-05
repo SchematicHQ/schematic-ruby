@@ -3539,7 +3539,7 @@ describe "SchematicClient - cached flag responses from a serializing provider" d
       raw && JSON.parse(raw, symbolize_names: true)
     end
 
-    def set(key, value, ttl: nil)
+    def set(key, value, ttl: nil) # rubocop:disable Lint/UnusedMethodArgument
       @store[key] = JSON.generate(value.respond_to?(:to_h) ? value.to_h : value)
     end
 
@@ -3564,11 +3564,13 @@ describe "SchematicClient - cached flag responses from a serializing provider" d
     assert client.check_flag("hash-cached-flag")
     # Second call is served from the cache as a Hash; must not raise.
     resp = client.check_flag_with_entitlement("hash-cached-flag")
-    assert_equal true, resp.value
+
+    assert resp.value
     assert_equal "match", resp.reason
     assert_requested(:post, "#{base_url}/flags/hash-cached-flag/check", times: 1)
 
     results = client.check_flags(keys: ["hash-cached-flag"])
+
     assert_equal [{ flag: "hash-cached-flag", value: true, reason: "match" }], results
     assert_requested(:post, "#{base_url}/flags/hash-cached-flag/check", times: 1)
 
