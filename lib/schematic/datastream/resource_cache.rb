@@ -3,8 +3,6 @@
 module Schematic
   module DataStream
     class ResourceCache
-      CACHE_KEY_PREFIX = "schematic"
-
       def initialize(primary_cache:, lookup_cache:, key_prefix:, get_id:, get_keys:, cache_version: nil)
         @primary_cache = primary_cache
         @lookup_cache = lookup_cache
@@ -65,11 +63,11 @@ module Schematic
       private
 
       def build_id_key(id)
-        "#{CACHE_KEY_PREFIX}:#{@key_prefix}:#{@cache_version}:#{id}"
+        "#{@key_prefix}:#{@cache_version}:#{id}"
       end
 
       def build_lookup_key(key_name, key_value)
-        "#{CACHE_KEY_PREFIX}:#{@key_prefix}:#{@cache_version}:#{key_name.to_s.downcase}:#{key_value}"
+        "#{@key_prefix}:#{@cache_version}:#{key_name.to_s.downcase}:#{key_value.to_s.downcase}"
       end
     end
   end
