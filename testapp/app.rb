@@ -95,9 +95,15 @@ def handle_configure(request, response)
   # Build Redis client if needed (shared between cache and DataStream/replicator)
   redis_client = config["redisUrl"] ? Redis.new(url: config["redisUrl"]) : nil
 
+  # Optional Redis key prefix, as a README-following user would set it. In
+  # replicator mode it must match the keys the replicator writes ("schematic:").
+  redis_key_prefix = config["redisKeyPrefix"]
+  redis_provider_opts = { client: redis_client, ttl: CACHE_TTL }
+  redis_provider_opts[:key_prefix] = redis_key_prefix if redis_key_prefix
+
   # Cache provider: explicit Redis, disabled, or SDK defaults
   cache_providers = if redis_client
-                      [Schematic::RedisCacheProvider.new(client: redis_client, ttl: CACHE_TTL)]
+                      [Schematic::RedisCacheProvider.new(**redis_provider_opts)]
                     elsif config["noCache"]
                       []
                     else
@@ -120,6 +126,7 @@ def handle_configure(request, response)
     # (track -> update_company_metrics) would expire them.
     datastream_opts = {}
     datastream_opts[:redis_client] = redis_client if redis_client
+    datastream_opts[:redis_key_prefix] = redis_key_prefix if redis_key_prefix
 
     if config["replicatorUrl"]
       datastream_opts[:replicator_mode] = true
