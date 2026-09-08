@@ -3,3 +3,7 @@
 # WASM artifacts (downloaded from schematic-api GitHub Releases)
 lib/schematic/wasm/rulesengine.wasm
 lib/schematic/wasm/.wasm_version
+
+# Gemfile.lock is not committed: this repo ships a gem (schematic.gemspec), and
+# gems resolve dependencies against the consuming app's lockfile, not their own.
+/Gemfile.lock
