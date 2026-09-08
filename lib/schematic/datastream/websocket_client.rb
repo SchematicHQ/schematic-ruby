@@ -37,15 +37,20 @@ module Schematic
     DATASTREAM_MODE_DIRECT = "direct"
     UNKNOWN_VERSION = "unknown"
 
+    # Symbol the websocket gem records on Frame::Incoming#error when an incoming
+    # frame declares a payload larger than WebSocket.max_frame_size.
+    FRAME_TOO_LONG = :frame_too_long
+
     class WebSocketClient
       attr_reader :url, :connected, :ready
 
-      def initialize(base_url:, api_key:, logger:, message_handler:, ready_handler: nil)
+      def initialize(base_url:, api_key:, logger:, message_handler:, ready_handler: nil, max_frame_size: nil)
         @base_url = base_url
         @api_key = api_key
         @logger = logger
         @message_handler = message_handler
         @ready_handler = ready_handler
+        @max_frame_size = max_frame_size
         @connected = false
         @ready = false
         @should_reconnect = true
@@ -60,6 +65,7 @@ module Schematic
         @stopped = false
         @url = build_ws_url(base_url)
         @last_pong = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+        apply_max_frame_size
       end
 
       def start
@@ -211,6 +217,22 @@ module Schematic
                   break
                 end
               end
+
+              # WebSocket::Frame::Incoming#next swallows protocol errors unless
+              # WebSocket.should_raise is set: it returns nil and records the
+              # reason on #error, which is indistinguishable from "no complete
+              # frame buffered yet". The error is also sticky — the offending
+              # header is never consumed — so without this check an oversized
+              # frame stalls the stream silently while the socket stays open.
+              if (parser_error = @frame_parser.error)
+                log_frame_parser_error(parser_error)
+                break
+              end
+            rescue WebSocket::Error::Frame::TooLong
+              # Reached only when the host process has set
+              # WebSocket.should_raise = true.
+              log_frame_parser_error(FRAME_TOO_LONG)
+              break
             rescue IOError, Errno::ECONNRESET, OpenSSL::SSL::SSLError => e
               @logger.warn("DataStream read error: #{e.message}")
               break
@@ -319,6 +341,42 @@ module Schematic
           data: data
         )
         @write_mutex.synchronize { @socket&.write(frame.to_s) }
+      end
+
+      # The maximum incoming frame size the websocket gem will accept. The gem
+      # only exposes this as WebSocket.max_frame_size, a module-level global read
+      # at decode time; Frame::Incoming takes no per-instance limit (passing
+      # max_frame_size: to its constructor is silently ignored). A per-client
+      # option therefore cannot be fully isolated from the rest of the process.
+      #
+      # The compromise: do nothing unless the caller explicitly asks for a limit,
+      # and when they do, only ever raise the global — never lower it — so we
+      # cannot shrink the ceiling out from under another websocket user in the
+      # same process. The change is logged so it is visible rather than silent.
+      def apply_max_frame_size
+        return if @max_frame_size.nil?
+
+        raise ArgumentError, "max_frame_size must be a positive Integer, got #{@max_frame_size.inspect}" unless @max_frame_size.is_a?(Integer) && @max_frame_size.positive?
+
+        current = ::WebSocket.max_frame_size
+        if @max_frame_size <= current
+          @logger.debug("DataStream max_frame_size #{@max_frame_size} is at or below the current WebSocket.max_frame_size (#{current}); leaving it unchanged")
+          return
+        end
+
+        ::WebSocket.max_frame_size = @max_frame_size
+        @logger.info("Raised WebSocket.max_frame_size from #{current} to #{@max_frame_size} bytes; the websocket gem stores this limit globally, so it applies to every websocket in this process")
+      end
+
+      def log_frame_parser_error(parser_error)
+        if parser_error == FRAME_TOO_LONG
+          @logger.error(
+            "DataStream received a WebSocket frame larger than the #{::WebSocket.max_frame_size} byte limit and cannot decode it. " \
+            "Raise the limit with datastream_options: { max_frame_size: <bytes> } (note: the websocket gem applies this limit process-wide)."
+          )
+        else
+          @logger.error("DataStream frame decode error: #{parser_error}")
+        end
       end
 
       # Headers attached to the WebSocket handshake. The mode/client headers let

@@ -908,6 +908,108 @@ describe "DataStream WebSocket handshake headers" do
 end
 
 # =============================================================================
+# DataStream WebSocket frame size limit
+# =============================================================================
+describe "DataStream WebSocket max frame size" do
+  # Captures log lines so tests can assert on the message the SDK surfaces.
+  class RecordingLogger
+    include Schematic::Logger
+
+    attr_reader :messages
+
+    def initialize
+      @messages = []
+    end
+
+    def debug(message, *) = record(:debug, message)
+    def info(message, *) = record(:info, message)
+    def warn(message, *) = record(:warn, message)
+    def error(message, *) = record(:error, message)
+
+    def messages_for(level) = @messages.select { |l, _| l == level }.map(&:last)
+
+    private
+
+    def record(level, message)
+      @messages << [level, message]
+      nil
+    end
+  end
+
+  # A frame header declaring a 4GB payload. The websocket gem rejects it on the
+  # declared length alone, so no large allocation is needed.
+  OVERSIZED_FRAME_HEADER = [0x81, 0x7F, 0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF].pack("C*")
+
+  def build_client(logger:, max_frame_size: nil)
+    Schematic::DataStream::WebSocketClient.new(
+      base_url: "https://api.schematichq.com",
+      api_key: "test",
+      logger: logger,
+      message_handler: ->(_msg) {},
+      max_frame_size: max_frame_size
+    )
+  end
+
+  before do
+    @original_max_frame_size = WebSocket.max_frame_size
+  end
+
+  after do
+    WebSocket.max_frame_size = @original_max_frame_size
+  end
+
+  it "leaves the gem's global limit untouched when no limit is given" do
+    build_client(logger: RecordingLogger.new)
+
+    assert_equal @original_max_frame_size, WebSocket.max_frame_size
+  end
+
+  it "raises the gem's global limit when a larger limit is requested" do
+    logger = RecordingLogger.new
+    build_client(logger: logger, max_frame_size: @original_max_frame_size * 2)
+
+    assert_equal @original_max_frame_size * 2, WebSocket.max_frame_size
+    assert(logger.messages_for(:info).any? { |m| m.include?("max_frame_size") })
+  end
+
+  it "never lowers the gem's global limit" do
+    build_client(logger: RecordingLogger.new, max_frame_size: 1024)
+
+    assert_equal @original_max_frame_size, WebSocket.max_frame_size
+  end
+
+  it "rejects a non-positive or non-integer limit" do
+    assert_raises(ArgumentError) { build_client(logger: RecordingLogger.new, max_frame_size: 0) }
+    assert_raises(ArgumentError) { build_client(logger: RecordingLogger.new, max_frame_size: "10MB") }
+  end
+
+  it "logs an actionable error when a frame exceeds the limit" do
+    parser = WebSocket::Frame::Incoming::Server.new(version: 13)
+    parser << OVERSIZED_FRAME_HEADER
+
+    # The gem reports the failure on #error and returns nil from #next rather
+    # than raising, which is why the read loop has to check #error explicitly.
+    assert_nil parser.next
+    assert_equal Schematic::DataStream::FRAME_TOO_LONG, parser.error
+
+    logger = RecordingLogger.new
+    build_client(logger: logger).send(:log_frame_parser_error, parser.error)
+
+    message = logger.messages_for(:error).last
+
+    assert_includes message, "larger than the #{WebSocket.max_frame_size} byte limit"
+    assert_includes message, "max_frame_size"
+  end
+
+  it "logs other frame decode errors with the reason" do
+    logger = RecordingLogger.new
+    build_client(logger: logger).send(:log_frame_parser_error, :reserved_bit_used)
+
+    assert_includes logger.messages_for(:error).last, "reserved_bit_used"
+  end
+end
+
+# =============================================================================
 # CheckFlagResponse Tests
 # =============================================================================
 describe "CheckFlagResponse" do
