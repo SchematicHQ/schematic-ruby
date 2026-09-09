@@ -30,7 +30,7 @@ gem build *.gemspec
 Run the test suite:
 
 ```bash
-bundle exec rspec
+bundle exec ruby -I lib -I test test/custom.test.rb
 ```
 
 ### Linting and Formatting
@@ -93,7 +93,7 @@ This approach is best for:
 
 1. Create a new branch for your changes
 2. Make your modifications
-3. Run tests to ensure nothing breaks: `bundle exec rspec`
+3. Run tests to ensure nothing breaks: `bundle exec ruby -I lib -I test test/custom.test.rb`
 4. Run linting: `bundle exec rubocop`
 5. Build the gem: `gem build *.gemspec`
 6. Commit your changes with a clear commit message
