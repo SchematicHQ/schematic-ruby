@@ -19,6 +19,8 @@ module Schematic
 
       field :requirements, -> { Internal::Types::Array[Schematic::Types::OnboardingRequirementView] }, optional: false, nullable: false
 
+      field :slack_connect, -> { Schematic::Types::SlackConnectInviteView }, optional: true, nullable: false
+
       field :stripe_import, -> { Schematic::Types::OnboardingStripeImport }, optional: true, nullable: false
 
       field :suggested_next, -> { Internal::Types::Array[Schematic::Types::OnboardingRequirement] }, optional: false, nullable: false

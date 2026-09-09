@@ -13,10 +13,10 @@
       "webrick": ">= 1.0"
     }
   },
-  "originGitCommit": "31f498c0a9babdc0eec5ae88e1212a254b2f2561",
+  "originGitCommit": "a8c4d02880995eed9268732ac12e58a1ddc1b73d",
   "originGitCommitIsDirty": false,
   "invokedBy": "ci",
-  "requestedVersion": "1.4.17",
+  "requestedVersion": "1.4.18",
   "ciProvider": "github",
-  "sdkVersion": "1.4.17"
+  "sdkVersion": "1.4.18"
 }
