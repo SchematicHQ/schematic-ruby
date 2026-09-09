@@ -571,6 +571,10 @@ module Schematic
         replicator_health_interval: options[:replicator_health_interval] || DataStream::REPLICATOR_HEALTH_INTERVAL
       }
 
+      # Only forward an explicit frame-size limit; when unset the websocket gem's
+      # own default (20MB) applies and no global state is touched.
+      ds_opts[:max_frame_size] = options[:max_frame_size] if options[:max_frame_size]
+
       # Redis client convenience — auto-creates Redis cache providers
       ds_opts[:redis_client] = options[:redis_client] if options[:redis_client]
       ds_opts[:redis_key_prefix] = options[:redis_key_prefix] if options[:redis_key_prefix]

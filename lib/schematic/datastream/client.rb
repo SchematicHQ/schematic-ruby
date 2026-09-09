@@ -30,7 +30,8 @@ module Schematic
         redis_key_prefix: "schematic:",
         replicator_mode: false,
         replicator_health_url: REPLICATOR_HEALTH_URL,
-        replicator_health_interval: REPLICATOR_HEALTH_INTERVAL
+        replicator_health_interval: REPLICATOR_HEALTH_INTERVAL,
+        max_frame_size: nil
       )
         @api_key = api_key
         @base_url = base_url
@@ -40,6 +41,7 @@ module Schematic
         @replicator_mode = replicator_mode
         @replicator_health_url = replicator_health_url
         @replicator_health_interval = replicator_health_interval
+        @max_frame_size = max_frame_size
         @replicator_ready = false
         @cache_version = ""
         @mutex = Mutex.new
@@ -120,7 +122,8 @@ module Schematic
             api_key: @api_key,
             logger: @logger,
             message_handler: method(:handle_message),
-            ready_handler: method(:handle_ready)
+            ready_handler: method(:handle_ready),
+            max_frame_size: @max_frame_size
           )
           @ws_client.start
         end
