@@ -1,5 +1,8 @@
 *.gem
 
+# Gems built locally for the SDK E2E "pack" mode (./scripts/e2e-pack.sh)
+artifacts/
+
 # WASM artifacts (downloaded from schematic-api GitHub Releases)
 lib/schematic/wasm/rulesengine.wasm
 lib/schematic/wasm/.wasm_version
