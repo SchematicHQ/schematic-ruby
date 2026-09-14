@@ -56,7 +56,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Webhooks::Types::ListWebhookEventsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Webhooks::Types::ListWebhookEventsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -91,7 +91,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Webhooks::Types::GetWebhookEventResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Webhooks::Types::GetWebhookEventResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -144,7 +144,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Webhooks::Types::CountWebhookEventsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Webhooks::Types::CountWebhookEventsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -191,7 +191,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Webhooks::Types::ListWebhooksResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Webhooks::Types::ListWebhooksResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -230,7 +230,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Webhooks::Types::CreateWebhookResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Webhooks::Types::CreateWebhookResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -265,7 +265,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Webhooks::Types::GetWebhookResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Webhooks::Types::GetWebhookResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -305,7 +305,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Webhooks::Types::UpdateWebhookResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Webhooks::Types::UpdateWebhookResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -340,7 +340,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Webhooks::Types::DeleteWebhookResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Webhooks::Types::DeleteWebhookResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -383,7 +383,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Webhooks::Types::SendTestWebhookActionResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Webhooks::Types::SendTestWebhookActionResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -430,7 +430,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Webhooks::Types::CountWebhooksResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Webhooks::Types::CountWebhooksResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)

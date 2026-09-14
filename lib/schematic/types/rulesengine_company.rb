@@ -11,6 +11,8 @@ module Schematic
 
       field :credit_balances, -> { Internal::Types::Hash[String, Integer] }, optional: false, nullable: false
 
+      field :credit_postpaid, -> { Internal::Types::Hash[String, Schematic::Types::RulesengineCreditPostpaidConfig] }, optional: true, nullable: false
+
       field :entitlements, -> { Internal::Types::Array[Schematic::Types::RulesengineFeatureEntitlement] }, optional: true, nullable: false
 
       field :environment_id, -> { String }, optional: false, nullable: false

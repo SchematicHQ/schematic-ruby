@@ -40,7 +40,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Events::Types::CreateEventBatchResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Events::Types::CreateEventBatchResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -90,7 +90,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Events::Types::GetEventSummariesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Events::Types::GetEventSummariesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -152,7 +152,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Events::Types::ListEventsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Events::Types::ListEventsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -187,7 +187,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Events::Types::CreateEventResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Events::Types::CreateEventResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -222,7 +222,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Events::Types::GetEventResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Events::Types::GetEventResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -255,7 +255,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Events::Types::GetOtlpEnvironmentSettingsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Events::Types::GetOtlpEnvironmentSettingsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -290,7 +290,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Events::Types::UpsertOtlpEnvironmentSettingsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Events::Types::UpsertOtlpEnvironmentSettingsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -323,7 +323,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Events::Types::DeleteOtlpEnvironmentSettingsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Events::Types::DeleteOtlpEnvironmentSettingsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -356,7 +356,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Events::Types::GetSegmentIntegrationStatusResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Events::Types::GetSegmentIntegrationStatusResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)

@@ -3,6 +3,8 @@
 module Schematic
   module Types
     class WebhookEventResponseData < Internal::Types::Model
+      field :attempt_count, -> { Integer }, optional: false, nullable: false
+
       field :created_at, -> { String }, optional: false, nullable: false
 
       field :id, -> { String }, optional: false, nullable: false

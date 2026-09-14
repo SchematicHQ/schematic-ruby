@@ -11,6 +11,8 @@ module Schematic
 
         field :exclude_company_scoped, -> { Internal::Types::Boolean }, optional: true, nullable: false
 
+        field :exclude_unused, -> { Internal::Types::Boolean }, optional: true, nullable: false
+
         field :for_fallback_plan, -> { Internal::Types::Boolean }, optional: true, nullable: false
 
         field :for_initial_plan, -> { Internal::Types::Boolean }, optional: true, nullable: false

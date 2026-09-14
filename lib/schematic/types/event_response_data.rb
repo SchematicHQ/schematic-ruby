@@ -33,6 +33,8 @@ module Schematic
 
       field :quantity, -> { Integer }, optional: false, nullable: false
 
+      field :reservation_id, -> { String }, optional: true, nullable: false
+
       field :sent_at, -> { String }, optional: true, nullable: false
 
       field :status, -> { Schematic::Types::EventStatus }, optional: false, nullable: false

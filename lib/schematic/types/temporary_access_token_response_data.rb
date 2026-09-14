@@ -3,7 +3,7 @@
 module Schematic
   module Types
     class TemporaryAccessTokenResponseData < Internal::Types::Model
-      field :api_key_id, -> { String }, optional: false, nullable: false
+      field :api_key_id, -> { String }, optional: true, nullable: false
 
       field :created_at, -> { String }, optional: false, nullable: false
 
@@ -12,6 +12,8 @@ module Schematic
       field :expired_at, -> { String }, optional: false, nullable: false
 
       field :id, -> { String }, optional: false, nullable: false
+
+      field :issuer_type, -> { Schematic::Types::TemporaryAccessTokenIssuerType }, optional: false, nullable: false
 
       field :resource_type, -> { String }, optional: false, nullable: false
 

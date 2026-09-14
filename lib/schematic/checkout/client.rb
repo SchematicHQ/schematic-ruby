@@ -62,7 +62,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Checkout::Types::CheckoutInternalResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Checkout::Types::CheckoutInternalResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -97,7 +97,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Checkout::Types::GetCheckoutDataResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Checkout::Types::GetCheckoutDataResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -156,7 +156,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Checkout::Types::PreviewCheckoutInternalResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Checkout::Types::PreviewCheckoutInternalResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -191,7 +191,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Checkout::Types::GetCompanyBillingDetailsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Checkout::Types::GetCompanyBillingDetailsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -237,7 +237,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Checkout::Types::UpdateCompanyBillingDetailsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Checkout::Types::UpdateCompanyBillingDetailsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -289,7 +289,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Checkout::Types::ManagePlanResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Checkout::Types::ManagePlanResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -341,7 +341,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Checkout::Types::PreviewManagePlanResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Checkout::Types::PreviewManagePlanResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -376,7 +376,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Checkout::Types::CancelSubscriptionResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Checkout::Types::CancelSubscriptionResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -416,7 +416,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Checkout::Types::UpdateCustomerSubscriptionTrialEndResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Checkout::Types::UpdateCustomerSubscriptionTrialEndResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
