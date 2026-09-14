@@ -11,11 +11,17 @@
 #
 # SDK source is controlled by SDK_SOURCE env var:
 #   - "local" (default): loads from ../lib
+#   - "pack": requires the 'schematichq' gem built from this working tree and
+#     installed by ./scripts/e2e-pack.sh
 #   - "published": requires the 'schematichq' gem from RubyGems
 #
 # Usage:
 #   # Local build (default)
 #   ruby testapp/app.rb
+#
+#   # Gem built from this working tree
+#   ./scripts/e2e-pack.sh
+#   SDK_SOURCE=pack ruby testapp/app.rb
 #
 #   # Published version
 #   cd testapp && bundle install
@@ -28,7 +34,11 @@ require "redis"
 
 # --- SDK Loading ---
 
-$LOAD_PATH.unshift(File.join(__dir__, "..", "lib")) unless ENV["SDK_SOURCE"] == "published"
+# Only "local" (the default) loads the SDK from the working tree. "pack" and
+# "published" must resolve the installed gem, the way an end user would.
+sdk_source = ENV["SDK_SOURCE"].to_s
+sdk_source = "local" if sdk_source.empty?
+$LOAD_PATH.unshift(File.join(__dir__, "..", "lib")) if sdk_source == "local"
 require "schematichq"
 
 # --- Constants ---

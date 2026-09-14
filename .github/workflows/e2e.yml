@@ -7,11 +7,12 @@ on:
         required: false
         default: "https://api.schematichq.dev"
       sdk-source:
-        description: "SDK source: local or published"
+        description: "SDK source: local, pack or published"
         required: false
         type: choice
         options:
           - local
+          - pack
           - published
         default: "local"
       sdk-version:
@@ -27,8 +28,12 @@ jobs:
         sudo apt-get update -q && sudo apt-get install -yq ruby-dev
         gem install bundler
         bundle install
-        ./scripts/download-wasm.sh
-        cd testapp && bundle install
+        if [ "${{ inputs.sdk-source || 'local' }}" = "pack" ]; then
+          ./scripts/e2e-pack.sh
+        else
+          ./scripts/download-wasm.sh
+          cd testapp && bundle install
+        fi
       start: ruby testapp/app.rb
       api-base-url: ${{ inputs.api-base-url || 'https://api.schematichq.dev' }}
       sdk-source: ${{ inputs.sdk-source || 'local' }}
