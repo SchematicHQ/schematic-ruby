@@ -46,7 +46,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Plans::Types::UpdateCompanyPlansResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Plans::Types::UpdateCompanyPlansResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -105,7 +105,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Plans::Types::ListCustomPlanBillingsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Plans::Types::ListCustomPlanBillingsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -149,7 +149,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Plans::Types::MarkCustomPlanBillingPaidResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Plans::Types::MarkCustomPlanBillingPaidResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -192,7 +192,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Plans::Types::RetryCustomPlanBillingResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Plans::Types::RetryCustomPlanBillingResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -230,7 +230,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Plans::Types::CreateCustomPlanResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Plans::Types::CreateCustomPlanResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -247,6 +247,7 @@ module Schematic
       # @option params [String, nil] :company_id
       # @option params [Boolean, nil] :company_scoped_only
       # @option params [Boolean, nil] :exclude_company_scoped
+      # @option params [Boolean, nil] :exclude_unused
       # @option params [Boolean, nil] :for_fallback_plan
       # @option params [Boolean, nil] :for_initial_plan
       # @option params [Boolean, nil] :for_trial_expiry_plan
@@ -267,6 +268,7 @@ module Schematic
       #     company_id: "company_id",
       #     company_scoped_only: true,
       #     exclude_company_scoped: true,
+      #     exclude_unused: true,
       #     for_fallback_plan: true,
       #     for_initial_plan: true,
       #     for_trial_expiry_plan: true,
@@ -290,6 +292,7 @@ module Schematic
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["company_scoped_only"] = params[:company_scoped_only] if params.key?(:company_scoped_only)
         query_params["exclude_company_scoped"] = params[:exclude_company_scoped] if params.key?(:exclude_company_scoped)
+        query_params["exclude_unused"] = params[:exclude_unused] if params.key?(:exclude_unused)
         query_params["for_fallback_plan"] = params[:for_fallback_plan] if params.key?(:for_fallback_plan)
         query_params["for_initial_plan"] = params[:for_initial_plan] if params.key?(:for_initial_plan)
         query_params["for_trial_expiry_plan"] = params[:for_trial_expiry_plan] if params.key?(:for_trial_expiry_plan)
@@ -319,7 +322,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Plans::Types::ListPlansResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Plans::Types::ListPlansResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -357,7 +360,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Plans::Types::CreatePlanResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Plans::Types::CreatePlanResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -400,7 +403,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Plans::Types::GetPlanResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Plans::Types::GetPlanResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -442,7 +445,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Plans::Types::UpdatePlanResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Plans::Types::UpdatePlanResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -477,7 +480,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Plans::Types::DeletePlanResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Plans::Types::DeletePlanResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -520,7 +523,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Plans::Types::UpsertBillingProductPlanResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Plans::Types::UpsertBillingProductPlanResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -560,7 +563,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Plans::Types::UpsertPlanForBillingProductResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Plans::Types::UpsertPlanForBillingProductResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -610,7 +613,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Plans::Types::ListBillingProductMatchCompaniesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Plans::Types::ListBillingProductMatchCompaniesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -660,7 +663,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Plans::Types::CountBillingProductMatchCompaniesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Plans::Types::CountBillingProductMatchCompaniesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -677,6 +680,7 @@ module Schematic
       # @option params [String, nil] :company_id
       # @option params [Boolean, nil] :company_scoped_only
       # @option params [Boolean, nil] :exclude_company_scoped
+      # @option params [Boolean, nil] :exclude_unused
       # @option params [Boolean, nil] :for_fallback_plan
       # @option params [Boolean, nil] :for_initial_plan
       # @option params [Boolean, nil] :for_trial_expiry_plan
@@ -697,6 +701,7 @@ module Schematic
       #     company_id: "company_id",
       #     company_scoped_only: true,
       #     exclude_company_scoped: true,
+      #     exclude_unused: true,
       #     for_fallback_plan: true,
       #     for_initial_plan: true,
       #     for_trial_expiry_plan: true,
@@ -720,6 +725,7 @@ module Schematic
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["company_scoped_only"] = params[:company_scoped_only] if params.key?(:company_scoped_only)
         query_params["exclude_company_scoped"] = params[:exclude_company_scoped] if params.key?(:exclude_company_scoped)
+        query_params["exclude_unused"] = params[:exclude_unused] if params.key?(:exclude_unused)
         query_params["for_fallback_plan"] = params[:for_fallback_plan] if params.key?(:for_fallback_plan)
         query_params["for_initial_plan"] = params[:for_initial_plan] if params.key?(:for_initial_plan)
         query_params["for_trial_expiry_plan"] = params[:for_trial_expiry_plan] if params.key?(:for_trial_expiry_plan)
@@ -749,7 +755,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Plans::Types::CountPlansResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Plans::Types::CountPlansResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -793,7 +799,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Plans::Types::ListPlanIssuesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Plans::Types::ListPlanIssuesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -836,7 +842,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Plans::Types::DeletePlanVersionResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Plans::Types::DeletePlanVersionResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -880,7 +886,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Plans::Types::PublishPlanVersionResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Plans::Types::PublishPlanVersionResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)

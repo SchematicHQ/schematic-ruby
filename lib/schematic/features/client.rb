@@ -71,7 +71,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Features::Types::ListFeaturesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Features::Types::ListFeaturesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -110,7 +110,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Features::Types::CreateFeatureResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Features::Types::CreateFeatureResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -145,7 +145,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Features::Types::GetFeatureResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Features::Types::GetFeatureResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -185,7 +185,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Features::Types::UpdateFeatureResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Features::Types::UpdateFeatureResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -220,7 +220,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Features::Types::DeleteFeatureResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Features::Types::DeleteFeatureResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -261,7 +261,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Features::Types::UpsertFeatureForBillingProductResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Features::Types::UpsertFeatureForBillingProductResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -329,7 +329,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Features::Types::CountFeaturesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Features::Types::CountFeaturesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -382,7 +382,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Features::Types::ListFlagsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Features::Types::ListFlagsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -423,7 +423,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Features::Types::CreateFlagResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Features::Types::CreateFlagResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -458,7 +458,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Features::Types::GetFlagResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Features::Types::GetFlagResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -504,7 +504,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Features::Types::UpdateFlagResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Features::Types::UpdateFlagResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -539,7 +539,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Features::Types::DeleteFlagResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Features::Types::DeleteFlagResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -598,7 +598,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Features::Types::UpdateFlagRulesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Features::Types::UpdateFlagRulesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -637,7 +637,47 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Features::Types::CheckFlagResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Features::Types::CheckFlagResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          raise error_class.new(response.body, code: code)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Schematic::Features::Types::CheckAndReserveFlagRequestBody]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :key
+      #
+      # @example
+      #   client.features.check_and_reserve_flag(key: "key")
+      #
+      # @return [Schematic::Features::Types::CheckAndReserveFlagResponse]
+      def check_and_reserve_flag(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request_data = Schematic::Features::Types::CheckAndReserveFlagRequestBody.new(params).to_h
+        non_body_param_names = %w[key]
+        body = request_data.except(*non_body_param_names)
+
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "POST",
+          path: "flags/#{URI.encode_uri_component(params[:key].to_s)}/check-and-reserve",
+          body: body,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Features::Types::CheckAndReserveFlagResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -672,7 +712,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Features::Types::CheckFlagsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Features::Types::CheckFlagsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -707,7 +747,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Features::Types::CheckFlagsBulkResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Features::Types::CheckFlagsBulkResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -760,7 +800,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Features::Types::CountFlagsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Features::Types::CountFlagsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)

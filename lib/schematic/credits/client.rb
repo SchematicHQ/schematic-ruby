@@ -53,7 +53,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::ListBillingCreditsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::ListBillingCreditsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -92,7 +92,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::CreateBillingCreditResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::CreateBillingCreditResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -127,7 +127,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::GetSingleBillingCreditResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::GetSingleBillingCreditResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -171,7 +171,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::UpdateBillingCreditResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::UpdateBillingCreditResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -206,7 +206,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::SoftDeleteBillingCreditResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::SoftDeleteBillingCreditResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -245,7 +245,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::ListCompanyCreditBalancesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::ListCompanyCreditBalancesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -301,7 +301,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::ListCreditBundlesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::ListCreditBundlesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -341,7 +341,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::CreateCreditBundleResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::CreateCreditBundleResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -376,7 +376,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::GetCreditBundleResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::GetCreditBundleResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -420,7 +420,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::UpdateCreditBundleDetailsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::UpdateCreditBundleDetailsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -455,7 +455,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::DeleteCreditBundleResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::DeleteCreditBundleResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -511,7 +511,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::CountCreditBundlesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::CountCreditBundlesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -561,7 +561,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::CountBillingCreditsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::CountBillingCreditsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -601,7 +601,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::ZeroOutGrantResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::ZeroOutGrantResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -641,7 +641,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::GrantBillingCreditsToCompanyResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::GrantBillingCreditsToCompanyResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -694,7 +694,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::CountCompanyGrantsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::CountCompanyGrantsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -747,7 +747,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::ListCompanyGrantsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::ListCompanyGrantsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -797,7 +797,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::CountBillingCreditsGrantsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::CountBillingCreditsGrantsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -847,7 +847,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::ListGrantsForCreditResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::ListGrantsForCreditResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -886,7 +886,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::AcquireCreditLeaseResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::AcquireCreditLeaseResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -929,7 +929,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::ExtendCreditLeaseResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::ExtendCreditLeaseResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -973,7 +973,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::ReleaseCreditLeaseResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::ReleaseCreditLeaseResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1035,7 +1035,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::ListBillingPlanCreditGrantsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::ListBillingPlanCreditGrantsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1076,7 +1076,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::CreateBillingPlanCreditGrantResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::CreateBillingPlanCreditGrantResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1111,7 +1111,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::GetSingleBillingPlanCreditGrantResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::GetSingleBillingPlanCreditGrantResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1154,7 +1154,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::UpdateBillingPlanCreditGrantResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::UpdateBillingPlanCreditGrantResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1197,7 +1197,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::DeleteBillingPlanCreditGrantResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::DeleteBillingPlanCreditGrantResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1259,7 +1259,90 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::CountBillingPlanCreditGrantsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::CountBillingPlanCreditGrantsResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          raise error_class.new(response.body, code: code)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Schematic::Credits::Types::ReserveCreditsRequestBody]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.credits.reserve_credits(
+      #     amount: 1.1,
+      #     company_id: "company_id",
+      #     credit_type_id: "credit_type_id"
+      #   )
+      #
+      # @return [Schematic::Credits::Types::ReserveCreditsResponse]
+      def reserve_credits(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "POST",
+          path: "billing/credits/reservations",
+          body: Schematic::Credits::Types::ReserveCreditsRequestBody.new(params).to_h,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::ReserveCreditsResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          raise error_class.new(response.body, code: code)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Schematic::Types::ReleaseCreditReservationRequestBody]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :reservation_id
+      #
+      # @example
+      #   client.credits.release_credit_reservation(
+      #     reservation_id: "reservation_id",
+      #     request: {
+      #       key: "value"
+      #     }
+      #   )
+      #
+      # @return [Schematic::Credits::Types::ReleaseCreditReservationResponse]
+      def release_credit_reservation(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        path_param_names = %i[reservation_id]
+        body_params = params.except(*path_param_names)
+
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "PUT",
+          path: "billing/credits/reservations/#{URI.encode_uri_component(params[:reservation_id].to_s)}/release",
+          body: body_params,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::ReleaseCreditReservationResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1318,7 +1401,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::ListCreditSpendPoliciesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::ListCreditSpendPoliciesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1356,7 +1439,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::CreateCreditSpendPolicyResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::CreateCreditSpendPolicyResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1391,7 +1474,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::GetCreditSpendPolicyResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::GetCreditSpendPolicyResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1431,7 +1514,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::UpdateCreditSpendPolicyResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::UpdateCreditSpendPolicyResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1466,7 +1549,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::DeleteCreditSpendPolicyResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::DeleteCreditSpendPolicyResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1525,7 +1608,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::CountCreditSpendPoliciesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::CountCreditSpendPoliciesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1587,7 +1670,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::ListCreditEventLedgerResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::ListCreditEventLedgerResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1649,7 +1732,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Credits::Types::CountCreditEventLedgerResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::CountCreditEventLedgerResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)

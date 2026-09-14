@@ -11,6 +11,8 @@ module Schematic
 
       field :quantity, -> { Integer }, optional: true, nullable: false
 
+      field :reservation_id, -> { String }, optional: true, nullable: false
+
       field :traits, -> { Internal::Types::Hash[String, Object] }, optional: true, nullable: false
 
       field :user, -> { Internal::Types::Hash[String, String] }, optional: true, nullable: false

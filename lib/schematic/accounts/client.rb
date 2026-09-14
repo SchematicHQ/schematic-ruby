@@ -56,7 +56,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Accounts::Types::ListAccountMembersResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Accounts::Types::ListAccountMembersResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -91,7 +91,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Accounts::Types::GetAccountMemberResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Accounts::Types::GetAccountMemberResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -144,7 +144,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Accounts::Types::CountAccountMembersResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Accounts::Types::CountAccountMembersResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -194,7 +194,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Accounts::Types::ListApiKeysResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Accounts::Types::ListApiKeysResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -229,7 +229,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Accounts::Types::CreateApiKeyResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Accounts::Types::CreateApiKeyResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -264,7 +264,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Accounts::Types::GetApiKeyResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Accounts::Types::GetApiKeyResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -304,7 +304,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Accounts::Types::UpdateApiKeyResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Accounts::Types::UpdateApiKeyResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -339,7 +339,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Accounts::Types::DeleteApiKeyResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Accounts::Types::DeleteApiKeyResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -389,7 +389,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Accounts::Types::CountApiKeysResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Accounts::Types::CountApiKeysResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -448,7 +448,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Accounts::Types::ListAuditLogsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Accounts::Types::ListAuditLogsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -483,7 +483,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Accounts::Types::GetAuditLogResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Accounts::Types::GetAuditLogResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -542,7 +542,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Accounts::Types::CountAuditLogsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Accounts::Types::CountAuditLogsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -589,7 +589,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Accounts::Types::ListEnvironmentsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Accounts::Types::ListEnvironmentsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -627,7 +627,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Accounts::Types::CreateEnvironmentResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Accounts::Types::CreateEnvironmentResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -662,7 +662,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Accounts::Types::GetEnvironmentResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Accounts::Types::GetEnvironmentResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -702,7 +702,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Accounts::Types::UpdateEnvironmentResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Accounts::Types::UpdateEnvironmentResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -737,7 +737,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Accounts::Types::DeleteEnvironmentResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Accounts::Types::DeleteEnvironmentResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -770,7 +770,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Accounts::Types::GetOnboardingStateResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Accounts::Types::GetOnboardingStateResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -805,7 +805,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Accounts::Types::UpdateOnboardingStateResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Accounts::Types::UpdateOnboardingStateResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -838,7 +838,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Accounts::Types::QuickstartResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Accounts::Types::QuickstartResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -871,7 +871,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Accounts::Types::GetWhoAmIResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Accounts::Types::GetWhoAmIResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)

@@ -11,6 +11,8 @@ module Schematic
 
       field :created_at, -> { String }, optional: false, nullable: false
 
+      field :credit_bundle_id, -> { String }, optional: true, nullable: false
+
       field :credit_icon, -> { String }, optional: true, nullable: false
 
       field :credit_id, -> { String }, optional: false, nullable: false
@@ -30,6 +32,12 @@ module Schematic
       field :plan_id, -> { String }, optional: true, nullable: false
 
       field :plan_name, -> { String }, optional: true, nullable: false
+
+      field :postpaid_charge_amount, -> { Integer }, optional: true, nullable: false
+
+      field :postpaid_charge_currency, -> { String }, optional: true, nullable: false
+
+      field :postpaid_charged_credits, -> { Integer }, optional: true, nullable: false
 
       field :price, -> { Schematic::Types::BillingPriceResponseData }, optional: true, nullable: false
 

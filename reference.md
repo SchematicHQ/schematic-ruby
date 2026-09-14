@@ -4174,6 +4174,14 @@ client.billing.upsert_billing_subscription(
 <dl>
 <dd>
 
+**started_at:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **status:** `String` 
     
 </dd>
@@ -5493,6 +5501,14 @@ client.credits.grant_billing_credits_to_company(
 <dl>
 <dd>
 
+**credit_bundle_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **credit_id:** `String` 
     
 </dd>
@@ -6543,6 +6559,151 @@ client.credits.count_billing_plan_credit_grants(
 <dd>
 
 **offset:** `Integer` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Credits::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">reserve_credits</a>(request) -> Schematic::Credits::Types::ReserveCreditsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.credits.reserve_credits(
+  amount: 1.1,
+  company_id: "company_id",
+  credit_type_id: "credit_type_id"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**amount:** `Integer` — Credits to hold for the operation. The full amount must be available; a partial hold is never taken
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**credit_type_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expires_at:** `String` — When the hold lapses if no track event settles it; defaults to one minute from now and may be at most one hour out. The unspent hold is refunded on expiry
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotency_key:** `String` — A caller-chosen key for safe retries: a second request with the same key returns the original reservation instead of taking another hold
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Credits::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">release_credit_reservation</a>(reservation_id:, request) -> Schematic::Credits::Types::ReleaseCreditReservationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.credits.release_credit_reservation(
+  reservation_id: "reservation_id",
+  request: {
+    key: "value"
+  }
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**reservation_id:** `String` — reservation_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Internal::Types::Hash[String, Object]` 
     
 </dd>
 </dl>
@@ -15212,6 +15373,7 @@ client.plans.list_plans(
   company_id: "company_id",
   company_scoped_only: true,
   exclude_company_scoped: true,
+  exclude_unused: true,
   for_fallback_plan: true,
   for_initial_plan: true,
   for_trial_expiry_plan: true,
@@ -15258,6 +15420,14 @@ client.plans.list_plans(
 <dd>
 
 **exclude_company_scoped:** `Internal::Types::Boolean` — Exclude plans that are scoped to a company (custom plans assigned to a company)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exclude_unused:** `Internal::Types::Boolean` — Exclude plans that nothing is using: no company is on the plan and it has no draft version
     
 </dd>
 </dl>
@@ -15938,6 +16108,7 @@ client.plans.count_plans(
   company_id: "company_id",
   company_scoped_only: true,
   exclude_company_scoped: true,
+  exclude_unused: true,
   for_fallback_plan: true,
   for_initial_plan: true,
   for_trial_expiry_plan: true,
@@ -15984,6 +16155,14 @@ client.plans.count_plans(
 <dd>
 
 **exclude_company_scoped:** `Internal::Types::Boolean` — Exclude plans that are scoped to a company (custom plans assigned to a company)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exclude_unused:** `Internal::Types::Boolean` — Exclude plans that nothing is using: no company is on the plan and it has no draft version
     
 </dd>
 </dl>
@@ -19146,6 +19325,94 @@ client.features.check_flag(key: "key")
 </dl>
 </details>
 
+<details><summary><code>client.features.<a href="/lib/schematic/features/client.rb">check_and_reserve_flag</a>(key:, request) -> Schematic::Features::Types::CheckAndReserveFlagResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.features.check_and_reserve_flag(key: "key")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**key:** `String` — key
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company:** `Internal::Types::Hash[String, String]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expires_at:** `String` — When the hold lapses if no track event settles it; defaults to one minute from now and may be at most one hour out. The unspent hold is refunded on expiry
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**preflight:** `Schematic::Types::PreflightRequestBody` — Hypothetical usage to evaluate the flag against. When credit_cost names the entitlement's credit, that cost is what gets held; otherwise the hold is quantity times the entitlement's consumption rate
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**quantity:** `Integer` — Units of the feature the operation will consume; defaults to 1. Sets the hold size together with the entitlement's consumption rate, and is echoed back on the reservation for the settling track event
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**user:** `Internal::Types::Hash[String, String]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Features::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.features.<a href="/lib/schematic/features/client.rb">check_flags</a>(request) -> Schematic::Features::Types::CheckFlagsResponse</code></summary>
 <dl>
 <dd>
@@ -21029,6 +21296,14 @@ client.plangroups.create_plan_group(
 <dl>
 <dd>
 
+**trial_eligibility_per_plan:** `Internal::Types::Boolean` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **trial_expiry_plan_id:** `String` 
     
 </dd>
@@ -21402,6 +21677,14 @@ client.plangroups.update_plan_group(
 <dd>
 
 **trial_days:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trial_eligibility_per_plan:** `Internal::Types::Boolean` 
     
 </dd>
 </dl>

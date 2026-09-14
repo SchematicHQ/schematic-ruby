@@ -53,7 +53,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Catalogs::Types::ListCatalogsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Catalogs::Types::ListCatalogsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -88,7 +88,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Catalogs::Types::CreateCatalogResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Catalogs::Types::CreateCatalogResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -123,7 +123,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Catalogs::Types::GetCatalogResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Catalogs::Types::GetCatalogResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -163,7 +163,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Catalogs::Types::UpdateCatalogResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Catalogs::Types::UpdateCatalogResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -198,7 +198,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Catalogs::Types::DeleteCatalogResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Catalogs::Types::DeleteCatalogResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -233,7 +233,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Catalogs::Types::GetConfigurationResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Catalogs::Types::GetConfigurationResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -273,7 +273,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Catalogs::Types::UpdateConfigurationResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Catalogs::Types::UpdateConfigurationResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -308,7 +308,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Catalogs::Types::GetCreditBundlesInCatalogResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Catalogs::Types::GetCreditBundlesInCatalogResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -417,7 +417,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Catalogs::Types::GetDerivedFeaturesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Catalogs::Types::GetDerivedFeaturesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -452,7 +452,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Catalogs::Types::GetPlansInCatalogResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Catalogs::Types::GetPlansInCatalogResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)

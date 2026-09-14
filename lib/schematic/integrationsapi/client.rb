@@ -38,7 +38,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Integrationsapi::Types::RunIntegrationResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Integrationsapi::Types::RunIntegrationResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -97,7 +97,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Integrationsapi::Types::ListIntegrationsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Integrationsapi::Types::ListIntegrationsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -132,7 +132,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Integrationsapi::Types::GetIntegrationWebhookUrlResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Integrationsapi::Types::GetIntegrationWebhookUrlResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -167,7 +167,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Integrationsapi::Types::InstallIntegrationResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Integrationsapi::Types::InstallIntegrationResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -202,7 +202,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Integrationsapi::Types::StartDataImportResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Integrationsapi::Types::StartDataImportResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -235,7 +235,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Integrationsapi::Types::LoadSampleDataSetResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Integrationsapi::Types::LoadSampleDataSetResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -268,7 +268,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Integrationsapi::Types::GetStripeSandboxClaimLinkResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Integrationsapi::Types::GetStripeSandboxClaimLinkResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -301,7 +301,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Integrationsapi::Types::GetStripeSandboxKeysResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Integrationsapi::Types::GetStripeSandboxKeysResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -336,7 +336,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Integrationsapi::Types::ClaimStripeSandboxKeysResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Integrationsapi::Types::ClaimStripeSandboxKeysResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -371,7 +371,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Integrationsapi::Types::AssumeStripeInstalledResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Integrationsapi::Types::AssumeStripeInstalledResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -406,7 +406,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Integrationsapi::Types::InstallStripeResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Integrationsapi::Types::InstallStripeResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -441,7 +441,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Integrationsapi::Types::InstallStripeClaimableSandboxResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Integrationsapi::Types::InstallStripeClaimableSandboxResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -474,7 +474,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Integrationsapi::Types::ListStripeSandboxCountriesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Integrationsapi::Types::ListStripeSandboxCountriesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -509,7 +509,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Integrationsapi::Types::UninstallIntegrationResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Integrationsapi::Types::UninstallIntegrationResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)

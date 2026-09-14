@@ -9,6 +9,8 @@ module Schematic
       LEASE_RELEASE = "lease_release"
       MANUAL_ADJUSTMENT = "manual_adjustment"
       RECONCILIATION = "reconciliation"
+      RESERVATION_HOLD = "reservation_hold"
+      RESERVATION_RELEASE = "reservation_release"
       TRACK = "track"
     end
   end

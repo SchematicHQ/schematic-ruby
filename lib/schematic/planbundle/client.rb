@@ -50,7 +50,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Planbundle::Types::CreateCustomPlanBundleResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Planbundle::Types::CreateCustomPlanBundleResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -93,7 +93,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Planbundle::Types::CreatePlanBundleResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Planbundle::Types::CreatePlanBundleResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -141,7 +141,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Planbundle::Types::UpdatePlanBundleResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Planbundle::Types::UpdatePlanBundleResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
