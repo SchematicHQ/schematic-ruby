@@ -9,6 +9,7 @@ module Schematic
       CONNECT_BILLING = "connect_billing"
       CREATE_API_KEY = "create_api_key"
       FIRST_FLAG_CHECK = "first_flag_check"
+      GENERATE_ROADMAP = "generate_roadmap"
       IMPORT_COMPANIES = "import_companies"
       MODEL_PACKAGING = "model_packaging"
       SEND_EVENTS = "send_events"

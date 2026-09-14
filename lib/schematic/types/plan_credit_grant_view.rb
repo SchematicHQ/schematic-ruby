@@ -3,6 +3,10 @@
 module Schematic
   module Types
     class PlanCreditGrantView < Internal::Types::Model
+      field :billing_credit_arrears_anchor, -> { Schematic::Types::BillingArrearsAnchor }, optional: true, nullable: false
+
+      field :billing_credit_arrears_cadence, -> { Schematic::Types::BillingArrearsCadence }, optional: true, nullable: false
+
       field :billing_credit_auto_topup_amount, -> { Integer }, optional: true, nullable: false
 
       field :billing_credit_auto_topup_amount_type, -> { String }, optional: true, nullable: false
@@ -24,6 +28,14 @@ module Schematic
       field :billing_credit_auto_topup_threshold_percent, -> { Integer }, optional: true, nullable: false
 
       field :billing_credit_can_buy_bundles, -> { Internal::Types::Boolean }, optional: false, nullable: false
+
+      field :billing_credit_overdraft_limit, -> { Integer }, optional: true, nullable: false
+
+      field :billing_credit_postpaid_enabled, -> { Internal::Types::Boolean }, optional: false, nullable: false
+
+      field :billing_credit_postpaid_rate_per_unit, -> { Integer }, optional: true, nullable: false
+
+      field :billing_credit_postpaid_rate_per_unit_decimal, -> { String }, optional: true, nullable: false
 
       field :company_credit_amount, -> { Integer }, optional: false, nullable: false
 

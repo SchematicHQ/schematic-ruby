@@ -4174,6 +4174,14 @@ client.billing.upsert_billing_subscription(
 <dl>
 <dd>
 
+**started_at:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **status:** `String` 
     
 </dd>
@@ -5486,6 +5494,14 @@ client.credits.grant_billing_credits_to_company(
 <dd>
 
 **company_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**credit_bundle_id:** `String` 
     
 </dd>
 </dl>
@@ -15212,6 +15228,7 @@ client.plans.list_plans(
   company_id: "company_id",
   company_scoped_only: true,
   exclude_company_scoped: true,
+  exclude_unused: true,
   for_fallback_plan: true,
   for_initial_plan: true,
   for_trial_expiry_plan: true,
@@ -15258,6 +15275,14 @@ client.plans.list_plans(
 <dd>
 
 **exclude_company_scoped:** `Internal::Types::Boolean` — Exclude plans that are scoped to a company (custom plans assigned to a company)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exclude_unused:** `Internal::Types::Boolean` — Exclude plans that nothing is using: no company is on the plan and it has no draft version
     
 </dd>
 </dl>
@@ -15938,6 +15963,7 @@ client.plans.count_plans(
   company_id: "company_id",
   company_scoped_only: true,
   exclude_company_scoped: true,
+  exclude_unused: true,
   for_fallback_plan: true,
   for_initial_plan: true,
   for_trial_expiry_plan: true,
@@ -15984,6 +16010,14 @@ client.plans.count_plans(
 <dd>
 
 **exclude_company_scoped:** `Internal::Types::Boolean` — Exclude plans that are scoped to a company (custom plans assigned to a company)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exclude_unused:** `Internal::Types::Boolean` — Exclude plans that nothing is using: no company is on the plan and it has no draft version
     
 </dd>
 </dl>
@@ -21029,6 +21063,14 @@ client.plangroups.create_plan_group(
 <dl>
 <dd>
 
+**trial_eligibility_per_plan:** `Internal::Types::Boolean` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **trial_expiry_plan_id:** `String` 
     
 </dd>
@@ -21402,6 +21444,14 @@ client.plangroups.update_plan_group(
 <dd>
 
 **trial_days:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trial_eligibility_per_plan:** `Internal::Types::Boolean` 
     
 </dd>
 </dl>

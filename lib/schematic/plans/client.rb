@@ -247,6 +247,7 @@ module Schematic
       # @option params [String, nil] :company_id
       # @option params [Boolean, nil] :company_scoped_only
       # @option params [Boolean, nil] :exclude_company_scoped
+      # @option params [Boolean, nil] :exclude_unused
       # @option params [Boolean, nil] :for_fallback_plan
       # @option params [Boolean, nil] :for_initial_plan
       # @option params [Boolean, nil] :for_trial_expiry_plan
@@ -267,6 +268,7 @@ module Schematic
       #     company_id: "company_id",
       #     company_scoped_only: true,
       #     exclude_company_scoped: true,
+      #     exclude_unused: true,
       #     for_fallback_plan: true,
       #     for_initial_plan: true,
       #     for_trial_expiry_plan: true,
@@ -290,6 +292,7 @@ module Schematic
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["company_scoped_only"] = params[:company_scoped_only] if params.key?(:company_scoped_only)
         query_params["exclude_company_scoped"] = params[:exclude_company_scoped] if params.key?(:exclude_company_scoped)
+        query_params["exclude_unused"] = params[:exclude_unused] if params.key?(:exclude_unused)
         query_params["for_fallback_plan"] = params[:for_fallback_plan] if params.key?(:for_fallback_plan)
         query_params["for_initial_plan"] = params[:for_initial_plan] if params.key?(:for_initial_plan)
         query_params["for_trial_expiry_plan"] = params[:for_trial_expiry_plan] if params.key?(:for_trial_expiry_plan)
@@ -677,6 +680,7 @@ module Schematic
       # @option params [String, nil] :company_id
       # @option params [Boolean, nil] :company_scoped_only
       # @option params [Boolean, nil] :exclude_company_scoped
+      # @option params [Boolean, nil] :exclude_unused
       # @option params [Boolean, nil] :for_fallback_plan
       # @option params [Boolean, nil] :for_initial_plan
       # @option params [Boolean, nil] :for_trial_expiry_plan
@@ -697,6 +701,7 @@ module Schematic
       #     company_id: "company_id",
       #     company_scoped_only: true,
       #     exclude_company_scoped: true,
+      #     exclude_unused: true,
       #     for_fallback_plan: true,
       #     for_initial_plan: true,
       #     for_trial_expiry_plan: true,
@@ -720,6 +725,7 @@ module Schematic
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["company_scoped_only"] = params[:company_scoped_only] if params.key?(:company_scoped_only)
         query_params["exclude_company_scoped"] = params[:exclude_company_scoped] if params.key?(:exclude_company_scoped)
+        query_params["exclude_unused"] = params[:exclude_unused] if params.key?(:exclude_unused)
         query_params["for_fallback_plan"] = params[:for_fallback_plan] if params.key?(:for_fallback_plan)
         query_params["for_initial_plan"] = params[:for_initial_plan] if params.key?(:for_initial_plan)
         query_params["for_trial_expiry_plan"] = params[:for_trial_expiry_plan] if params.key?(:for_trial_expiry_plan)
