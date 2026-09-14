@@ -56,7 +56,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Planmigrations::Types::ListCompanyMigrationsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Planmigrations::Types::ListCompanyMigrationsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -91,7 +91,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Planmigrations::Types::RetryCompanyMigrationResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Planmigrations::Types::RetryCompanyMigrationResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -144,7 +144,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Planmigrations::Types::CountCompanyMigrationsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Planmigrations::Types::CountCompanyMigrationsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -194,7 +194,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Planmigrations::Types::ListMigrationsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Planmigrations::Types::ListMigrationsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -234,7 +234,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Planmigrations::Types::CreateMigrationResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Planmigrations::Types::CreateMigrationResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -269,7 +269,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Planmigrations::Types::GetMigrationResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Planmigrations::Types::GetMigrationResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -304,7 +304,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Planmigrations::Types::CancelMigrationResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Planmigrations::Types::CancelMigrationResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -344,7 +344,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Planmigrations::Types::CompleteMigrationNowResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Planmigrations::Types::CompleteMigrationNowResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -387,7 +387,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Planmigrations::Types::RetryMigrationResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Planmigrations::Types::RetryMigrationResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -437,7 +437,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Planmigrations::Types::CountMigrationsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Planmigrations::Types::CountMigrationsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -476,7 +476,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Planmigrations::Types::PreviewMigrationResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Planmigrations::Types::PreviewMigrationResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)

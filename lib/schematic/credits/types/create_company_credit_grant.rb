@@ -8,6 +8,8 @@ module Schematic
 
         field :company_id, -> { String }, optional: false, nullable: false
 
+        field :credit_bundle_id, -> { String }, optional: true, nullable: false
+
         field :credit_id, -> { String }, optional: false, nullable: false
 
         field :currency, -> { String }, optional: true, nullable: false

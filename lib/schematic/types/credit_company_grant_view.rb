@@ -3,6 +3,8 @@
 module Schematic
   module Types
     class CreditCompanyGrantView < Internal::Types::Model
+      field :arrears_cadence, -> { Schematic::Types::BillingArrearsCadence }, optional: true, nullable: false
+
       field :billing_credit_bundle_id, -> { String }, optional: true, nullable: false
 
       field :billing_credit_id, -> { String }, optional: false, nullable: false
@@ -44,6 +46,18 @@ module Schematic
       field :plan_name, -> { String }, optional: true, nullable: false
 
       field :plural_name, -> { String }, optional: true, nullable: false
+
+      field :postpaid_charge_amount, -> { Integer }, optional: true, nullable: false
+
+      field :postpaid_charge_currency, -> { String }, optional: true, nullable: false
+
+      field :postpaid_charged_credits, -> { Integer }, optional: true, nullable: false
+
+      field :postpaid_period_end, -> { String }, optional: true, nullable: false
+
+      field :postpaid_rate, -> { Integer }, optional: true, nullable: false
+
+      field :postpaid_rate_decimal, -> { String }, optional: true, nullable: false
 
       field :price, -> { Schematic::Types::BillingProductPriceResponseData }, optional: true, nullable: false
 

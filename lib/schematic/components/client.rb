@@ -50,7 +50,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Components::Types::ListComponentsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Components::Types::ListComponentsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -88,7 +88,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Components::Types::CreateComponentResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Components::Types::CreateComponentResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -123,7 +123,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Components::Types::GetComponentResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Components::Types::GetComponentResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -163,7 +163,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Components::Types::UpdateComponentResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Components::Types::UpdateComponentResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -198,7 +198,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Components::Types::DeleteComponentResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Components::Types::DeleteComponentResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -238,7 +238,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Components::Types::BindCatalogResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Components::Types::BindCatalogResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -285,7 +285,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Components::Types::CountComponentsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Components::Types::CountComponentsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -329,7 +329,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Components::Types::PreviewComponentDataResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Components::Types::PreviewComponentDataResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)

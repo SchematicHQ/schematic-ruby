@@ -36,6 +36,8 @@ module Schematic
 
         field :provider_type, -> { Schematic::Types::BillingProviderType }, optional: true, nullable: false
 
+        field :started_at, -> { String }, optional: true, nullable: false
+
         field :status, -> { String }, optional: true, nullable: false
 
         field :subscription_external_id, -> { String }, optional: false, nullable: false

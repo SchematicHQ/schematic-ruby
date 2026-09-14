@@ -104,7 +104,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::ListCompaniesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::ListCompaniesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -141,7 +141,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::UpsertCompanyResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::UpsertCompanyResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -176,7 +176,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::GetCompanyResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetCompanyResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -222,7 +222,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::DeleteCompanyResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::DeleteCompanyResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -323,7 +323,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::CountCompaniesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::CountCompaniesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -360,7 +360,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::CreateCompanyResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::CreateCompanyResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -397,7 +397,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::DeleteCompanyByKeysResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::DeleteCompanyByKeysResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -444,7 +444,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::LookupCompanyResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::LookupCompanyResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -483,7 +483,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::GetCompanyBillingEntityResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetCompanyBillingEntityResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -522,7 +522,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::GetBillingEntityChildSubscriptionsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetBillingEntityChildSubscriptionsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -572,7 +572,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::ListCompanyMembershipsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::ListCompanyMembershipsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -610,7 +610,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::GetOrCreateCompanyMembershipResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetOrCreateCompanyMembershipResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -645,7 +645,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::DeleteCompanyMembershipResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::DeleteCompanyMembershipResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -695,7 +695,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::GetActiveCompanySubscriptionResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetActiveCompanySubscriptionResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -735,7 +735,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::UpsertCompanyTraitResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::UpsertCompanyTraitResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -788,7 +788,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::ListEntityKeyDefinitionsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::ListEntityKeyDefinitionsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -823,7 +823,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::DeleteEntityKeyDefinitionResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::DeleteEntityKeyDefinitionResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -876,7 +876,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::CountEntityKeyDefinitionsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::CountEntityKeyDefinitionsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -926,7 +926,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::CountEntityKeysResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::CountEntityKeysResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -985,7 +985,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::ListEntityTraitDefinitionsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::ListEntityTraitDefinitionsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1024,7 +1024,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::GetOrCreateEntityTraitDefinitionResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetOrCreateEntityTraitDefinitionResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1059,7 +1059,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::GetEntityTraitDefinitionResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetEntityTraitDefinitionResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1102,7 +1102,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::UpdateEntityTraitDefinitionResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::UpdateEntityTraitDefinitionResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1137,7 +1137,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::DeleteEntityTraitDefinitionResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::DeleteEntityTraitDefinitionResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1172,7 +1172,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::GetEntityTraitDefinitionUsageResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetEntityTraitDefinitionUsageResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1231,7 +1231,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::CountEntityTraitDefinitionsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::CountEntityTraitDefinitionsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1281,7 +1281,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::GetEntityTraitValuesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetEntityTraitValuesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1331,7 +1331,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::CountEntityTraitsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::CountEntityTraitsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1387,7 +1387,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::ListPlanChangesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::ListPlanChangesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1422,7 +1422,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::GetPlanChangeResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetPlanChangeResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1478,7 +1478,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::ListPlanTraitsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::ListPlanTraitsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1513,7 +1513,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::GetPlanTraitResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetPlanTraitResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1555,7 +1555,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::UpdatePlanTraitsBulkResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::UpdatePlanTraitsBulkResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1611,7 +1611,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::CountPlanTraitsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::CountPlanTraitsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1651,7 +1651,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::UpsertUserTraitResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::UpsertUserTraitResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1707,7 +1707,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::ListUsersResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::ListUsersResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1744,7 +1744,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::UpsertUserResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::UpsertUserResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1779,7 +1779,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::GetUserResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetUserResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1814,7 +1814,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::DeleteUserResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::DeleteUserResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1870,7 +1870,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::CountUsersResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::CountUsersResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1907,7 +1907,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::CreateUserResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::CreateUserResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1944,7 +1944,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::DeleteUserByKeysResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::DeleteUserByKeysResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1985,7 +1985,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Companies::Types::LookupUserResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::LookupUserResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)

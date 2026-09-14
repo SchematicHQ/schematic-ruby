@@ -53,7 +53,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::ListCouponsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::ListCouponsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -97,7 +97,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::UpsertBillingCouponResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::UpsertBillingCouponResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -132,7 +132,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::DeleteBillingCouponResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::DeleteBillingCouponResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -167,7 +167,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::DeleteBillingCustomerResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::DeleteBillingCustomerResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -209,7 +209,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::UpsertBillingCustomerResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::UpsertBillingCustomerResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -265,7 +265,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::ListCustomersWithSubscriptionsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::ListCustomersWithSubscriptionsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -321,7 +321,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::CountCustomersResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::CountCustomersResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -374,7 +374,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::ListInvoicesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::ListInvoicesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -417,7 +417,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::UpsertInvoiceResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::UpsertInvoiceResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -452,7 +452,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::DeleteBillingInvoiceResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::DeleteBillingInvoiceResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -499,7 +499,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::ListMetersResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::ListMetersResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -539,7 +539,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::UpsertBillingMeterResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::UpsertBillingMeterResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -589,7 +589,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::ListPaymentMethodsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::ListPaymentMethodsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -628,7 +628,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::UpsertPaymentMethodResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::UpsertPaymentMethodResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -663,7 +663,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::DeletePaymentMethodByExternalIdResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::DeletePaymentMethodByExternalIdResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -755,7 +755,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::ListBillingPricesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::ListBillingPricesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -803,7 +803,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::UpsertBillingPriceResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::UpsertBillingPriceResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -838,7 +838,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::DeleteBillingProductResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::DeleteBillingProductResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -930,7 +930,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::ListBillingProductPricesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::ListBillingProductPricesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -965,7 +965,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::DeleteProductPriceResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::DeleteProductPriceResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1003,7 +1003,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::UpsertBillingProductResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::UpsertBillingProductResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1080,7 +1080,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::ListBillingProductsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::ListBillingProductsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1157,7 +1157,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::CountBillingProductsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::CountBillingProductsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1210,7 +1210,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::ListCompanyBillingProfilesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::ListCompanyBillingProfilesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1253,7 +1253,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::UpdateCompanyBillingProfileResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::UpdateCompanyBillingProfileResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1310,7 +1310,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Billing::Types::UpsertBillingSubscriptionResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::UpsertBillingSubscriptionResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)

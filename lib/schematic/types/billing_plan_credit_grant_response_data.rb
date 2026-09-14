@@ -3,6 +3,10 @@
 module Schematic
   module Types
     class BillingPlanCreditGrantResponseData < Internal::Types::Model
+      field :arrears_anchor, -> { Schematic::Types::BillingArrearsAnchor }, optional: true, nullable: false
+
+      field :arrears_cadence, -> { Schematic::Types::BillingArrearsCadence }, optional: true, nullable: false
+
       field :auto_topup_amount, -> { Integer }, optional: true, nullable: false
 
       field :auto_topup_amount_type, -> { String }, optional: true, nullable: false
@@ -51,6 +55,8 @@ module Schematic
 
       field :license_id, -> { String }, optional: true, nullable: false
 
+      field :overdraft_limit, -> { Integer }, optional: true, nullable: false
+
       field :plan, -> { Schematic::Types::PreviewObjectResponseData }, optional: true, nullable: false
 
       field :plan_id, -> { String }, optional: false, nullable: false
@@ -58,6 +64,12 @@ module Schematic
       field :plan_name, -> { String }, optional: false, nullable: false
 
       field :plan_version_id, -> { String }, optional: true, nullable: false
+
+      field :postpaid_enabled, -> { Internal::Types::Boolean }, optional: false, nullable: false
+
+      field :postpaid_rate_per_unit, -> { Integer }, optional: true, nullable: false
+
+      field :postpaid_rate_per_unit_decimal, -> { String }, optional: true, nullable: false
 
       field :reset_cadence, -> { Schematic::Types::BillingPlanCreditGrantResetCadence }, optional: true, nullable: false
 

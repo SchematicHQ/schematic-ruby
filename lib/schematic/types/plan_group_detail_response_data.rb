@@ -69,6 +69,8 @@ module Schematic
 
       field :trial_days, -> { Integer }, optional: true, nullable: false
 
+      field :trial_eligibility_per_plan, -> { Internal::Types::Boolean }, optional: false, nullable: false
+
       field :trial_expiry_plan, -> { Schematic::Types::PlanGroupPlanDetailResponseData }, optional: true, nullable: false
 
       field :trial_expiry_plan_id, -> { String }, optional: true, nullable: false

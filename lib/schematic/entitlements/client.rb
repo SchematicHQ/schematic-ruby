@@ -68,7 +68,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Entitlements::Types::ListCompanyOverridesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::ListCompanyOverridesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -107,7 +107,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Entitlements::Types::CreateCompanyOverrideResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::CreateCompanyOverrideResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -142,7 +142,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Entitlements::Types::GetCompanyOverrideResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::GetCompanyOverrideResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -185,7 +185,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Entitlements::Types::UpdateCompanyOverrideResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::UpdateCompanyOverrideResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -220,7 +220,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Entitlements::Types::DeleteCompanyOverrideResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::DeleteCompanyOverrideResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -285,7 +285,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Entitlements::Types::CountCompanyOverridesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::CountCompanyOverridesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -335,7 +335,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Entitlements::Types::ListFeatureCompaniesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::ListFeatureCompaniesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -385,7 +385,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Entitlements::Types::CountFeatureCompaniesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::CountFeatureCompaniesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -449,7 +449,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Entitlements::Types::ListFeatureUsageResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::ListFeatureUsageResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -508,7 +508,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Entitlements::Types::ListFeatureUsageHistoryResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::ListFeatureUsageHistoryResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -561,7 +561,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Entitlements::Types::GetFeatureUsageTimeSeriesResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::GetFeatureUsageTimeSeriesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -625,7 +625,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Entitlements::Types::CountFeatureUsageResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::CountFeatureUsageResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -675,7 +675,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Entitlements::Types::ListFeatureUsersResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::ListFeatureUsersResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -725,7 +725,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Entitlements::Types::CountFeatureUsersResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::CountFeatureUsersResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -796,7 +796,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Entitlements::Types::ListPlanEntitlementsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::ListPlanEntitlementsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -835,7 +835,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Entitlements::Types::CreatePlanEntitlementResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::CreatePlanEntitlementResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -870,7 +870,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Entitlements::Types::GetPlanEntitlementResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::GetPlanEntitlementResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -913,7 +913,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Entitlements::Types::UpdatePlanEntitlementResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::UpdatePlanEntitlementResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -948,7 +948,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Entitlements::Types::DeletePlanEntitlementResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::DeletePlanEntitlementResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -989,7 +989,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Entitlements::Types::UpsertPlanEntitlementForBillingProductResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::UpsertPlanEntitlementForBillingProductResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1060,7 +1060,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Entitlements::Types::CountPlanEntitlementsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::CountPlanEntitlementsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1098,7 +1098,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Entitlements::Types::DuplicatePlanEntitlementsResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::DuplicatePlanEntitlementsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1139,7 +1139,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Entitlements::Types::GetFeatureUsageByCompanyResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::GetFeatureUsageByCompanyResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1189,7 +1189,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Entitlements::Types::GetUserUsageByCompanyResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::GetUserUsageByCompanyResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
@@ -1239,7 +1239,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          Schematic::Entitlements::Types::GetUserUsageDetailResponse.load(response.body)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::GetUserUsageDetailResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           raise error_class.new(response.body, code: code)
