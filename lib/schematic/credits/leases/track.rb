@@ -21,9 +21,13 @@ module Schematic
       # unclamped actual, because the server is the source of truth for real
       # consumption.
       def self.consume_reservation_and_build_event(reservations, reservation, actual_quantity, traits: nil)
-        consumed = reservations.consume(reservation.id, actual_quantity * reservation.consumption_rate)
+        # Settle the lease against the quantity that will be billed, not the raw
+        # one: the event carries an integer, so debiting the fraction locally
+        # would leave the local view of the lease below what the server charges.
+        quantity = Leases.wire_quantity(actual_quantity)
+        consumed = reservations.consume(reservation.id, quantity * reservation.consumption_rate)
         SettleOutcome.new(
-          track: build_reservation_track_event(reservation, actual_quantity, traits: traits),
+          track: build_reservation_track_event(reservation, quantity, traits: traits),
           settled_locally: !consumed.nil?
         )
       end
@@ -32,7 +36,9 @@ module Schematic
       # store access, so the client can still bill the usage when the local
       # settle fails against an unreachable store.
       def self.build_reservation_track_event(reservation, actual_quantity, traits: nil)
-        body = { event: reservation.event_subtype, quantity: actual_quantity }
+        # A track event's quantity is an integer on the wire, so a partial unit
+        # settles as a whole one rather than being truncated away to none.
+        body = { event: reservation.event_subtype, quantity: Leases.wire_quantity(actual_quantity) }
         if reservation.server_mode?
           # The hold lives on the server, so the event settles it by id. Never
           # send lease_id too: the server prefers it when both are set, and

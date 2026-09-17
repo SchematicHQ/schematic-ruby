@@ -34,10 +34,15 @@ module Schematic
         usage = options[:usage]
         return nil if usage.nil?
 
+        # The preflight quantity is an integer on both seams (the engine
+        # envelope and the API's preflight body), and it asks an upper-bound
+        # question, so a fractional usage rounds up rather than gating on less
+        # usage than the operation is about to record.
+        quantity = Leases.wire_quantity(usage)
         if options[:event_subtype]
-          { event_usage: { event_subtype: options[:event_subtype], quantity: usage } }
+          { event_usage: { event_subtype: options[:event_subtype], quantity: quantity } }
         else
-          { usage: usage }
+          { usage: quantity }
         end
       end
 

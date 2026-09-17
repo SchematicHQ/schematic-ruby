@@ -99,16 +99,21 @@ module Schematic
         end
 
         def request_body
+          # The request body's quantity is an integer, so a fractional usage
+          # would truncate and the server would size the hold below the work
+          # about to run. Round up, and size the preflight from the same number
+          # so the flag is evaluated against the quantity actually held.
+          quantity = Leases.wire_quantity(@options[:usage])
           body = {
             key: @key,
-            quantity: @options[:usage],
+            quantity: quantity,
             expires_at: (@clock.call + (@deps.reservation_ttl_ms / 1000.0)).utc.iso8601
           }
           company = @eval_ctx[:company] || @eval_ctx["company"]
           user = @eval_ctx[:user] || @eval_ctx["user"]
           body[:company] = company if company && !company.empty?
           body[:user] = user if user && !user.empty?
-          preflight = Leases.build_preflight_options(@options)
+          preflight = Leases.build_preflight_options(@options.merge(usage: quantity))
           body[:preflight] = preflight if preflight
           body[:idempotency_key] = @idempotency_key
           body

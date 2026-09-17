@@ -441,6 +441,10 @@ end
 
 A check can allow without taking a hold (the feature is not credit-metered, `usage` is 0, or the check failed open), and that usage still has to be tracked.
 
+`usage` may be fractional, but every quantity the API carries is an integer, so the hold the server takes, the preflight the flag is evaluated against, and the quantity a settle bills all round up. A hold sized from a local lease keeps the fractional amount.
+
+`result.entitlement` is the matched entitlement as a symbol-keyed hash with snake_case keys (`:feature_key`, `:value_type`, `:credit_id`, `:consumption_rate`, `:metric_reset_at`, and so on), the same field names as `Schematic::Types::FeatureEntitlement`. Client mode and server mode return the same shape, and `:metric_reset_at` is a `Time` in both.
+
 An unsettled reservation expires after `default_reservation_ttl` and its credits return to the lease. A late settle still bills the usage (the track event carries a deterministic idempotency key, so it never double-bills) but does not re-debit the local lease, so set `default_reservation_ttl` above the longest expected gap between `check` and `track_with_reservation`.
 
 #### Pre-warming
@@ -459,6 +463,8 @@ client.identify(
 
 Or call `client.prewarm(credit_type_ids, company:)` directly. Both are no-ops in server mode.
 
+Setting `prewarm_resolve_timeout_ms` to 0 makes the resolve cache-only: a prewarm acquires for a company the DataStream already holds and skips the rest rather than fetching one.
+
 #### Failure behavior
 
 A check that cannot be gated (API unreachable, Redis down, lease exhausted) fails closed by default. Override per check:
@@ -475,6 +481,10 @@ result = client.check(
 
 In client mode, `:fail_open` still evaluates the flag's rules with the credit balance assumed sufficient, so plan targeting and all non-credit conditions apply and only the credit gate is bypassed. In server mode it returns the flag's default value, which is `false` unless you pass `default_value` or configure a `flag_defaults` entry.
 
+`default_value` also governs the checks that never reach the credit path: a check with no `usage`, one that falls back to a plain flag check, and one the API cannot answer. Pass a boolean or a callable.
+
+`check` accepts `timeout_ms`, but the generated HTTP transport takes its timeout from the client rather than from a request, so a per-check timeout is carried on the request and not yet applied. Set `timeout` on the client to bound a check today.
+
 #### Configuration options
 
 | Option | Type | Default | Description |
@@ -485,10 +495,10 @@ In client mode, `:fail_open` still evaluates the flag's rules with the credit ba
 | `default_lease_size` | `Numeric` | 10000 | (client mode) Credits requested per lease acquire or extend |
 | `low_water_mark` | `Float` | 0.25 | (client mode) Extend in the background when the lease balance dips below this fraction |
 | `sweep_interval_ms` | `Integer` | 1000 | (client mode) Sweep interval for expired reservations (ms) |
-| `prewarm_resolve_timeout_ms` | `Integer` | 5000 | (client mode) How long `prewarm` waits for a freshly identified company to surface (ms) |
+| `prewarm_resolve_timeout_ms` | `Integer` | 5000 | (client mode) How long `prewarm` waits for a freshly identified company to surface (ms); 0 resolves from the DataStream cache only |
 | `redis_client` | Redis client | `datastream_options[:redis_client]` | (client mode) Redis client for lease and reservation state |
 | `redis_key_prefix` | `String` | `datastream_options[:redis_key_prefix]` | (client mode) Key prefix for lease and reservation keys |
-| `overrides` | `Hash` | — | (client mode) Per-credit-type overrides of the above, keyed by credit type ID |
+| `overrides` | `Hash` | none | (client mode) Per-credit-type overrides of the above, keyed by credit type ID |
 
 ### Other API operations
 

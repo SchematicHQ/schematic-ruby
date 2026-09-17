@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "time"
+
 module Schematic
   module Credits
     # Client-side credit leases, reservations, and preflight checks.
@@ -158,6 +160,69 @@ module Schematic
         end
       end
 
+      # Cast a usage onto the integer the wire carries. A hold can be sized from
+      # a fractional usage, but every quantity field on the API (the
+      # check-and-reserve ask, the preflight envelope, a track event) is an
+      # integer, and the generated models truncate a float onto it. A preflight
+      # asks an upper-bound question and a settle must not bill a partial unit
+      # as none, so a fraction rounds up in both directions.
+      def self.wire_quantity(value)
+        return value unless value.is_a?(Numeric)
+        return value unless value.finite?
+
+        value.ceil
+      end
+
+      # One shape for the matched entitlement whichever mode produced it.
+      #
+      # The WASM engine hands back a camelCase hash and the API hands back a
+      # generated model, so without this a caller reading result.entitlement
+      # would need one accessor for client mode and another for server mode.
+      # Both become a snake_case, symbol-keyed Hash matching the field names on
+      # Schematic::Types::FeatureEntitlement, and metric_reset_at is parsed to a
+      # Time so a caller can compare it without knowing which mode it came from.
+      def self.normalize_entitlement(raw)
+        return nil if raw.nil?
+
+        hash = raw.is_a?(Hash) ? raw : entitlement_to_h(raw)
+        return nil if hash.nil?
+
+        normalized = deep_snake_case(hash)
+        reset_at = normalized[:metric_reset_at]
+        normalized[:metric_reset_at] = parse_reset_at(reset_at) unless reset_at.nil?
+        normalized
+      end
+
+      def self.entitlement_to_h(raw)
+        return raw.to_h if raw.respond_to?(:to_h)
+
+        nil
+      end
+      private_class_method :entitlement_to_h
+
+      def self.parse_reset_at(value)
+        return value if value.is_a?(Time)
+
+        Time.iso8601(value.to_s)
+      rescue StandardError
+        value
+      end
+      private_class_method :parse_reset_at
+
+      def self.deep_snake_case(value)
+        case value
+        when Hash
+          value.each_with_object({}) do |(key, inner), out|
+            out[key.to_s.gsub(/([a-z\d])([A-Z])/, '\1_\2').downcase.to_sym] = deep_snake_case(inner)
+          end
+        when Array
+          value.map { |inner| deep_snake_case(inner) }
+        else
+          value
+        end
+      end
+      private_class_method :deep_snake_case
+
       # What a lease-aware check decided. `allowed` is what the caller gates on;
       # `reservation` is present only when a hold was taken.
       class CheckResult
@@ -169,7 +234,7 @@ module Schematic
           @value = value
           @reservation = reservation
           @reason = reason
-          @entitlement = entitlement
+          @entitlement = Leases.normalize_entitlement(entitlement)
           @flag_key = flag_key
           @flag_id = flag_id
           @error = error

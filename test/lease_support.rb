@@ -416,8 +416,9 @@ module LeaseSupport
         valueType: spec["value_type"],
         creditId: spec["credit_id"],
         consumptionRate: spec["consumption_rate"],
-        eventSubtype: spec["event_subtype"]
-      }
+        eventSubtype: spec["event_subtype"],
+        metricResetAt: spec["metric_reset_at"]
+      }.compact
     end
   end
 

@@ -162,11 +162,19 @@ module Schematic
       check_flag_with_entitlement(flag_key, company: company, user: user).value
     end
 
-    def check_flag_with_entitlement(flag_key, company: nil, user: nil, preflight: nil)
+    # default_value overrides the registered flag default on every path that
+    # cannot answer from the flag itself: offline, an API error, or a response
+    # with no value. Leaving it nil keeps the registered default. timeout_ms is
+    # threaded to the API call, but see the note on check: the generated
+    # transport does not yet apply a per-request timeout.
+    def check_flag_with_entitlement(flag_key, company: nil, user: nil, preflight: nil, default_value: nil,
+                                    timeout_ms: nil)
+      get_default = -> { resolve_default_value(flag_key, default_value) }
+
       # Offline mode
       if @offline
         return CheckFlagResponse.new(
-          value: get_flag_default(flag_key),
+          value: get_default.call,
           flag_key: flag_key,
           reason: "offline mode"
         )
@@ -196,11 +204,11 @@ module Schematic
       end
 
       # API path with caching
-      check_flag_via_api(flag_key, company, user)
+      check_flag_via_api(flag_key, company, user, timeout_ms: timeout_ms, get_default: get_default)
     rescue StandardError => e
       @logger.error("check_flag_with_entitlement error for '#{flag_key}': #{e.message}")
       CheckFlagResponse.new(
-        value: get_flag_default(flag_key),
+        value: get_default.call,
         flag_key: flag_key,
         reason: "error: #{e.message}"
       )
@@ -314,7 +322,13 @@ module Schematic
     # flag check and returns a result with no reservation. The caller's
     # preflight is still threaded through that plain check, so any client-side
     # evaluation path gates on the post-call balance, just without a
-    # reservation. Only the REST fallback ignores preflight.
+    # reservation. Only the REST fallback ignores preflight. default_value
+    # governs that fallback too, so a check that cannot reach the credit path
+    # still answers the way the caller asked.
+    #
+    # timeout_ms is carried on the API request but not yet applied: the
+    # generated transport takes its timeout from the client, not from a
+    # request. Set timeout on the client to bound a check today.
     def check(flag_key, company: nil, user: nil, usage: nil, event_subtype: nil, on_acquire_failure: nil,
               default_value: nil, timeout_ms: nil)
       options = {
@@ -612,7 +626,8 @@ module Schematic
       CheckFlagResponse.new(cached)
     end
 
-    def check_flag_via_api(flag_key, company, user)
+    def check_flag_via_api(flag_key, company, user, timeout_ms: nil, get_default: nil)
+      get_default ||= -> { get_flag_default(flag_key) }
       # Check cache
       cache_key = build_cache_key(flag_key, company, user)
       @flag_check_cache_providers.each do |provider|
@@ -630,7 +645,9 @@ module Schematic
         eval_body[:company] = company if company&.any?
         eval_body[:user] = user if user&.any?
 
-        api_response = @api_client.features.check_flag(key: flag_key, **eval_body)
+        api_response = @api_client.features.check_flag(
+          request_options: api_request_options(timeout_ms), key: flag_key, **eval_body
+        )
         data = api_response.data
         @logger.debug("API returned flag '#{flag_key}' value=#{data.value}, reason=#{data.reason}")
 
@@ -661,11 +678,21 @@ module Schematic
       rescue StandardError => e
         @logger.error("API flag check failed for '#{flag_key}': #{e.message}")
         CheckFlagResponse.new(
-          value: get_flag_default(flag_key),
+          value: get_default.call,
           flag_key: flag_key,
           reason: "error: #{e.message}"
         )
       end
+    end
+
+    # The generated transport reads its timeout from the client, not from a
+    # request, so timeout_in_seconds is carried but not yet honored. Sending it
+    # anyway means a per-check timeout starts working the moment the transport
+    # does, without another change here.
+    def api_request_options(timeout_ms)
+      return {} if timeout_ms.nil?
+
+      { timeout_in_seconds: timeout_ms / 1000.0 }
     end
 
     def get_flag_default(flag_key)
@@ -937,9 +964,13 @@ module Schematic
     # caller's preflight threaded through so a client-side evaluation still
     # gates on the post-call balance.
     def plain_check_result(flag_key, company, user, options)
+      # The caller's default_value governs this path too. Without it a check
+      # that falls back and then fails would answer with the registered flag
+      # default, denying where the caller asked to allow.
       response = check_flag_with_entitlement(
         flag_key, company: company, user: user,
-                  preflight: Credits::Leases.build_preflight_options(options)
+                  preflight: Credits::Leases.build_preflight_options(options),
+                  default_value: options[:default_value], timeout_ms: options[:timeout_ms]
       )
       value = response.value
       Credits::Leases::CheckResult.new(
@@ -1054,11 +1085,15 @@ module Schematic
     # lease path instead of falling back.
     def resolve_company_id_with_wait(company)
       return company[:id] || company["id"] if company[:id] || company["id"]
-      return nil if @datastream_client.nil? || @prewarm_resolve_timeout_ms <= 0
+      return nil if @datastream_client.nil?
 
       cached = @datastream_client.get_cached_company(company)
       cached_id = cached && (cached[:id] || cached["id"])
       return cached_id if cached_id
+      # A zero or negative timeout means cache-only: answer from what the
+      # DataStream already holds and never fetch or poll. A prewarm still
+      # acquires when an earlier check warmed the company.
+      return nil if @prewarm_resolve_timeout_ms <= 0
 
       deadline = monotonic_ms + @prewarm_resolve_timeout_ms
       loop do

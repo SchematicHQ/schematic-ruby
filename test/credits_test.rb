@@ -504,6 +504,21 @@ class CheckFlowTest < Minitest::Test
     { "value" => true, "reason" => "probe", "entitlement" => entitlement }
   end
 
+  # The WASM engine hands back camelCase keys, which a caller must not have to
+  # read differently from the server-mode model.
+  def test_the_engine_entitlement_is_normalized_to_snake_case
+    entitlement = CREDIT_ENTITLEMENT.merge("metric_reset_at" => "2026-02-01T00:00:00Z")
+    @leases.replace(lease_entry)
+    result = run_check([probe(entitlement),
+                        { "value" => true, "reason" => "ok", "entitlement" => entitlement }])
+
+    assert_predicate result, :allowed?
+    assert_equal "inference", result.entitlement[:feature_key]
+    assert_equal "credit", result.entitlement[:value_type]
+    assert_in_delta 10, result.entitlement[:consumption_rate]
+    assert_equal Time.utc(2026, 2, 1), result.entitlement[:metric_reset_at]
+  end
+
   # A boolean or override grant resolves without drawing a credit, so it must
   # not cost a lease acquire and a reserve-then-cancel.
   def test_a_non_credit_entitlement_falls_back_without_touching_the_wire
@@ -658,6 +673,20 @@ class TrackSettleTest < Minitest::Test
     assert_nil body[:lease_id]
   end
 
+  # A track event's quantity is an integer on the wire, so a partial unit must
+  # settle as a whole one. Truncating would bill a sub-unit settle as nothing.
+  def test_a_fractional_settle_rounds_up_rather_than_truncating
+    @leases.try_reserve("co_1", "ct_1", 100)
+    @reservations.add(reservation)
+
+    outcome = Leases.consume_reservation_and_build_event(@reservations, reservation, 1.2)
+
+    assert_equal 2, outcome.track[:quantity]
+    # The lease is debited against the billed quantity, not the raw one, so the
+    # local view does not drift below what the server charges.
+    assert_in_delta 980, @leases.get("co_1", "ct_1").local_remaining_credits
+  end
+
   # A hold swept at its TTL still has to bill: the event is built from the
   # caller-held handle, not the store.
   def test_a_settle_after_the_sweep_still_bills_as_a_recovery_emit
@@ -781,6 +810,41 @@ class ServerCheckTest < Minitest::Test
     refute_predicate result, :allowed?
     assert_equal "missing_event_subtype", result.error
     assert_requested release
+  end
+
+  # The request body's quantity is an integer, so a fractional usage would
+  # truncate and the server would size the hold below the work about to run.
+  def test_a_fractional_usage_rounds_up_on_the_wire
+    stub_check_and_reserve(body: { "data" => { "flag" => "inference", "value" => true,
+                                               "reason" => "ok", "reservation" => RESERVATION_BODY } })
+
+    run_server_check(usage: 1.5)
+
+    assert_requested(:post, "https://api.schematichq.test/flags/inference/check-and-reserve") do |req|
+      body = JSON.parse(req.body)
+      body["quantity"] == 2 && body.dig("preflight", "event_usage", "quantity") == 2
+    end
+  end
+
+  # Server mode gets its entitlement as a generated model and client mode as a
+  # camelCase engine hash. A caller reading result.entitlement must not need to
+  # know which one answered.
+  def test_the_entitlement_is_normalized_to_one_shape
+    stub_check_and_reserve(
+      body: { "data" => { "flag" => "inference", "value" => true, "reason" => "ok",
+                          "reservation" => RESERVATION_BODY,
+                          "entitlement" => { "feature_id" => "feat_1", "feature_key" => "inference",
+                                             "value_type" => "credit", "credit_id" => "ct_1",
+                                             "consumption_rate" => 10,
+                                             "metric_reset_at" => "2026-02-01T00:00:00Z" } } }
+    )
+
+    result = run_server_check
+
+    assert_instance_of Hash, result.entitlement
+    assert_equal "inference", result.entitlement[:feature_key]
+    assert_equal "credit", result.entitlement[:value_type]
+    assert_equal Time.utc(2026, 2, 1), result.entitlement[:metric_reset_at]
   end
 
   def test_each_check_sends_its_own_idempotency_key
@@ -910,6 +974,85 @@ class CreditLeaseClientWiringTest < Minitest::Test
     client.close
 
     assert_requested released
+  end
+
+  # A check with a usage that falls back to a plain check and then cannot reach
+  # the API must answer with the caller's default, not the registered one.
+  def test_a_fallback_check_that_fails_honors_the_caller_default
+    client = Schematic::SchematicClient.new(api_key: "sch_test", base_url: "https://api.schematichq.test",
+                                            logger: silent_logger, flag_defaults: { "inference" => false })
+    stub_request(:post, "https://api.schematichq.test/flags/inference/check")
+      .to_return(status: 500, body: JSON.generate({ "error" => "boom" }),
+                 headers: { "Content-Type" => "application/json" })
+
+    result = client.check("inference", company: { "id" => "co_1" }, usage: 10, default_value: true)
+
+    assert_predicate result, :allowed?
+  ensure
+    client&.close
+  end
+
+  # A callable default is resolved at check time, the same as on the credit
+  # paths.
+  def test_a_callable_default_is_resolved_on_the_fallback_path
+    client = Schematic::SchematicClient.new(api_key: "sch_test", base_url: "https://api.schematichq.test",
+                                            logger: silent_logger)
+    stub_request(:post, "https://api.schematichq.test/flags/inference/check")
+      .to_return(status: 500, body: "{}", headers: { "Content-Type" => "application/json" })
+
+    result = client.check("inference", company: { "id" => "co_1" }, usage: 10, default_value: -> { true })
+
+    assert_predicate result, :allowed?
+  ensure
+    client&.close
+  end
+
+  # Zero means cache-only, not "never resolve": a company the DataStream already
+  # holds still prewarms, it is only the active fetch that is skipped.
+  def test_a_zero_prewarm_timeout_still_resolves_from_the_cache
+    client = build_client(credit_leases: { mode: :client, prewarm_resolve_timeout_ms: 0 })
+    datastream = Object.new
+    def datastream.get_cached_company(_company) = { "id" => "co_1" }
+    def datastream.get_company(_company) = raise("prewarm must not fetch at a zero timeout")
+    def datastream.close = nil
+    client.instance_variable_set(:@datastream_client, datastream)
+
+    assert_equal "co_1", client.send(:resolve_company_id_with_wait, { "org_id" => "acme" })
+  ensure
+    client&.close
+  end
+
+  def test_a_zero_prewarm_timeout_never_fetches
+    client = build_client(credit_leases: { mode: :client, prewarm_resolve_timeout_ms: 0 })
+    datastream = Object.new
+    def datastream.get_cached_company(_company) = nil
+    def datastream.get_company(_company) = raise("prewarm must not fetch at a zero timeout")
+    def datastream.close = nil
+    client.instance_variable_set(:@datastream_client, datastream)
+
+    assert_nil client.send(:resolve_company_id_with_wait, { "org_id" => "acme" })
+  ensure
+    client&.close
+  end
+
+  # The generated transport takes its timeout from the client, not from a
+  # request, so a per-check timeout is carried and not yet applied. This pins
+  # the half this SDK owns: the request does carry it, in seconds, so it starts
+  # working the moment the transport honors it.
+  def test_a_per_check_timeout_is_carried_on_the_request_in_seconds
+    client = Schematic::SchematicClient.new(api_key: "sch_test", base_url: "https://api.schematichq.test",
+                                            logger: silent_logger)
+
+    assert_empty client.send(:api_request_options, nil)
+    assert_in_delta 1.5, client.send(:api_request_options, 1500)[:timeout_in_seconds]
+    # And pins the half it does not: the generated transport never reads the
+    # key. When a regeneration makes it read one, this fails, and the README
+    # note saying the timeout is inert has to go with it.
+    transport = File.read(File.expand_path("../lib/schematic/internal/http/raw_client.rb", __dir__))
+
+    refute_includes transport.gsub(/^\s*#.*$/, ""), "timeout_in_seconds"
+  ensure
+    client&.close
   end
 
   def test_prewarm_is_a_no_op_without_credit_leases
