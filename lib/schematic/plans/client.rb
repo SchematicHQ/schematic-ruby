@@ -258,6 +258,8 @@ module Schematic
       # @option params [String, nil] :q
       # @option params [String, nil] :scoped_to_company_id
       # @option params [Boolean, nil] :with_entitlements
+      # @option params [Boolean, nil] :with_published_version
+      # @option params [Boolean, nil] :without_entitlement_for_include_drafts
       # @option params [String, nil] :without_entitlement_for
       # @option params [Boolean, nil] :without_paid_product_id
       # @option params [Integer, nil] :limit
@@ -279,6 +281,8 @@ module Schematic
       #     q: "q",
       #     scoped_to_company_id: "scoped_to_company_id",
       #     with_entitlements: true,
+      #     with_published_version: true,
+      #     without_entitlement_for_include_drafts: true,
       #     without_entitlement_for: "without_entitlement_for",
       #     without_paid_product_id: true,
       #     limit: 1000000,
@@ -303,6 +307,8 @@ module Schematic
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["scoped_to_company_id"] = params[:scoped_to_company_id] if params.key?(:scoped_to_company_id)
         query_params["with_entitlements"] = params[:with_entitlements] if params.key?(:with_entitlements)
+        query_params["with_published_version"] = params[:with_published_version] if params.key?(:with_published_version)
+        query_params["without_entitlement_for_include_drafts"] = params[:without_entitlement_for_include_drafts] if params.key?(:without_entitlement_for_include_drafts)
         query_params["without_entitlement_for"] = params[:without_entitlement_for] if params.key?(:without_entitlement_for)
         query_params["without_paid_product_id"] = params[:without_paid_product_id] if params.key?(:without_paid_product_id)
         query_params["limit"] = params[:limit] if params.key?(:limit)
@@ -691,6 +697,8 @@ module Schematic
       # @option params [String, nil] :q
       # @option params [String, nil] :scoped_to_company_id
       # @option params [Boolean, nil] :with_entitlements
+      # @option params [Boolean, nil] :with_published_version
+      # @option params [Boolean, nil] :without_entitlement_for_include_drafts
       # @option params [String, nil] :without_entitlement_for
       # @option params [Boolean, nil] :without_paid_product_id
       # @option params [Integer, nil] :limit
@@ -712,6 +720,8 @@ module Schematic
       #     q: "q",
       #     scoped_to_company_id: "scoped_to_company_id",
       #     with_entitlements: true,
+      #     with_published_version: true,
+      #     without_entitlement_for_include_drafts: true,
       #     without_entitlement_for: "without_entitlement_for",
       #     without_paid_product_id: true,
       #     limit: 1000000,
@@ -736,6 +746,8 @@ module Schematic
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["scoped_to_company_id"] = params[:scoped_to_company_id] if params.key?(:scoped_to_company_id)
         query_params["with_entitlements"] = params[:with_entitlements] if params.key?(:with_entitlements)
+        query_params["with_published_version"] = params[:with_published_version] if params.key?(:with_published_version)
+        query_params["without_entitlement_for_include_drafts"] = params[:without_entitlement_for_include_drafts] if params.key?(:without_entitlement_for_include_drafts)
         query_params["without_entitlement_for"] = params[:without_entitlement_for] if params.key?(:without_entitlement_for)
         query_params["without_paid_product_id"] = params[:without_paid_product_id] if params.key?(:without_paid_product_id)
         query_params["limit"] = params[:limit] if params.key?(:limit)

@@ -10,6 +10,8 @@ module Schematic
 
         field :expires_at, -> { String }, optional: true, nullable: false
 
+        field :idempotency_key, -> { String }, optional: true, nullable: false
+
         field :preflight, -> { Schematic::Types::PreflightRequestBody }, optional: true, nullable: false
 
         field :quantity, -> { Integer }, optional: true, nullable: false

@@ -158,13 +158,15 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
-      # @option params [String] :plan_version_id
+      # @option params [String, nil] :feature_id
+      # @option params [String, nil] :plan_version_id
       # @option params [Schematic::Types::PlanVersionMigrationStatus, nil] :status
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
       # @example
       #   client.planmigrations.list_migrations(
+      #     feature_id: "feature_id",
       #     plan_version_id: "plan_version_id",
       #     status: "cancelled",
       #     limit: 1000000,
@@ -175,6 +177,7 @@ module Schematic
       def list_migrations(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         query_params = {}
+        query_params["feature_id"] = params[:feature_id] if params.key?(:feature_id)
         query_params["plan_version_id"] = params[:plan_version_id] if params.key?(:plan_version_id)
         query_params["status"] = params[:status] if params.key?(:status)
         query_params["limit"] = params[:limit] if params.key?(:limit)
@@ -401,13 +404,15 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
-      # @option params [String] :plan_version_id
+      # @option params [String, nil] :feature_id
+      # @option params [String, nil] :plan_version_id
       # @option params [Schematic::Types::PlanVersionMigrationStatus, nil] :status
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
       # @example
       #   client.planmigrations.count_migrations(
+      #     feature_id: "feature_id",
       #     plan_version_id: "plan_version_id",
       #     status: "cancelled",
       #     limit: 1000000,
@@ -418,6 +423,7 @@ module Schematic
       def count_migrations(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         query_params = {}
+        query_params["feature_id"] = params[:feature_id] if params.key?(:feature_id)
         query_params["plan_version_id"] = params[:plan_version_id] if params.key?(:plan_version_id)
         query_params["status"] = params[:status] if params.key?(:status)
         query_params["limit"] = params[:limit] if params.key?(:limit)

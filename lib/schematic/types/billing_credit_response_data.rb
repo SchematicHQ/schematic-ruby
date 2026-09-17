@@ -23,6 +23,8 @@ module Schematic
 
       field :id, -> { String }, optional: false, nullable: false
 
+      field :ledger_authority, -> { Schematic::Types::BillingCreditLedgerAuthority }, optional: false, nullable: false
+
       field :name, -> { String }, optional: false, nullable: false
 
       field :plural_name, -> { String }, optional: true, nullable: false

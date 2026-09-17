@@ -37,7 +37,11 @@ module Schematic
 
         field :with_entitlements, -> { Internal::Types::Boolean }, optional: true, nullable: false
 
+        field :with_published_version, -> { Internal::Types::Boolean }, optional: true, nullable: false
+
         field :without_entitlement_for, -> { String }, optional: true, nullable: false
+
+        field :without_entitlement_for_include_drafts, -> { Internal::Types::Boolean }, optional: true, nullable: false
 
         field :without_paid_product_id, -> { Internal::Types::Boolean }, optional: true, nullable: false
       end

@@ -7,6 +7,7 @@ module Schematic
 
       END_OF_BILLING_PERIOD = "end_of_billing_period"
       MONTHLY = "monthly"
+      QUARTERLY = "quarterly"
     end
   end
 end

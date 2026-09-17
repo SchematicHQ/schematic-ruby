@@ -19,7 +19,11 @@ module Schematic
 
       field :monthly_unit_price_decimal, -> { String }, optional: true, nullable: false
 
+      field :overage_billing_cadence, -> { Schematic::Types::BillingArrearsCadence }, optional: true, nullable: false
+
       field :overage_billing_product_id, -> { String }, optional: true, nullable: false
+
+      field :overage_invoice_anchor, -> { Schematic::Types::BillingArrearsAnchor }, optional: true, nullable: false
 
       field :price_behavior, -> { Schematic::Types::EntitlementPriceBehavior }, optional: true, nullable: false
 
