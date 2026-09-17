@@ -37,6 +37,7 @@ jobs:
           bundler-cache: true
       - name: Download WASM binary
         run: ./scripts/download-wasm.sh
+      - run: bundle exec rake test
       - run: bundle exec ruby -I lib -I test test/custom.test.rb
 
   publish:
