@@ -146,7 +146,11 @@ module Schematic
       # Raises DataStream::EvaluationError when the flag cannot be evaluated
       # locally (e.g. flag not in cache, rules engine unavailable), so the caller
       # can fall back to the API path.
-      def check_flag(eval_ctx, flag_key)
+      # options carries the caller's preflight (a simulated usage, an
+      # event-scoped usage, or a per-credit cost) through to the engine, so a
+      # client-side evaluation gates on the post-call balance. Nil evaluates the
+      # flag as it stands.
+      def check_flag(eval_ctx, flag_key, options = nil)
         flag = get_flag(flag_key)
         raise EvaluationError, "flag '#{flag_key}' not found in cache" unless flag
 
@@ -172,10 +176,25 @@ module Schematic
         end
 
         @logger.debug("Evaluating flag with rules engine: flag=#{flag_key}, company=#{company&.dig(:id)}, user=#{user&.dig(:id)}")
-        result = @rules_engine.check_flag(flag, company, user)
+        result = @rules_engine.check_flag_with_options(flag, company, user, options)
         @logger.debug("Rules engine evaluation result: value=#{result[:value]}, reason=#{result[:reason]}")
         result[:flag_key] = flag_key
         result
+      end
+
+      # The rules engine this client evaluates with. The credit-lease check
+      # path drives it directly so it can substitute a lease balance into the
+      # company snapshot before the gate evaluation.
+      attr_reader :rules_engine
+
+      # Evaluate a flag against an explicit company and user with preflight
+      # options, skipping the cache lookups check_flag does. The credit-lease
+      # path has already resolved both entities and needs to gate against a
+      # substituted credit balance, which only it can build.
+      def check_flag_with_options(flag, company, user, options)
+        raise EvaluationError, "rules engine not available" unless @rules_engine&.initialized?
+
+        @rules_engine.check_flag_with_options(flag, company, user, options)
       end
 
       def update_company_metrics(company_keys, event_name, quantity)
@@ -513,6 +532,17 @@ module Schematic
         @logger.info("Replicator is no longer ready") if was_ready
         @logger.warn("Replicator health check error: #{e.message}")
       end
+
+      # The cached company for these keys, without the fetch get_company falls
+      # back to. prewarm polls this to resolve a company id from secondary keys.
+      def get_cached_company(keys)
+        @company_cache.get_by_keys(keys)
+      end
+
+      # Cache-first flag and entity lookups, declared public after their
+      # definitions. The credit-lease check path resolves the flag, the company,
+      # and the user itself before evaluating, so it needs all three.
+      public :get_flag, :get_company, :get_user, :get_cached_company
     end
   end
 end

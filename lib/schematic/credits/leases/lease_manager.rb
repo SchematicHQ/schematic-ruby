@@ -1,0 +1,422 @@
+# frozen_string_literal: true
+
+require "securerandom"
+
+module Schematic
+  module Credits
+    module Leases
+      # One wire call in flight for a slot, plus the figure it asked for, which
+      # is what a joiner compares its own shortfall against. Threads that arrive
+      # while it runs wait on it instead of issuing a second call.
+      class Flight
+        attr_reader :requested_additional
+
+        def initialize(requested_additional = nil)
+          @requested_additional = requested_additional
+          @mutex = Mutex.new
+          @condition = ConditionVariable.new
+          @done = false
+          @value = nil
+        end
+
+        def complete(value)
+          @mutex.synchronize do
+            @value = value
+            @done = true
+            @condition.broadcast
+          end
+        end
+
+        # Wait for the flight to land. A timeout_ms of nil waits indefinitely;
+        # a shutdown passes its remaining budget so a stalled wire call cannot
+        # hold the close open.
+        def wait(timeout_ms = nil)
+          deadline = timeout_ms ? monotonic_ms + timeout_ms : nil
+          @mutex.synchronize do
+            until @done
+              if deadline
+                remaining = deadline - monotonic_ms
+                break if remaining <= 0
+
+                @condition.wait(@mutex, remaining / 1000.0)
+              else
+                @condition.wait(@mutex)
+              end
+            end
+            @value
+          end
+        end
+
+        def done?
+          @mutex.synchronize { @done }
+        end
+
+        private
+
+        def monotonic_ms
+          Process.clock_gettime(Process::CLOCK_MONOTONIC) * 1000
+        end
+      end
+
+      # Owns the lifecycle of credit leases for a single client: acquire on
+      # first use or after expiry, extend when the local view dips below the low
+      # water mark, release on close.
+      #
+      # Acquire and extend each get their own best-effort single-flight map,
+      # keyed by slot and kept separate so an in-flight extend can never satisfy
+      # an acquire. Best-effort because a caller racing ahead of the
+      # registration can still issue a duplicate wire call, which is safe: the
+      # server is idempotent for an active slot, replace keeps the first live
+      # lease, and extend reconciles to a total.
+      class LeaseManager
+        def initialize(wire_client:, lease_store:, logger:, config: {}, clock: DEFAULT_CLOCK)
+          @wire = wire_client
+          @lease_store = lease_store
+          @logger = logger
+          @config = config || {}
+          @clock = clock
+          @flight_mutex = Mutex.new
+          @inflight_acquire = {}
+          @inflight_extend = {}
+          # Lease work nobody joins: the redundant release a lost acquire race
+          # issues, and the background extends callers fire and forget. drain
+          # waits these out so a close releases what they installed.
+          @background = []
+          @stopped = false
+        end
+
+        def resolve_config(credit_type_id)
+          Leases.resolve_config(@config, credit_type_id)
+        end
+
+        # Return the slot's lease, acquiring one (or replacing an expired one)
+        # if none is live. Never raises: a wire or store failure is logged and
+        # reported as nil, so callers route it through their fail-open or
+        # fail-closed handling.
+        def acquire_if_needed(company_id, credit_type_id, request_options = nil)
+          # Past stop the drain has run or is running, so a lease acquired now
+          # is one nothing is left to release.
+          return log_stopped("acquire", company_id, credit_type_id) if @stopped
+
+          begin
+            existing = @lease_store.get(company_id, credit_type_id)
+          rescue StandardError => e
+            @logger.error("Failed to read lease store for #{company_id}/#{credit_type_id}: #{e.message}")
+            return nil
+          end
+          return existing if existing && !existing.expired?(@clock.call)
+
+          # An expired or absent slot is left for replace to overwrite: it
+          # guards on expiry and does the delete-and-write atomically. Dropping
+          # the stale entry first would be a separate, non-atomic op that can
+          # interleave between a sibling's read and its replace, clobbering a
+          # lease that sibling just installed. Reading a stale entry in the gap
+          # is harmless, since every path that acts on a lease re-guards on
+          # expiry before trusting it.
+
+          # Check again: stop may have landed during the store read, and a drain
+          # that ran in that gap saw nothing in flight.
+          return log_stopped("acquire", company_id, credit_type_id) if @stopped
+
+          key = Leases.lease_key(company_id, credit_type_id)
+          flight, leader = enlist(@inflight_acquire, key) { Flight.new }
+          return flight.wait unless leader
+
+          begin
+            result = acquire(company_id, credit_type_id, request_options)
+          ensure
+            @flight_mutex.synchronize { @inflight_acquire.delete(key) }
+            flight.complete(result)
+          end
+          result
+        end
+
+        # Kick off an extend when one is warranted, on a background thread so a
+        # caller can fire and forget it. Returns the thread, which the check
+        # flow joins when it is extending to cover a reserve it just failed.
+        #
+        # An extend is triggered when EITHER the local remaining is at or below
+        # the low-water-mark ratio (steady-state refresh) or the caller names
+        # required_credits and the local remaining is below that figure (a
+        # single check just failed a reserve for that many credits, so extend
+        # opportunistically rather than waiting for the next sub-watermark
+        # check). Never raises.
+        def maybe_extend_in_background(company_id, credit_type_id, required_credits = nil, request_options = nil)
+          if @stopped
+            # Extending past stop re-holds credits on a lease the close is about
+            # to release, or has already released.
+            log_stopped("extend", company_id, credit_type_id)
+            return nil
+          end
+
+          # The whole call is tracked, not just the wire call inside it: callers
+          # drop the thread on the floor, so between the store read and the
+          # extend there would otherwise be a window where a drain sees nothing
+          # pending.
+          track do
+            extend_if_needed(company_id, credit_type_id, required_credits, request_options, allow_follow_up: true)
+          end
+        end
+
+        # Refuse new lease work. Idempotent, and paired with drain: stopping
+        # first is what makes the drain terminate, since nothing can enqueue
+        # behind it.
+        def stop
+          @stopped = true
+          nil
+        end
+
+        # Wait out lease work already on the wire, so a close releases what that
+        # work installs instead of orphaning it. Bounded: whatever has not
+        # landed by the deadline is abandoned rather than stalling the caller's
+        # shutdown, and the credits it holds fall back to server-side expiry.
+        def drain(timeout_ms = SHUTDOWN_DRAIN_TIMEOUT_MS)
+          deadline = monotonic_ms + timeout_ms
+          loop do
+            pending_threads, pending_flights = pending_work
+            return if pending_threads.empty? && pending_flights.empty?
+
+            remaining = deadline - monotonic_ms
+            if remaining <= 0
+              @logger.warn(
+                "Timed out after #{timeout_ms}ms draining in-flight credit lease work; " \
+                "any credits it holds will be released by server-side expiry"
+              )
+              return
+            end
+            pending_threads.each { |thread| thread.join(remaining / 1000.0) }
+            pending_flights.each { |flight| flight.wait(deadline - monotonic_ms) }
+            # Settling one round can enqueue another (an acquire that loses its
+            # race fires a release), so keep going until nothing is left.
+          end
+        end
+
+        # Release every live lease held in the store. ONLY safe when the store
+        # is per-process: those leases are exclusively this process's, so
+        # releasing them on close returns their unspent remainder to the company
+        # balance immediately instead of waiting out the lease expiry. A shared
+        # store must never do this, since sibling processes are still drawing on
+        # the same leases, and is excluded by the list capability check.
+        def release_all_local_leases
+          return nil unless @lease_store.respond_to?(:list)
+
+          entries = @lease_store.list
+          return nil if entries.nil? || entries.empty?
+
+          entries.each do |entry|
+            # Skip expired leases: the server already swept and refunded them.
+            next if entry.expired?(@clock.call)
+
+            begin
+              @wire.release(lease_id: entry.lease_id)
+              @lease_store.drop(entry.company_id, entry.credit_type_id)
+              @logger.debug("Released credit lease #{entry.lease_id} on close")
+            rescue StandardError => e
+              @logger.warn(
+                "Failed to release credit lease #{entry.lease_id} on close " \
+                "(it will expire server-side): #{e.message}"
+              )
+            end
+          end
+          nil
+        end
+
+        private
+
+        def acquire(company_id, credit_type_id, request_options)
+          resolved = resolve_config(credit_type_id)
+          grant = @wire.acquire(
+            company_id: company_id,
+            credit_type_id: credit_type_id,
+            requested_amount: resolved.lease_size,
+            expires_at: @clock.call + (resolved.lease_duration_ms / 1000.0),
+            request_options: request_options || {}
+          )
+          wrote = @lease_store.replace(LeaseEntry.new(
+            lease_id: grant.lease_id,
+            company_id: grant.company_id,
+            credit_type_id: grant.credit_type_id,
+            granted_amount: grant.granted_amount,
+            expires_at: grant.expires_at
+          ))
+          return @lease_store.get(company_id, credit_type_id) if wrote
+
+          settle_lost_race(company_id, credit_type_id, grant)
+        rescue StandardError => e
+          @logger.error("Failed to acquire credit lease for #{company_id}/#{credit_type_id}: #{e.message}")
+          nil
+        end
+
+        # Another writer sharing the backend installed a live lease for this slot
+        # first, so replace kept theirs to preserve its already-debited balance.
+        #
+        # The server is idempotent for an active slot, so a racing acquire is
+        # normally handed back the SAME lease the sibling installed, in which
+        # case there is nothing to release: releasing would mark the shared lease
+        # released server-side and refund its remainder while every process keeps
+        # reserving against it locally. Only when the server minted a DIFFERENT
+        # lease is ours a redundant hold nobody will draw on. When the slot reads
+        # empty (it expired in the gap), skip the release too: that id may well be
+        # the lease the next acquire is handed back.
+        def settle_lost_race(company_id, credit_type_id, grant)
+          current = @lease_store.get(company_id, credit_type_id)
+          if current && current.lease_id != grant.lease_id
+            @logger.debug(
+              "Lost acquire race for #{company_id}/#{credit_type_id}; releasing redundant lease #{grant.lease_id}"
+            )
+            # Fire and forget: a failed release just falls back to lease expiry.
+            track do
+              @wire.release(lease_id: grant.lease_id)
+            rescue StandardError => e
+              @logger.warn("Failed to release redundant credit lease #{grant.lease_id}: #{e.message}")
+            end
+          else
+            @logger.debug(
+              "Lost acquire race for #{company_id}/#{credit_type_id}; " \
+              "server returned the installed lease #{grant.lease_id}, nothing to release"
+            )
+          end
+          current
+        end
+
+        def extend_if_needed(company_id, credit_type_id, required_credits, request_options, allow_follow_up:)
+          begin
+            entry = @lease_store.get(company_id, credit_type_id)
+          rescue StandardError => e
+            @logger.warn("Failed to read lease store for #{company_id}/#{credit_type_id}: #{e.message}")
+            return nil
+          end
+          return nil if entry.nil?
+          # Never extend an expired lease: the server treats it as released,
+          # with its remainder already refunded to the company balance, so the
+          # right move is the fresh acquire the next check performs.
+          return nil if entry.expired?(@clock.call)
+
+          resolved = resolve_config(credit_type_id)
+          ratio = entry.local_remaining_credits / [entry.granted_amount, 1].max
+          below_watermark = ratio <= resolved.low_water_mark
+          below_required = !required_credits.nil? && entry.local_remaining_credits < required_credits
+          return entry unless below_watermark || below_required
+
+          # Size the extend to cover the request that triggered it: a single
+          # check needing more than local remaining plus the tranche would
+          # otherwise fail its post-extend retry forever, even with ample
+          # server balance. The watermark-driven path keeps asking for the
+          # configured tranche. Sized here, one level above the wire call, so
+          # the flight registered below and the request body provably carry the
+          # same number for a joiner to compare against.
+          shortfall = required_credits ? required_credits - entry.local_remaining_credits : 0
+          additional_amount = [resolved.lease_size, shortfall].max
+
+          key = Leases.lease_key(company_id, credit_type_id)
+          flight, leader = enlist(@inflight_extend, key) { Flight.new(additional_amount) }
+          unless leader
+            joined = flight.wait
+            # The flight already asked for at least what we need, which covers
+            # every watermark-driven joiner and any check the tranche covers.
+            # One wire call serves all of them, which is the point.
+            return joined if additional_amount <= flight.requested_additional || !allow_follow_up
+
+            # Our shortfall outran the flight's ask. We waited it out rather
+            # than racing a second extend onto the same lease; now top up the
+            # difference with exactly one more, re-reading the slot the flight
+            # just moved. allow_follow_up: false keeps this from chaining: when
+            # the server cannot cover the request, a chain would spin.
+            return extend_if_needed(company_id, credit_type_id, required_credits, request_options,
+                                    allow_follow_up: false)
+          end
+
+          begin
+            result = extend(entry, resolved, additional_amount, request_options)
+          ensure
+            # Identity-guarded rather than an unconditional delete: a joiner
+            # whose shortfall outran this flight registers a follow-up for the
+            # same key, and this flight must not evict it.
+            @flight_mutex.synchronize { @inflight_extend.delete(key) if @inflight_extend[key].equal?(flight) }
+            flight.complete(result)
+          end
+          result
+        end
+
+        def extend(entry, resolved, additional_amount, request_options)
+          grant = @wire.extend(
+            lease_id: entry.lease_id,
+            additional_amount: additional_amount,
+            expires_at: @clock.call + (resolved.lease_duration_ms / 1000.0),
+            # Minted once per extend, outside the wire call, so the transport's
+            # retries resend the same key: a retry after a lost 2xx is handed
+            # the lease as it stands instead of growing it a second time.
+            idempotency_key: SecureRandom.uuid,
+            request_options: request_options || {}
+          )
+          # Reconcile the local row to the server's authoritative TOTAL. The
+          # store computes the credit delta atomically against its current
+          # total, not against the pre-wire-call read above: per-process
+          # single-flight does not cover sibling processes, so two of them
+          # extending the same shared lease concurrently would each apply a
+          # stale-read delta and mint phantom credits. Pinned to the lease the
+          # server extended: if it expired during the wire call and a successor
+          # took the slot, the local extend is dropped rather than minting the
+          # delta onto the successor.
+          @lease_store.extend(entry.company_id, entry.credit_type_id, grant.granted_amount, grant.expires_at,
+                              entry.lease_id)
+          @logger.debug(
+            "Extended credit lease #{entry.lease_id} to #{grant.granted_amount} " \
+            "(was #{entry.granted_amount} at last read)"
+          )
+          @lease_store.get(entry.company_id, entry.credit_type_id)
+        rescue StandardError => e
+          @logger.warn("Failed to extend credit lease #{entry.lease_id}: #{e.message}")
+          nil
+        end
+
+        # Register this caller against the slot's in-flight call, or become the
+        # one that makes it. Returns the flight and whether this caller leads.
+        def enlist(flights, key)
+          @flight_mutex.synchronize do
+            existing = flights[key]
+            next [existing, false] if existing
+
+            flight = yield
+            flights[key] = flight
+            [flight, true]
+          end
+        end
+
+        # Hold a reference to work nobody joins so drain can wait it out.
+        def track(&block)
+          thread = Thread.new do
+            block.call
+          rescue StandardError => e
+            @logger.warn("Background credit lease work failed: #{e.message}")
+            nil
+          end
+          thread.abort_on_exception = false
+          @flight_mutex.synchronize do
+            # Finished work is dropped as new work arrives, so the list tracks
+            # what is still pending rather than growing for the process's life.
+            @background.select!(&:alive?)
+            @background << thread
+          end
+          thread
+        end
+
+        def pending_work
+          @flight_mutex.synchronize do
+            @background.select!(&:alive?)
+            [@background.dup, (@inflight_acquire.values + @inflight_extend.values).reject(&:done?)]
+          end
+        end
+
+        def log_stopped(action, company_id, credit_type_id)
+          @logger.debug("Lease manager is stopped; skipping #{action} for #{company_id}/#{credit_type_id}")
+          nil
+        end
+
+        def monotonic_ms
+          Process.clock_gettime(Process::CLOCK_MONOTONIC) * 1000
+        end
+      end
+    end
+  end
+end

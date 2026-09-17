@@ -73,12 +73,26 @@ module Schematic
     end
 
     def check_flag(flag, company = nil, user = nil)
+      check_flag_with_options(flag, company, user, nil)
+    end
+
+    # Evaluate a flag with preflight options: a simulated usage, an event-scoped
+    # usage, or a pre-computed per-credit cost. The engine applies them to the
+    # conditions they match without mutating any state, so a caller can ask
+    # "would this call still be allowed after it lands".
+    #
+    # options is a hash with any of :credit_cost (credit id to cost),
+    # :usage, and :event_usage ({ event_subtype:, quantity: }). The engine reads
+    # them snake_case in both directions, so they go on the envelope as given.
+    def check_flag_with_options(flag, company = nil, user = nil, options = nil)
       raise "WASM rules engine not initialized" unless @initialized
 
       # Build combined JSON envelope (same format as Python/C#)
       envelope = { flag: strip_nulls(flag) }
       envelope[:company] = strip_nulls(company) if company
       envelope[:user] = strip_nulls(user) if user
+      # Omitted entirely when empty, so the engine uses its own defaults.
+      envelope[:options] = strip_nulls(options) if options && !options.empty?
 
       json_bytes = JSON.generate(envelope).encode("UTF-8")
 

@@ -6,8 +6,10 @@ CONTRIBUTING.md
 LICENSE
 README.md
 WASM_VERSION
+conformance/
 custom.gemspec.rb
 lib/schematic/cache.rb
+lib/schematic/credits/leases/
 lib/schematic/datastream/
 lib/schematic/event_buffer.rb
 lib/schematic/logger.rb
@@ -18,7 +20,11 @@ lib/schematic/wasm/
 lib/schematic/webhook_verification.rb
 lib/schematichq.rb
 scripts/
+test/conformance_test.rb
+test/credits_test.rb
 test/custom.test.rb
+test/lease_support.rb
+test/rules_engine_clock_test.rb
 testapp/
 .fern/replay.lock
 .fern/replay.yml

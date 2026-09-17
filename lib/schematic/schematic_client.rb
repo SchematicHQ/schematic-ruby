@@ -59,6 +59,20 @@ module Schematic
     # Optional event metadata accepted via the `options:` keyword on track/identify.
     # identify only honors :idempotency_key; track also honors :sent_at,
     # :trusted_client_clock, and :backfill. Fields are only sent when set.
+    # Namespaces the idempotency key on the track event a reservation settles
+    # into. Deterministic per reservation, so a recovery emit (the work outlived
+    # the local reservation TTL) and an accidental double settle collapse to one
+    # billed event: the pipeline drops duplicates for 24h before any credit
+    # consumption runs.
+    RESERVATION_TRACK_IDEMPOTENCY_PREFIX = "lease-reservation:"
+
+    # Knobs that only steer the local lease plumbing, which server mode never
+    # builds. Setting one there does nothing, so the client says so at startup.
+    CLIENT_ONLY_LEASE_OPTIONS = %i[
+      default_lease_duration default_lease_size low_water_mark sweep_interval_ms
+      redis_client redis_key_prefix prewarm_resolve_timeout_ms overrides
+    ].freeze
+
     TRACK_OPTION_KEYS = %i[idempotency_key sent_at trusted_client_clock backfill].freeze
     IDENTIFY_OPTION_KEYS = %i[idempotency_key].freeze
 
@@ -72,6 +86,7 @@ module Schematic
       event_capture_base_url: nil,
       use_data_stream: false,
       datastream_options: {},
+      credit_leases: nil,
       logger: nil,
       log_level: :warn
     )
@@ -118,6 +133,25 @@ module Schematic
       @rules_engine = nil
       setup_datastream(datastream_options) if use_data_stream && !@offline
 
+      # Credit lease + reservation plumbing, if the caller opted in.
+      @credit_lease_config = nil
+      @credit_lease_mode = nil
+      @credit_lease_manager = nil
+      @lease_store = nil
+      @reservations = nil
+      # True when lease state lives in a shared backend that sibling processes
+      # may also be drawing on. close must then NOT release leases.
+      @lease_backend_shared = false
+      @server_reservation_ttl_ms = Credits::Leases::DEFAULT_RESERVATION_TTL_MS
+      @prewarm_resolve_timeout_ms = Credits::Leases::DEFAULT_PREWARM_RESOLVE_TIMEOUT_MS
+      # Prewarms identify spawned and nobody joins. close waits them out: an
+      # acquire that lands after the release installs a lease nothing releases,
+      # and its credits stay held until the server expires them.
+      @pending_prewarms = []
+      @pending_prewarms_mutex = Mutex.new
+      @closing = false
+      setup_credit_leases(credit_leases, datastream_options) if credit_leases
+
       # Register shutdown hook to ensure graceful cleanup on process exit
       at_exit { close }
     end
@@ -128,7 +162,7 @@ module Schematic
       check_flag_with_entitlement(flag_key, company: company, user: user).value
     end
 
-    def check_flag_with_entitlement(flag_key, company: nil, user: nil)
+    def check_flag_with_entitlement(flag_key, company: nil, user: nil, preflight: nil)
       # Offline mode
       if @offline
         return CheckFlagResponse.new(
@@ -142,7 +176,14 @@ module Schematic
       if @datastream_client&.connected?
         begin
           eval_ctx = build_eval_context(company, user)
-          result = @datastream_client.check_flag(eval_ctx, flag_key)
+          # Only widen the call when there is something to pass: a DataStream
+          # double written against the two-argument form still works, and the
+          # preflight envelope reaches the engine when a lease check supplies it.
+          result = if preflight.nil?
+                     @datastream_client.check_flag(eval_ctx, flag_key)
+                   else
+                     @datastream_client.check_flag(eval_ctx, flag_key, preflight)
+                   end
 
           response = CheckFlagResponse.new(result)
           enqueue_flag_check_event(flag_key, response, company, user)
@@ -255,14 +296,179 @@ module Schematic
       end
     end
 
-    # --- Event Submission ---
+    # --- Credit-aware Flag Checking ---
 
-    def identify(body, options: nil)
+    # Credit-aware feature check. With credit_leases configured and a usage
+    # passed (optionally qualified by an event_subtype), this gates the check
+    # against the company's credit balance and returns a reservation handle on
+    # success. Hand that handle to track_with_reservation when the work
+    # completes.
+    #
+    # In client mode (DataStream enabled) the hold is carved out of a local
+    # lease and the flag is evaluated by the WASM engine. In server mode it is a
+    # single check-and-reserve API call that evaluates the flag and takes the
+    # hold server-side. credit_leases[:mode] picks; the default, :auto, uses
+    # client mode when DataStream is enabled and server mode otherwise.
+    #
+    # Without credit_leases (or without a usage) this falls through to a plain
+    # flag check and returns a result with no reservation. The caller's
+    # preflight is still threaded through that plain check, so any client-side
+    # evaluation path gates on the post-call balance, just without a
+    # reservation. Only the REST fallback ignores preflight.
+    def check(flag_key, company: nil, user: nil, usage: nil, event_subtype: nil, on_acquire_failure: nil,
+              default_value: nil, timeout_ms: nil)
+      options = {
+        usage: usage,
+        event_subtype: event_subtype,
+        on_acquire_failure: on_acquire_failure,
+        default_value: default_value,
+        timeout_ms: timeout_ms
+      }
+      eval_ctx = build_eval_context(company, user)
+      fallback = -> { plain_check_result(flag_key, company, user, options) }
+
+      mode = effective_lease_mode
+      return fallback.call if usage.nil? || mode.nil?
+
+      if mode == :server
+        return Credits::Leases.check_with_server_reservation(
+          Credits::Leases::ServerCheckDeps.new(
+            features: features, credits: credits, logger: @logger,
+            reservation_ttl_ms: @server_reservation_ttl_ms,
+            default_value: -> { resolve_default_value(flag_key, default_value) }
+          ),
+          flag_key, eval_ctx, options, &fallback
+        )
+      end
+
+      # Client mode without the local plumbing (mode: :client and no DataStream)
+      # keeps the old behavior: a plain, ungated flag check.
+      return fallback.call unless @credit_lease_manager && @lease_store && @reservations
+
+      Credits::Leases.check_with_lease(
+        Credits::Leases::CheckDeps.new(
+          lease_store: @lease_store, reservations: @reservations, manager: @credit_lease_manager,
+          datastream: @datastream_client, logger: @logger,
+          # Lease-path checks must stay visible to flag-check analytics and
+          # company last-seen, the same as every plain check path.
+          enqueue_flag_check_event: ->(body) { enqueue_lease_flag_check_event(body) }
+        ),
+        flag_key, eval_ctx, options, &fallback
+      )
+    end
+
+    # Consume a reservation issued by check. Refunds the unused slice back to
+    # the lease's local balance and enqueues a track event with the actual
+    # quantity; the server-side event processor consumes
+    # actual_quantity x consumption_rate from the company's real credit balance.
+    #
+    # A server-mode handle has no local hold to refund: the track event carries
+    # the reservation id, and the server settles the hold when it processes the
+    # event.
+    #
+    # If the work outlived the reservation's TTL and the sweeper already
+    # returned the hold to the lease, the local refund has happened but the
+    # usage must still be billed, so the track is emitted anyway as a recovery
+    # emit. Double billing is prevented server-side: the track carries a
+    # deterministic idempotency key derived from the reservation id, and the
+    # events pipeline drops duplicates for 24h before any credit consumption
+    # runs. So a recovery emit racing the normal emit, or an accidental second
+    # settle, collapses to a single billed event, across processes and restarts.
+    def track_with_reservation(reservation, actual_quantity, traits: nil)
       return if @offline
 
-      @event_buffer.push(build_event("identify", body, options, IDENTIFY_OPTION_KEYS))
-    rescue StandardError => e
-      @logger.error("Error sending identify event: #{e.message}")
+      # check allows without a hold in several ordinary cases: the feature is
+      # not credit-metered, the check failed open, usage was 0, or credit leases
+      # are not configured. Callers pass result.reservation straight through, so
+      # take the nil and tell them how to bill the usage instead of raising on a
+      # settle that has nothing to settle.
+      if reservation.nil?
+        @logger.error(
+          "track_with_reservation called without a reservation: the check allowed without taking a hold, " \
+          "so there is nothing to settle. Report the usage with track instead."
+        )
+        return
+      end
+
+      # Mirror the check-path usage guard: a non-finite quantity must reach
+      # neither the store (clamping against NaN claims the reservation with NO
+      # refund of the unspent slice) nor the billing event, and a negative one
+      # would bill negative usage. Skipping the settle leaves the reservation to
+      # expire at its TTL, where the sweeper refunds the full hold, so no
+      # credits are lost and nothing bogus is billed.
+      unless Credits::Leases.valid_quantity?(actual_quantity)
+        @logger.error(
+          "track_with_reservation: invalid actual_quantity #{actual_quantity.inspect} for reservation " \
+          "#{reservation.id}, must be a finite non-negative number; skipping settle " \
+          "(the hold is refunded at its TTL)"
+        )
+        return
+      end
+
+      settle_reservation(reservation, actual_quantity, traits)
+    end
+
+    # Pre-warm a credit lease for each given credit type id, so the first check
+    # against it does not pay the acquire round trip. Failures are logged, never
+    # raised.
+    #
+    # When the company carries only secondary keys (no id), prewarm actively
+    # fetches it over the datastream, waiting up to
+    # credit_leases[:prewarm_resolve_timeout_ms], which both resolves the id and
+    # warms the cache so the first check hits the lease path.
+    def prewarm(credit_type_ids, company: nil)
+      if @credit_lease_manager.nil? || @lease_store.nil?
+        @logger.debug(
+          effective_lease_mode == :server ? "prewarm is a no-op in server mode, there is no local lease to warm" : "prewarm called but credit_leases is not configured"
+        )
+        return
+      end
+      if company.nil? || company.empty?
+        @logger.debug("prewarm requires a company")
+        return
+      end
+      if @closing
+        # close only waits out the prewarms it spawned; a caller invoking
+        # prewarm directly would otherwise install a lease after the release has
+        # already listed the store.
+        @logger.debug("prewarm: client is closing, skipping acquire")
+        return
+      end
+
+      company_id = resolve_company_id_with_wait(company)
+      if company_id.nil?
+        @logger.debug(
+          "prewarm: company not resolved within #{@prewarm_resolve_timeout_ms}ms for keys #{company} " \
+          "(first check will acquire)"
+        )
+        return
+      end
+
+      credit_type_ids.each do |credit_type_id|
+        @credit_lease_manager.acquire_if_needed(company_id, credit_type_id)
+      rescue StandardError => e
+        @logger.warn("prewarm: failed to acquire lease for #{credit_type_id}: #{e.message}")
+      end
+      nil
+    end
+
+    # --- Event Submission ---
+
+    # prewarm names credit type ids to acquire leases for in the background once
+    # the identify event is enqueued. Failures never surface to the caller, and
+    # it is a no-op unless credit_leases is configured.
+    def identify(body, options: nil, prewarm: nil)
+      return if @offline
+
+      begin
+        @event_buffer.push(build_event("identify", body, options, IDENTIFY_OPTION_KEYS))
+      rescue StandardError => e
+        @logger.error("Error sending identify event: #{e.message}")
+      end
+
+      return if prewarm.nil? || prewarm.empty?
+
+      prewarm_after_identify(body, prewarm)
     end
 
     def track(body, options: nil)
@@ -370,10 +576,23 @@ module Schematic
 
     # --- Lifecycle ---
 
+    # Credit leases: with the per-process in-memory backend this process is the
+    # only holder of its leases, so they are released here (best-effort), which
+    # returns their unspent remainder to the company balance immediately instead
+    # of waiting out the lease expiry. With a shared backend, leases are
+    # deliberately NOT released: one row per company and credit is shared across
+    # every SDK instance pointed at that backend, so a single process shutting
+    # down must not release a lease its siblings are still drawing on. Shared
+    # leases reclaim themselves by expiring or being fully consumed.
+    #
+    # Lease work already in flight is waited out, bounded, before the release,
+    # so an acquire that lands mid-shutdown is one the release can see.
     def close
       return if @closed
 
       @closed = true
+      @closing = true
+      shut_down_credit_leases
       @event_buffer.stop
       @datastream_client&.close
       @flag_check_cache_providers.each { |c| c.stop if c.respond_to?(:stop) }
@@ -555,6 +774,341 @@ module Schematic
         body: body,
         sent_at: Time.now.utc.iso8601
       })
+    end
+
+    # --- Credit Leases ---
+
+    def setup_credit_leases(config, datastream_options)
+      config = normalize_credit_lease_config(config)
+      if @offline
+        @logger.warn(
+          "credit_leases is configured but the client is in offline mode; lease-gated checks are disabled " \
+          "and check will return flag defaults with no credit gating."
+        )
+        return
+      end
+
+      @credit_lease_config = config
+      @credit_lease_mode = config[:mode] || :auto
+      resolve_server_reservation_ttl(config)
+      warn_about_mode(config)
+      return unless credit_lease_mode_uses_leases?
+
+      build_lease_plumbing(config, datastream_options)
+    end
+
+    # Accept the hyphenated spellings the other SDKs use for the two enum-ish
+    # knobs, so one config shape travels across a mixed fleet.
+    def normalize_credit_lease_config(config)
+      normalized = config.transform_keys(&:to_sym)
+      normalized[:mode] = Credits::Leases.normalize_symbol(normalized[:mode]) if normalized[:mode]
+      normalized
+    end
+
+    # The API refuses a hold expiring more than an hour after its own clock, and
+    # this TTL is applied to the caller's, so clamp a step below the cap to leave
+    # room for skew. Only server mode sends the value to the API: in client mode
+    # it sizes the local sweep, so clamping there would shorten holds for no
+    # reason and the warning would be untrue.
+    def resolve_server_reservation_ttl(config)
+      configured = config[:default_reservation_ttl] || Credits::Leases::DEFAULT_RESERVATION_TTL_MS
+      max_ttl = Credits::Leases::MAX_RESERVATION_TTL_MS - Credits::Leases::RESERVATION_TTL_SKEW_ALLOWANCE_MS
+      @server_reservation_ttl_ms = @credit_lease_mode == :client ? configured : [configured, max_ttl].min
+      return unless @credit_lease_mode != :client && configured > max_ttl
+
+      @logger.warn(
+        "credit_leases[:default_reservation_ttl] of #{configured}ms is longer than the API will hold credits " \
+        "for; server-mode holds will be clamped to #{max_ttl}ms (the " \
+        "#{Credits::Leases::MAX_RESERVATION_TTL_MS}ms maximum, less " \
+        "#{Credits::Leases::RESERVATION_TTL_SKEW_ALLOWANCE_MS}ms of room for clock skew)."
+      )
+    end
+
+    def warn_about_mode(config)
+      # Server mode holds credits over the API, so none of the local lease
+      # plumbing is built and options that only steer it would silently do
+      # nothing. Say so once, at startup. :auto with no DataStream lands in
+      # server mode too, and is the likelier way to get here.
+      if @credit_lease_mode == :server || (@credit_lease_mode == :auto && @datastream_client.nil?)
+        client_only = CLIENT_ONLY_LEASE_OPTIONS.reject { |name| config[name].nil? }
+        if client_only.any?
+          @logger.warn(
+            "credit_leases resolves to server mode, so #{client_only.join(", ")} will be ignored: " \
+            "those options only apply to client mode (local leases over DataStream)."
+          )
+        end
+      end
+
+      # :auto with no DataStream is the server-mode default, not a
+      # misconfiguration: check-and-reserve gates over the API instead. :client
+      # without DataStream is the degraded path, where every check falls back to
+      # a plain flag check with usage ignored, so it warns.
+      if @credit_lease_mode == :auto && @datastream_client.nil?
+        @logger.info(
+          "credit_leases is configured and DataStream is not enabled; credit reservations will run in server " \
+          "mode (one check-and-reserve API call per check). Set use_data_stream: true (or replicator mode) " \
+          "for client-side leases."
+        )
+      end
+      return unless @credit_lease_mode == :client && @datastream_client.nil?
+
+      @logger.warn(
+        "credit_leases is configured but DataStream is not enabled; check will fall back to plain flag checks " \
+        "with NO credit gating (usage is ignored). Set use_data_stream: true (or replicator mode) to enable " \
+        "lease-gated checks."
+      )
+    end
+
+    def build_lease_plumbing(config, datastream_options)
+      sweep_ms = config[:sweep_interval_ms] || Credits::Leases::DEFAULT_SWEEP_INTERVAL_MS
+      # Lease and reservation state belongs in a shared cache so gating holds
+      # across horizontally scaled processes. Prefer an explicit client, but
+      # otherwise reuse the one the DataStream cache is already configured with,
+      # so an existing Redis setup backs leases automatically. Same for the key
+      # prefix.
+      redis_client = config[:redis_client] || datastream_options[:redis_client]
+      key_prefix = config[:redis_key_prefix] || datastream_options[:redis_key_prefix]
+
+      if redis_client
+        # Shared-state backend: the lease balance and the reservation table live
+        # in Redis, and the Lua-driven reserve and consume paths give atomic
+        # cross-process gating without a separate lock service.
+        @lease_backend_shared = true
+        @lease_store = Credits::Leases::RedisLeaseStore.new(
+          client: redis_client, key_prefix: key_prefix,
+          default_lease_duration_ms: config[:default_lease_duration] || Credits::Leases::DEFAULT_LEASE_DURATION_MS
+        )
+        @reservations = Credits::Leases::RedisReservationStore.new(
+          client: redis_client, lease_store: @lease_store, sweep_interval_ms: sweep_ms,
+          key_prefix: key_prefix, logger: @logger
+        )
+      else
+        # No shared backend configured. In a horizontally scaled deployment each
+        # process then acquires and gates against its own leases, which defeats
+        # the cross-process over-spend protection that is the point of leasing,
+        # so warn rather than degrade silently.
+        @logger.warn(
+          "credit_leases is enabled without a shared Redis backend; lease and reservation state will be kept " \
+          "per-process. Configure datastream_options[:redis_client] (or credit_leases[:redis_client]) so " \
+          "leases gate correctly across multiple SDK instances."
+        )
+        @lease_store = Credits::Leases::LeaseStore.new
+        @reservations = Credits::Leases::ReservationStore.new(@lease_store, sweep_ms, logger: @logger)
+      end
+
+      @reservations.start_sweep
+      @credit_lease_manager = Credits::Leases::LeaseManager.new(
+        wire_client: Credits::Leases::ApiWireClient.new(credits_client: credits),
+        lease_store: @lease_store,
+        logger: @logger,
+        config: config
+      )
+      @prewarm_resolve_timeout_ms =
+        config[:prewarm_resolve_timeout_ms] || Credits::Leases::DEFAULT_PREWARM_RESOLVE_TIMEOUT_MS
+    end
+
+    # Whether the configured mode wants the local lease plumbing. Read during
+    # construction, after the DataStream client has been wired, so :auto can
+    # resolve against it.
+    def credit_lease_mode_uses_leases?
+      return false if @credit_lease_mode.nil? || @credit_lease_mode == :server
+      return true if @credit_lease_mode == :client
+
+      !@datastream_client.nil?
+    end
+
+    # Which reservation mode a check with usage resolves to right now. Nil means
+    # no credit gating at all: credit_leases is not configured, or the client is
+    # offline.
+    #
+    # :auto is resolved per check rather than once at startup, so a DataStream
+    # that failed to start after construction falls to server mode instead of
+    # silently dropping every check to a plain, ungated flag check.
+    def effective_lease_mode
+      return nil if @credit_lease_mode.nil? || @offline
+      return :server if @credit_lease_mode == :server
+      return :client if @credit_lease_mode == :client
+
+      plumbing_ready = !@credit_lease_manager.nil? && !@lease_store.nil? && !@reservations.nil?
+      @datastream_client && plumbing_ready ? :client : :server
+    end
+
+    # The plain (non-lease) check the credit paths fall back to, with the
+    # caller's preflight threaded through so a client-side evaluation still
+    # gates on the post-call balance.
+    def plain_check_result(flag_key, company, user, options)
+      response = check_flag_with_entitlement(
+        flag_key, company: company, user: user,
+                  preflight: Credits::Leases.build_preflight_options(options)
+      )
+      value = response.value
+      Credits::Leases::CheckResult.new(
+        allowed: value, value: value, reason: response.reason, entitlement: response.entitlement,
+        flag_key: response.flag_key || flag_key, flag_id: response.flag_id, error: response.error
+      )
+    end
+
+    def resolve_default_value(flag_key, default_value)
+      return get_flag_default(flag_key) if default_value.nil?
+      return default_value.call if default_value.respond_to?(:call)
+
+      default_value
+    end
+
+    def enqueue_lease_flag_check_event(body)
+      payload = {
+        flag_key: body[:flag_key],
+        value: body[:value],
+        reason: body[:reason]
+      }
+      payload[:error] = body[:error] if body[:error]
+      payload[:flag_id] = body[:flag_id] if body[:flag_id]
+      payload[:rule_id] = body[:rule_id] if body[:rule_id]
+      payload[:company_id] = body[:company_id] if body[:company_id]
+      payload[:user_id] = body[:user_id] if body[:user_id]
+      payload[:company] = body[:req_company] if body[:req_company]&.any?
+      payload[:user] = body[:req_user] if body[:req_user]&.any?
+
+      @event_buffer.push({ event_type: "flag_check", body: payload, sent_at: Time.now.utc.iso8601 })
+    rescue StandardError => e
+      @logger.error("Error enqueueing flag_check event: #{e.message}")
+    end
+
+    def settle_reservation(reservation, actual_quantity, traits)
+      idempotency_key = "#{RESERVATION_TRACK_IDEMPOTENCY_PREFIX}#{reservation.id}"
+      # Server mode: the hold lives on the server and settles by id, so there is
+      # nothing local to consume or refund. Just emit the track.
+      if reservation.server_mode? || @reservations.nil?
+        @logger.warn("track_with_reservation called but credit_leases is not configured; emitting unsettled track") if @reservations.nil? && !reservation.server_mode?
+        # Without a local store there is nothing to settle against, but the
+        # billing event must still carry the lease id (the handle was issued by
+        # a lease-configured client, and dropping it would double-debit the
+        # grant) and the deterministic idempotency key.
+        track(Credits::Leases.build_reservation_track_event(reservation, actual_quantity, traits: traits),
+              options: { idempotency_key: idempotency_key })
+        return
+      end
+
+      outcome = begin
+        Credits::Leases.consume_reservation_and_build_event(@reservations, reservation, actual_quantity,
+                                                            traits: traits)
+      rescue StandardError => e
+        # The local settle failed, most likely an unreachable Redis. The usage
+        # still has to be billed: build the track from the caller-held handle
+        # and emit it anyway. The unsettled local hold is reclaimed by the
+        # sweeper at its TTL or at lease expiry, and the idempotency key keeps a
+        # retried settle from double billing.
+        @logger.warn(
+          "track_with_reservation: failed to settle reservation #{reservation.id} locally (#{e.message}), " \
+          "emitting track anyway"
+        )
+        Credits::Leases::SettleOutcome.new(
+          track: Credits::Leases.build_reservation_track_event(reservation, actual_quantity, traits: traits),
+          settled_locally: false
+        )
+      end
+
+      unless outcome.settled_locally
+        @logger.debug(
+          "track_with_reservation: reservation #{reservation.id} was not settled locally (expired or swept, " \
+          "already settled, or store unreachable), emitting track keyed for idempotent server-side dedupe"
+        )
+      end
+      track(outcome.track, options: { idempotency_key: idempotency_key })
+    end
+
+    def prewarm_after_identify(body, credit_type_ids)
+      company = body[:company]&.dig(:keys) || body["company"]&.dig("keys")
+      # Force a flush so the server processes the identify as soon as possible.
+      # Without it the company may sit in the local buffer for up to the flush
+      # interval before the server even sees it, and prewarm's bounded poll
+      # would just be waiting on us.
+      begin
+        @event_buffer.flush
+      rescue StandardError => e
+        @logger.debug("identify flush before prewarm failed: #{e.message}")
+      end
+
+      thread = Thread.new do
+        prewarm(credit_type_ids, company: company)
+      rescue StandardError => e
+        @logger.warn("identify prewarm failed: #{e.message}")
+      end
+      thread.abort_on_exception = false
+      @pending_prewarms_mutex.synchronize do
+        @pending_prewarms.select!(&:alive?)
+        @pending_prewarms << thread
+      end
+      nil
+    end
+
+    # Like resolving a company id from the cache, but actively fetches the
+    # company over the datastream when only secondary keys are supplied, warming
+    # the cache as a side effect. Returns the id, or nil if the company never
+    # surfaced within the timeout.
+    #
+    # identify does not push a company into the datastream cache: companies are
+    # only streamed in response to a request. So this fetches rather than
+    # passively polling the cache, which would watch an empty cache until it
+    # times out. Fetching also primes the cache so the first real check hits the
+    # lease path instead of falling back.
+    def resolve_company_id_with_wait(company)
+      return company[:id] || company["id"] if company[:id] || company["id"]
+      return nil if @datastream_client.nil? || @prewarm_resolve_timeout_ms <= 0
+
+      cached = @datastream_client.get_cached_company(company)
+      cached_id = cached && (cached[:id] || cached["id"])
+      return cached_id if cached_id
+
+      deadline = monotonic_ms + @prewarm_resolve_timeout_ms
+      loop do
+        # A company resolved for a client that is shutting down warms nothing,
+        # and close would be waiting out the rest of this poll.
+        return nil if @closing
+
+        begin
+          resolved = @datastream_client.get_company(company)
+          resolved_id = resolved && (resolved[:id] || resolved["id"])
+          return resolved_id if resolved_id
+        rescue StandardError => e
+          @logger.debug("prewarm: datastream company fetch failed (#{e.message})")
+        end
+        return nil if monotonic_ms >= deadline
+
+        sleep(Credits::Leases::DEFAULT_PREWARM_POLL_INTERVAL_MS / 1000.0)
+      end
+    end
+
+    def shut_down_credit_leases
+      @reservations&.stop
+      return if @credit_lease_manager.nil?
+
+      # Refuse new lease work first, so the waits below are waiting on work that
+      # is already unwinding rather than work still starting. Both steps run for
+      # a shared backend too: the work must not outlive the client, even where
+      # there is nothing to release.
+      @credit_lease_manager.stop
+      # One budget across both waits, not each timeout in turn: a caller closing
+      # a client wants a bounded shutdown, not the sum of every wait inside it.
+      deadline = monotonic_ms + Credits::Leases::SHUTDOWN_DRAIN_TIMEOUT_MS
+      prewarms = @pending_prewarms_mutex.synchronize { @pending_prewarms.dup }
+      prewarms.each do |thread|
+        remaining = deadline - monotonic_ms
+        break if remaining <= 0
+
+        thread.join(remaining / 1000.0)
+      end
+      if prewarms.any?(&:alive?)
+        @logger.warn(
+          "Timed out after #{Credits::Leases::SHUTDOWN_DRAIN_TIMEOUT_MS}ms waiting for in-flight prewarms on close"
+        )
+      end
+      @credit_lease_manager.drain([deadline - monotonic_ms, 0].max)
+      @credit_lease_manager.release_all_local_leases unless @lease_backend_shared
+    end
+
+    def monotonic_ms
+      Process.clock_gettime(Process::CLOCK_MONOTONIC) * 1000
     end
 
     def setup_datastream(options)
