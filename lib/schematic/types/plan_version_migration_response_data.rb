@@ -13,6 +13,10 @@ module Schematic
 
       field :failed_companies, -> { Integer }, optional: false, nullable: false
 
+      field :feature_id, -> { String }, optional: true, nullable: false
+
+      field :feature_plan_rollout_id, -> { String }, optional: true, nullable: false
+
       field :id, -> { String }, optional: false, nullable: false
 
       field :next_due_at, -> { String }, optional: true, nullable: false

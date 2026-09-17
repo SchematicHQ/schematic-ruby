@@ -61,6 +61,8 @@ module Schematic
 
       field :to_grant_id, -> { String }, optional: true, nullable: false
 
+      field :transfer_reason, -> { Schematic::Types::CreditTransferReason }, optional: true, nullable: false
+
       field :usage_event_id, -> { String }, optional: true, nullable: false
 
       field :usage_reason, -> { Schematic::Types::CreditUsageReason }, optional: true, nullable: false

@@ -9,6 +9,8 @@ module Schematic
         field :additional_amount, -> { Integer }, optional: false, nullable: false
 
         field :expires_at, -> { String }, optional: true, nullable: false
+
+        field :idempotency_key, -> { String }, optional: true, nullable: false
       end
     end
   end

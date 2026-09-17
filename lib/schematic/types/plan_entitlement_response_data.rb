@@ -31,6 +31,10 @@ module Schematic
 
       field :metric_period_month_reset, -> { Schematic::Types::MetricPeriodMonthReset }, optional: true, nullable: false
 
+      field :overage_billing_cadence, -> { Schematic::Types::BillingArrearsCadence }, optional: true, nullable: false
+
+      field :overage_invoice_anchor, -> { Schematic::Types::BillingArrearsAnchor }, optional: true, nullable: false
+
       field :plan, -> { Schematic::Types::PlanResponseData }, optional: true, nullable: false
 
       field :plan_id, -> { String }, optional: false, nullable: false
