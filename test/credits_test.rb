@@ -1166,6 +1166,29 @@ class CreditLeaseClientWiringTest < Minitest::Test
     end
   end
 
+  # A zero usage is documented as having no effect, so such a check is a plain
+  # one. Sending an empty preflight would cost it the flag cache for nothing.
+  def test_a_zero_usage_check_sends_no_preflight_and_stays_cacheable
+    client = Schematic::SchematicClient.new(api_key: "sch_test", base_url: "https://api.schematichq.test",
+                                            logger: silent_logger)
+    plain = stub_request(:post, "https://api.schematichq.test/flags/inference/check")
+            .to_return(status: 200, body: JSON.generate({ "data" => { "flag" => "inference", "value" => true,
+                                                                      "reason" => "ok" } }),
+                       headers: { "Content-Type" => "application/json" })
+
+    client.check("inference", company: { "id" => "co_1" }, usage: 0)
+    client.check("inference", company: { "id" => "co_1" }, usage: 0)
+
+    # One request, so the second check was served from the cache the first
+    # populated.
+    assert_requested plain, times: 1
+    assert_requested(:post, "https://api.schematichq.test/flags/inference/check") do |req|
+      !JSON.parse(req.body).key?("preflight")
+    end
+  ensure
+    client&.close
+  end
+
   # The flag cache is keyed by flag, company and user, so a preflighted verdict
   # and a plain one would share an entry while answering different questions.
   def test_a_preflighted_check_neither_reads_nor_writes_the_flag_cache

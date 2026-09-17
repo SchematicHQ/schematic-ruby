@@ -39,6 +39,14 @@ module Schematic
         # question, so a fractional usage rounds up rather than gating on less
         # usage than the operation is about to record.
         quantity = Leases.wire_quantity(usage)
+        # The API documents a zero usage as having no effect, so a check with
+        # one is a plain check and not a preflighted one. Sending an empty
+        # preflight anyway would cost it the flag cache, on the read and on the
+        # write, for a field the server ignores. A zero credit_cost would be
+        # different, saying free rather than absent, but this builder never
+        # emits one.
+        return nil if quantity.zero?
+
         if options[:event_subtype]
           { event_usage: { event_subtype: options[:event_subtype], quantity: quantity } }
         else
