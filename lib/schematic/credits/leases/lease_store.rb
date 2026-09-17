@@ -98,10 +98,17 @@ module Schematic
           nil
         end
 
-        # Drop the slot entry, after a remote release.
+        # Drop the slot entry, after a remote release. The slot's mutex goes
+        # with it, so a long-lived process serving many companies does not
+        # accumulate one per (company, credit type) it has ever leased.
         def drop(company_id, credit_type_id)
           key = Leases.lease_key(company_id, credit_type_id)
-          with_lock(key) { @table_mutex.synchronize { @leases.delete(key) } }
+          with_lock(key) do
+            @table_mutex.synchronize do
+              @leases.delete(key)
+              @locks.delete(key)
+            end
+          end
           nil
         end
 
@@ -189,9 +196,27 @@ module Schematic
           @table_mutex.synchronize { @leases[key] = entry }
         end
 
-        def with_lock(key, &)
-          lock = @table_mutex.synchronize { @locks[key] ||= Mutex.new }
-          lock.synchronize(&)
+        # Serialize on the slot's mutex, re-checking after the acquire that it
+        # is still the registered one.
+        #
+        # Pruning is what makes the re-check necessary. A drop deletes the mutex
+        # while holding it, so a thread that was already blocked on it wakes
+        # owning an object the table no longer knows about, while a thread
+        # arriving afterwards takes a fresh mutex for the same slot. Without the
+        # check those two would run side by side on one slot. The waiter sees
+        # its mutex is no longer the registered one and retries against the
+        # current one instead. Every retry follows a drop, which happens once
+        # per lease, so the loop cannot spin.
+        def with_lock(key, &block)
+          loop do
+            lock = @table_mutex.synchronize { @locks[key] ||= Mutex.new }
+            stale = false
+            result = lock.synchronize do
+              stale = @table_mutex.synchronize { !@locks[key].equal?(lock) }
+              block.call unless stale
+            end
+            return result unless stale
+          end
         end
       end
     end

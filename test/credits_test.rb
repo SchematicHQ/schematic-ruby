@@ -138,6 +138,49 @@ class LeaseStoreTest < Minitest::Test
 
     assert_equal %w[lse_1 lse_2], @store.list.map(&:lease_id).sort
   end
+
+  # A long-lived process leases for many companies, and a mutex per slot it has
+  # ever touched is a leak.
+  def test_dropping_a_lease_prunes_its_lock
+    @store.replace(lease_entry)
+    @store.try_reserve("co_1", "ct_1", 10)
+
+    @store.drop("co_1", "ct_1")
+
+    assert_empty @store.instance_variable_get(:@locks)
+  end
+
+  # Pruning under the slot's own mutex strands anyone already blocked on it, so
+  # a waiter has to notice and retry against the mutex the table now holds.
+  # Without that, the waiter and a newcomer would run side by side on one slot.
+  def test_a_waiter_on_a_pruned_lock_retries_against_the_current_one
+    locks = @store.instance_variable_get(:@locks)
+    table = @store.instance_variable_get(:@table_mutex)
+    held = Queue.new
+    release = Queue.new
+    order = []
+
+    holder = Thread.new do
+      @store.send(:with_lock, "co_1:ct_1") do
+        held << true
+        release.pop
+        # Exactly what drop does: prune while holding the very mutex it prunes.
+        table.synchronize { locks.delete("co_1:ct_1") }
+        order << :holder
+      end
+    end
+    held.pop
+    waiter = Thread.new { @store.send(:with_lock, "co_1:ct_1") { order << :waiter } }
+    # Let the waiter block on the mutex that is about to be pruned.
+    sleep 0.05
+    release << true
+    [holder, waiter].each(&:join)
+
+    assert_equal %i[holder waiter], order
+    # The waiter re-registered a mutex for the slot, which it could only do by
+    # noticing the one it woke holding was stale.
+    refute_empty locks
+  end
 end
 
 class ReservationStoreTest < Minitest::Test
@@ -288,6 +331,23 @@ class LeaseManagerTest < Minitest::Test
     assert_equal "lse_1", first.value.lease_id
     assert_equal "lse_1", joiner.value.lease_id
     assert_equal 1, @wire.acquire_calls.size
+  end
+
+  # The drain budget is what a caller asked close to take in total. Spending it
+  # thread by thread would multiply it by however many are stalled.
+  def test_drain_bounds_the_total_wait_across_stalled_threads
+    release = Queue.new
+    5.times { @manager.send(:track) { release.pop } }
+
+    started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    @manager.drain(300)
+    elapsed_ms = (Process.clock_gettime(Process::CLOCK_MONOTONIC) - started) * 1000
+
+    # One budget, not five. The ceiling is loose enough for scheduling noise and
+    # far below the 1500ms a per-thread budget would cost.
+    assert_operator elapsed_ms, :<, 900
+  ensure
+    5.times { release << true }
   end
 
   def test_acquire_returns_nil_rather_than_raising_when_the_wire_fails
@@ -1051,6 +1111,95 @@ class CreditLeaseClientWiringTest < Minitest::Test
     transport = File.read(File.expand_path("../lib/schematic/internal/http/raw_client.rb", __dir__))
 
     refute_includes transport.gsub(/^\s*#.*$/, ""), "timeout_in_seconds"
+  ensure
+    client&.close
+  end
+
+  # identify is a buffer push. Asking it to prewarm must not turn it into an
+  # HTTP round trip on the caller's thread, which is what the flush is. The
+  # ordering the prewarm poll depends on still holds, because the flush and the
+  # poll run on the same background thread in that order.
+  def test_identify_with_a_prewarm_does_not_flush_on_the_calling_thread
+    client = build_client(credit_leases: { mode: :client })
+    flushing = Queue.new
+    release = Queue.new
+    buffer = Object.new
+    buffer.define_singleton_method(:push) { |_event| nil }
+    buffer.define_singleton_method(:stop) { nil }
+    buffer.define_singleton_method(:flush) do
+      flushing << Thread.current
+      release.pop
+    end
+    client.instance_variable_set(:@event_buffer, buffer)
+
+    identifying = Thread.new do
+      client.identify({ keys: { "user_id" => "u_1" }, company: { keys: { "id" => "co_1" } } },
+                      prewarm: ["ct_1"])
+    end
+
+    # Joined with a bound rather than waited on: a flush back on the calling
+    # thread would park here forever instead of failing.
+    assert identifying.join(5), "identify blocked on the event buffer flush"
+    refute_same identifying, flushing.pop
+  ensure
+    release << true
+    client&.close
+  end
+
+  # A plain check over the API gates on the balance as it stands. A check with a
+  # usage has to gate on the balance the action will leave behind, so the
+  # preflight goes on the REST request too.
+  def test_a_fallback_check_sends_the_preflight_on_the_rest_request
+    client = Schematic::SchematicClient.new(api_key: "sch_test", base_url: "https://api.schematichq.test",
+                                            logger: silent_logger)
+    stub_request(:post, "https://api.schematichq.test/flags/inference/check")
+      .to_return(status: 200, body: JSON.generate({ "data" => { "flag" => "inference", "value" => true,
+                                                                "reason" => "ok" } }),
+                 headers: { "Content-Type" => "application/json" })
+
+    client.check("inference", company: { "id" => "co_1" }, usage: 1.5, event_subtype: "inference_tokens")
+
+    assert_requested(:post, "https://api.schematichq.test/flags/inference/check") do |req|
+      preflight = JSON.parse(req.body)["preflight"]
+      preflight["event_usage"]["event_subtype"] == "inference_tokens" &&
+        preflight["event_usage"]["quantity"] == 2
+    end
+  end
+
+  # The flag cache is keyed by flag, company and user, so a preflighted verdict
+  # and a plain one would share an entry while answering different questions.
+  def test_a_preflighted_check_neither_reads_nor_writes_the_flag_cache
+    # The client builds its own local flag cache, which is what a plain check
+    # populates.
+    client = Schematic::SchematicClient.new(api_key: "sch_test", base_url: "https://api.schematichq.test",
+                                            logger: silent_logger)
+    plain = stub_request(:post, "https://api.schematichq.test/flags/inference/check")
+            .with { |req| !JSON.parse(req.body).key?("preflight") }
+            .to_return(status: 200, body: JSON.generate({ "data" => { "flag" => "inference", "value" => true,
+                                                                      "reason" => "plain" } }),
+                       headers: { "Content-Type" => "application/json" })
+    preflighted = stub_request(:post, "https://api.schematichq.test/flags/inference/check")
+                  .with { |req| JSON.parse(req.body).key?("preflight") }
+                  .to_return(status: 200, body: JSON.generate({ "data" => { "flag" => "inference",
+                                                                            "value" => false,
+                                                                            "reason" => "preflighted" } }),
+                             headers: { "Content-Type" => "application/json" })
+
+    # A plain check caches its verdict.
+    client.check_flag("inference", company: { "id" => "co_1" })
+    client.check_flag("inference", company: { "id" => "co_1" })
+
+    assert_requested plain, times: 1
+
+    # The preflighted check goes to the API rather than reading that entry.
+    result = client.check("inference", company: { "id" => "co_1" }, usage: 10)
+
+    refute_predicate result, :allowed?
+    assert_requested preflighted, times: 1
+
+    # And leaves the cached plain verdict as it found it.
+    assert client.check_flag("inference", company: { "id" => "co_1" })
+    assert_requested plain, times: 1
   ensure
     client&.close
   end

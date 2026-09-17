@@ -441,6 +441,8 @@ end
 
 A check can allow without reserving credits (the feature is not credit-metered, `usage` is 0, or the check failed open), and that usage still has to be tracked.
 
+Without `credit_leases` configured, or without a `usage`, `check` falls through to a plain flag check with no reservation. `usage` is still sent as a preflight, locally or to the API, so the verdict accounts for what the call is about to spend. Preflighted verdicts are not cached.
+
 `usage` may be fractional. The API carries whole quantities, so a server-mode reservation, the preflight quantity, and the quantity a settle bills round up. A client-mode reservation keeps the fraction.
 
 `result.entitlement` is a symbol-keyed hash with the field names of `Schematic::Types::FeatureEntitlement`, the same in both modes.

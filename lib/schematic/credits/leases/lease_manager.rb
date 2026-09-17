@@ -184,7 +184,15 @@ module Schematic
               )
               return
             end
-            pending_threads.each { |thread| thread.join(remaining / 1000.0) }
+            # Recomputed per thread, not once for the round: a shared budget
+            # spent thread by thread would let N stalled threads wait N times
+            # the timeout a caller asked close to take.
+            pending_threads.each do |thread|
+              left = deadline - monotonic_ms
+              break if left <= 0
+
+              thread.join(left / 1000.0)
+            end
             pending_flights.each { |flight| flight.wait(deadline - monotonic_ms) }
             # Settling one round can enqueue another (an acquire that loses its
             # race fires a release), so keep going until nothing is left.

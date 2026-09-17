@@ -182,11 +182,6 @@ module Schematic
         result
       end
 
-      # The rules engine this client evaluates with. The credit-lease check
-      # path drives it directly so it can substitute a lease balance into the
-      # company snapshot before the gate evaluation.
-      attr_reader :rules_engine
-
       # Evaluate a flag against an explicit company and user with preflight
       # options, skipping the cache lookups check_flag does. The credit-lease
       # path has already resolved both entities and needs to gate against a

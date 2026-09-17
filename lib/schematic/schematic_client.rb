@@ -204,7 +204,8 @@ module Schematic
       end
 
       # API path with caching
-      check_flag_via_api(flag_key, company, user, timeout_ms: timeout_ms, get_default: get_default)
+      check_flag_via_api(flag_key, company, user, preflight: preflight, timeout_ms: timeout_ms,
+                                                  get_default: get_default)
     rescue StandardError => e
       @logger.error("check_flag_with_entitlement error for '#{flag_key}': #{e.message}")
       CheckFlagResponse.new(
@@ -322,7 +323,7 @@ module Schematic
     # flag check and returns a result with no reservation. The caller's
     # preflight is still threaded through that plain check, so any client-side
     # evaluation path gates on the post-call balance, just without a
-    # reservation. Only the REST fallback ignores preflight. default_value
+    # reservation, and the REST path sends the preflight too. default_value
     # governs that fallback too, so a check that cannot reach the credit path
     # still answers the way the caller asked.
     #
@@ -626,15 +627,20 @@ module Schematic
       CheckFlagResponse.new(cached)
     end
 
-    def check_flag_via_api(flag_key, company, user, timeout_ms: nil, get_default: nil)
+    def check_flag_via_api(flag_key, company, user, preflight: nil, timeout_ms: nil, get_default: nil)
       get_default ||= -> { get_flag_default(flag_key) }
-      # Check cache
       cache_key = build_cache_key(flag_key, company, user)
-      @flag_check_cache_providers.each do |provider|
-        cached = coerce_cached_response(provider.get(cache_key))
-        if cached
-          @logger.debug("Flag '#{flag_key}' found in cache (value=#{cached.value})")
-          return cached
+      # The cache is keyed by flag, company and user, so a preflighted check and
+      # a plain one collide on one entry while asking different questions ("is
+      # this allowed after the action" versus "is it allowed now"). A
+      # preflighted check therefore neither reads the cache nor writes to it.
+      if preflight.nil?
+        @flag_check_cache_providers.each do |provider|
+          cached = coerce_cached_response(provider.get(cache_key))
+          if cached
+            @logger.debug("Flag '#{flag_key}' found in cache (value=#{cached.value})")
+            return cached
+          end
         end
       end
 
@@ -644,6 +650,7 @@ module Schematic
         eval_body = {}
         eval_body[:company] = company if company&.any?
         eval_body[:user] = user if user&.any?
+        eval_body[:preflight] = preflight if preflight
 
         api_response = @api_client.features.check_flag(
           request_options: api_request_options(timeout_ms), key: flag_key, **eval_body
@@ -669,9 +676,12 @@ module Schematic
           feature_usage_reset_at: data.respond_to?(:feature_usage_reset_at) ? data.feature_usage_reset_at : nil
         )
 
-        # Cache the response
-        @flag_check_cache_providers.each do |provider|
-          provider.set(cache_key, response)
+        # Cache the response, unless the verdict was preflighted: it answers a
+        # question a later plain check is not asking.
+        if preflight.nil?
+          @flag_check_cache_providers.each do |provider|
+            provider.set(cache_key, response)
+          end
         end
 
         response
@@ -1050,17 +1060,22 @@ module Schematic
 
     def prewarm_after_identify(body, credit_type_ids)
       company = body[:company]&.dig(:keys) || body["company"]&.dig("keys")
-      # Force a flush so the server processes the identify as soon as possible.
-      # Without it the company may sit in the local buffer for up to the flush
-      # interval before the server even sees it, and prewarm's bounded poll
-      # would just be waiting on us.
-      begin
-        @event_buffer.flush
-      rescue StandardError => e
-        @logger.debug("identify flush before prewarm failed: #{e.message}")
-      end
 
       thread = Thread.new do
+        # Force a flush so the server processes the identify as soon as
+        # possible. Without it the company may sit in the local buffer for up to
+        # the flush interval before the server even sees it, and prewarm's
+        # bounded poll would just be waiting on us. It runs here rather than on
+        # the caller's thread because a flush is an HTTP post with retries, and
+        # identify with a prewarm must stay the buffer push that identify
+        # without one is. The ordering the poll needs still holds: the flush and
+        # the poll are the same thread, in that order. close waits on this
+        # thread, so a shutdown still covers the flush.
+        begin
+          @event_buffer.flush
+        rescue StandardError => e
+          @logger.debug("identify flush before prewarm failed: #{e.message}")
+        end
         prewarm(credit_type_ids, company: company)
       rescue StandardError => e
         @logger.warn("identify prewarm failed: #{e.message}")
