@@ -365,14 +365,14 @@ client.close
 
 ### Credit Leases and Reservations
 
-For features metered by credit burndown (e.g. inference tokens), `check` holds credits for the work about to run and `track_with_reservation` settles the hold with actual usage. The SDK gates in one of two modes:
+For features metered by credit burndown (e.g. inference tokens), `check` reserves credits for the work about to run and `track_with_reservation` settles the reservation with actual usage. The SDK gates in one of two modes:
 
 - **Client mode** acquires a **lease**, a tranche of credits held against the company's balance, and carves a per-request **reservation** out of it locally, so a check needs no API call. It requires [DataStream](#datastream) (or [Replicator Mode](#replicator-mode)) and, across multiple processes, a shared Redis so every instance gates against the same lease.
 - **Server mode** makes one `check-and-reserve` API call per check. No lease, no Redis, no local state.
 
 `credit_leases[:mode]` defaults to `:auto`: client when DataStream is enabled, server otherwise. Client mode suits high-throughput gating; server mode suits low-volume checks and operations that run for seconds.
 
-Every duration is in milliseconds, matching the other Schematic SDKs, so one set of numbers configures a mixed-language fleet.
+Durations are in milliseconds, as in the other Schematic SDKs.
 
 #### Setup
 
@@ -439,11 +439,11 @@ else
 end
 ```
 
-A check can allow without taking a hold (the feature is not credit-metered, `usage` is 0, or the check failed open), and that usage still has to be tracked.
+A check can allow without reserving credits (the feature is not credit-metered, `usage` is 0, or the check failed open), and that usage still has to be tracked.
 
-`usage` may be fractional, but every quantity the API carries is an integer, so the hold the server takes, the preflight the flag is evaluated against, and the quantity a settle bills all round up. A hold sized from a local lease keeps the fractional amount.
+`usage` may be fractional. The API carries whole quantities, so a server-mode reservation, the preflight quantity, and the quantity a settle bills round up. A client-mode reservation keeps the fraction.
 
-`result.entitlement` is the matched entitlement as a symbol-keyed hash with snake_case keys (`:feature_key`, `:value_type`, `:credit_id`, `:consumption_rate`, `:metric_reset_at`, and so on), the same field names as `Schematic::Types::FeatureEntitlement`. Client mode and server mode return the same shape, and `:metric_reset_at` is a `Time` in both.
+`result.entitlement` is a symbol-keyed hash with the field names of `Schematic::Types::FeatureEntitlement`, the same in both modes.
 
 An unsettled reservation expires after `default_reservation_ttl` and its credits return to the lease. A late settle still bills the usage (the track event carries a deterministic idempotency key, so it never double-bills) but does not re-debit the local lease, so set `default_reservation_ttl` above the longest expected gap between `check` and `track_with_reservation`.
 
@@ -463,8 +463,6 @@ client.identify(
 
 Or call `client.prewarm(credit_type_ids, company:)` directly. Both are no-ops in server mode.
 
-Setting `prewarm_resolve_timeout_ms` to 0 makes the resolve cache-only: a prewarm acquires for a company the DataStream already holds and skips the rest rather than fetching one.
-
 #### Failure behavior
 
 A check that cannot be gated (API unreachable, Redis down, lease exhausted) fails closed by default. Override per check:
@@ -481,15 +479,15 @@ result = client.check(
 
 In client mode, `:fail_open` still evaluates the flag's rules with the credit balance assumed sufficient, so plan targeting and all non-credit conditions apply and only the credit gate is bypassed. In server mode it returns the flag's default value, which is `false` unless you pass `default_value` or configure a `flag_defaults` entry.
 
-`default_value` also governs the checks that never reach the credit path: a check with no `usage`, one that falls back to a plain flag check, and one the API cannot answer. Pass a boolean or a callable.
+`default_value` also applies when a check falls back to a plain flag check and that check fails. Pass a boolean or a callable.
 
-`check` accepts `timeout_ms`, but the generated HTTP transport takes its timeout from the client rather than from a request, so a per-check timeout is carried on the request and not yet applied. Set `timeout` on the client to bound a check today.
+`check` accepts `timeout_ms`, but the HTTP transport does not yet apply a per-request timeout. Set `timeout` on the client to bound a check.
 
 #### Configuration options
 
 | Option | Type | Default | Description |
 |---|---|---|---|
-| `mode` | `:client`, `:server`, `:auto` | `:auto` | Where the credit hold lives; `:auto` picks client when DataStream is enabled, server otherwise |
+| `mode` | `:client`, `:server`, `:auto` | `:auto` | Where credits are reserved; `:auto` picks client when DataStream is enabled, server otherwise |
 | `default_reservation_ttl` | `Integer` | 60000 (60 seconds) | How long an unsettled reservation is held (ms) |
 | `default_lease_duration` | `Integer` | 300000 (5 minutes) | (client mode) Lease lifetime (ms) |
 | `default_lease_size` | `Numeric` | 10000 | (client mode) Credits requested per lease acquire or extend |
