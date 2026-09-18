@@ -443,7 +443,7 @@ A check can allow without reserving credits (the feature is not credit-metered, 
 
 Without `credit_leases` configured, or without a `usage`, `check` falls through to a plain flag check with no reservation. `usage` is still sent as a preflight, locally or to the API, so the verdict accounts for what the call is about to spend. Preflighted verdicts are not cached.
 
-`usage` may be fractional. A client-mode hold is sized in whole event units, `ceil(usage) x consumption_rate`, and a settle debits the lease by `ceil(actual) x consumption_rate`, so the local ledger moves by exactly what the track event bills. The reservation still records the fractional quantity the caller declared. Everything on the wire rounds up with the debit: the track event's quantity, a server-mode reservation, and the preflight quantity, whether it goes to the API or the local engine.
+`usage` may be fractional. A client-mode reservation is sized in whole event units, `ceil(usage) x consumption_rate`, and a settle debits the lease by `ceil(actual) x consumption_rate`, so the local ledger moves by exactly what the track event bills. The reservation still records the fractional quantity the caller declared. Everything on the wire rounds up with the debit: the track event's quantity, a server-mode reservation, and the preflight quantity, whether it goes to the API or the local engine.
 
 `result.entitlement` is a symbol-keyed hash with the field names of `Schematic::Types::FeatureEntitlement`, the same in both modes.
 

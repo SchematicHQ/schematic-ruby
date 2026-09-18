@@ -93,7 +93,10 @@ module Schematic
           # server bills, so the hold rounds up to what the settle will charge.
           # Sizing it on the raw quantity would move the local ledger by less
           # than the Track event, and the two would drift apart over a session.
-          @credit_cost = @options[:usage].ceil * @consumption_rate
+          # Rounded through wire_quantity, the one the Track event's quantity
+          # goes through, so the hold, the local debit and the billed figure
+          # cannot disagree over a float that is a hair above a whole unit.
+          @credit_cost = Leases.wire_quantity(@options[:usage]) * @consumption_rate
 
           lease = @deps.manager.acquire_if_needed(@company[:id], @credit_id, request_options)
           return failure("lease_acquire_failed") if lease.nil?

@@ -21,10 +21,12 @@ module Schematic
       # unclamped actual, because the server is the source of truth for real
       # consumption.
       def self.consume_reservation_and_build_event(reservations, reservation, actual_quantity, traits: nil)
-        # Rounded up for the same reason the hold is (see check_with_lease): the
-        # debit has to move the local ledger by exactly what the Track event
-        # bills.
-        consumed = reservations.consume(reservation.id, actual_quantity.ceil * reservation.consumption_rate)
+        # Rounded up for the same reason the hold is (see check_with_lease), and
+        # through the same helper the event's quantity uses: the debit has to
+        # move the local ledger by exactly what the Track event bills.
+        consumed = reservations.consume(
+          reservation.id, Leases.wire_quantity(actual_quantity) * reservation.consumption_rate
+        )
         SettleOutcome.new(
           track: build_reservation_track_event(reservation, actual_quantity, traits: traits),
           settled_locally: !consumed.nil?

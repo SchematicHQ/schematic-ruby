@@ -1141,6 +1141,18 @@ class TrackSettleTest < Minitest::Test
     assert_in_delta 980, @leases.get("co_1", "ct_1").local_remaining_credits
   end
 
+  # A quantity a hair above a whole unit bills as that unit, so the debit has to
+  # shave the same float noise. A bare ceil would debit for 4 and bill for 3.
+  def test_float_noise_debits_and_bills_the_same_whole_units
+    @leases.try_reserve("co_1", "ct_1", 100)
+    @reservations.add(reservation)
+
+    outcome = Leases.consume_reservation_and_build_event(@reservations, reservation, (0.1 + 0.2) * 10)
+
+    assert_equal 3, outcome.track[:quantity]
+    assert_in_delta 970, @leases.get("co_1", "ct_1").local_remaining_credits
+  end
+
   # A hold swept at its TTL still has to bill: the event is built from the
   # caller-held handle, not the store.
   def test_a_settle_after_the_sweep_still_bills_as_a_recovery_emit
