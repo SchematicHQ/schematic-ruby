@@ -147,9 +147,12 @@ module Schematic
 
           # Index cleanup, single-key ops. The credits leave the per-tenant hash
           # BEFORE the refund below so the lease (local remaining plus this
-          # hash) never transiently double-counts the slice.
-          swallow { @client.zrem(index_key, encode_member(company_id, credit_type_id, id)) }
+          # hash) never transiently double-counts the slice, and before the
+          # expiry index because that index is the only way the sweeper reaches
+          # a surviving field: dropping the index first and then failing on the
+          # field would inflate reserved_credits for that tenant forever.
           swallow { @client.hdel(by_credit_key(company_id, credit_type_id), id) }
+          swallow { @client.zrem(index_key, encode_member(company_id, credit_type_id, id)) }
 
           consumed = credits_consumed.clamp(0, reserved)
           refund = reserved - consumed
