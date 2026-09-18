@@ -21,11 +21,10 @@ module Schematic
       # unclamped actual, because the server is the source of truth for real
       # consumption.
       def self.consume_reservation_and_build_event(reservations, reservation, actual_quantity, traits: nil)
-        # The ledger debit uses the raw quantity while the event's own quantity
-        # rounds up, because that field is an integer on the wire. The two can
-        # differ by a fraction of a unit; reconciling them is a cross-SDK
-        # decision, not one to make here.
-        consumed = reservations.consume(reservation.id, actual_quantity * reservation.consumption_rate)
+        # Rounded up for the same reason the hold is (see check_with_lease): the
+        # debit has to move the local ledger by exactly what the Track event
+        # bills.
+        consumed = reservations.consume(reservation.id, actual_quantity.ceil * reservation.consumption_rate)
         SettleOutcome.new(
           track: build_reservation_track_event(reservation, actual_quantity, traits: traits),
           settled_locally: !consumed.nil?
@@ -36,8 +35,9 @@ module Schematic
       # store access, so the client can still bill the usage when the local
       # settle fails against an unreachable store.
       def self.build_reservation_track_event(reservation, actual_quantity, traits: nil)
-        # A track event's quantity is an integer on the wire, so a partial unit
-        # settles as a whole one rather than being truncated away to none.
+        # Whole event units, the same rounding the hold and the settle debit
+        # use: the API rejects a non-integer quantity during processing, and
+        # the local ledger has to move by what this event bills.
         body = { event: reservation.event_subtype, quantity: Leases.wire_quantity(actual_quantity) }
         if reservation.server_mode?
           # The hold lives on the server, so the event settles it by id. Never

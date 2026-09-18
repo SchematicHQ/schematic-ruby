@@ -66,6 +66,10 @@ module Schematic
     # consumption runs.
     RESERVATION_TRACK_IDEMPOTENCY_PREFIX = "lease-reservation:"
 
+    # The prefix Schematic's secure company ids carry, whatever key name they
+    # are passed under.
+    COMPANY_ID_PREFIX = "comp_"
+
     # Knobs that only steer the local lease plumbing, which server mode never
     # builds. Setting one there does nothing, so the client says so at startup.
     CLIENT_ONLY_LEASE_OPTIONS = %i[
@@ -344,11 +348,17 @@ module Schematic
         default_value: default_value,
         timeout_ms: timeout_ms
       }
-      # The lease paths guard usage themselves; this one has to as well,
-      # because a non-numeric usage reaches the preflight builder and a
-      # negative or NaN one would size a preflight the engine cannot use. Ruby
-      # has no type to catch it at the boundary the way the other SDKs do.
-      if !usage.nil? && !Credits::Leases.valid_quantity?(usage)
+      eval_ctx = build_eval_context(company, user)
+      fallback = -> { plain_check_result(flag_key, company, user, options) }
+
+      mode = effective_lease_mode
+      # With gating configured, the lease and server paths own a malformed
+      # usage and refuse it by the caller's failure mode. With no gating there
+      # is nothing to refuse: the value would only reach the preflight builder,
+      # which the engine and the REST body both take as an integer, so drop it
+      # and ask the plain question. Ruby has no type to catch it at the boundary
+      # the way the other SDKs do.
+      if mode.nil? && !usage.nil? && !Credits::Leases.valid_quantity?(usage)
         @logger.warn(
           "check: invalid usage #{usage.inspect} for flag #{flag_key}, must be a finite non-negative " \
           "number; continuing without one"
@@ -356,11 +366,6 @@ module Schematic
         options[:usage] = nil
         usage = nil
       end
-
-      eval_ctx = build_eval_context(company, user)
-      fallback = -> { plain_check_result(flag_key, company, user, options) }
-
-      mode = effective_lease_mode
       return fallback.call if usage.nil? || mode.nil?
 
       if mode == :server
@@ -517,18 +522,7 @@ module Schematic
     end
 
     def track(body, options: nil)
-      return if @offline
-
-      @event_buffer.push(build_event("track", body, options, TRACK_OPTION_KEYS))
-
-      # Update company metrics locally if DataStream is active and connected
-      if @datastream_client&.connected? && body[:company]
-        event_name = body[:event] || body["event"]
-        quantity = body[:quantity] || body["quantity"] || 1
-        @datastream_client.update_company_metrics(body[:company], event_name, quantity)
-      end
-    rescue StandardError => e
-      @logger.error("Error sending track event: #{e.message}")
+      emit_track(body, options, update_metrics: true)
     end
 
     # --- Flag Defaults ---
@@ -916,6 +910,16 @@ module Schematic
     def normalize_credit_lease_config(config)
       normalized = config.transform_keys(&:to_sym)
       normalized[:mode] = resolve_credit_lease_mode(normalized[:mode])
+      overrides = normalized[:overrides]
+      return normalized unless overrides.is_a?(Hash)
+
+      # A credit type id is a string, but { "ct_1": {} } in Ruby is the symbol
+      # :ct_1, and the knobs inside are read by symbol. Settle both spellings
+      # here: read the wrong way round, an override silently falls back to the
+      # client-wide defaults.
+      normalized[:overrides] = overrides.each_with_object({}) do |(credit_type_id, knobs), out|
+        out[credit_type_id.to_s] = knobs.is_a?(Hash) ? knobs.transform_keys(&:to_sym) : knobs
+      end
       normalized
     end
 
@@ -1149,7 +1153,29 @@ module Schematic
           "already settled, or store unreachable), emitting track keyed for idempotent server-side dedupe"
         )
       end
-      track(outcome.track, options: { idempotency_key: idempotency_key })
+      # The cached company metric moves only when this call moved local state
+      # with it: the server drops a duplicate event on the key, so bumping the
+      # metric for one would have a caller's retry deny its own next
+      # numeric-limit check until the stream pushes the real figure.
+      emit_track(outcome.track, { idempotency_key: idempotency_key }, update_metrics: outcome.settled_locally)
+    end
+
+    # Enqueue a track event, optimistically bumping the cached company metric
+    # with it unless the caller says not to. The bump is a local prediction of
+    # what the stream will push back, so it belongs only to an event that
+    # records usage the server has not already counted.
+    def emit_track(body, options, update_metrics:)
+      return if @offline
+
+      @event_buffer.push(build_event("track", body, options, TRACK_OPTION_KEYS))
+
+      if update_metrics && @datastream_client&.connected? && body[:company]
+        event_name = body[:event] || body["event"]
+        quantity = body[:quantity] || body["quantity"] || 1
+        @datastream_client.update_company_metrics(body[:company], event_name, quantity)
+      end
+    rescue StandardError => e
+      @logger.error("Error sending track event: #{e.message}")
     end
 
     def prewarm_after_identify(body, credit_type_ids)
@@ -1186,19 +1212,21 @@ module Schematic
       nil
     end
 
-    # Like resolving a company id from the cache, but actively fetches the
-    # company over the datastream when only secondary keys are supplied, warming
-    # the cache as a side effect. Returns the id, or nil if the company never
-    # surfaced within the timeout.
+    # The Schematic company id for a set of entity keys, resolved in the
+    # server's order: every supplied key/value pair is an ordinary entity key
+    # and gets looked up first; only when nothing matches is a value read as the
+    # company's own id, by its comp_ prefix rather than by the name of the key
+    # it sits under. An account is free to define a key called "id" holding its
+    # own identifier, so the name alone settles nothing.
     #
-    # identify does not push a company into the datastream cache: companies are
-    # only streamed in response to a request. So this fetches rather than
-    # passively polling the cache, which would watch an empty cache until it
-    # times out. Fetching also primes the cache so the first real check hits the
-    # lease path instead of falling back.
+    # On a cache miss this actively fetches the company over the datastream,
+    # warming the cache as a side effect. identify does not push a company into
+    # that cache: companies are only streamed in response to a request. So this
+    # fetches rather than passively polling the cache, which would watch an
+    # empty cache until it times out. Fetching also primes the cache so the
+    # first real check hits the lease path instead of falling back.
     def resolve_company_id_with_wait(company)
-      return company[:id] || company["id"] if company[:id] || company["id"]
-      return nil if @datastream_client.nil?
+      return schematic_company_id(company) if @datastream_client.nil?
 
       cached = @datastream_client.get_cached_company(company)
       cached_id = cached && (cached[:id] || cached["id"])
@@ -1206,7 +1234,7 @@ module Schematic
       # A zero or negative timeout means cache-only: answer from what the
       # DataStream already holds and never fetch or poll. A prewarm still
       # acquires when an earlier check warmed the company.
-      return nil if @prewarm_resolve_timeout_ms <= 0
+      return schematic_company_id(company) if @prewarm_resolve_timeout_ms <= 0
 
       deadline = monotonic_ms + @prewarm_resolve_timeout_ms
       loop do
@@ -1225,10 +1253,22 @@ module Schematic
           cached_id = cached && (cached[:id] || cached["id"])
           return cached_id if cached_id
         end
-        return nil if monotonic_ms >= deadline
+        # The keys never resolved, so fall back to a comp_ value the way the
+        # server does once its own key lookup comes up empty.
+        return schematic_company_id(company) if monotonic_ms >= deadline
 
         sleep([Credits::Leases::DEFAULT_PREWARM_POLL_INTERVAL_MS, deadline - monotonic_ms].min / 1000.0)
       end
+    end
+
+    # The Schematic id hiding among a set of entity keys, recognized by its
+    # secure-id prefix. The server reads keys this way once a key lookup has
+    # come up empty, so { account_id: "comp_1" } resolves and { id: "acme" }
+    # does not: the prefix decides, not the key's name.
+    def schematic_company_id(keys)
+      return nil unless keys.is_a?(Hash)
+
+      keys.values.find { |v| v.is_a?(String) && v.start_with?(COMPANY_ID_PREFIX) }
     end
 
     # A caller can hand identify any shape, so read the company keys without

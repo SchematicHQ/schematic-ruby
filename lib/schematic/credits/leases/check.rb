@@ -58,7 +58,7 @@ module Schematic
       #    non-credit entitlement means there is nothing to lease, so defer to
       #    the plain check.
       # 2. Acquire (or reuse) a lease for (company, credit id).
-      # 3. Reserve usage x consumption_rate from it, atomically.
+      # 3. Reserve ceil(usage) x consumption_rate from it, atomically.
       # 4. Re-run the engine against a company snapshot whose balance for that
       #    credit is the PRE-reservation local balance, with credit_cost set, so
       #    the engine evaluates the same arithmetic try_reserve just enforced.
@@ -89,7 +89,11 @@ module Schematic
           return @fallback.call if resolved.nil?
 
           @credit_id, @consumption_rate, @event_subtype = resolved
-          @credit_cost = @options[:usage] * @consumption_rate
+          # Whole event units: a fraction of an event is not something the
+          # server bills, so the hold rounds up to what the settle will charge.
+          # Sizing it on the raw quantity would move the local ledger by less
+          # than the Track event, and the two would drift apart over a session.
+          @credit_cost = @options[:usage].ceil * @consumption_rate
 
           lease = @deps.manager.acquire_if_needed(@company[:id], @credit_id, request_options)
           return failure("lease_acquire_failed") if lease.nil?

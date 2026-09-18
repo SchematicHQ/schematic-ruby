@@ -77,7 +77,10 @@ module Schematic
         # Start the background sweep loop. Safe to call repeatedly.
         def start_sweep
           @mutex.synchronize do
-            return if @sweep_thread || @stopped
+            # alive?, not presence: a process that forks after start (Puma or
+            # Unicorn with preload) hands the child a thread object whose thread
+            # did not survive the fork, and the child would never sweep.
+            return if @sweep_thread&.alive? || @stopped
 
             interval = @sweep_interval_ms.to_f / 1000.0
             @sweep_thread = Thread.new do

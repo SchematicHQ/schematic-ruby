@@ -137,6 +137,27 @@ class WireQuantityTest < Minitest::Test
   end
 end
 
+# The engine deserializes usage and event_usage.quantity as i64, so a value
+# with a decimal point fails the whole check.
+class EngineQuantityTest < Minitest::Test
+  def options
+    Schematic::RulesEngine.new.send(
+      :engine_options,
+      { credit_cost: { "ct_1" => 2.5 }, usage: 0.5, event_usage: { event_subtype: "tokens", quantity: 1.2 } }
+    )
+  end
+
+  def test_a_fractional_preflight_quantity_rounds_up
+    assert_equal 1, options[:usage]
+    assert_equal 2, options[:event_usage][:quantity]
+  end
+
+  # The cost is credits, not event units, and the engine takes it as a float.
+  def test_the_credit_cost_is_left_alone
+    assert_in_delta 2.5, options[:credit_cost]["ct_1"]
+  end
+end
+
 class LeaseStoreTest < Minitest::Test
   include CreditTestHelpers
 
@@ -278,6 +299,20 @@ class ReservationStoreTest < Minitest::Test
     @store.stop
     @store.stop
   end
+
+  # A fork (Puma or Unicorn with preload) hands the child a thread object whose
+  # thread did not survive, and holds would then pile up unswept in the child.
+  def test_a_sweeper_that_did_not_survive_a_fork_starts_again
+    dead = Thread.new { nil }
+    dead.join
+    @store.instance_variable_set(:@sweep_thread, dead)
+
+    @store.start_sweep
+
+    assert_predicate @store.instance_variable_get(:@sweep_thread), :alive?
+  ensure
+    @store.stop
+  end
 end
 
 # The sweeper deletes a reservation and then refunds its lease. Killing it
@@ -328,6 +363,32 @@ class ReservationSweepStopTest < Minitest::Test
   end
 end
 
+# EVALSHA is retried with the full script body on NOSCRIPT alone. Any other
+# error is the script's own: replaying it could debit a second time.
+class ScriptFallbackTest < Minitest::Test
+  include CreditTestHelpers
+
+  def test_a_noscript_error_reloads_the_script
+    script = Leases::Script.new("return 1")
+    client = Object.new
+    def client.evalsha(_sha, **) = raise("NOSCRIPT No matching script")
+    def client.eval(_source, **) = "loaded"
+
+    assert_equal "loaded", script.call(client, keys: [], argv: [])
+  end
+
+  def test_any_other_error_is_raised_rather_than_retried
+    script = Leases::Script.new("return 1")
+    client = Object.new
+    def client.evalsha(_sha, **) = raise("ERR Lua script attempted to access nonexistent key")
+    def client.eval(_source, **) = raise("a retry could debit twice")
+
+    error = assert_raises(RuntimeError) { script.call(client, keys: [], argv: []) }
+
+    assert_match(/nonexistent key/, error.message)
+  end
+end
+
 class RedisStoreLayoutTest < Minitest::Test
   include CreditTestHelpers
 
@@ -362,6 +423,17 @@ class RedisStoreLayoutTest < Minitest::Test
     assert_equal "lse_1", @redis.hgetall("acme:credit-reservation:res_1")["leaseId"]
     assert_equal ["co_1|ct_1|res_1"], @redis.zrangebyscore("acme:credit-reservations:byExpiry", 0, 1e18)
     assert_in_delta 100, @reservations.reserved_credits("co_1", "ct_1")
+  end
+
+  # Written separately, a crash between the two leaves a row that never expires
+  # and that nothing points at once the sweeper drops its index entry.
+  def test_reservation_add_writes_the_hash_and_its_ttl_in_one_transaction
+    @leases.replace(lease_entry)
+    @leases.try_reserve("co_1", "ct_1", 100)
+    @reservations.add(reservation)
+
+    assert_equal [%i[hset pexpireat]], @redis.transactions
+    assert_equal "res_1", @reservations.get("res_1").id
   end
 
   # The row outlives its declared expiry by the grace window so the sweeper can
@@ -491,9 +563,90 @@ class LeaseManagerTest < Minitest::Test
     ([first] + followers).compact.each(&:join)
 
     assert_equal 1, @wire.extend_calls.size
-    # The followers found the flight and returned rather than each parking a
-    # thread on it.
-    assert(followers.compact.all? { |thread| !thread.alive? })
+    # No thread each: the credits they want are the ones the flight is already
+    # fetching, so there is nothing for a thread to do but find it and exit.
+    assert_empty followers.compact
+  end
+
+  # A caller naming required_credits still spawns while a flight runs: it has a
+  # reserve to retry, and may need more than that flight asked for.
+  def test_a_check_naming_its_shortfall_still_spawns_during_one_extend
+    @leases.replace(lease_entry(granted_amount: 1000))
+    @leases.try_reserve("co_1", "ct_1", 900)
+    started = Queue.new
+    release = Queue.new
+    2.times do
+      @wire.queue_extend({ "lease" => { "lease_id" => "lse_1", "granted_total" => 20_000,
+                                        "expires_at_ms" => 300_000 } })
+    end
+    @wire.during_extend = -> do
+      started << true
+      release.pop
+    end
+
+    first = @manager.maybe_extend_in_background("co_1", "ct_1")
+    started.pop
+    joiner = @manager.maybe_extend_in_background("co_1", "ct_1", 5000)
+    release << true
+
+    refute_nil joiner
+    [first, joiner].compact.each(&:join)
+  end
+
+  # A follow-up that joins a flight asking for less than it needs, and finds
+  # another equally small follow-up on the way round, must still end with an
+  # extend of its own: returning the small one leaves its retry short with
+  # credits sitting on the server.
+  def test_a_follow_up_waits_out_a_too_small_flight_and_then_extends_itself
+    @leases.replace(lease_entry(granted_amount: 1000))
+    @leases.try_reserve("co_1", "ct_1", 1000)
+    key = Leases.lease_key("co_1", "ct_1")
+    inflight = @manager.instance_variable_get(:@inflight_extend)
+    inflight[key] = Leases::Flight.new(2000)
+    # The second read is the caller waking from that flight: by then another
+    # caller's follow-up, just as small, holds the slot.
+    reads = 0
+    leases = @leases
+    @leases.define_singleton_method(:get) do |company_id, credit_type_id|
+      reads += 1
+      if reads == 2
+        landed = Leases::Flight.new(2000)
+        landed.complete(leases.get("co_1", "ct_1"))
+        inflight[key] = landed
+      end
+      super(company_id, credit_type_id)
+    end
+    @wire.queue_extend({ "lease" => { "lease_id" => "lse_1", "granted_total" => 19_000,
+                                      "expires_at_ms" => 600_000 } })
+
+    waiter = Thread.new { @manager.send(:extend_if_needed, "co_1", "ct_1", 18_000, nil) }
+    inflight[key].complete(@leases.get("co_1", "ct_1"))
+    entry = waiter.value
+
+    assert_equal 1, @wire.extend_calls.size
+    assert_in_delta 18_000, @wire.extend_calls.first.additional_amount
+    assert_in_delta 18_000, entry.local_remaining_credits
+  end
+
+  # A joiner waits on a call started by someone else, on someone else's timeout.
+  # A check with a budget of its own must not sit behind it.
+  def test_a_joiner_gives_up_on_a_shared_extend_at_its_own_timeout
+    @leases.replace(lease_entry(granted_amount: 1000))
+    @leases.try_reserve("co_1", "ct_1", 1000)
+    key = Leases.lease_key("co_1", "ct_1")
+    flight = Leases::Flight.new(2000)
+    @manager.instance_variable_get(:@inflight_extend)[key] = flight
+
+    started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    entry = @manager.send(:extend_if_needed, "co_1", "ct_1", 18_000, { timeout_in_seconds: 0.05 })
+    elapsed_ms = (Process.clock_gettime(Process::CLOCK_MONOTONIC) - started) * 1000
+
+    # No entry, so the check takes its failure path by mode, and the flight is
+    # left running for whoever else is on it.
+    assert_nil entry
+    assert_operator elapsed_ms, :<, 1000
+    refute_predicate flight, :done?
+    assert_empty @wire.extend_calls
   end
 
   # stop and enlist share the flight lock, so once stop returns no acquire can
@@ -808,16 +961,17 @@ class CheckFlowTest < Minitest::Test
     assert(logger.warnings.any? { |w| w.include?("fail_closd") })
   end
 
-  # The ledger keeps the fraction: the hold is usage times rate, unrounded, as
-  # the spec says. Only the integer fields on the wire round up.
-  def test_a_fractional_usage_holds_the_unrounded_cost
+  # A fraction of an event is not something the server bills, so the hold is
+  # sized in whole event units. The reservation still records what the caller
+  # declared.
+  def test_a_fractional_usage_rounds_the_hold_up_to_a_whole_unit
     @leases.replace(lease_entry)
     result = run_check([probe, { "value" => true, "reason" => "ok" }], usage: 0.5)
 
     assert_predicate result, :allowed?
-    assert_in_delta 5, result.reservation.credits_reserved
+    assert_in_delta 10, result.reservation.credits_reserved
     assert_in_delta 0.5, result.reservation.quantity_reserved
-    assert_in_delta 995, @leases.get("co_1", "ct_1").local_remaining_credits
+    assert_in_delta 990, @leases.get("co_1", "ct_1").local_remaining_credits
   end
 
   # A boolean or override grant resolves without drawing a credit, so it must
@@ -975,16 +1129,16 @@ class TrackSettleTest < Minitest::Test
   end
 
   # The event's quantity is an integer on the wire, so a partial unit bills as a
-  # whole one rather than truncating to none. The ledger debit keeps the raw
-  # figure, so the two can differ by a fraction of a unit by design.
-  def test_a_fractional_settle_bills_a_whole_unit_and_debits_the_raw_one
+  # whole one, and the debit rounds up with it: the local ledger moves by
+  # exactly what the event costs.
+  def test_a_fractional_settle_bills_and_debits_whole_units
     @leases.try_reserve("co_1", "ct_1", 100)
     @reservations.add(reservation)
 
     outcome = Leases.consume_reservation_and_build_event(@reservations, reservation, 1.2)
 
     assert_equal 2, outcome.track[:quantity]
-    assert_in_delta 988, @leases.get("co_1", "ct_1").local_remaining_credits
+    assert_in_delta 980, @leases.get("co_1", "ct_1").local_remaining_credits
   end
 
   # A hold swept at its TTL still has to bill: the event is built from the
@@ -1337,6 +1491,130 @@ class CreditLeaseClientWiringTest < Minitest::Test
     result = client.check("inference", company: { "id" => "co_1" }, usage: 10, default_value: -> { true })
 
     assert_predicate result, :allowed?
+  ensure
+    client&.close
+  end
+
+  # The cached metric is a local prediction of what the stream will push back,
+  # so it belongs to an event that moved local state. A recovery emit dedupes
+  # server-side, and bumping the metric for one would deny the caller's next
+  # numeric-limit check until the stream corrected it.
+  def test_a_settle_that_did_not_land_locally_leaves_the_cached_metric_alone
+    client = build_client(credit_leases: { mode: :client })
+    stub_request(:post, "https://c.schematichq.com/batch").to_return(status: 200, body: "")
+    metrics = []
+    datastream = Object.new
+    datastream.define_singleton_method(:update_company_metrics) do |company, event, quantity|
+      metrics << [company, event, quantity]
+    end
+    def datastream.connected? = true
+    def datastream.close = nil
+    client.instance_variable_set(:@datastream_client, datastream)
+    leases = client.instance_variable_get(:@lease_store)
+    leases.replace(lease_entry)
+    leases.try_reserve("co_1", "ct_1", 100)
+
+    # Never added to the store: swept at its TTL, or already settled.
+    client.track_with_reservation(reservation, 4)
+
+    assert_empty metrics
+
+    client.instance_variable_get(:@reservations).add(reservation)
+    client.track_with_reservation(reservation, 4)
+
+    assert_equal [[{ "id" => "co_1" }, "inference_tokens", 4]], metrics
+  ensure
+    client&.close
+  end
+
+  # { "ct_1": {} } is the symbol :ct_1, and a caller who writes it means the
+  # credit type, so both spellings have to reach the same slot, knobs included.
+  def test_an_override_written_either_way_resolves_the_same_knobs
+    [{ ct_1: { "default_lease_size" => 42 } }, { "ct_1" => { default_lease_size: 42 } }].each do |overrides|
+      client = build_client(credit_leases: { mode: :server, overrides: overrides })
+
+      resolved = Leases.resolve_config(client.instance_variable_get(:@credit_lease_config), "ct_1")
+
+      assert_equal 42, resolved.lease_size
+      client.close
+    end
+  end
+
+  # A malformed usage is the caller asking to gate on a number that gates
+  # nothing, so with gating configured it is refused by the failure mode rather
+  # than quietly dropped, which would allow the call with no hold.
+  def test_an_invalid_usage_is_denied_under_fail_closed
+    client = build_client(credit_leases: { mode: :server })
+
+    [-5, Float::NAN].each do |usage|
+      result = client.check("inference", company: { "id" => "co_1" }, usage: usage,
+                                         on_acquire_failure: :fail_closed)
+
+      refute_predicate result, :allowed?
+      assert_equal "invalid_usage", result.reason
+      assert_nil result.reservation
+    end
+  ensure
+    client&.close
+  end
+
+  # With no gating there is nothing to refuse: the value would only reach the
+  # preflight, so the plain question still gets asked.
+  def test_an_invalid_usage_without_credit_leases_asks_the_plain_question
+    client = Schematic::SchematicClient.new(api_key: "sch_test", base_url: "https://api.schematichq.test",
+                                            logger: silent_logger)
+    body = nil
+    stub_request(:post, "https://api.schematichq.test/flags/inference/check")
+      .with { |req| body = JSON.parse(req.body) }
+      .to_return(status: 200,
+                 body: JSON.generate({ "data" => { "flag" => "inference", "value" => true, "reason" => "plan" } }),
+                 headers: { "Content-Type" => "application/json" })
+    stub_request(:post, "https://c.schematichq.com/batch").to_return(status: 200, body: "")
+
+    result = client.check("inference", company: { "id" => "co_1" }, usage: -5)
+
+    assert_predicate result, :allowed?
+    refute body.key?("preflight")
+  ensure
+    client&.close
+  end
+
+  # An account is free to define an ordinary entity key called "id", so the
+  # keys are looked up first and the cache's answer wins over the literal value.
+  def test_a_plain_id_key_resolves_through_the_cache
+    client = build_client(credit_leases: { mode: :client, prewarm_resolve_timeout_ms: 0 })
+    datastream = Object.new
+    def datastream.get_cached_company(_company) = { "id" => "co_42" }
+    def datastream.close = nil
+    client.instance_variable_set(:@datastream_client, datastream)
+
+    assert_equal "co_42", client.send(:resolve_company_id_with_wait, { "id" => "acme" })
+  ensure
+    client&.close
+  end
+
+  # Only once the key lookup comes up empty is a value read as the company's own
+  # id, by its prefix rather than by the name of the key it sits under.
+  def test_a_cache_miss_falls_back_to_a_prefixed_value_under_any_key
+    client = build_client(credit_leases: { mode: :client, prewarm_resolve_timeout_ms: 0 })
+    datastream = Object.new
+    def datastream.get_cached_company(_company) = nil
+    def datastream.close = nil
+    client.instance_variable_set(:@datastream_client, datastream)
+
+    assert_equal "comp_9", client.send(:resolve_company_id_with_wait, { "account_id" => "comp_9" })
+  ensure
+    client&.close
+  end
+
+  def test_a_cache_miss_without_a_prefixed_value_resolves_to_nothing
+    client = build_client(credit_leases: { mode: :client, prewarm_resolve_timeout_ms: 0 })
+    datastream = Object.new
+    def datastream.get_cached_company(_company) = nil
+    def datastream.close = nil
+    client.instance_variable_set(:@datastream_client, datastream)
+
+    assert_nil client.send(:resolve_company_id_with_wait, { "id" => "acme" })
   ensure
     client&.close
   end

@@ -443,7 +443,7 @@ A check can allow without reserving credits (the feature is not credit-metered, 
 
 Without `credit_leases` configured, or without a `usage`, `check` falls through to a plain flag check with no reservation. `usage` is still sent as a preflight, locally or to the API, so the verdict accounts for what the call is about to spend. Preflighted verdicts are not cached.
 
-`usage` may be fractional. A client-mode reservation holds it unrounded, as does the ledger debit a settle makes. The integer fields on the wire round up: a server-mode reservation, the preflight quantity, and the quantity a track event bills, so a partial unit is never billed as none.
+`usage` may be fractional. A client-mode hold is sized in whole event units, `ceil(usage) x consumption_rate`, and a settle debits the lease by `ceil(actual) x consumption_rate`, so the local ledger moves by exactly what the track event bills. The reservation still records the fractional quantity the caller declared. Everything on the wire rounds up with the debit: the track event's quantity, a server-mode reservation, and the preflight quantity, whether it goes to the API or the local engine.
 
 `result.entitlement` is a symbol-keyed hash with the field names of `Schematic::Types::FeatureEntitlement`, the same in both modes.
 
@@ -464,6 +464,8 @@ client.identify(
 ```
 
 Or call `client.prewarm(credit_type_ids, company:)` directly. Both are no-ops in server mode.
+
+Pre-warming resolves the company the way the server does: it looks the keys up first, whatever they are named, and only when nothing matches does it read a value carrying Schematic's `comp_` prefix as the company id.
 
 #### Failure behavior
 

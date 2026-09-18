@@ -92,7 +92,7 @@ module Schematic
       envelope[:company] = strip_nulls(company) if company
       envelope[:user] = strip_nulls(user) if user
       # Omitted entirely when empty, so the engine uses its own defaults.
-      envelope[:options] = strip_nulls(options) if options && !options.empty?
+      envelope[:options] = strip_nulls(engine_options(options)) if options && !options.empty?
 
       json_bytes = JSON.generate(envelope).encode("UTF-8")
 
@@ -136,6 +136,26 @@ module Schematic
     end
 
     private
+
+    # The options as the engine takes them. usage and event_usage.quantity
+    # deserialize as i64 there, so a value with a decimal point fails the whole
+    # check. Round up, the direction the REST body takes: a preflight asks an
+    # upper-bound question, and the check must not pass on less usage than the
+    # action is about to record.
+    def engine_options(options)
+      out = options.dup
+      usage_key = out.key?(:usage) ? :usage : "usage"
+      out[usage_key] = out[usage_key].ceil if out[usage_key].is_a?(Numeric)
+      event_key = out.key?(:event_usage) ? :event_usage : "event_usage"
+      event_usage = out[event_key]
+      return out unless event_usage.is_a?(Hash)
+
+      quantity_key = event_usage.key?(:quantity) ? :quantity : "quantity"
+      return out unless event_usage[quantity_key].is_a?(Numeric)
+
+      out[event_key] = event_usage.merge(quantity_key => event_usage[quantity_key].ceil)
+      out
+    end
 
     def export_func(name)
       exp = @instance.export(name)

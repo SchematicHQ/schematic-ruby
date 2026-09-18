@@ -48,14 +48,53 @@ module LeaseSupport
     class NoScriptError < StandardError
     end
 
+    # One entry per EXEC, naming the commands that transaction queued, so a
+    # test can tell one round trip from two.
+    attr_reader :transactions
+
     def initialize(clock)
       @clock = clock
+      @transactions = []
       @hashes = {}
       @zsets = {}
       @expiries = {}
       @scripts = {}
       @loaded = {}
       register_scripts
+    end
+
+    # MULTI/EXEC: queue the commands, apply them on exec, and record what the
+    # transaction carried.
+    def multi
+      tx = Transaction.new(self)
+      yield tx
+      @transactions << tx.commands.map(&:first)
+      tx.apply
+    end
+
+    # The queued half of a MULTI: it holds the commands the block issues and
+    # replays them against the client on exec.
+    class Transaction
+      attr_reader :commands
+
+      def initialize(client)
+        @client = client
+        @commands = []
+      end
+
+      def hset(key, *pairs)
+        @commands << [:hset, [key, *pairs]]
+        self
+      end
+
+      def pexpireat(key, millis)
+        @commands << [:pexpireat, [key, millis]]
+        self
+      end
+
+      def apply
+        @commands.map { |name, args| @client.public_send(name, *args) }
+      end
     end
 
     # --- string/hash commands -------------------------------------------------

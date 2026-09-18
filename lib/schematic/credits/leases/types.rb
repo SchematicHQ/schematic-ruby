@@ -40,6 +40,12 @@ module Schematic
       # the server expires at DEFAULT_LEASE_DURATION_MS.
       SHUTDOWN_DRAIN_TIMEOUT_MS = 5000
 
+      # How many in-flight extends one caller will wait out before issuing its
+      # own. Two covers the case the single flight was written for: the flight a
+      # caller joins, and the follow-up another caller registers while it was
+      # waiting.
+      MAX_EXTEND_JOINS = 2
+
       # Balance substituted for a fail-open evaluation: large enough that the
       # credit gate always passes, and the same figure the other SDKs use so a
       # shared vector can name it.
@@ -298,7 +304,8 @@ module Schematic
       def self.resolve_config(config, credit_type_id)
         config ||= {}
         overrides = config[:overrides] || {}
-        override = overrides[credit_type_id] || overrides[credit_type_id.to_s] || {}
+        override = overrides[credit_type_id] || overrides[credit_type_id.to_s] ||
+                   overrides[credit_type_id.to_sym] || {}
         ResolvedLeaseConfig.new(
           lease_duration_ms: override[:default_lease_duration] || config[:default_lease_duration] ||
             DEFAULT_LEASE_DURATION_MS,

@@ -74,12 +74,7 @@ module Schematic
         def add(reservation)
           expires_ms = millis(reservation.expires_at)
           key = hash_key(reservation.id)
-          # The hash goes first so the reservation exists before anything
-          # references it. These are independent single-key ops rather than one
-          # multi-key script: a partial failure at worst leaves an un-indexed
-          # reservation that the TTL reaps, never a double spend.
-          @client.hset(
-            key,
+          fields = [
             "id", reservation.id,
             "leaseId", reservation.lease_id,
             "companyId", reservation.company_id,
@@ -90,8 +85,28 @@ module Schematic
             "consumptionRate", reservation.consumption_rate.to_s,
             "expiresAt", expires_ms.to_s,
             "evalCtx", JSON.generate(reservation.eval_ctx)
-          )
-          @client.pexpireat(key, expires_ms + RES_TTL_GRACE_MS)
+          ]
+          ttl_at = expires_ms + RES_TTL_GRACE_MS
+          # The hash and its expiry go out as one MULTI/EXEC. Written
+          # separately, a crash in the gap leaves a reservation row with no TTL:
+          # once the sweeper drops its index entry, nothing points at the row
+          # and nothing reaps it, so it sits in Redis for good. Same commands,
+          # same key, same fields, so what other SDKs read is unchanged, and
+          # both commands touch the one key, so this is Cluster-safe.
+          if @client.respond_to?(:multi)
+            @client.multi do |tx|
+              tx.hset(key, *fields)
+              tx.pexpireat(key, ttl_at)
+            end
+          else
+            @client.hset(key, *fields)
+            @client.pexpireat(key, ttl_at)
+          end
+          # The two indexes (expiry zset for the sweeper, per-tenant hash for
+          # reserved_credits) only depend on the hash existing, so they stay
+          # outside the transaction: their keys hash to other slots. A partial
+          # failure here at worst leaves an un-indexed reservation that the TTL
+          # reaps, never a double spend.
           @client.zadd(index_key, expires_ms, encode_member(reservation.company_id, reservation.credit_type_id,
                                                             reservation.id))
           @client.hset(by_credit_key(reservation.company_id, reservation.credit_type_id), reservation.id,
@@ -150,7 +165,10 @@ module Schematic
 
         def start_sweep
           @mutex.synchronize do
-            return if @sweep_thread || @stopped
+            # alive?, not presence: a process that forks after start (Puma or
+            # Unicorn with preload) hands the child a thread object whose thread
+            # did not survive the fork, and the child would never sweep.
+            return if @sweep_thread&.alive? || @stopped
 
             interval = @sweep_interval_ms.to_f / 1000.0
             @sweep_thread = Thread.new do
