@@ -340,6 +340,19 @@ module Schematic
         default_value: default_value,
         timeout_ms: timeout_ms
       }
+      # The lease paths guard usage themselves; this one has to as well,
+      # because a non-numeric usage reaches the preflight builder and a
+      # negative or NaN one would size a preflight the engine cannot use. Ruby
+      # has no type to catch it at the boundary the way the other SDKs do.
+      if !usage.nil? && !Credits::Leases.valid_quantity?(usage)
+        @logger.warn(
+          "check: invalid usage #{usage.inspect} for flag #{flag_key}, must be a finite non-negative " \
+          "number; continuing without one"
+        )
+        options[:usage] = nil
+        usage = nil
+      end
+
       eval_ctx = build_eval_context(company, user)
       fallback = -> { plain_check_result(flag_key, company, user, options) }
 
@@ -490,7 +503,13 @@ module Schematic
 
       return if prewarm.nil? || prewarm.empty?
 
-      prewarm_after_identify(body, prewarm)
+      begin
+        prewarm_after_identify(body, prewarm)
+      rescue StandardError => e
+        # identify never raises into its caller, and a prewarm is the least of
+        # the reasons it should start.
+        @logger.warn("identify prewarm setup failed: #{e.message}")
+      end
     end
 
     def track(body, options: nil)
@@ -863,18 +882,20 @@ module Schematic
       value = config[knob]
       return if value.nil?
 
-      valid = value.is_a?(Numeric) && !value.to_f.nan? && (allow_zero ? value >= 0 : value.positive?)
+      # finite? rejects NaN and both infinities, neither of which can size a
+      # lease, a sweep, or a timeout.
+      valid = value.is_a?(Numeric) && value.to_f.finite? && (allow_zero ? value >= 0 : value.positive?)
       return if valid
 
       raise ArgumentError,
-            "credit_leases[:#{knob}] must be a #{allow_zero ? "non-negative" : "positive"} number, " \
+            "credit_leases[:#{knob}] must be a finite #{allow_zero ? "non-negative" : "positive"} number, " \
             "got #{value.inspect}"
     end
 
     def validate_low_water_mark(config)
       value = config[:low_water_mark]
       return if value.nil?
-      return if value.is_a?(Numeric) && !value.to_f.nan? && value.positive? && value < 1
+      return if value.is_a?(Numeric) && value.to_f.finite? && value.positive? && value < 1
 
       raise ArgumentError, "credit_leases[:low_water_mark] must be a number between 0 and 1, got #{value.inspect}"
     end
@@ -1125,7 +1146,7 @@ module Schematic
       # and close still has to wait it out. Decide before spawning one.
       return nil if @credit_lease_manager.nil? || @lease_store.nil?
 
-      company = body[:company]&.dig(:keys) || body["company"]&.dig("keys")
+      company = identify_company_keys(body)
 
       thread = Thread.new do
         # Force a flush so the server processes the identify as soon as
@@ -1197,6 +1218,17 @@ module Schematic
 
         sleep([Credits::Leases::DEFAULT_PREWARM_POLL_INTERVAL_MS, deadline - monotonic_ms].min / 1000.0)
       end
+    end
+
+    # A caller can hand identify any shape, so read the company keys without
+    # assuming one.
+    def identify_company_keys(body)
+      return nil unless body.is_a?(Hash)
+
+      company = body[:company] || body["company"]
+      return nil unless company.is_a?(Hash)
+
+      company[:keys] || company["keys"]
     end
 
     # get_company waits on the DataStream's own resource timeout, which is many

@@ -443,7 +443,7 @@ A check can allow without reserving credits (the feature is not credit-metered, 
 
 Without `credit_leases` configured, or without a `usage`, `check` falls through to a plain flag check with no reservation. `usage` is still sent as a preflight, locally or to the API, so the verdict accounts for what the call is about to spend. Preflighted verdicts are not cached.
 
-`usage` may be fractional. The API carries whole quantities, so it rounds up everywhere: the reservation, the preflight quantity, and the quantity a settle bills. A reservation is never smaller than what its track event charges.
+`usage` may be fractional. A client-mode reservation holds it unrounded, as does the ledger debit a settle makes. The integer fields on the wire round up: a server-mode reservation, the preflight quantity, and the quantity a track event bills, so a partial unit is never billed as none.
 
 `result.entitlement` is a symbol-keyed hash with the field names of `Schematic::Types::FeatureEntitlement`, the same in both modes.
 
@@ -478,6 +478,8 @@ result = client.check(
   on_acquire_failure: :fail_open
 )
 ```
+
+In server mode, a check-and-reserve that times out client-side after the server committed leaves the hold parked until its TTL, so keep `default_reservation_ttl` short there.
 
 In client mode, `:fail_open` still evaluates the flag's rules with the credit balance assumed sufficient, so plan targeting and all non-credit conditions apply and only the credit gate is bypassed. In server mode it returns the flag's default value, which is `false` unless you pass `default_value` or configure a `flag_defaults` entry.
 

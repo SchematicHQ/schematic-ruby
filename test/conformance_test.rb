@@ -44,6 +44,10 @@ class ConformanceTest < Minitest::Test
       @wire ||= LeaseSupport::ScriptedWireClient.new(@clock)
     end
 
+    def unconsumed_wire_scripts
+      @wire ? @wire.pending_scripts : []
+    end
+
     def manager
       @manager ||= Leases::LeaseManager.new(
         wire_client: wire,
@@ -94,6 +98,10 @@ class ConformanceTest < Minitest::Test
       assert wrote, "given.leases must install: #{lease["lease_id"]}"
     end
     (vector["operations"] || []).each { |step| run_operation(harness, step) }
+    # A scripted response nobody consumed means the run took a different path
+    # through the wire than the vector describes, which no per-step assertion
+    # would notice.
+    assert_empty harness.unconsumed_wire_scripts, "scripted wire responses left unconsumed"
   ensure
     harness&.stop
   end
@@ -301,6 +309,11 @@ class ConformanceTest < Minitest::Test
 
     assert_check_result(expect, result, fell_back)
     assert_engine_calls(step, expect, datastream.calls, spec)
+    # SPEC.md makes expect.engine_calls optional, so an absent one asserts
+    # nothing. The scripted engine results are not optional: one left over means
+    # the check reached the engine fewer times than the vector describes, which
+    # no other assertion here would notice. An extra call already raises.
+    assert_empty datastream.pending_results, "scripted engine results left unconsumed"
     assert_equal expect["wire_extends"], harness.wire.extend_calls.size if expect.key?("wire_extends")
     assert_in_delta expect["last_extend_additional_amount"], harness.wire.extend_calls.last.additional_amount if expect.key?("last_extend_additional_amount")
     return unless step["save_reservation_as"] && result.reservation

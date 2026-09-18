@@ -301,6 +301,12 @@ module LeaseSupport
       @release_calls = []
     end
 
+    # Scripted responses nobody asked for, so a test can tell a run that took
+    # the path it described from one that merely passed its own assertions.
+    def pending_scripts
+      @mutex.synchronize { @acquire_responses + @extend_responses }
+    end
+
     def queue_acquire(script)
       @mutex.synchronize { @acquire_responses << script }
     end
@@ -380,6 +386,12 @@ module LeaseSupport
       @user = user
       @results = results.dup
       @calls = []
+    end
+
+    # Scripted results nobody asked for. An extra call raises instead, so the
+    # pair pins the call count in both directions.
+    def pending_results
+      @results.dup
     end
 
     def get_flag(_key)

@@ -111,6 +111,32 @@ class LeaseScriptIdentityTest < Minitest::Test
   end
 end
 
+# Every integer field on the wire goes through wire_quantity, so its rounding
+# is what decides what a caller is billed.
+class WireQuantityTest < Minitest::Test
+  include CreditTestHelpers
+
+  def test_a_partial_unit_rounds_up
+    assert_equal 2, Leases.wire_quantity(1.2)
+    assert_equal 1, Leases.wire_quantity(0.0001)
+  end
+
+  # (0.1 + 0.2) * 10 is 3.0000000000000004, and a bare ceil would bill it as 4.
+  def test_float_noise_does_not_cost_a_whole_unit
+    assert_equal 3, Leases.wire_quantity((0.1 + 0.2) * 10)
+    assert_equal 1, Leases.wire_quantity(1.0000000000000002)
+    assert_equal 10, Leases.wire_quantity(10.0)
+  end
+
+  def test_integers_and_non_numbers_pass_through
+    assert_equal 7, Leases.wire_quantity(7)
+    assert_equal 0, Leases.wire_quantity(0)
+    # Not finite, so it is handed back untouched rather than raising in ceil.
+    assert_predicate Leases.wire_quantity(Float::INFINITY), :infinite?
+    assert_predicate Leases.wire_quantity(Float::NAN), :nan?
+  end
+end
+
 class LeaseStoreTest < Minitest::Test
   include CreditTestHelpers
 
@@ -420,6 +446,20 @@ class LeaseManagerTest < Minitest::Test
     assert_equal 1, @wire.acquire_calls.size
   end
 
+  # A store outage answering "due" would spawn a thread per check, and each
+  # would only fail the same read again.
+  def test_no_thread_is_spawned_when_the_store_cannot_be_read
+    broken = Object.new
+    def broken.get(_company_id, _credit_type_id) = raise("redis down")
+    manager = Leases::LeaseManager.new(wire_client: @wire, lease_store: broken, logger: silent_logger,
+                                       clock: clock.to_proc)
+
+    assert_nil manager.maybe_extend_in_background("co_1", "ct_1")
+    assert_empty @wire.extend_calls
+  ensure
+    manager&.stop
+  end
+
   # Most checks sit nowhere near the water mark, so learning that must not cost
   # a thread each.
   def test_no_thread_is_spawned_when_no_extend_is_due
@@ -466,16 +506,18 @@ class LeaseManagerTest < Minitest::Test
     assert_empty @wire.acquire_calls
   end
 
-  # A stop landing mid-acquire leaves a lease with nobody to release it, since
-  # the drain may already have passed.
-  def test_a_lease_acquired_during_a_stop_is_released_inline
+  # A stop landing mid-acquire leaves the lease installed, for the drain that
+  # follows or for server-side expiry. Releasing it here would refund a lease
+  # sibling processes sharing the backend are still reserving against.
+  def test_a_lease_acquired_during_a_stop_is_left_for_the_drain
     @wire.queue_acquire(acquire_script)
     manager = @manager
     @wire.during_acquire = -> { manager.stop }
 
-    assert_nil @manager.acquire_if_needed("co_1", "ct_1")
-    assert_equal ["lse_1"], @wire.release_calls
-    assert_nil @leases.get("co_1", "ct_1")
+    @manager.acquire_if_needed("co_1", "ct_1")
+
+    assert_empty @wire.release_calls
+    assert_equal "lse_1", @leases.get("co_1", "ct_1").lease_id
   end
 
   # The drain budget is what a caller asked close to take in total. Spending it
@@ -766,16 +808,16 @@ class CheckFlowTest < Minitest::Test
     assert(logger.warnings.any? { |w| w.include?("fail_closd") })
   end
 
-  # The settle bills a whole unit, so the hold has to cover one: sizing it from
-  # the raw fraction would leave the lease short of its own track event.
-  def test_a_fractional_usage_holds_the_rounded_up_cost
+  # The ledger keeps the fraction: the hold is usage times rate, unrounded, as
+  # the spec says. Only the integer fields on the wire round up.
+  def test_a_fractional_usage_holds_the_unrounded_cost
     @leases.replace(lease_entry)
     result = run_check([probe, { "value" => true, "reason" => "ok" }], usage: 0.5)
 
     assert_predicate result, :allowed?
-    assert_in_delta 10, result.reservation.credits_reserved
-    assert_in_delta 1, result.reservation.quantity_reserved
-    assert_in_delta 990, @leases.get("co_1", "ct_1").local_remaining_credits
+    assert_in_delta 5, result.reservation.credits_reserved
+    assert_in_delta 0.5, result.reservation.quantity_reserved
+    assert_in_delta 995, @leases.get("co_1", "ct_1").local_remaining_credits
   end
 
   # A boolean or override grant resolves without drawing a credit, so it must
@@ -932,18 +974,17 @@ class TrackSettleTest < Minitest::Test
     assert_nil body[:lease_id]
   end
 
-  # A track event's quantity is an integer on the wire, so a partial unit must
-  # settle as a whole one. Truncating would bill a sub-unit settle as nothing.
-  def test_a_fractional_settle_rounds_up_rather_than_truncating
+  # The event's quantity is an integer on the wire, so a partial unit bills as a
+  # whole one rather than truncating to none. The ledger debit keeps the raw
+  # figure, so the two can differ by a fraction of a unit by design.
+  def test_a_fractional_settle_bills_a_whole_unit_and_debits_the_raw_one
     @leases.try_reserve("co_1", "ct_1", 100)
     @reservations.add(reservation)
 
     outcome = Leases.consume_reservation_and_build_event(@reservations, reservation, 1.2)
 
     assert_equal 2, outcome.track[:quantity]
-    # The lease is debited against the billed quantity, not the raw one, so the
-    # local view does not drift below what the server charges.
-    assert_in_delta 980, @leases.get("co_1", "ct_1").local_remaining_credits
+    assert_in_delta 988, @leases.get("co_1", "ct_1").local_remaining_credits
   end
 
   # A hold swept at its TTL still has to bill: the event is built from the
@@ -1582,12 +1623,57 @@ class CreditLeaseClientWiringTest < Minitest::Test
       { low_water_mark: 1 } => "low_water_mark",
       { low_water_mark: 0 } => "low_water_mark",
       { low_water_mark: Float::NAN } => "low_water_mark",
+      { low_water_mark: Float::INFINITY } => "low_water_mark",
+      { sweep_interval_ms: Float::INFINITY } => "sweep_interval_ms",
+      { default_reservation_ttl: Float::NAN } => "default_reservation_ttl",
       { overrides: { "ct_1" => { default_lease_size: -5 } } } => "default_lease_size"
     }.each do |knob, name|
       error = assert_raises(ArgumentError) { build_client(credit_leases: { mode: :client }.merge(knob)) }
 
       assert_includes error.message, name
     end
+  end
+
+  # The lease paths guard usage; the plain one has to as well, because Ruby has
+  # no type to stop a string reaching the preflight builder.
+  def test_an_unusable_usage_is_warned_about_and_ignored
+    logger = RecordingLogger.new
+    client = Schematic::SchematicClient.new(api_key: "sch_test", base_url: "https://api.schematichq.test",
+                                            logger: logger)
+    plain = stub_request(:post, "https://api.schematichq.test/flags/inference/check")
+            .to_return(status: 200, body: JSON.generate({ "data" => { "flag" => "inference", "value" => true,
+                                                                      "reason" => "ok" } }),
+                       headers: { "Content-Type" => "application/json" })
+
+    ["3", -1, Float::NAN, Float::INFINITY].each do |usage|
+      result = client.check("inference", company: { "id" => "co_1" }, usage: usage)
+
+      assert_predicate result, :allowed?
+    end
+
+    assert_equal(4, logger.warnings.count { |w| w.include?("invalid usage") })
+    # Each is an ordinary check: no preflight went out, so the first one's
+    # verdict was cacheable and served the other three.
+    assert_requested plain, times: 1
+    assert_requested(:post, "https://api.schematichq.test/flags/inference/check") do |req|
+      !JSON.parse(req.body).key?("preflight")
+    end
+  ensure
+    client&.close
+  end
+
+  # identify never raises into its caller, and a caller can hand it any shape.
+  def test_identify_with_a_prewarm_tolerates_a_malformed_company
+    stub_request(:post, %r{https://c\.schematichq\.com/.*}).to_return(status: 200, body: "{}")
+    client = build_client(credit_leases: { mode: :client })
+
+    [{ keys: { "user_id" => "u_1" }, company: "acme" },
+     { keys: { "user_id" => "u_1" } },
+     { company: { keys: nil } }].each do |body|
+      assert_nil client.identify(body, prewarm: ["ct_1"])
+    end
+  ensure
+    client&.close
   end
 
   def test_prewarm_is_a_no_op_without_credit_leases

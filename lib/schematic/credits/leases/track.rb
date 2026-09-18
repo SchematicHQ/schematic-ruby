@@ -21,13 +21,13 @@ module Schematic
       # unclamped actual, because the server is the source of truth for real
       # consumption.
       def self.consume_reservation_and_build_event(reservations, reservation, actual_quantity, traits: nil)
-        # Settle the lease against the quantity that will be billed, not the raw
-        # one: the event carries an integer, so debiting the fraction locally
-        # would leave the local view of the lease below what the server charges.
-        quantity = Leases.wire_quantity(actual_quantity)
-        consumed = reservations.consume(reservation.id, quantity * reservation.consumption_rate)
+        # The ledger debit uses the raw quantity while the event's own quantity
+        # rounds up, because that field is an integer on the wire. The two can
+        # differ by a fraction of a unit; reconciling them is a cross-SDK
+        # decision, not one to make here.
+        consumed = reservations.consume(reservation.id, actual_quantity * reservation.consumption_rate)
         SettleOutcome.new(
-          track: build_reservation_track_event(reservation, quantity, traits: traits),
+          track: build_reservation_track_event(reservation, actual_quantity, traits: traits),
           settled_locally: !consumed.nil?
         )
       end

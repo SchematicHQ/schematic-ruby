@@ -259,28 +259,11 @@ module Schematic
             granted_amount: grant.granted_amount,
             expires_at: grant.expires_at
           ))
-          # A stop that landed during the wire call means the drain may already
-          # have passed, so this lease would be held with nobody left to release
-          # it. Hand it back inline rather than waiting out its expiry.
-          return release_after_stop(company_id, credit_type_id, grant) if wrote && @stopped
           return @lease_store.get(company_id, credit_type_id) if wrote
 
           settle_lost_race(company_id, credit_type_id, grant)
         rescue StandardError => e
           @logger.error("Failed to acquire credit lease for #{company_id}/#{credit_type_id}: #{e.message}")
-          nil
-        end
-
-        def release_after_stop(company_id, credit_type_id, grant)
-          @lease_store.drop(company_id, credit_type_id)
-          @wire.release(lease_id: grant.lease_id)
-          @logger.debug("Released credit lease #{grant.lease_id} acquired during shutdown")
-          nil
-        rescue StandardError => e
-          @logger.warn(
-            "Failed to release credit lease #{grant.lease_id} acquired during shutdown " \
-            "(it will expire server-side): #{e.message}"
-          )
           nil
         end
 
@@ -323,9 +306,10 @@ module Schematic
           ratio <= resolved.low_water_mark ||
             (!required_credits.nil? && entry.local_remaining_credits < required_credits)
         rescue StandardError => e
-          # A store blip must not skip an extend that may well be due.
-          @logger.warn("Failed to read lease store for #{company_id}/#{credit_type_id}: #{e.message}")
-          true
+          # No extend without a reading: a store outage answering true would
+          # spawn a thread per check, and each would only fail the same read.
+          @logger.debug("Failed to read lease store for #{company_id}/#{credit_type_id}: #{e.message}")
+          false
         end
 
         def extend_if_needed(company_id, credit_type_id, required_credits, request_options, allow_follow_up:)

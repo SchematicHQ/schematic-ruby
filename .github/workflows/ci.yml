@@ -37,7 +37,10 @@ jobs:
           bundler-cache: true
       - name: Download WASM binary
         run: ./scripts/download-wasm.sh
-      - run: bundle exec rake test
+      # Not `rake test`: the Rakefile is generated and not fernignored, so a
+      # regeneration could silently drop the glob that picks these up.
+      - name: Run test suite
+        run: bundle exec ruby -I lib -I test -e 'Dir["test/**/{test_*,*_test}.rb"].sort.each { |f| require File.expand_path(f) }'
       - run: bundle exec ruby -I lib -I test test/custom.test.rb
 
   publish:

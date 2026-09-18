@@ -190,11 +190,17 @@ module Schematic
       # integer, and the generated models truncate a float onto it. A preflight
       # asks an upper-bound question and a settle must not bill a partial unit
       # as none, so a fraction rounds up in both directions.
+      # Float noise is shaved off before the rounding: (0.1 + 0.2) * 10 is
+      # 3.0000000000000004, and a bare ceil would bill that as 4.
+      ROUND_UP_TOLERANCE = 1e-9
+
       def self.wire_quantity(value)
         return value unless value.is_a?(Numeric)
+        return value if value.is_a?(Integer)
         return value unless value.finite?
 
-        value.ceil
+        shaved = value - ROUND_UP_TOLERANCE
+        shaved.positive? ? shaved.ceil : value.ceil
       end
 
       # One shape for the matched entitlement whichever mode produced it.

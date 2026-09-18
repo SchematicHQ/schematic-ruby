@@ -89,10 +89,7 @@ module Schematic
           return @fallback.call if resolved.nil?
 
           @credit_id, @consumption_rate, @event_subtype = resolved
-          # Sized from the rounded usage, because that is the quantity the
-          # settle will bill. Holding the fraction would leave the lease short
-          # of what the track event charges against it.
-          @credit_cost = Leases.wire_quantity(@options[:usage]) * @consumption_rate
+          @credit_cost = @options[:usage] * @consumption_rate
 
           lease = @deps.manager.acquire_if_needed(@company[:id], @credit_id, request_options)
           return failure("lease_acquire_failed") if lease.nil?
@@ -273,7 +270,7 @@ module Schematic
             company_id: @company[:id],
             credit_type_id: @credit_id,
             event_subtype: @event_subtype,
-            quantity_reserved: Leases.wire_quantity(@options[:usage]),
+            quantity_reserved: @options[:usage],
             credits_reserved: @credit_cost,
             consumption_rate: @consumption_rate,
             expires_at: @clock.call + (resolved.reservation_ttl_ms / 1000.0),

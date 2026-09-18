@@ -98,9 +98,12 @@ module Schematic
           nil
         end
 
-        # Drop the slot entry, after a remote release. The slot's mutex goes
-        # with it, so a long-lived process serving many companies does not
-        # accumulate one per (company, credit type) it has ever leased.
+        # Drop the slot entry, after a remote release. An explicit drop is the
+        # only thing that removes one: a lease that merely expired stays here,
+        # readable, until it is dropped or replaced, which is what the spec
+        # requires, so every path re-guards on expiry rather than trusting
+        # presence. The slot's mutex goes with the entry, so a long-lived
+        # process does not accumulate one per slot it has ever leased.
         def drop(company_id, credit_type_id)
           key = Leases.lease_key(company_id, credit_type_id)
           with_lock(key) do
