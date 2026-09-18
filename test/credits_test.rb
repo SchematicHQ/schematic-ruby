@@ -1946,6 +1946,27 @@ class CreditLeaseClientWiringTest < Minitest::Test
     end
   end
 
+  # The raise escapes the constructor, so the caller never gets a client to
+  # close. Anything started before the check would run for the life of the
+  # process with nothing holding a reference to stop it.
+  def test_a_rejected_knob_leaves_no_thread_and_no_socket_behind
+    before = Thread.list.select(&:alive?)
+    sockets = []
+    Schematic::DataStream::Client.define_singleton_method(:new) do |**|
+      sockets << :opened
+      raise "the socket must not be opened for a config that cannot be used"
+    end
+
+    assert_raises(ArgumentError) do
+      build_client(credit_leases: { mode: :client, default_lease_size: -1 }, use_data_stream: true)
+    end
+
+    assert_empty sockets
+    assert_empty(Thread.list.select(&:alive?) - before)
+  ensure
+    Schematic::DataStream::Client.singleton_class.send(:remove_method, :new)
+  end
+
   # The lease paths guard usage; the plain one has to as well, because Ruby has
   # no type to stop a string reaching the preflight builder.
   def test_an_unusable_usage_is_warned_about_and_ignored

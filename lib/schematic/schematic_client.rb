@@ -108,6 +108,13 @@ module Schematic
       end
       @offline = offline
 
+      # Validated here rather than alongside the rest of the lease setup below:
+      # a rejected knob raises out of the constructor, so the caller never gets
+      # a client to close, and anything already running by then (the event
+      # buffer's flush thread, the DataStream socket) is leaked for the life of
+      # the process. Nothing has started yet at this point.
+      validated_leases = validated_credit_lease_config(credit_leases)
+
       # Initialize Fern-generated API client
       @api_client = if @offline
                       nil
@@ -154,7 +161,7 @@ module Schematic
       @pending_prewarms = []
       @pending_prewarms_mutex = Mutex.new
       @closing = false
-      setup_credit_leases(credit_leases, datastream_options) if credit_leases
+      setup_credit_leases(validated_leases, datastream_options) if credit_leases
 
       # Register shutdown hook to ensure graceful cleanup on process exit
       at_exit { close }
@@ -849,8 +856,17 @@ module Schematic
 
     # --- Credit Leases ---
 
+    # Normalize and validate before the constructor starts anything, so a bad
+    # knob is a clean raise rather than a raise on top of a running flush thread
+    # and an open socket. Offline is left alone: it starts neither, and the
+    # warning below already says lease gating is off.
+    def validated_credit_lease_config(config)
+      return nil if config.nil? || @offline
+
+      normalize_credit_lease_config(config).tap { |normalized| validate_credit_lease_config(normalized) }
+    end
+
     def setup_credit_leases(config, datastream_options)
-      config = normalize_credit_lease_config(config)
       if @offline
         @logger.warn(
           "credit_leases is configured but the client is in offline mode; lease-gated checks are disabled " \
@@ -859,7 +875,7 @@ module Schematic
         return
       end
 
-      validate_credit_lease_config(config)
+      # Already normalized and validated in the constructor.
       @credit_lease_config = config
       @credit_lease_mode = config[:mode] || :auto
       resolve_server_reservation_ttl(config)
