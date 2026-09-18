@@ -479,7 +479,7 @@ result = client.check(
 )
 ```
 
-In server mode, a check-and-reserve that times out client-side after the server committed leaves the hold parked until its TTL, so keep `default_reservation_ttl` short there.
+In server mode, a check that times out after the server has already reserved leaves those credits reserved until the TTL expires, so keep `default_reservation_ttl` short there.
 
 In client mode, `:fail_open` still evaluates the flag's rules with the credit balance assumed sufficient, so plan targeting and all non-credit conditions apply and only the credit gate is bypassed. In server mode it returns the flag's default value, which is `false` unless you pass `default_value` or configure a `flag_defaults` entry.
 
