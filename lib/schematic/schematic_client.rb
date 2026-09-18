@@ -198,9 +198,12 @@ module Schematic
                    end
 
           # A nil value is the engine declining to answer, not a false. The
-          # registered flag default stands in, which is what CheckFlagResponse's
-          # own coercion to false would otherwise hide.
-          result[:value] = get_flag_default(flag_key) if result[:value].nil?
+          # caller's default stands in, falling back to the registered one,
+          # which is what CheckFlagResponse's own coercion to false would
+          # otherwise hide. Resolved the same way the offline and API paths
+          # resolve it, or one call would honour default_value and another
+          # would not.
+          result[:value] = get_default.call if result[:value].nil?
           response = CheckFlagResponse.new(result)
           enqueue_flag_check_event(flag_key, response, company, user)
           return response

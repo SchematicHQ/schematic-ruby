@@ -139,13 +139,14 @@ module Schematic
 
     # The options as the engine takes them. usage and event_usage.quantity
     # deserialize as i64 there, so a value with a decimal point fails the whole
-    # check. Round up, the direction the REST body takes: a preflight asks an
-    # upper-bound question, and the check must not pass on less usage than the
-    # action is about to record.
+    # check. Rounded through the helper every other wire field uses, so a caller
+    # passing a preflight straight to check_flag_with_entitlement is asked the
+    # same question a lease check asks, and an infinite usage is handed over
+    # rather than raising out of ceil.
     def engine_options(options)
       out = options.dup
       usage_key = out.key?(:usage) ? :usage : "usage"
-      out[usage_key] = out[usage_key].ceil if out[usage_key].is_a?(Numeric)
+      out[usage_key] = Credits::Leases.wire_quantity(out[usage_key]) if out[usage_key].is_a?(Numeric)
       event_key = out.key?(:event_usage) ? :event_usage : "event_usage"
       event_usage = out[event_key]
       return out unless event_usage.is_a?(Hash)
@@ -153,7 +154,9 @@ module Schematic
       quantity_key = event_usage.key?(:quantity) ? :quantity : "quantity"
       return out unless event_usage[quantity_key].is_a?(Numeric)
 
-      out[event_key] = event_usage.merge(quantity_key => event_usage[quantity_key].ceil)
+      out[event_key] = event_usage.merge(
+        quantity_key => Credits::Leases.wire_quantity(event_usage[quantity_key])
+      )
       out
     end
 
