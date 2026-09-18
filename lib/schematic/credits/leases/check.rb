@@ -333,6 +333,11 @@ module Schematic
           end
 
           ids = engine_ids(result)
+          # A nil verdict denies here rather than standing in the caller's
+          # default, which is what the plain check path does with the same nil.
+          # The difference is deliberate: this branch holds credits, and the
+          # default exists to answer a flag nothing evaluated, not to release a
+          # hold the engine declined to approve.
           unless result[:value]
             cancel_reservation(reservation)
             return emit(
