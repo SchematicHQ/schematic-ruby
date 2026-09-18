@@ -193,6 +193,10 @@ module Schematic
                      @datastream_client.check_flag(eval_ctx, flag_key, preflight)
                    end
 
+          # A nil value is the engine declining to answer, not a false. The
+          # registered flag default stands in, which is what CheckFlagResponse's
+          # own coercion to false would otherwise hide.
+          result[:value] = get_flag_default(flag_key) if result[:value].nil?
           response = CheckFlagResponse.new(result)
           enqueue_flag_check_event(flag_key, response, company, user)
           return response
@@ -634,8 +638,10 @@ module Schematic
       @closed = true
       @closing = true
       shut_down_credit_leases
-      @event_buffer.stop
+      # DataStream first, then the buffer: its stop flushes, and a flush is the
+      # last thing that should still be running.
       @datastream_client&.close
+      @event_buffer.stop
       @flag_check_cache_providers.each { |c| c.stop if c.respond_to?(:stop) }
       @logger.debug("SchematicClient closed")
     end
@@ -683,6 +689,11 @@ module Schematic
         )
         data = api_response.data
         @logger.debug("API returned flag '#{flag_key}' value=#{data.value}, reason=#{data.reason}")
+
+        if data.value.nil?
+          @logger.debug("No value returned from feature flag API for flag '#{flag_key}', falling back to default")
+          return CheckFlagResponse.new(value: get_default.call, flag_key: flag_key, reason: "flag default")
+        end
 
         response = CheckFlagResponse.new(
           value: data.value,

@@ -1222,6 +1222,28 @@ class CreditLeaseClientWiringTest < Minitest::Test
     client&.close
   end
 
+  # A DataStream whose start fails after construction clears the client, so auto
+  # has to be resolved per check or every check would drop to a plain, ungated
+  # flag check.
+  def test_auto_resolves_per_check_and_falls_to_server_when_the_datastream_goes_away
+    client = build_client(credit_leases: { mode: :auto })
+    client.instance_variable_set(:@datastream_client, Object.new)
+    %i[@credit_lease_manager @lease_store @reservations].each do |ivar|
+      client.instance_variable_set(ivar, Object.new)
+    end
+
+    assert_equal :client, client.send(:effective_lease_mode)
+
+    client.instance_variable_set(:@datastream_client, nil)
+
+    assert_equal :server, client.send(:effective_lease_mode)
+  ensure
+    %i[@credit_lease_manager @lease_store @reservations].each do |ivar|
+      client&.instance_variable_set(ivar, nil)
+    end
+    client&.close
+  end
+
   # The API refuses a hold expiring more than an hour out, measured against its
   # own clock, so a server-mode TTL is clamped a step below the cap.
   def test_a_server_mode_reservation_ttl_is_clamped_below_the_api_cap
@@ -1672,6 +1694,77 @@ class CreditLeaseClientWiringTest < Minitest::Test
      { company: { keys: nil } }].each do |body|
       assert_nil client.identify(body, prewarm: ["ct_1"])
     end
+  ensure
+    client&.close
+  end
+
+  # A DataStream request over a closed socket is dropped without an error, so
+  # waiting on it burns the 30 second resource timeout on a check that was
+  # always going to fall back.
+  def test_a_lease_check_against_a_disconnected_datastream_falls_back_at_once
+    client = build_client(credit_leases: { mode: :client }, flag_defaults: { "inference" => false })
+    datastream = Schematic::DataStream::Client.new(
+      api_key: "sch_test", base_url: "wss://api.schematichq.test", logger: silent_logger, rules_engine: nil
+    )
+    # Never started, so the socket is down. The flag is cached; the company is
+    # not, which is the pair that used to wait.
+    refute_predicate datastream, :connected?
+    datastream.instance_variable_get(:@flag_cache).set(
+      datastream.send(:flag_cache_key, "inference"), { id: "flag_1", key: "inference" }
+    )
+    client.instance_variable_set(:@datastream_client, datastream)
+    stub_request(:post, "https://c.schematichq.com/batch").to_return(status: 200, body: "")
+    flag_check = stub_request(:post, "https://api.schematichq.test/flags/inference/check")
+                 .to_return(status: 200,
+                            body: JSON.generate({ "data" => { "flag" => "inference", "value" => true, "reason" => "plan" } }),
+                            headers: { "Content-Type" => "application/json" })
+
+    started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    result = client.check("inference", company: { "org_id" => "acme" }, usage: 10, default_value: false)
+    elapsed_ms = (Process.clock_gettime(Process::CLOCK_MONOTONIC) - started) * 1000
+
+    # Resolved as the plain fallback, not the 30 second resource timeout, and
+    # nothing was held, so there is nothing to refund.
+    assert_requested flag_check
+    assert_predicate result, :allowed?
+    assert_nil result.reservation
+    assert_operator elapsed_ms, :<, 1000
+  ensure
+    client&.close
+  end
+
+  # A 200 whose value is nil is the API declining to answer, not a false.
+  def test_a_nil_value_from_the_api_falls_back_to_the_default
+    client = Schematic::SchematicClient.new(api_key: "sch_test", base_url: "https://api.schematichq.test",
+                                            logger: silent_logger, flag_defaults: { "inference" => false })
+    stub_request(:post, "https://api.schematichq.test/flags/inference/check")
+      .to_return(status: 200,
+                 body: JSON.generate({ "data" => { "flag" => "inference", "value" => nil, "reason" => "ok" } }),
+                 headers: { "Content-Type" => "application/json" })
+    stub_request(:post, "https://c.schematichq.com/batch").to_return(status: 200, body: "")
+
+    result = client.check("inference", company: { "id" => "co_1" }, usage: 10, default_value: true)
+
+    assert_predicate result, :allowed?
+    assert_equal "flag default", result.reason
+  ensure
+    client&.close
+  end
+
+  # Same on the DataStream path, where the registered flag default stands in.
+  def test_a_nil_value_from_the_datastream_falls_back_to_the_flag_default
+    client = Schematic::SchematicClient.new(api_key: "sch_test", base_url: "https://api.schematichq.test",
+                                            logger: silent_logger, flag_defaults: { "inference" => true })
+    datastream = Object.new
+    def datastream.connected? = true
+    def datastream.check_flag(_eval_ctx, flag_key) = { value: nil, reason: "no rules", flag_key: flag_key }
+    def datastream.close = nil
+    client.instance_variable_set(:@datastream_client, datastream)
+    stub_request(:post, "https://c.schematichq.com/batch").to_return(status: 200, body: "")
+
+    response = client.check_flag_with_entitlement("inference", company: { "id" => "co_1" })
+
+    assert response.value
   ensure
     client&.close
   end

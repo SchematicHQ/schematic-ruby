@@ -245,6 +245,10 @@ module Schematic
         return cached if cached
 
         return nil if @replicator_mode
+        # A request sent over a closed socket is dropped without an error, so
+        # waiting on it just burns the resource timeout. Answer now and let the
+        # caller fall back.
+        return nil unless connected?
 
         request_entity(ENTITY_TYPE_COMPANY, keys, @pending_companies) do |_data|
           @company_cache.get_by_keys(keys)
@@ -256,6 +260,7 @@ module Schematic
         return cached if cached
 
         return nil if @replicator_mode
+        return nil unless connected?
 
         request_entity(ENTITY_TYPE_USER, keys, @pending_users) do |_data|
           @user_cache.get_by_keys(keys)
