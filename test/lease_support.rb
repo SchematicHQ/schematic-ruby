@@ -38,12 +38,11 @@ module LeaseSupport
   # An in-process stand-in for Redis, covering the command subset the lease and
   # reservation stores use.
   #
-  # Ruby has no fakeredis with a Lua interpreter (the Node and Python suites get
-  # one from ioredis-mock and fakeredis respectively), so this fake dispatches
-  # on the exact script source shipped by the stores and runs a Ruby
-  # transliteration of it. The registry is keyed by that source, so a Lua change
-  # that is not mirrored here fails loudly with "unknown script" instead of
-  # silently diverging. The shipped Lua itself is what reaches a real Redis, and
+  # No Lua runs here, as in the other SDKs' fakes: the registry is keyed by the
+  # exact script source the stores ship, and each entry runs a Ruby
+  # transliteration of it. Keying on the source is what makes a Lua change that
+  # is not mirrored here fail loudly with "unknown script" instead of silently
+  # diverging. The shipped Lua itself is what reaches a real Redis, and
   # test/credits_test.rb pins its SHA1 against the reference implementation's.
   class FakeRedis
     class NoScriptError < StandardError
@@ -288,9 +287,9 @@ module LeaseSupport
     ExtendCall = Struct.new(:lease_id, :additional_amount, :expires_at, :idempotency_key)
 
     attr_reader :acquire_calls, :extend_calls, :release_calls
-    # Runs while an acquire is in flight, for emulating a sibling process
-    # winning the race.
-    attr_accessor :during_acquire
+    # Run while a call is in flight, for emulating a sibling process winning the
+    # race or a close landing mid-call.
+    attr_accessor :during_acquire, :during_extend
 
     def initialize(clock)
       @clock = clock
@@ -330,10 +329,14 @@ module LeaseSupport
     end
 
     def extend(lease_id:, additional_amount:, expires_at:, idempotency_key: nil, **)
+      during = nil
       script = @mutex.synchronize do
         @extend_calls << ExtendCall.new(lease_id, additional_amount, expires_at, idempotency_key)
+        during = @during_extend
+        @during_extend = nil
         @extend_responses.shift
       end
+      during&.call
       lease = scripted_lease(script, "unscripted extend wire call")
       granted = lease["granted_total"] || lease["granted_amount"]
       Schematic::Credits::Leases::LeaseGrant.new(

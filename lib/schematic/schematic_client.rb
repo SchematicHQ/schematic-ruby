@@ -328,8 +328,9 @@ module Schematic
     # still answers the way the caller asked.
     #
     # timeout_ms is carried on the API request but not yet applied: the
-    # generated transport takes its timeout from the client, not from a
-    # request. Set timeout on the client to bound a check today.
+    # generated transport takes its timeout from the construction of its HTTP
+    # client, and nothing exposes that, so no per-check or client-level timeout
+    # is configurable today.
     def check(flag_key, company: nil, user: nil, usage: nil, event_subtype: nil, on_acquire_failure: nil,
               default_value: nil, timeout_ms: nil)
       options = {
@@ -440,6 +441,12 @@ module Schematic
       end
       if company.nil? || company.empty?
         @logger.debug("prewarm requires a company")
+        return
+      end
+      # Documented as never raising, and a caller reading ids out of config can
+      # hand over nil or an empty list without meaning to.
+      if credit_type_ids.nil? || credit_type_ids.empty?
+        @logger.debug("prewarm requires at least one credit type id")
         return
       end
       if @closing
@@ -695,10 +702,10 @@ module Schematic
       end
     end
 
-    # The generated transport reads its timeout from the client, not from a
-    # request, so timeout_in_seconds is carried but not yet honored. Sending it
-    # anyway means a per-check timeout starts working the moment the transport
-    # does, without another change here.
+    # The generated transport reads its timeout from its own construction, not
+    # from a request, so timeout_in_seconds is carried but not yet honored.
+    # Sending it anyway means a per-check timeout starts working the moment the
+    # transport does, without another change here.
     def api_request_options(timeout_ms)
       return {} if timeout_ms.nil?
 
@@ -825,6 +832,7 @@ module Schematic
         return
       end
 
+      validate_credit_lease_config(config)
       @credit_lease_config = config
       @credit_lease_mode = config[:mode] || :auto
       resolve_server_reservation_ttl(config)
@@ -832,6 +840,43 @@ module Schematic
       return unless credit_lease_mode_uses_leases?
 
       build_lease_plumbing(config, datastream_options)
+    end
+
+    # Reject a knob that cannot mean anything, at construction, where the stack
+    # still points at the caller. Left to run, a zero sweep interval spins a
+    # thread flat out, a non-positive lease size or duration acquires a lease
+    # nothing can reserve against, and a water mark outside (0, 1) either never
+    # extends or extends on every check.
+    def validate_credit_lease_config(config)
+      %i[default_lease_duration default_reservation_ttl default_lease_size sweep_interval_ms
+         prewarm_resolve_timeout_ms].each do |knob|
+        # prewarm_resolve_timeout_ms documents 0 as cache-only, so it alone may
+        # be zero.
+        validate_positive_number(config, knob, allow_zero: knob == :prewarm_resolve_timeout_ms)
+      end
+      validate_low_water_mark(config)
+      (config[:overrides] || {}).each_value { |override| validate_credit_lease_config(override) }
+      nil
+    end
+
+    def validate_positive_number(config, knob, allow_zero: false)
+      value = config[knob]
+      return if value.nil?
+
+      valid = value.is_a?(Numeric) && !value.to_f.nan? && (allow_zero ? value >= 0 : value.positive?)
+      return if valid
+
+      raise ArgumentError,
+            "credit_leases[:#{knob}] must be a #{allow_zero ? "non-negative" : "positive"} number, " \
+            "got #{value.inspect}"
+    end
+
+    def validate_low_water_mark(config)
+      value = config[:low_water_mark]
+      return if value.nil?
+      return if value.is_a?(Numeric) && !value.to_f.nan? && value.positive? && value < 1
+
+      raise ArgumentError, "credit_leases[:low_water_mark] must be a number between 0 and 1, got #{value.inspect}"
     end
 
     # Accept the hyphenated spellings the other SDKs use for the two enum-ish
@@ -1076,6 +1121,10 @@ module Schematic
     end
 
     def prewarm_after_identify(body, credit_type_ids)
+      # A thread that would only log "no-op in server mode" is still a thread,
+      # and close still has to wait it out. Decide before spawning one.
+      return nil if @credit_lease_manager.nil? || @lease_store.nil?
+
       company = body[:company]&.dig(:keys) || body["company"]&.dig("keys")
 
       thread = Thread.new do
@@ -1133,17 +1182,38 @@ module Schematic
         # and close would be waiting out the rest of this poll.
         return nil if @closing
 
-        begin
-          resolved = @datastream_client.get_company(company)
-          resolved_id = resolved && (resolved[:id] || resolved["id"])
+        if @datastream_client.connected?
+          resolved_id = fetch_company_id_within(company, deadline)
           return resolved_id if resolved_id
-        rescue StandardError => e
-          @logger.debug("prewarm: datastream company fetch failed (#{e.message})")
+        else
+          # A request sent over a closed socket is dropped without an error, so
+          # the fetch would just sit out its own timeout. Poll the cache until
+          # the socket returns or the budget runs out.
+          cached = @datastream_client.get_cached_company(company)
+          cached_id = cached && (cached[:id] || cached["id"])
+          return cached_id if cached_id
         end
         return nil if monotonic_ms >= deadline
 
-        sleep(Credits::Leases::DEFAULT_PREWARM_POLL_INTERVAL_MS / 1000.0)
+        sleep([Credits::Leases::DEFAULT_PREWARM_POLL_INTERVAL_MS, deadline - monotonic_ms].min / 1000.0)
       end
+    end
+
+    # get_company waits on the DataStream's own resource timeout, which is many
+    # times the prewarm budget, so it runs on a thread joined to what is left.
+    # An abandoned fetch is left to finish: it still warms the cache for the
+    # next poll or the first real check.
+    def fetch_company_id_within(company, deadline)
+      remaining = deadline - monotonic_ms
+      return nil if remaining <= 0
+
+      fetch = Thread.new { @datastream_client.get_company(company) }
+      fetch.abort_on_exception = false
+      resolved = fetch.join(remaining / 1000.0)&.value
+      resolved && (resolved[:id] || resolved["id"])
+    rescue StandardError => e
+      @logger.debug("prewarm: datastream company fetch failed (#{e.message})")
+      nil
     end
 
     def shut_down_credit_leases

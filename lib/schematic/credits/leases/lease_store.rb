@@ -33,7 +33,7 @@ module Schematic
         # A copy, so a caller cannot mutate store state by holding the result.
         def get(company_id, credit_type_id)
           key = Leases.lease_key(company_id, credit_type_id)
-          with_lock(key) { read(key)&.dup }
+          with_lock_if_present(key) { read(key)&.dup }
         end
 
         # Install a fresh lease for the slot, but only if no live lease already
@@ -88,7 +88,7 @@ module Schematic
         # land on a successor B that replaced A after it expired mid-extend.
         def extend(company_id, credit_type_id, granted_amount, new_expires_at = nil, pin_lease_id = nil)
           key = Leases.lease_key(company_id, credit_type_id)
-          with_lock(key) do
+          with_lock_if_present(key) do
             entry = read(key)
             next if entry.nil?
             next if pin_lease_id && entry.lease_id != pin_lease_id
@@ -128,7 +128,7 @@ module Schematic
           return nil unless Leases.valid_quantity?(credits)
 
           key = Leases.lease_key(company_id, credit_type_id)
-          with_lock(key) do
+          with_lock_if_present(key) do
             entry = read(key)
             next nil if entry.nil?
             # An expired lease is released server-side and its grant refunded to
@@ -153,7 +153,7 @@ module Schematic
           return nil if credits.nil? || credits <= 0
 
           key = Leases.lease_key(company_id, credit_type_id)
-          with_lock(key) do
+          with_lock_if_present(key) do
             entry = read(key)
             next if entry.nil?
             next if pin_lease_id && entry.lease_id != pin_lease_id
@@ -194,6 +194,19 @@ module Schematic
 
         def write(key, entry)
           @table_mutex.synchronize { @leases[key] = entry }
+        end
+
+        # A read of a slot nothing has leased must not leave a mutex behind, or
+        # pruning would only half work: a process checking flags for companies
+        # that never lease would still collect one per slot it asked about. With
+        # no lock registered and no lease stored there is nothing to serialize
+        # against, so answer without taking one. A writer landing in that window
+        # is the same race as reading a moment earlier.
+        def with_lock_if_present(key, &)
+          present = @table_mutex.synchronize { @locks.key?(key) || @leases.key?(key) }
+          return nil unless present
+
+          with_lock(key, &)
         end
 
         # Serialize on the slot's mutex, re-checking after the acquire that it

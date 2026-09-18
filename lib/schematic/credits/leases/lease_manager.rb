@@ -62,12 +62,11 @@ module Schematic
       # first use or after expiry, extend when the local view dips below the low
       # water mark, release on close.
       #
-      # Acquire and extend each get their own best-effort single-flight map,
-      # keyed by slot and kept separate so an in-flight extend can never satisfy
-      # an acquire. Best-effort because a caller racing ahead of the
-      # registration can still issue a duplicate wire call, which is safe: the
-      # server is idempotent for an active slot, replace keeps the first live
-      # lease, and extend reconciles to a total.
+      # Acquire and extend each get their own single-flight map, kept separate
+      # so an in-flight extend can never satisfy an acquire. Best-effort: a
+      # caller racing ahead of the registration can still duplicate a wire call,
+      # which is safe, because the server is idempotent for an active slot,
+      # replace keeps the first live lease, and extend reconciles to a total.
       class LeaseManager
         def initialize(wire_client:, lease_store:, logger:, config: {}, clock: DEFAULT_CLOCK)
           @wire = wire_client
@@ -106,20 +105,17 @@ module Schematic
           end
           return existing if existing && !existing.expired?(@clock.call)
 
-          # An expired or absent slot is left for replace to overwrite: it
-          # guards on expiry and does the delete-and-write atomically. Dropping
-          # the stale entry first would be a separate, non-atomic op that can
-          # interleave between a sibling's read and its replace, clobbering a
-          # lease that sibling just installed. Reading a stale entry in the gap
-          # is harmless, since every path that acts on a lease re-guards on
-          # expiry before trusting it.
+          # An expired or absent slot is left for replace to overwrite, which
+          # guards on expiry and writes atomically. Dropping it first would be a
+          # separate op that can interleave between a sibling's read and its
+          # replace, clobbering the lease that sibling just installed.
 
-          # Check again: stop may have landed during the store read, and a drain
-          # that ran in that gap saw nothing in flight.
+          # Check again: stop may have landed during the store read.
           return log_stopped("acquire", company_id, credit_type_id) if @stopped
 
           key = Leases.lease_key(company_id, credit_type_id)
           flight, leader = enlist(@inflight_acquire, key) { Flight.new }
+          return log_stopped("acquire", company_id, credit_type_id) if flight.nil?
           return flight.wait unless leader
 
           begin
@@ -131,16 +127,13 @@ module Schematic
           result
         end
 
-        # Kick off an extend when one is warranted, on a background thread so a
-        # caller can fire and forget it. Returns the thread, which the check
-        # flow joins when it is extending to cover a reserve it just failed.
+        # Kick off an extend when one is due, on a background thread a caller can
+        # fire and forget. Returns the thread, or nil when nothing is due; the
+        # check flow joins it when the extend covers a reserve it just failed.
         #
-        # An extend is triggered when EITHER the local remaining is at or below
-        # the low-water-mark ratio (steady-state refresh) or the caller names
-        # required_credits and the local remaining is below that figure (a
-        # single check just failed a reserve for that many credits, so extend
-        # opportunistically rather than waiting for the next sub-watermark
-        # check). Never raises.
+        # Due means at or below the low-water-mark ratio, or below a named
+        # required_credits: one large check should not wait for the next
+        # sub-watermark check to top the lease up. Never raises.
         def maybe_extend_in_background(company_id, credit_type_id, required_credits = nil, request_options = nil)
           if @stopped
             # Extending past stop re-holds credits on a lease the close is about
@@ -148,6 +141,10 @@ module Schematic
             log_stopped("extend", company_id, credit_type_id)
             return nil
           end
+          # Decided here rather than inside the thread: most checks sit nowhere
+          # near the water mark, and spawning one thread per check to learn that
+          # costs far more than the store read that answers it.
+          return nil unless extend_due?(company_id, credit_type_id, required_credits)
 
           # The whole call is tracked, not just the wire call inside it: callers
           # drop the thread on the floor, so between the store read and the
@@ -160,9 +157,11 @@ module Schematic
 
         # Refuse new lease work. Idempotent, and paired with drain: stopping
         # first is what makes the drain terminate, since nothing can enqueue
-        # behind it.
+        # behind it. Taken under the flight lock that enlist reads it under, so
+        # once stop returns no further flight can register and the drain that
+        # follows sees every flight there will ever be.
         def stop
-          @stopped = true
+          @flight_mutex.synchronize { @stopped = true }
           nil
         end
 
@@ -199,18 +198,15 @@ module Schematic
           end
         end
 
-        # Release every live lease held in the store. ONLY safe when the store
-        # is per-process: those leases are exclusively this process's, so
-        # releasing them on close returns their unspent remainder to the company
-        # balance immediately instead of waiting out the lease expiry. A shared
-        # store must never do this, since sibling processes are still drawing on
-        # the same leases, and is excluded by the list capability check.
+        # Release every live lease held in the store, returning its unspent
+        # remainder now rather than at expiry. ONLY safe per-process: a shared
+        # store's siblings are still drawing on those leases, which the list
+        # capability check excludes.
         #
-        # timeout_ms bounds the whole pass. Each release is a synchronous round
-        # trip, so a slow or unreachable API would otherwise stretch close by
-        # one timeout per slot, right after the drain was carefully bounded.
-        # Whatever is left when the budget runs out expires server-side, which
-        # is the same outcome a failed release already has.
+        # timeout_ms bounds the whole pass, because each release is a
+        # synchronous round trip and a slow API would otherwise stretch close by
+        # one timeout per slot. What is left expires server-side, the same
+        # outcome a failed release already has.
         def release_all_local_leases(timeout_ms = nil)
           return nil unless @lease_store.respond_to?(:list)
 
@@ -263,6 +259,10 @@ module Schematic
             granted_amount: grant.granted_amount,
             expires_at: grant.expires_at
           ))
+          # A stop that landed during the wire call means the drain may already
+          # have passed, so this lease would be held with nobody left to release
+          # it. Hand it back inline rather than waiting out its expiry.
+          return release_after_stop(company_id, credit_type_id, grant) if wrote && @stopped
           return @lease_store.get(company_id, credit_type_id) if wrote
 
           settle_lost_race(company_id, credit_type_id, grant)
@@ -271,17 +271,25 @@ module Schematic
           nil
         end
 
-        # Another writer sharing the backend installed a live lease for this slot
-        # first, so replace kept theirs to preserve its already-debited balance.
-        #
-        # The server is idempotent for an active slot, so a racing acquire is
-        # normally handed back the SAME lease the sibling installed, in which
-        # case there is nothing to release: releasing would mark the shared lease
-        # released server-side and refund its remainder while every process keeps
-        # reserving against it locally. Only when the server minted a DIFFERENT
-        # lease is ours a redundant hold nobody will draw on. When the slot reads
-        # empty (it expired in the gap), skip the release too: that id may well be
-        # the lease the next acquire is handed back.
+        def release_after_stop(company_id, credit_type_id, grant)
+          @lease_store.drop(company_id, credit_type_id)
+          @wire.release(lease_id: grant.lease_id)
+          @logger.debug("Released credit lease #{grant.lease_id} acquired during shutdown")
+          nil
+        rescue StandardError => e
+          @logger.warn(
+            "Failed to release credit lease #{grant.lease_id} acquired during shutdown " \
+            "(it will expire server-side): #{e.message}"
+          )
+          nil
+        end
+
+        # A sibling installed a live lease first, so replace kept theirs. The
+        # server is idempotent for an active slot, so ours is normally the SAME
+        # lease and releasing it would refund a lease every process is still
+        # reserving against. Only a DIFFERENT lease is a redundant hold worth
+        # releasing. An empty slot (it expired in the gap) is skipped too: that
+        # id may well be what the next acquire is handed back.
         def settle_lost_race(company_id, credit_type_id, grant)
           current = @lease_store.get(company_id, credit_type_id)
           if current && current.lease_id != grant.lease_id
@@ -303,6 +311,23 @@ module Schematic
           current
         end
 
+        # Cheap read-only answer to "would extend_if_needed do anything". It can
+        # go stale between here and the thread, which is harmless: the thread
+        # re-reads and re-decides under the flight.
+        def extend_due?(company_id, credit_type_id, required_credits)
+          entry = @lease_store.get(company_id, credit_type_id)
+          return false if entry.nil? || entry.expired?(@clock.call)
+
+          resolved = resolve_config(credit_type_id)
+          ratio = entry.local_remaining_credits / [entry.granted_amount, 1].max
+          ratio <= resolved.low_water_mark ||
+            (!required_credits.nil? && entry.local_remaining_credits < required_credits)
+        rescue StandardError => e
+          # A store blip must not skip an extend that may well be due.
+          @logger.warn("Failed to read lease store for #{company_id}/#{credit_type_id}: #{e.message}")
+          true
+        end
+
         def extend_if_needed(company_id, credit_type_id, required_credits, request_options, allow_follow_up:)
           begin
             entry = @lease_store.get(company_id, credit_type_id)
@@ -322,18 +347,23 @@ module Schematic
           below_required = !required_credits.nil? && entry.local_remaining_credits < required_credits
           return entry unless below_watermark || below_required
 
-          # Size the extend to cover the request that triggered it: a single
-          # check needing more than local remaining plus the tranche would
-          # otherwise fail its post-extend retry forever, even with ample
-          # server balance. The watermark-driven path keeps asking for the
-          # configured tranche. Sized here, one level above the wire call, so
-          # the flight registered below and the request body provably carry the
-          # same number for a joiner to compare against.
+          # Sized to cover the request that triggered it, or a check needing more
+          # than the tranche would fail its post-extend retry forever against an
+          # ample server balance. Sized here rather than at the wire call so the
+          # flight below and the request body provably carry the same number for
+          # a joiner to compare against.
           shortfall = required_credits ? required_credits - entry.local_remaining_credits : 0
           additional_amount = [resolved.lease_size, shortfall].max
 
           key = Leases.lease_key(company_id, credit_type_id)
           flight, leader = enlist(@inflight_extend, key) { Flight.new(additional_amount) }
+          return log_stopped("extend", company_id, credit_type_id) if flight.nil?
+          # A watermark refresh that finds a flight already running has nothing
+          # to wait for: the credits it wants are the ones that call is fetching.
+          # Only a caller naming required_credits waits, because it has a reserve
+          # to retry.
+          return nil if !leader && required_credits.nil?
+
           unless leader
             joined = flight.wait
             # The flight already asked for at least what we need, which covers
@@ -373,15 +403,12 @@ module Schematic
             idempotency_key: SecureRandom.uuid,
             request_options: request_options || {}
           )
-          # Reconcile the local row to the server's authoritative TOTAL. The
-          # store computes the credit delta atomically against its current
-          # total, not against the pre-wire-call read above: per-process
-          # single-flight does not cover sibling processes, so two of them
-          # extending the same shared lease concurrently would each apply a
+          # Reconciled to the server's TOTAL, with the store computing the delta
+          # against its own current figure rather than the read above: two
+          # sibling processes extending one shared lease would each apply a
           # stale-read delta and mint phantom credits. Pinned to the lease the
-          # server extended: if it expired during the wire call and a successor
-          # took the slot, the local extend is dropped rather than minting the
-          # delta onto the successor.
+          # server extended, so an expiry mid-call drops the delta instead of
+          # minting it onto the successor.
           @lease_store.extend(entry.company_id, entry.credit_type_id, grant.granted_amount, grant.expires_at,
                               entry.lease_id)
           @logger.debug(
@@ -395,9 +422,14 @@ module Schematic
         end
 
         # Register this caller against the slot's in-flight call, or become the
-        # one that makes it. Returns the flight and whether this caller leads.
+        # one that makes it. Returns [flight, leader], or [nil, false] once the
+        # manager is stopped: the stopped read happens here, under the same lock
+        # stop takes, because an unguarded read outside it can be overtaken by a
+        # close whose drain then never sees the flight this would have made.
         def enlist(flights, key)
           @flight_mutex.synchronize do
+            next [nil, false] if @stopped
+
             existing = flights[key]
             next [existing, false] if existing
 

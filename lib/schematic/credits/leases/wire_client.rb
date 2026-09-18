@@ -30,7 +30,10 @@ module Schematic
             request_options: request_options,
             company_id: company_id,
             credit_type_id: credit_type_id,
-            requested_amount: requested_amount.round,
+            # Rounded up, not to nearest: the API takes a whole number, and a
+            # shortfall of 10.4 asked for as 10 leaves the retried reserve short
+            # by the same fraction every time.
+            requested_amount: Leases.wire_quantity(requested_amount),
             expires_at: expires_at.utc.iso8601
           )
           grant_from(response)
@@ -39,7 +42,7 @@ module Schematic
         def extend(lease_id:, additional_amount:, expires_at:, idempotency_key: nil, request_options: {})
           body = {
             lease_id: lease_id,
-            additional_amount: additional_amount.round,
+            additional_amount: Leases.wire_quantity(additional_amount),
             expires_at: expires_at.utc.iso8601,
             # The key is minted once here, outside the retry loop, so every
             # attempt of this extend carries the same one and the server folds

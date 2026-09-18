@@ -269,7 +269,7 @@ module Schematic
             keys: [hash_key(entry.company_id, entry.credit_type_id)],
             argv: [
               entry.lease_id,
-              entry.granted_amount.to_s,
+              num(entry.granted_amount),
               millis(entry.expires_at).to_s,
               LEASE_TTL_GRACE_MS.to_s,
               entry.company_id,
@@ -288,7 +288,7 @@ module Schematic
           EXTEND_SCRIPT.call(
             @client,
             keys: [hash_key(company_id, credit_type_id)],
-            argv: [granted_amount.to_s, expiry.to_s, LEASE_TTL_GRACE_MS.to_s, pin_lease_id.to_s]
+            argv: [num(granted_amount), expiry.to_s, LEASE_TTL_GRACE_MS.to_s, pin_lease_id.to_s]
           )
           nil
         end
@@ -309,7 +309,7 @@ module Schematic
             @client,
             keys: [hash_key(company_id, credit_type_id)],
             # Only the requested amount: now comes from the Redis server clock.
-            argv: [credits.to_s]
+            argv: [num(credits)]
           )
           return nil if result.nil? || result == false
 
@@ -323,12 +323,20 @@ module Schematic
             @client,
             keys: [hash_key(company_id, credit_type_id)],
             # An empty string disables the lease pin, since Lua has no nil ARGV.
-            argv: [credits.to_s, pin_lease_id.to_s]
+            argv: [num(credits), pin_lease_id.to_s]
           )
           nil
         end
 
         private
+
+        # Lua's tonumber reads a decimal string, and Ruby's to_s does not always
+        # produce one: a Rational quantity renders as "1/2", which the script
+        # reads as nil and treats as a zero. Integers are already safe and stay
+        # exact, so only the rest is forced through Float.
+        def num(value)
+          value.is_a?(Integer) ? value.to_s : value.to_f.to_s
+        end
 
         def millis(time)
           (time.to_f * 1000).round

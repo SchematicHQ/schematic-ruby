@@ -443,7 +443,7 @@ A check can allow without reserving credits (the feature is not credit-metered, 
 
 Without `credit_leases` configured, or without a `usage`, `check` falls through to a plain flag check with no reservation. `usage` is still sent as a preflight, locally or to the API, so the verdict accounts for what the call is about to spend. Preflighted verdicts are not cached.
 
-`usage` may be fractional. The API carries whole quantities, so a server-mode reservation, the preflight quantity, and the quantity a settle bills round up. A client-mode reservation keeps the fraction.
+`usage` may be fractional, but the API carries whole quantities, so it rounds up everywhere: the credits a reservation holds, the preflight the flag is evaluated against, and the quantity a settle bills. A hold is therefore never short of what its own track event charges.
 
 `result.entitlement` is a symbol-keyed hash with the field names of `Schematic::Types::FeatureEntitlement`, the same in both modes.
 
@@ -483,7 +483,7 @@ In client mode, `:fail_open` still evaluates the flag's rules with the credit ba
 
 `default_value` also applies when a check falls back to a plain flag check and that check fails. Pass a boolean or a callable.
 
-`check` accepts `timeout_ms`, but the HTTP transport does not yet apply a per-request timeout. Set `timeout` on the client to bound a check.
+`check` accepts `timeout_ms`, but no timeout is configurable yet: the HTTP transport reads one only from its own construction, which `SchematicClient.new` does not expose, and it ignores per-request timeouts. The option is carried on the request so it starts working as soon as the transport reads it.
 
 #### Configuration options
 

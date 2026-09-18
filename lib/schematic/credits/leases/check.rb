@@ -39,12 +39,9 @@ module Schematic
         # question, so a fractional usage rounds up rather than gating on less
         # usage than the operation is about to record.
         quantity = Leases.wire_quantity(usage)
-        # The API documents a zero usage as having no effect, so a check with
-        # one is a plain check and not a preflighted one. Sending an empty
-        # preflight anyway would cost it the flag cache, on the read and on the
-        # write, for a field the server ignores. A zero credit_cost would be
-        # different, saying free rather than absent, but this builder never
-        # emits one.
+        # A zero usage has no effect server-side, so sending a preflight for one
+        # would only cost the check its flag cache. A zero credit_cost would be
+        # different, saying free rather than absent, but this never emits one.
         return nil if quantity.zero?
 
         if options[:event_subtype]
@@ -92,7 +89,10 @@ module Schematic
           return @fallback.call if resolved.nil?
 
           @credit_id, @consumption_rate, @event_subtype = resolved
-          @credit_cost = @options[:usage] * @consumption_rate
+          # Sized from the rounded usage, because that is the quantity the
+          # settle will bill. Holding the fraction would leave the lease short
+          # of what the track event charges against it.
+          @credit_cost = Leases.wire_quantity(@options[:usage]) * @consumption_rate
 
           lease = @deps.manager.acquire_if_needed(@company[:id], @credit_id, request_options)
           return failure("lease_acquire_failed") if lease.nil?
@@ -184,19 +184,12 @@ module Schematic
           nil
         end
 
-        # Entitlement-first resolution. One engine probe against the company's
-        # real balance, with no preflight and no substitution, surfaces the
-        # matched entitlement. Only its shape is read: value_type says whether a
-        # credit is metered at all, and a credit entitlement carries credit_id,
-        # consumption_rate, and event_subtype directly. This replaces a
-        # structural credit-condition scan and lets a non-credit grant skip the
-        # lease and reserve round-trip entirely.
-        #
-        # The probe deliberately omits preflight: applying a credit cost to the
-        # lease-depleted server balance could fail the credit condition, drop
-        # the engine to a lower-priority rule, and hide the very entitlement
-        # being identified. The preflight-aware gate runs later, against the
-        # substituted lease balance.
+        # One probe against the real balance surfaces the matched entitlement,
+        # which names the credit directly and lets a non-credit grant skip the
+        # lease round trip entirely. The probe omits preflight on purpose:
+        # charging a cost against the lease-depleted server balance could fail
+        # the credit condition, drop the engine to a lower-priority rule, and
+        # hide the very entitlement being identified.
         def resolve_entitlement
           probe = probe_entitlement
           return nil if probe.nil?
@@ -280,7 +273,7 @@ module Schematic
             company_id: @company[:id],
             credit_type_id: @credit_id,
             event_subtype: @event_subtype,
-            quantity_reserved: @options[:usage],
+            quantity_reserved: Leases.wire_quantity(@options[:usage]),
             credits_reserved: @credit_cost,
             consumption_rate: @consumption_rate,
             expires_at: @clock.call + (resolved.reservation_ttl_ms / 1000.0),
@@ -288,13 +281,10 @@ module Schematic
           )
         end
 
-        # Record the reservation after the debit and before the engine gate.
-        # The debit and this record are two steps; persisting the hold means a
-        # crash between them leaves a sweepable reservation rather than
-        # stranding the debited credits until the whole lease expires. The
-        # unprotected window is just the gap between the two, with no I/O in
-        # between, and a crash there leaks at most credit_cost until the lease's
-        # own expiry reclaims it server-side.
+        # Recorded between the debit and the gate, so a crash leaves a sweepable
+        # reservation rather than credits stranded until the lease expires. The
+        # window it cannot cover is the gap before this call, which has no I/O
+        # in it and leaks at most credit_cost until that expiry.
         def persist(reservation, reserve)
           @deps.reservations.add(reservation)
           nil
@@ -320,14 +310,11 @@ module Schematic
           )
         end
 
-        # Substitute the lease balance into the company snapshot so the engine
-        # gates against the lease's local view rather than the server's
-        # authoritative balance, and tell it this action costs credit_cost
-        # against this credit id. The engine then checks
-        # pre_reservation - credit_cost >= 0, the same arithmetic try_reserve
-        # just enforced, plus every non-credit rule. Pre-reservation is the
-        # post-debit balance the atomic reserve returned plus the cost it
-        # debited: exact as of the debit, with no read race.
+        # The engine gates against the lease's local view, not the server's
+        # balance, so it re-checks the arithmetic try_reserve just enforced plus
+        # every non-credit rule. The pre-reservation figure is the atomic
+        # reserve's own post-debit balance plus what it debited, so it is exact
+        # as of the debit with no read race.
         def gate(reservation, reserve)
           pre_reservation = reserve.balance + @credit_cost
           substituted = substitute_credit_balance(@company, @credit_id, pre_reservation)
@@ -381,17 +368,12 @@ module Schematic
           )
         end
 
-        # Every can't-gate outcome (wire failure, store failure, exhausted
-        # lease) funnels through here, so the fail-open or fail-closed contract
-        # holds even when the backing infrastructure is down.
-        #
-        # fail-closed denies outright. fail-open means err on the side of
-        # assuming the credits are there, NOT skip evaluation: the engine still
-        # runs with the credit balance substituted to an effectively unlimited
-        # value, so plan targeting, overrides, and every non-credit condition
-        # still apply. A company that is not entitled stays denied even with the
-        # lease backend down. Only if that evaluation itself fails does the SDK
-        # fall back to a blanket allow.
+        # Every can't-gate outcome funnels through here. fail-open means assume
+        # the credits are there, NOT skip evaluation: the engine still runs with
+        # the balance substituted to an effectively unlimited value, so a company
+        # that is not entitled stays denied even with the lease backend down.
+        # Only if that evaluation itself fails does this fall back to a blanket
+        # allow.
         def failure(reason)
           result =
             if @on_failure == :fail_closed

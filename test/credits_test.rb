@@ -157,6 +157,16 @@ class LeaseStoreTest < Minitest::Test
     assert_equal %w[lse_1 lse_2], @store.list.map(&:lease_id).sort
   end
 
+  # A process checking flags for companies that never lease must not collect a
+  # mutex per slot it merely asked about, or pruning only half works.
+  def test_reading_a_slot_with_no_lease_registers_no_lock
+    assert_nil @store.get("co_missing", "ct_1")
+    assert_nil @store.try_reserve("co_missing", "ct_1", 10)
+    assert_nil @store.refund("co_missing", "ct_1", 10)
+
+    assert_empty @store.instance_variable_get(:@locks)
+  end
+
   # A long-lived process leases for many companies, and a mutex per slot it has
   # ever touched is a leak.
   def test_dropping_a_lease_prunes_its_lock
@@ -302,6 +312,17 @@ class RedisStoreLayoutTest < Minitest::Test
                                                       clock: clock.to_proc)
   end
 
+  # Lua's tonumber reads a decimal string, and a Rational renders as "1/2",
+  # which the script reads as nil and treats as a zero.
+  def test_a_rational_amount_reaches_the_script_as_a_decimal
+    @leases.replace(lease_entry(granted_amount: Rational(3, 2)))
+
+    assert_in_delta 1.5, @leases.get("co_1", "ct_1").granted_amount
+    assert_in_delta 1.5, @leases.get("co_1", "ct_1").local_remaining_credits
+    refute_nil @leases.try_reserve("co_1", "ct_1", Rational(1, 2))
+    assert_in_delta 1.0, @leases.get("co_1", "ct_1").local_remaining_credits
+  end
+
   # The key layout is what lets a mixed-language fleet share one lease per slot.
   def test_lease_hash_key_layout
     assert_equal "acme:credit-lease:co_1:ct_1", @leases.hash_key("co_1", "ct_1")
@@ -397,6 +418,64 @@ class LeaseManagerTest < Minitest::Test
     assert_equal "lse_1", first.value.lease_id
     assert_equal "lse_1", joiner.value.lease_id
     assert_equal 1, @wire.acquire_calls.size
+  end
+
+  # Most checks sit nowhere near the water mark, so learning that must not cost
+  # a thread each.
+  def test_no_thread_is_spawned_when_no_extend_is_due
+    @leases.replace(lease_entry(granted_amount: 1000))
+
+    assert_nil @manager.maybe_extend_in_background("co_1", "ct_1")
+    assert_empty @wire.extend_calls
+  end
+
+  # Watermark refreshes arriving during one slow extend have nothing to wait
+  # for: the credits they want are the ones that call is fetching.
+  def test_watermark_refreshes_during_one_extend_make_one_wire_call
+    @leases.replace(lease_entry(granted_amount: 1000))
+    # Draw the slot down under the water mark.
+    @leases.try_reserve("co_1", "ct_1", 900)
+    started = Queue.new
+    release = Queue.new
+    @wire.queue_extend({ "lease" => { "lease_id" => "lse_1", "granted_amount" => 2000,
+                                      "expires_at_ms" => 300_000 } })
+    @wire.during_extend = -> do
+      started << true
+      release.pop
+    end
+
+    first = @manager.maybe_extend_in_background("co_1", "ct_1")
+    started.pop
+    followers = Array.new(10) { @manager.maybe_extend_in_background("co_1", "ct_1") }
+    release << true
+    ([first] + followers).compact.each(&:join)
+
+    assert_equal 1, @wire.extend_calls.size
+    # The followers found the flight and returned rather than each parking a
+    # thread on it.
+    assert(followers.compact.all? { |thread| !thread.alive? })
+  end
+
+  # stop and enlist share the flight lock, so once stop returns no acquire can
+  # register behind the drain that follows it.
+  def test_an_acquire_cannot_register_once_the_manager_is_stopped
+    @manager.stop
+    @wire.queue_acquire(acquire_script)
+
+    assert_nil @manager.acquire_if_needed("co_1", "ct_1")
+    assert_empty @wire.acquire_calls
+  end
+
+  # A stop landing mid-acquire leaves a lease with nobody to release it, since
+  # the drain may already have passed.
+  def test_a_lease_acquired_during_a_stop_is_released_inline
+    @wire.queue_acquire(acquire_script)
+    manager = @manager
+    @wire.during_acquire = -> { manager.stop }
+
+    assert_nil @manager.acquire_if_needed("co_1", "ct_1")
+    assert_equal ["lse_1"], @wire.release_calls
+    assert_nil @leases.get("co_1", "ct_1")
   end
 
   # The drain budget is what a caller asked close to take in total. Spending it
@@ -544,6 +623,26 @@ class WireClientTest < Minitest::Test
     end
   end
 
+  # A shortfall of 10.4 asked for as 10 leaves the retried reserve short by the
+  # same fraction every time, so the ask rounds up.
+  def test_a_fractional_amount_rounds_up_on_both_calls
+    stub_request(:post, "https://api.schematichq.test/billing/credits/lease")
+      .to_return(status: 200, body: JSON.generate(LEASE_BODY), headers: { "Content-Type" => "application/json" })
+    stub_request(:put, "https://api.schematichq.test/billing/credits/lease/lse_1/extend")
+      .to_return(status: 200, body: JSON.generate(LEASE_BODY), headers: { "Content-Type" => "application/json" })
+
+    @wire.acquire(company_id: "co_1", credit_type_id: "ct_1", requested_amount: 10.4,
+                  expires_at: Time.utc(2026, 1, 1, 0, 5))
+    @wire.extend(lease_id: "lse_1", additional_amount: 10.4, expires_at: Time.utc(2026, 1, 1, 0, 5))
+
+    assert_requested(:post, "https://api.schematichq.test/billing/credits/lease") do |req|
+      JSON.parse(req.body)["requested_amount"] == 11
+    end
+    assert_requested(:put, "https://api.schematichq.test/billing/credits/lease/lse_1/extend") do |req|
+      JSON.parse(req.body)["additional_amount"] == 11
+    end
+  end
+
   # An extend is an increment, so the server needs a key to fold a retried one
   # back into a single grant. The manager supplies one; a caller that does not
   # still gets a key rather than an unguarded increment.
@@ -665,6 +764,18 @@ class CheckFlowTest < Minitest::Test
 
     refute_predicate result, :allowed?
     assert(logger.warnings.any? { |w| w.include?("fail_closd") })
+  end
+
+  # The settle bills a whole unit, so the hold has to cover one: sizing it from
+  # the raw fraction would leave the lease short of its own track event.
+  def test_a_fractional_usage_holds_the_rounded_up_cost
+    @leases.replace(lease_entry)
+    result = run_check([probe, { "value" => true, "reason" => "ok" }], usage: 0.5)
+
+    assert_predicate result, :allowed?
+    assert_in_delta 10, result.reservation.credits_reserved
+    assert_in_delta 1, result.reservation.quantity_reserved
+    assert_in_delta 990, @leases.get("co_1", "ct_1").local_remaining_credits
   end
 
   # A boolean or override grant resolves without drawing a credit, so it must
@@ -1384,6 +1495,99 @@ class CreditLeaseClientWiringTest < Minitest::Test
     assert_predicate result, :allowed?
   ensure
     client&.close
+  end
+
+  # A request sent over a closed socket is dropped without an error, so a fetch
+  # would sit out the DataStream's own 30 second timeout, many times the
+  # prewarm budget.
+  def test_a_disconnected_datastream_resolves_within_the_budget
+    client = build_client(credit_leases: { mode: :client, prewarm_resolve_timeout_ms: 200 })
+    datastream = Object.new
+    def datastream.connected? = false
+    def datastream.get_cached_company(_company) = nil
+    def datastream.get_company(_company) = raise("a disconnected datastream must not be fetched from")
+    def datastream.close = nil
+    client.instance_variable_set(:@datastream_client, datastream)
+
+    started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    result = client.send(:resolve_company_id_with_wait, { "org_id" => "acme" })
+    elapsed_ms = (Process.clock_gettime(Process::CLOCK_MONOTONIC) - started) * 1000
+
+    assert_nil result
+    assert_operator elapsed_ms, :<, 600
+  ensure
+    client&.close
+  end
+
+  # And a connected but slow fetch is capped at the budget rather than the
+  # DataStream's own timeout.
+  def test_a_slow_connected_fetch_returns_at_the_deadline
+    client = build_client(credit_leases: { mode: :client, prewarm_resolve_timeout_ms: 200 })
+    datastream = Object.new
+    def datastream.connected? = true
+    def datastream.get_cached_company(_company) = nil
+
+    def datastream.get_company(_company)
+      sleep 30
+      nil
+    end
+
+    def datastream.close = nil
+    client.instance_variable_set(:@datastream_client, datastream)
+
+    started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    result = client.send(:resolve_company_id_with_wait, { "org_id" => "acme" })
+    elapsed_ms = (Process.clock_gettime(Process::CLOCK_MONOTONIC) - started) * 1000
+
+    assert_nil result
+    assert_operator elapsed_ms, :<, 1000
+  ensure
+    client&.close
+  end
+
+  # A thread that would only log "no-op in server mode" is still a thread that
+  # close has to wait out.
+  def test_identify_with_a_prewarm_starts_no_thread_in_server_mode
+    # close flushes the buffer this identify fills.
+    stub_request(:post, %r{https://c\.schematichq\.com/.*}).to_return(status: 200, body: "{}")
+    client = build_client(credit_leases: { mode: :server, default_reservation_ttl: 60_000 })
+
+    client.identify({ keys: { "user_id" => "u_1" }, company: { keys: { "id" => "co_1" } } },
+                    prewarm: ["ct_1"])
+
+    assert_empty client.instance_variable_get(:@pending_prewarms)
+  ensure
+    client&.close
+  end
+
+  # Documented as never raising, and a caller reading ids out of config can hand
+  # over nil without meaning to.
+  def test_prewarm_tolerates_a_nil_credit_type_id_list
+    client = build_client(credit_leases: { mode: :client })
+
+    assert_nil client.prewarm(nil, company: { "id" => "co_1" })
+    assert_nil client.prewarm([], company: { "id" => "co_1" })
+  ensure
+    client&.close
+  end
+
+  # A knob that cannot mean anything is a configuration bug, and the place to
+  # say so is where the stack still points at the caller.
+  def test_unusable_numeric_knobs_are_rejected_at_construction
+    {
+      { sweep_interval_ms: 0 } => "sweep_interval_ms",
+      { default_reservation_ttl: -1 } => "default_reservation_ttl",
+      { default_lease_duration: "5m" } => "default_lease_duration",
+      { default_lease_size: 0 } => "default_lease_size",
+      { low_water_mark: 1 } => "low_water_mark",
+      { low_water_mark: 0 } => "low_water_mark",
+      { low_water_mark: Float::NAN } => "low_water_mark",
+      { overrides: { "ct_1" => { default_lease_size: -5 } } } => "default_lease_size"
+    }.each do |knob, name|
+      error = assert_raises(ArgumentError) { build_client(credit_leases: { mode: :client }.merge(knob)) }
+
+      assert_includes error.message, name
+    end
   end
 
   def test_prewarm_is_a_no_op_without_credit_leases
