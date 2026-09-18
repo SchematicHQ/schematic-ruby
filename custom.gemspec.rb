@@ -3,6 +3,12 @@
 def add_custom_gemspec_data(spec)
   spec.homepage = "https://github.com/SchematicHQ/schematic-ruby"
 
+  # Cross-SDK test fixtures, read only by test/conformance_test.rb, which the
+  # generated gemspec already drops with the rest of test/. Rejected here rather
+  # than there because that file is generated; npm's allowlist keeps them out of
+  # schematic-node the same way.
+  spec.files.reject! { |f| f.start_with?("conformance/") }
+
   # The WASM binary is gitignored (downloaded at build time via scripts/download-wasm.sh)
   # but must be included in the published gem. Append it to the file list.
   wasm_file = "lib/schematic/wasm/rulesengine.wasm"
