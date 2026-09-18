@@ -70,6 +70,30 @@ module Schematic
         value.to_s.tr("-", "_").downcase.to_sym
       end
 
+      # How long stop waits for the sweeper to finish what it is doing before
+      # killing it. Long enough for a sweep already past its claim to land its
+      # refund, short enough that close stays prompt.
+      SWEEP_STOP_JOIN_MS = 100
+
+      # Resolve a caller's on_acquire_failure, or fail closed.
+      #
+      # An unrecognized value must not read as fail-open: the branches all test
+      # for :fail_closed, so a typo would quietly turn the safe default into the
+      # permissive one on every check. Name the value in the warning, since a
+      # silent downgrade of a gate is the thing worth telling someone about.
+      def self.resolve_failure_mode(value, logger = nil)
+        return :fail_closed if value.nil?
+
+        mode = normalize_symbol(value)
+        return mode if FAILURE_MODES.include?(mode)
+
+        logger&.warn(
+          "Unrecognized on_acquire_failure #{value.inspect}; expected one of " \
+          "#{FAILURE_MODES.join(" or ")}. Failing closed."
+        )
+        :fail_closed
+      end
+
       # Whether a caller-supplied quantity can size a credit hold. NaN is the
       # dangerous case: it slips through every numeric comparison, and a NaN
       # balance would approve every later reserve on a possibly shared lease.

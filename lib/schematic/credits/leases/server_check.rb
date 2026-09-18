@@ -48,7 +48,7 @@ module Schematic
           @fallback = fallback
           @logger = deps.logger
           @clock = deps.clock || DEFAULT_CLOCK
-          @on_failure = Leases.normalize_symbol(@options[:on_acquire_failure]) || :fail_closed
+          @on_failure = Leases.resolve_failure_mode(@options[:on_acquire_failure], @logger)
           # One key for this check, minted before the call rather than per
           # attempt: check-and-reserve takes a hold, so a 502 arriving after the
           # API committed one would otherwise have the retry take a second and

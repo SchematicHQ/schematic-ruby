@@ -838,8 +838,25 @@ module Schematic
     # knobs, so one config shape travels across a mixed fleet.
     def normalize_credit_lease_config(config)
       normalized = config.transform_keys(&:to_sym)
-      normalized[:mode] = Credits::Leases.normalize_symbol(normalized[:mode]) if normalized[:mode]
+      normalized[:mode] = resolve_credit_lease_mode(normalized[:mode])
       normalized
+    end
+
+    # An unrecognized mode must not read as :auto in silence: the branches test
+    # for :client and :server and everything else falls through, so a typo would
+    # quietly pick a mode the caller did not ask for. Name the value, then use
+    # the documented default.
+    def resolve_credit_lease_mode(value)
+      return :auto if value.nil?
+
+      mode = Credits::Leases.normalize_symbol(value)
+      return mode if Credits::Leases::MODES.include?(mode)
+
+      @logger.warn(
+        "Unrecognized credit_leases[:mode] #{value.inspect}; expected one of " \
+        "#{Credits::Leases::MODES.join(", ")}. Using :auto."
+      )
+      :auto
     end
 
     # The API refuses a hold expiring more than an hour after its own clock, and
@@ -1154,7 +1171,11 @@ module Schematic
         )
       end
       @credit_lease_manager.drain([deadline - monotonic_ms, 0].max)
-      @credit_lease_manager.release_all_local_leases unless @lease_backend_shared
+      return if @lease_backend_shared
+
+      # The releases share the shutdown budget too, so a slow API cannot stretch
+      # close past what the caller was promised.
+      @credit_lease_manager.release_all_local_leases([deadline - monotonic_ms, 0].max)
     end
 
     def monotonic_ms

@@ -205,15 +205,31 @@ module Schematic
         # balance immediately instead of waiting out the lease expiry. A shared
         # store must never do this, since sibling processes are still drawing on
         # the same leases, and is excluded by the list capability check.
-        def release_all_local_leases
+        #
+        # timeout_ms bounds the whole pass. Each release is a synchronous round
+        # trip, so a slow or unreachable API would otherwise stretch close by
+        # one timeout per slot, right after the drain was carefully bounded.
+        # Whatever is left when the budget runs out expires server-side, which
+        # is the same outcome a failed release already has.
+        def release_all_local_leases(timeout_ms = nil)
           return nil unless @lease_store.respond_to?(:list)
 
           entries = @lease_store.list
           return nil if entries.nil? || entries.empty?
 
-          entries.each do |entry|
+          deadline = timeout_ms.nil? ? nil : monotonic_ms + timeout_ms
+          entries.each_with_index do |entry, index|
             # Skip expired leases: the server already swept and refunded them.
             next if entry.expired?(@clock.call)
+
+            if deadline && monotonic_ms >= deadline
+              left = entries[index..].count { |remaining| !remaining.expired?(@clock.call) }
+              @logger.warn(
+                "Timed out after #{timeout_ms.round}ms releasing credit leases on close; " \
+                "#{left} left to server-side expiry"
+              )
+              break
+            end
 
             begin
               @wire.release(lease_id: entry.lease_id)

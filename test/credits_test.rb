@@ -22,6 +22,24 @@ module CreditTestHelpers
     Schematic::ConsoleLogger.new(level: :error)
   end
 
+  # Captures warnings so a test can assert the SDK said something about a
+  # misconfiguration rather than correcting it in silence.
+  class RecordingLogger
+    attr_reader :warnings
+
+    def initialize
+      @warnings = []
+    end
+
+    def warn(message)
+      @warnings << message
+    end
+
+    def error(_message); end
+    def debug(_message); end
+    def info(_message); end
+  end
+
   def clock
     @clock ||= LeaseSupport::VirtualClock.new
   end
@@ -223,6 +241,54 @@ class ReservationStoreTest < Minitest::Test
     @store.start_sweep
     @store.stop
     @store.stop
+  end
+end
+
+# The sweeper deletes a reservation and then refunds its lease. Killing it
+# between the two strands the unspent slice until the lease expires, so stop
+# gives it a bounded moment to land the refund first.
+class ReservationSweepStopTest < Minitest::Test
+  include CreditTestHelpers
+
+  def test_stop_lets_a_sweep_in_progress_land_its_refund
+    refunding = Queue.new
+    refunded = []
+    leases = Leases::LeaseStore.new(clock: clock.to_proc)
+    leases.replace(lease_entry)
+    slow = Object.new
+    slow.define_singleton_method(:refund) do |company_id, credit_type_id, credits, pin_lease_id = nil|
+      refunding << true
+      # The window a kill would land in.
+      sleep 0.05
+      refunded << credits
+      leases.refund(company_id, credit_type_id, credits, pin_lease_id)
+    end
+    store = Leases::ReservationStore.new(slow, 10, clock: clock.to_proc, logger: silent_logger)
+    store.add(reservation(expires_at_ms: 0))
+    store.start_sweep
+    refunding.pop
+
+    started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    store.stop
+    elapsed_ms = (Process.clock_gettime(Process::CLOCK_MONOTONIC) - started) * 1000
+
+    assert_equal [100.0], refunded
+    assert_in_delta 1000, leases.get("co_1", "ct_1").local_remaining_credits
+    # And still returns promptly: the join is bounded, not open-ended.
+    assert_operator elapsed_ms, :<, 400
+  end
+
+  # Nothing to wait for is the common case, and it must not cost the join
+  # budget.
+  def test_stop_returns_at_once_when_no_sweep_is_running
+    store = Leases::ReservationStore.new(Leases::LeaseStore.new(clock: clock.to_proc), 1000,
+                                         clock: clock.to_proc, logger: silent_logger)
+
+    started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    store.stop
+    elapsed_ms = (Process.clock_gettime(Process::CLOCK_MONOTONIC) - started) * 1000
+
+    assert_operator elapsed_ms, :<, 50
   end
 end
 
@@ -579,6 +645,28 @@ class CheckFlowTest < Minitest::Test
     assert_equal Time.utc(2026, 2, 1), result.entitlement[:metric_reset_at]
   end
 
+  # Every branch tests for :fail_closed, so a typo would quietly read as
+  # fail-open and turn a gate permissive.
+  def test_a_misspelled_failure_mode_fails_closed_and_says_so
+    logger = RecordingLogger.new
+    @wire.queue_acquire({ "error" => "wire down" })
+    datastream = LeaseSupport::ScriptedDataStream.new(
+      flag_key: "inference", company: { id: "co_1", credit_balances: { "ct_1" => 5000 } },
+      results: [probe, { "value" => true, "reason" => "ok" }]
+    )
+    result = Leases.check_with_lease(
+      Leases::CheckDeps.new(
+        lease_store: @leases, reservations: @reservations, manager: @manager, datastream: datastream,
+        logger: logger, clock: clock.to_proc, enqueue_flag_check_event: ->(body) { @events << body }
+      ),
+      "inference", { company: { "id" => "co_1" } },
+      { usage: 10, event_subtype: "inference_tokens", on_acquire_failure: :fail_closd }
+    ) { Leases::CheckResult.new(allowed: true, value: true, reason: "fallback", flag_key: "inference") }
+
+    refute_predicate result, :allowed?
+    assert(logger.warnings.any? { |w| w.include?("fail_closd") })
+  end
+
   # A boolean or override grant resolves without drawing a credit, so it must
   # not cost a lease acquire and a reserve-then-cancel.
   def test_a_non_credit_entitlement_falls_back_without_touching_the_wire
@@ -907,6 +995,18 @@ class ServerCheckTest < Minitest::Test
     assert_equal Time.utc(2026, 2, 1), result.entitlement[:metric_reset_at]
   end
 
+  def test_a_misspelled_failure_mode_fails_closed_and_says_so
+    logger = RecordingLogger.new
+    @deps.logger = logger
+    stub_check_and_reserve(status: 500, body: { "error" => "boom" })
+    @deps.default_value = -> { true }
+
+    result = run_server_check(on_acquire_failure: "fail-opne")
+
+    refute_predicate result, :allowed?
+    assert(logger.warnings.any? { |w| w.include?("fail-opne") })
+  end
+
   def test_each_check_sends_its_own_idempotency_key
     keys = []
     record_idempotency_keys(
@@ -1223,6 +1323,65 @@ class CreditLeaseClientWiringTest < Minitest::Test
     # And leaves the cached plain verdict as it found it.
     assert client.check_flag("inference", company: { "id" => "co_1" })
     assert_requested plain, times: 1
+  ensure
+    client&.close
+  end
+
+  # Everything that is not :client or :server falls through to the auto
+  # behaviour, so a typo would silently pick a mode the caller did not ask for.
+  def test_a_misspelled_mode_falls_back_to_auto_and_says_so
+    logger = RecordingLogger.new
+    client = Schematic::SchematicClient.new(
+      api_key: "sch_test", base_url: "https://api.schematichq.test", logger: logger,
+      credit_leases: { mode: :serverr, default_reservation_ttl: 60_000 }
+    )
+
+    assert_equal :auto, client.instance_variable_get(:@credit_lease_mode)
+    assert(logger.warnings.any? { |w| w.include?("serverr") })
+  ensure
+    client&.close
+  end
+
+  # Releases are synchronous round trips, so without a bound a slow API would
+  # stretch close by one timeout per leased slot, right after the drain was
+  # carefully bounded.
+  def test_releasing_leases_on_close_stops_when_the_budget_runs_out
+    logger = RecordingLogger.new
+    store = Leases::LeaseStore.new(clock: clock.to_proc)
+    10.times do |i|
+      store.replace(Leases::LeaseEntry.new(lease_id: "lse_#{i}", company_id: "co_#{i}",
+                                           credit_type_id: "ct_1", granted_amount: 1000,
+                                           expires_at: Time.now + 600))
+    end
+    wire = Object.new
+    released = []
+    wire.define_singleton_method(:release) do |lease_id:, **|
+      released << lease_id
+      sleep 0.05
+    end
+    manager = Leases::LeaseManager.new(wire_client: wire, lease_store: store, logger: logger,
+                                       clock: -> { Time.now })
+
+    started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    manager.release_all_local_leases(150)
+    elapsed_ms = (Process.clock_gettime(Process::CLOCK_MONOTONIC) - started) * 1000
+
+    assert_operator elapsed_ms, :<, 500
+    assert_operator released.size, :<, 10
+    assert(logger.warnings.any? { |w| w.include?("left to server-side expiry") })
+  end
+
+  # The Java port had this as a blocker: a check with a usage but no leases
+  # falls through to the REST check, and when that call cannot be made at all
+  # the caller's default has to answer.
+  def test_an_unreachable_api_answers_with_the_caller_default
+    client = Schematic::SchematicClient.new(api_key: "sch_test", base_url: "https://api.schematichq.test",
+                                            logger: silent_logger, flag_defaults: { "inference" => false })
+    stub_request(:post, "https://api.schematichq.test/flags/inference/check").to_timeout
+
+    result = client.check("inference", company: { "id" => "co_1" }, usage: 10, default_value: true)
+
+    assert_predicate result, :allowed?
   ensure
     client&.close
   end

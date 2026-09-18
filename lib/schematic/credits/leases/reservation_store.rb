@@ -124,7 +124,14 @@ module Schematic
             @sweep_thread = nil
             thread
           end
-          thread&.kill
+          return nil if thread.nil?
+
+          # A sweep past its claim has deleted the reservation but not yet
+          # refunded the lease, and killing it there strands the unspent slice
+          # until the lease expires. Give it a bounded moment to land that
+          # refund, then kill: the loop checks @stopped as soon as its sleep
+          # ends, so a parked sweeper costs at most this wait.
+          thread.kill unless thread.join(SWEEP_STOP_JOIN_MS / 1000.0)
           nil
         end
 

@@ -81,7 +81,7 @@ module Schematic
           @fallback = fallback
           @logger = deps.logger
           @clock = deps.clock || DEFAULT_CLOCK
-          @on_failure = Leases.normalize_symbol(@options[:on_acquire_failure]) || :fail_closed
+          @on_failure = Leases.resolve_failure_mode(@options[:on_acquire_failure], @logger)
         end
 
         def run
