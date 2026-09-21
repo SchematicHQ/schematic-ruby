@@ -29,6 +29,8 @@ module Schematic
 
       field :auto_topup_threshold_percent, -> { Integer }, optional: true, nullable: false
 
+      field :billing_mode, -> { Schematic::Types::BillingPlanCreditGrantBillingMode }, optional: true, nullable: false
+
       field :can_buy_bundles, -> { Internal::Types::Boolean }, optional: true, nullable: false
 
       field :company_credit_amount, -> { Integer }, optional: true, nullable: false
@@ -57,6 +59,8 @@ module Schematic
 
       field :postpaid_rate_per_unit_decimal, -> { String }, optional: true, nullable: false
 
+      field :price_tiers, -> { Internal::Types::Array[Schematic::Types::CreditGrantPriceTierRequestBody] }, optional: true, nullable: false
+
       field :reset_cadence, -> { Schematic::Types::BillingPlanCreditGrantResetCadence }, optional: false, nullable: false
 
       field :reset_start, -> { Schematic::Types::BillingPlanCreditGrantResetStart }, optional: false, nullable: false
@@ -66,6 +70,12 @@ module Schematic
       field :rollover_percentage, -> { Integer }, optional: true, nullable: false
 
       field :scaling, -> { Schematic::Types::PlanCreditGrantScaling }, optional: true, nullable: false
+
+      field :tier_mode, -> { Schematic::Types::BillingTiersMode }, optional: true, nullable: false
+
+      field :unit_price, -> { Integer }, optional: true, nullable: false
+
+      field :unit_price_decimal, -> { String }, optional: true, nullable: false
     end
   end
 end
