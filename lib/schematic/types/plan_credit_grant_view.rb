@@ -37,6 +37,10 @@ module Schematic
 
       field :billing_credit_postpaid_rate_per_unit_decimal, -> { String }, optional: true, nullable: false
 
+      field :billing_mode, -> { Schematic::Types::BillingPlanCreditGrantBillingMode }, optional: false, nullable: false
+
+      field :billing_product_price_id, -> { String }, optional: true, nullable: false
+
       field :company_credit_amount, -> { Integer }, optional: false, nullable: false
 
       field :created_at, -> { String }, optional: false, nullable: false
@@ -70,6 +74,8 @@ module Schematic
       field :plan_version_id, -> { String }, optional: true, nullable: false
 
       field :plural_name, -> { String }, optional: true, nullable: false
+
+      field :price, -> { Schematic::Types::BillingPriceView }, optional: true, nullable: false
 
       field :reset_cadence, -> { Schematic::Types::BillingPlanCreditGrantResetCadence }, optional: true, nullable: false
 

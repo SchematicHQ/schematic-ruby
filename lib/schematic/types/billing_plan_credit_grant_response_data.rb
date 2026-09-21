@@ -27,6 +27,8 @@ module Schematic
 
       field :auto_topup_threshold_percent, -> { Integer }, optional: true, nullable: false
 
+      field :billing_mode, -> { Schematic::Types::BillingPlanCreditGrantBillingMode }, optional: false, nullable: false
+
       field :can_buy_bundles, -> { Internal::Types::Boolean }, optional: false, nullable: false
 
       field :company_credit_amount, -> { Integer }, optional: false, nullable: false
@@ -71,6 +73,10 @@ module Schematic
 
       field :postpaid_rate_per_unit_decimal, -> { String }, optional: true, nullable: false
 
+      field :price, -> { Schematic::Types::BillingPriceResponseData }, optional: true, nullable: false
+
+      field :price_tiers, -> { Internal::Types::Array[Schematic::Types::BillingPlanCreditGrantPriceTierResponseData] }, optional: false, nullable: false
+
       field :reset_cadence, -> { Schematic::Types::BillingPlanCreditGrantResetCadence }, optional: true, nullable: false
 
       field :reset_start, -> { Schematic::Types::BillingPlanCreditGrantResetStart }, optional: true, nullable: false
@@ -80,6 +86,12 @@ module Schematic
       field :rollover_percentage, -> { Integer }, optional: false, nullable: false
 
       field :scaling, -> { Schematic::Types::PlanCreditGrantScaling }, optional: false, nullable: false
+
+      field :tier_mode, -> { Schematic::Types::BillingTiersMode }, optional: true, nullable: false
+
+      field :unit_price, -> { Integer }, optional: true, nullable: false
+
+      field :unit_price_decimal, -> { String }, optional: true, nullable: false
 
       field :updated_at, -> { String }, optional: false, nullable: false
     end
