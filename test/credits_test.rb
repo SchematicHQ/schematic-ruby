@@ -686,6 +686,42 @@ class LeaseManagerTest < Minitest::Test
     assert_empty @wire.extend_calls
   end
 
+  # The deadline a check fixed at its start caps the join, not one taken at the
+  # join: time already spent on the acquire and reserve is not given back.
+  def test_a_joiner_spends_the_deadline_its_check_started_with
+    @leases.replace(lease_entry(granted_amount: 1000))
+    @leases.try_reserve("co_1", "ct_1", 1000)
+    key = Leases.lease_key("co_1", "ct_1")
+    flight = Leases::Flight.new(20_000)
+    @manager.instance_variable_get(:@inflight_extend)[key] = flight
+    spent = Leases.join_deadline({ timeout_in_seconds: 0.05 }) - 50
+
+    started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    entry = @manager.send(:extend_if_needed, "co_1", "ct_1", 18_000, { timeout_in_seconds: 5 }, spent)
+    elapsed_ms = (Process.clock_gettime(Process::CLOCK_MONOTONIC) - started) * 1000
+
+    assert_nil entry
+    assert_operator elapsed_ms, :<, 1000
+    refute_predicate flight, :done?
+  end
+
+  # An acquire joiner is capped the same way: someone else's acquire runs on
+  # someone else's timeout.
+  def test_an_acquire_joiner_gives_up_at_its_own_deadline
+    key = Leases.lease_key("co_1", "ct_1")
+    flight = Leases::Flight.new
+    @manager.instance_variable_get(:@inflight_acquire)[key] = flight
+
+    started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    entry = @manager.acquire_if_needed("co_1", "ct_1", { timeout_in_seconds: 0.05 })
+    elapsed_ms = (Process.clock_gettime(Process::CLOCK_MONOTONIC) - started) * 1000
+
+    assert_nil entry
+    assert_operator elapsed_ms, :<, 1000
+    refute_predicate flight, :done?
+    assert_empty @wire.acquire_calls
+  end
+
   # stop and enlist share the flight lock, so once stop returns no acquire can
   # register behind the drain that follows it.
   def test_an_acquire_cannot_register_once_the_manager_is_stopped

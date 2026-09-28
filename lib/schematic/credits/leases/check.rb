@@ -79,6 +79,10 @@ module Schematic
           @logger = deps.logger
           @clock = deps.clock || DEFAULT_CLOCK
           @on_failure = Leases.resolve_failure_mode(@options[:on_acquire_failure], @logger)
+          # Fixed now, not at each wait: a deadline taken when a join starts
+          # would let a check spend its acquire and reserve time and then its
+          # whole timeout again behind someone else's extend.
+          @deadline = Leases.join_deadline(request_options)
         end
 
         def run
@@ -98,7 +102,7 @@ module Schematic
           # cannot disagree over a float that is a hair above a whole unit.
           @credit_cost = Leases.wire_quantity(@options[:usage]) * @consumption_rate
 
-          lease = @deps.manager.acquire_if_needed(@company[:id], @credit_id, request_options)
+          lease = @deps.manager.acquire_if_needed(@company[:id], @credit_id, request_options, deadline: @deadline)
           return failure("lease_acquire_failed") if lease.nil?
 
           reserve = reserve_credits
@@ -254,7 +258,7 @@ module Schematic
             # credit_cost extends even when the ratio is still above the low
             # water mark, which a single large request needs.
             @deps.manager.maybe_extend_in_background(@company[:id], @credit_id, @credit_cost,
-                                                     request_options)&.join
+                                                     request_options, deadline: @deadline)&.join
             reserve = @deps.lease_store.try_reserve(@company[:id], @credit_id, @credit_cost)
           end
           return failure("insufficient_lease_balance") if reserve.nil?

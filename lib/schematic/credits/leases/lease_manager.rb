@@ -5,6 +5,16 @@ require "securerandom"
 module Schematic
   module Credits
     module Leases
+      # The monotonic-clock millisecond deadline a caller's timeout sets for
+      # waiting on a shared flight, or nil for no cap. Taken once, at check
+      # start, so every wait the check makes draws on the same budget.
+      def self.join_deadline(request_options)
+        seconds = request_options.is_a?(Hash) ? request_options[:timeout_in_seconds] : nil
+        return nil unless seconds.is_a?(Numeric) && seconds.to_f.finite?
+
+        (Process.clock_gettime(Process::CLOCK_MONOTONIC) * 1000) + (seconds * 1000)
+      end
+
       # One wire call in flight for a slot, plus the figure it asked for, which
       # is what a joiner compares its own shortfall against. Threads that arrive
       # while it runs wait on it instead of issuing a second call.
@@ -95,7 +105,12 @@ module Schematic
         # if none is live. Never raises: a wire or store failure is logged and
         # reported as nil, so callers route it through their fail-open or
         # fail-closed handling.
-        def acquire_if_needed(company_id, credit_type_id, request_options = nil)
+        #
+        # deadline is a monotonic-clock millisecond cap on waiting for another
+        # caller's acquire, fixed once when the check started so the waits a
+        # check makes cannot each restart its timeout. Without one the cap is
+        # derived from request_options' timeout as of this call.
+        def acquire_if_needed(company_id, credit_type_id, request_options = nil, deadline: nil)
           # Past stop the drain has run or is running, so a lease acquired now
           # is one nothing is left to release.
           return log_stopped("acquire", company_id, credit_type_id) if @stopped
@@ -119,7 +134,7 @@ module Schematic
           key = Leases.lease_key(company_id, credit_type_id)
           flight, leader = enlist(@inflight_acquire, key) { Flight.new }
           return log_stopped("acquire", company_id, credit_type_id) if flight.nil?
-          return flight.wait unless leader
+          return join_acquire(flight, deadline || join_deadline(request_options), company_id, credit_type_id) unless leader
 
           begin
             result = acquire(company_id, credit_type_id, request_options)
@@ -136,8 +151,10 @@ module Schematic
         #
         # Due means at or below the low-water-mark ratio, or below a named
         # required_credits: one large check should not wait for the next
-        # sub-watermark check to top the lease up. Never raises.
-        def maybe_extend_in_background(company_id, credit_type_id, required_credits = nil, request_options = nil)
+        # sub-watermark check to top the lease up. deadline caps a wait on
+        # another caller's extend, as for acquire_if_needed. Never raises.
+        def maybe_extend_in_background(company_id, credit_type_id, required_credits = nil, request_options = nil,
+                                       deadline: nil)
           if @stopped
             # Extending past stop re-holds credits on a lease the close is about
             # to release, or has already released.
@@ -159,7 +176,7 @@ module Schematic
           # extend there would otherwise be a window where a drain sees nothing
           # pending.
           track do
-            extend_if_needed(company_id, credit_type_id, required_credits, request_options)
+            extend_if_needed(company_id, credit_type_id, required_credits, request_options, deadline)
           end
         end
 
@@ -323,12 +340,14 @@ module Schematic
         # budget a caller could wait behind an unbounded run of other callers'
         # follow-ups; without the extend of its own it would return a balance it
         # already knows is short and fail its retry with credits on the server.
-        def extend_if_needed(company_id, credit_type_id, required_credits, request_options)
+        def extend_if_needed(company_id, credit_type_id, required_credits, request_options, deadline = nil)
           # A joiner waits on someone else's wire call, which runs on whatever
           # timeout ITS caller set (a background refresh uses the client
-          # default). So the wait is capped at this caller's own timeout: a
-          # check with 200ms to spend must not sit behind a 30s extend.
-          deadline = join_deadline(request_options)
+          # default). So the wait is capped at this caller's own deadline: a
+          # check with 200ms to spend must not sit behind a 30s extend. A check
+          # passes the deadline it fixed when it started, since one taken now
+          # would grant a fresh timeout on top of the acquire and reserve.
+          deadline ||= join_deadline(request_options)
           joins_left = MAX_EXTEND_JOINS
           loop do
             entry = read_live_lease(company_id, credit_type_id)
@@ -381,6 +400,19 @@ module Schematic
           end
         end
 
+        # Wait on another caller's acquire, reporting nil once the deadline
+        # passes. The acquire runs on for whoever else is on it, and what it
+        # installs is there for the next check to read.
+        def join_acquire(flight, deadline, company_id, credit_type_id)
+          joined = join_within(flight, deadline)
+          return joined unless joined.equal?(JOIN_TIMED_OUT)
+
+          @logger.debug(
+            "Acquire in flight for #{company_id}/#{credit_type_id} outlasted the caller's timeout; not waiting on it"
+          )
+          nil
+        end
+
         # Read the slot, reporting nil when the read fails or the lease is
         # absent or expired. An expired lease is never extended: the server
         # treats it as released, with its remainder already refunded to the
@@ -406,10 +438,7 @@ module Schematic
 
         # When a joiner's wait on a shared flight runs out, or nil for no cap.
         def join_deadline(request_options)
-          seconds = request_options.is_a?(Hash) ? request_options[:timeout_in_seconds] : nil
-          return nil unless seconds.is_a?(Numeric) && seconds.to_f.finite?
-
-          monotonic_ms + (seconds * 1000)
+          Leases.join_deadline(request_options)
         end
 
         # Wait out a flight somebody else is running, giving up at the deadline.
