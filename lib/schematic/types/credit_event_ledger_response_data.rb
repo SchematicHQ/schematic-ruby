@@ -67,6 +67,8 @@ module Schematic
 
       field :usage_reason, -> { Schematic::Types::CreditUsageReason }, optional: true, nullable: false
 
+      field :user_id, -> { String }, optional: true, nullable: false
+
       field :zeroed_out_reason, -> { Schematic::Types::BillingCreditGrantZeroedOutReason }, optional: true, nullable: false
     end
   end
