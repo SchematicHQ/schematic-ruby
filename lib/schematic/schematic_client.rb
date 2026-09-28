@@ -590,6 +590,13 @@ module Schematic
         @datastream_client.start
       rescue StandardError => e
         @logger.error("Failed to start DataStream: #{e.message}")
+        # Its caches started cleanup threads when it was built, and nothing
+        # else holds a reference to stop them once it is dropped.
+        begin
+          @datastream_client.close
+        rescue StandardError => close_error
+          @logger.warn("Failed to close DataStream after a failed start: #{close_error.message}")
+        end
         @datastream_client = nil
       end
     end

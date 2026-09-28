@@ -3432,6 +3432,33 @@ describe "DataStream Client - Close and Idempotency" do
   end
 end
 
+describe "SchematicClient - DataStream start failure" do
+  # The DataStream client's caches start cleanup threads when it is built, so a
+  # start that fails must close it, or those threads run for the process's life.
+  it "closes the DataStream client it could not start" do
+    built = nil
+    original_new = Schematic::DataStream::Client.method(:new)
+    capture = ->(**kwargs) { built = original_new.call(**kwargs) }
+
+    client = Schematic::DataStream::Client.stub(:new, capture) do
+      # An unparseable base URL fails the WebSocket setup inside start.
+      Schematic::SchematicClient.new(
+        api_key: "api_test_key_123",
+        base_url: "http://bad url",
+        use_data_stream: true,
+        logger: Schematic::ConsoleLogger.new(level: :error)
+      )
+    end
+
+    refute_nil built
+    caches = built.instance_variable_get(:@owned_caches)
+
+    refute_empty caches
+    assert(caches.all? { |cache| cache.instance_variable_get(:@stopped) })
+    client.close
+  end
+end
+
 # =============================================================================
 # DataStream Client - redis_client Convenience
 # =============================================================================
