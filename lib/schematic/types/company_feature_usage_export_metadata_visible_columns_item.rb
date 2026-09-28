@@ -9,6 +9,7 @@ module Schematic
       SUBSCRIPTION = "subscription"
       USERS = "users"
       LAST_SEEN_AT = "last_seen_at"
+      CREATED_AT = "created_at"
     end
   end
 end

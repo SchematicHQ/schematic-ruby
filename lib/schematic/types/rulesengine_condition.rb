@@ -25,7 +25,7 @@ module Schematic
 
       field :metric_value, -> { Integer }, optional: true, nullable: false
 
-      field :operator, -> { Schematic::Types::ComparableOperator }, optional: false, nullable: false
+      field :operator, -> { Schematic::Types::RulesengineComparableOperator }, optional: false, nullable: false
 
       field :resource_ids, -> { Internal::Types::Array[String] }, optional: false, nullable: false
 

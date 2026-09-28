@@ -29,6 +29,8 @@ module Schematic
 
       field :credit_bundles, -> { Internal::Types::Array[Schematic::Types::UpdateCreditBundleRequestBody] }, optional: false, nullable: false
 
+      field :currency, -> { String }, optional: true, nullable: false
+
       field :custom_field_values, -> { Internal::Types::Array[Schematic::Types::CheckoutFieldValue] }, optional: false, nullable: false
 
       field :days_until_due, -> { Integer }, optional: true, nullable: false

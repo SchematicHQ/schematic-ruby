@@ -29,6 +29,8 @@ module Schematic
 
       field :subtotal, -> { Integer }, optional: false, nullable: false
 
+      field :total, -> { Integer }, optional: true, nullable: false
+
       field :url, -> { String }, optional: true, nullable: false
     end
   end
