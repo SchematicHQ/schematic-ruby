@@ -878,6 +878,36 @@ class WireClientTest < Minitest::Test
     end
   end
 
+  # Read as host-local time, a zone-less expiry would move by the host's UTC
+  # offset, so a lease could look live hours after the server expired it.
+  def test_an_expiry_without_a_zone_is_read_as_utc
+    body = LEASE_BODY.merge("data" => LEASE_BODY["data"].merge("expires_at" => "2026-01-01T00:05:00"))
+    stub_request(:post, "https://api.schematichq.test/billing/credits/lease")
+      .to_return(status: 200, body: JSON.generate(body), headers: { "Content-Type" => "application/json" })
+
+    grant = with_tz("America/New_York") do
+      @wire.acquire(company_id: "co_1", credit_type_id: "ct_1", requested_amount: 1000,
+                    expires_at: Time.utc(2026, 1, 1, 0, 5))
+    end
+
+    assert_equal Time.utc(2026, 1, 1, 0, 5), grant.expires_at
+  end
+
+  def test_an_expiry_with_an_offset_keeps_it
+    with_tz("America/New_York") do
+      assert_equal Time.utc(2026, 1, 1, 0, 5), Leases.parse_api_time("2026-01-01T02:05:00+02:00")
+      assert_equal Time.utc(2026, 1, 1, 0, 5), Leases.parse_api_time("2026-01-01T00:05:00Z")
+    end
+  end
+
+  def with_tz(zone)
+    previous = ENV.fetch("TZ", nil)
+    ENV["TZ"] = zone
+    yield
+  ensure
+    ENV["TZ"] = previous
+  end
+
   def test_extend_sends_the_additional_amount
     stub_request(:put, "https://api.schematichq.test/billing/credits/lease/lse_1/extend")
       .to_return(status: 200, body: JSON.generate(LEASE_BODY), headers: { "Content-Type" => "application/json" })

@@ -227,9 +227,7 @@ module Schematic
         end
 
         def parse_time(value)
-          return value if value.is_a?(Time)
-
-          Time.iso8601(value.to_s)
+          Leases.parse_api_time(value)
         rescue StandardError
           @clock.call
         end

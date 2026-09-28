@@ -237,13 +237,22 @@ module Schematic
       private_class_method :entitlement_to_h
 
       def self.parse_reset_at(value)
-        return value if value.is_a?(Time)
-
-        Time.iso8601(value.to_s)
+        parse_api_time(value)
       rescue StandardError
         value
       end
       private_class_method :parse_reset_at
+
+      # The API's timestamps are UTC, but Time.iso8601 reads one that carries
+      # no offset as host-local time, which would shift a lease's expiry by the
+      # host's UTC offset. A timestamp with no zone is read as UTC instead.
+      def self.parse_api_time(value)
+        return value.getutc if value.is_a?(Time)
+
+        text = value.to_s
+        text += "Z" if text.include?("T") && !text.match?(/(?:Z|[+-]\d{2}(?::?\d{2})?)\z/i)
+        Time.iso8601(text).utc
+      end
 
       def self.deep_snake_case(value)
         case value
