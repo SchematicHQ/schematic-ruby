@@ -817,6 +817,15 @@ class LeaseManagerTest < Minitest::Test
     assert_equal ["lse_dead"], @leases.list.map(&:lease_id)
   end
 
+  # The close calls this before it shuts the DataStream and the event buffer, so
+  # a store that cannot list must not raise out of it.
+  def test_release_all_local_leases_survives_a_failed_listing
+    @leases.define_singleton_method(:list) { raise "store down" }
+
+    assert_nil @manager.release_all_local_leases
+    assert_empty @wire.release_calls
+  end
+
   # A shared store never reports its contents, so there is nothing for the close
   # to release out from under a sibling process.
   def test_release_all_local_leases_is_a_no_op_without_an_enumerable_store

@@ -235,7 +235,14 @@ module Schematic
         def release_all_local_leases(timeout_ms = nil)
           return nil unless @lease_store.respond_to?(:list)
 
-          entries = @lease_store.list
+          # A failed listing is logged and left to server-side expiry: raising
+          # here would skip the rest of the caller's close.
+          entries = begin
+            @lease_store.list
+          rescue StandardError => e
+            @logger.warn("Failed to list credit leases on close (they will expire server-side): #{e.message}")
+            nil
+          end
           return nil if entries.nil? || entries.empty?
 
           deadline = timeout_ms.nil? ? nil : monotonic_ms + timeout_ms
