@@ -466,6 +466,43 @@ class RedisStoreLayoutTest < Minitest::Test
     assert_in_delta 900, @leases.get("co_1", "ct_1").local_remaining_credits
   end
 
+  # The two lease stores read an empty pin differently: the Lua takes it as no
+  # pin and credits whichever lease holds the slot, while the per-process store
+  # takes it as a pin nothing matches. Both reservation stores decide it
+  # instead, and both decline, so a hold that cannot name its lease never
+  # lands on a successor.
+  def test_neither_backend_refunds_a_hold_that_cannot_name_its_lease
+    memory_leases = Leases::LeaseStore.new(clock: clock.to_proc)
+    memory = Leases::ReservationStore.new(memory_leases, clock: clock.to_proc)
+    [[@reservations, @leases], [memory, memory_leases]].each do |store, leases|
+      [nil, ""].each do |orphan_id|
+        leases.drop("co_1", "ct_1")
+        leases.replace(lease_entry(lease_id: "lse_successor"))
+        leases.try_reserve("co_1", "ct_1", 100)
+        # Redis stores every field as a string, so a missing id reads back empty.
+        next if orphan_id.nil? && store.equal?(@reservations)
+
+        store.add(reservation(lease_id: orphan_id))
+        store.consume("res_1", 0)
+
+        # 900, not 1000: the successor's balance is untouched.
+        assert_in_delta 900, leases.get("co_1", "ct_1").local_remaining_credits
+      end
+    end
+  end
+
+  def test_the_sweep_skips_refunding_a_hold_that_cannot_name_its_lease
+    leases = Leases::LeaseStore.new(clock: clock.to_proc)
+    store = Leases::ReservationStore.new(leases, clock: clock.to_proc)
+    leases.replace(lease_entry(lease_id: "lse_successor"))
+    leases.try_reserve("co_1", "ct_1", 100)
+    store.add(reservation(lease_id: nil, expires_at_ms: 1000))
+    clock.advance_ms(2000)
+
+    assert_equal 1, store.sweep_expired
+    assert_in_delta 900, leases.get("co_1", "ct_1").local_remaining_credits
+  end
+
   # A shared store is never enumerated: sibling processes may still be drawing
   # on those leases, so close must not be able to release them.
   def test_redis_store_does_not_expose_list

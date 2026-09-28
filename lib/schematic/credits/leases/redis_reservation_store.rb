@@ -156,7 +156,11 @@ module Schematic
 
           consumed = credits_consumed.clamp(0, reserved)
           refund = reserved - consumed
-          if refund.positive?
+          # A hold that cannot name its lease is not refundable: the refund
+          # script reads an empty pin as no pin and would credit whichever lease
+          # holds the slot now, possibly a successor. The slice comes back when
+          # the lease expires instead, the same call the per-process store makes.
+          if refund.positive? && !raw["leaseId"].to_s.empty?
             # Delegated to the lease store, which owns the lease hash, so the
             # cross-key write stays out of a single Lua script. Pinned to the
             # reservation's leaseId so a hold carved out of an expired lease

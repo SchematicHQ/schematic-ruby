@@ -65,7 +65,7 @@ module Schematic
 
           actual = credits_consumed.clamp(0, reservation.credits_reserved)
           refund = reservation.credits_reserved - actual
-          if refund.positive?
+          if refund.positive? && refundable?(reservation)
             # Pinned to the originating lease: if that lease has expired and a
             # successor holds the slot, the refund is dropped, because the
             # expired lease's remainder was already returned server-side.
@@ -110,6 +110,8 @@ module Schematic
             due
           end
           expired.each do |reservation|
+            next unless refundable?(reservation)
+
             @lease_store.refund(
               reservation.company_id,
               reservation.credit_type_id,
@@ -140,6 +142,18 @@ module Schematic
 
         def size
           @mutex.synchronize { @reservations.size }
+        end
+
+        private
+
+        # A hold that cannot name the lease it came out of is not refundable:
+        # crediting whichever lease holds the slot now could inflate a successor
+        # whose grant the server issued whole, and the slice comes back when the
+        # lease expires anyway. Decided here rather than left to the lease
+        # store, because the two lease stores read a missing pin differently,
+        # and a fleet mixing SDKs on one Redis must agree.
+        def refundable?(reservation)
+          !reservation.lease_id.nil? && !reservation.lease_id.to_s.empty?
         end
       end
     end
