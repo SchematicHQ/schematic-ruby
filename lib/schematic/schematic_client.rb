@@ -192,7 +192,7 @@ module Schematic
       end
 
       # DataStream path
-      if @datastream_client&.connected?
+      if use_datastream_cache?
         begin
           eval_ctx = build_eval_context(company, user)
           # Only widen the call when there is something to pass: a DataStream
@@ -246,7 +246,7 @@ module Schematic
 
       begin
         # DataStream path — try evaluating all requested keys locally
-        if @datastream_client&.connected? && keys&.any?
+        if use_datastream_cache? && keys&.any?
           ds_results = check_flags_via_datastream(keys, company, user)
           return ds_results if ds_results
         end
@@ -768,6 +768,18 @@ module Schematic
       end
 
       parts.join(";")
+    end
+
+    # The single gate for evaluating flag checks from the DataStream cache,
+    # shared by check_flag_with_entitlement and check_flags so the two can't
+    # drift. In replicator mode it stays false until the replicator reports its
+    # cache ready, and checks take the API path instead of reading a partial
+    # cache. connected? keeps websocket mode's existing gate on the connection;
+    # in replicator mode it reports the same readiness as cache_ready?.
+    def use_datastream_cache?
+      return false unless @datastream_client
+
+      @datastream_client.connected? && @datastream_client.cache_ready?
     end
 
     def build_eval_context(company, user)
