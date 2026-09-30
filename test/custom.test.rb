@@ -2056,6 +2056,7 @@ describe "DataStream - EvaluationError raises for API fallback" do
     end
     mock_ds.define_singleton_method(:close) { nil }
     mock_ds.define_singleton_method(:connected?) { true }
+    mock_ds.define_singleton_method(:cache_ready?) { true }
     client.instance_variable_set(:@datastream_client, mock_ds)
 
     # Should fall back to API and return true
@@ -2105,6 +2106,7 @@ describe "SchematicClient - check_flags with DataStream" do
     # Simulate a DataStream client that evaluates flags locally
     mock_ds = Object.new
     mock_ds.define_singleton_method(:connected?) { true }
+    mock_ds.define_singleton_method(:cache_ready?) { true }
     mock_ds.define_singleton_method(:close) { nil }
     mock_ds.define_singleton_method(:check_flag) do |_eval_ctx, flag_key|
       case flag_key
@@ -2144,6 +2146,7 @@ describe "SchematicClient - check_flags with DataStream" do
 
     mock_ds = Object.new
     mock_ds.define_singleton_method(:connected?) { true }
+    mock_ds.define_singleton_method(:cache_ready?) { true }
     mock_ds.define_singleton_method(:close) { nil }
     mock_ds.define_singleton_method(:check_flag) do |_eval_ctx, flag_key|
       { value: true, flag_key: flag_key, reason: "match" }
@@ -2178,6 +2181,7 @@ describe "SchematicClient - check_flags with DataStream" do
     # Simulate a DataStream client that fails on the second flag
     mock_ds = Object.new
     mock_ds.define_singleton_method(:connected?) { true }
+    mock_ds.define_singleton_method(:cache_ready?) { true }
     mock_ds.define_singleton_method(:close) { nil }
     mock_ds.define_singleton_method(:check_flag) do |_eval_ctx, flag_key|
       raise Schematic::DataStream::EvaluationError, "flag not in cache" unless flag_key == "ds-ok"
@@ -2226,6 +2230,7 @@ describe "SchematicClient - check_flags with DataStream" do
     # DataStream should NOT be consulted for no-keys mode
     mock_ds = Object.new
     mock_ds.define_singleton_method(:connected?) { true }
+    mock_ds.define_singleton_method(:cache_ready?) { true }
     mock_ds.define_singleton_method(:close) { nil }
     mock_ds.define_singleton_method(:check_flag) { |*, **| raise "should not be called" }
     client.instance_variable_set(:@datastream_client, mock_ds)
@@ -2287,6 +2292,279 @@ describe "DataStream Client - connected?" do
     refute_predicate ds_client, :connected?
     ds_client.close
     flag_cache.stop
+  end
+end
+
+# =============================================================================
+# Replicator mode - cache readiness gate
+# =============================================================================
+describe "Replicator mode - cache readiness gate" do
+  REPLICATOR_TEST_HEALTH_URL = "http://replicator.test/ready"
+  REPLICATOR_TEST_API_BASE = "https://api.schematichq.com"
+  REPLICATOR_TEST_COMMON_FIELDS = { account_id: "acct_1", environment_id: "env_1" }.freeze
+
+  # A Redis stand-in holding raw strings, seeded the way the replicator writes:
+  # flags under flags:<version>:<key>, the company under company:<version>:<id>,
+  # and a lookup from each company key to its ID.
+  def build_redis(store)
+    redis = Object.new
+    redis.define_singleton_method(:get) { |key| store[key] }
+    redis.define_singleton_method(:set) { |key, value| store[key] = value }
+    redis.define_singleton_method(:setex) { |key, _ttl, value| store[key] = value }
+    redis.define_singleton_method(:del) { |*keys| keys.flatten.each { |k| store.delete(k) } }
+    redis
+  end
+
+  def seed_replicator_cache(store, version)
+    flag_a = {
+      id: "flag_a", key: "flag-a", type: "boolean", default_value: false,
+      rules: [{
+        id: "rule_a", name: "company override", rule_type: "company_override", priority: 5, value: true,
+        conditions: [{ id: "cond_a", condition_type: "company", operator: "eq", resource_ids: ["comp_1"],
+                       trait_value: "", **REPLICATOR_TEST_COMMON_FIELDS }],
+        condition_groups: [], **REPLICATOR_TEST_COMMON_FIELDS
+      }],
+      **REPLICATOR_TEST_COMMON_FIELDS
+    }
+    flag_b = { id: "flag_b", key: "flag-b", type: "boolean", default_value: false, rules: [], **REPLICATOR_TEST_COMMON_FIELDS }
+    company = {
+      id: "comp_1", keys: { "org_id" => "acme" }, plan_ids: [], plan_version_ids: [],
+      billing_product_ids: [], crm_product_ids: [], credit_balances: {}, metrics: [], traits: [], rules: [],
+      **REPLICATOR_TEST_COMMON_FIELDS
+    }
+
+    store["schematic:flags:#{version}:flag-a"] = flag_a.to_json
+    store["schematic:flags:#{version}:flag-b"] = flag_b.to_json
+    store["schematic:company:#{version}:comp_1"] = company.to_json
+    store["schematic:company:#{version}:org_id:acme"] = "comp_1".to_json
+  end
+
+  def stub_health(status, body)
+    stub_request(:get, REPLICATOR_TEST_HEALTH_URL).to_return(
+      status: status, body: body.to_json, headers: { "Content-Type" => "application/json" }
+    )
+  end
+
+  # The cache says flag-a on / flag-b off; the API says the opposite, so each
+  # test can tell which source answered.
+  def stub_api_flags
+    stub_request(:post, "#{REPLICATOR_TEST_API_BASE}/flags/flag-a/check").to_return(
+      status: 200, headers: { "Content-Type" => "application/json" },
+      body: { data: { value: false, flag: "flag-a", reason: "api" }, params: {} }.to_json
+    )
+    stub_request(:post, "#{REPLICATOR_TEST_API_BASE}/flags/flag-b/check").to_return(
+      status: 200, headers: { "Content-Type" => "application/json" },
+      body: { data: { value: true, flag: "flag-b", reason: "api" }, params: {} }.to_json
+    )
+    stub_request(:post, "#{REPLICATOR_TEST_API_BASE}/flags/check").to_return(
+      status: 200, headers: { "Content-Type" => "application/json" },
+      body: { data: { flags: [
+        { flag: "flag-a", value: false, reason: "api" },
+        { flag: "flag-b", value: true, reason: "api" }
+      ] }, params: {} }.to_json
+    )
+  end
+
+  def stub_api_failing
+    stub_request(:post, %r{\A#{REPLICATOR_TEST_API_BASE}/flags/.*check\z}).to_return(status: 400, body: "bad request")
+  end
+
+  def build_client(store, flag_defaults: {})
+    Schematic::SchematicClient.new(
+      api_key: "api_test_key_123",
+      cache_providers: [],
+      flag_defaults: flag_defaults,
+      use_data_stream: true,
+      logger: Schematic::ConsoleLogger.new(level: :error),
+      datastream_options: {
+        replicator_mode: true,
+        replicator_health_url: REPLICATOR_TEST_HEALTH_URL,
+        replicator_health_interval: 3600,
+        redis_client: build_redis(store)
+      }
+    )
+  end
+
+  def datastream(client)
+    client.instance_variable_get(:@datastream_client)
+  end
+
+  def close_client(client)
+    # The health thread sleeps for the full interval; stop it so close
+    # doesn't wait on it.
+    datastream(client)&.instance_variable_get(:@health_thread)&.kill
+    client.close
+  end
+
+  def check_single(client, company)
+    %w[flag-a flag-b].map { |key| client.check_flag(key, company: company) }
+  end
+
+  def check_bulk(client, company)
+    client.check_flags(company: company, keys: %w[flag-a flag-b]).map { |r| r[:value] }
+  end
+
+  before do
+    @store = {}
+    @company = { "org_id" => "acme" }
+  end
+
+  after { WebMock.reset! }
+
+  describe "when the replicator is not ready" do
+    before do
+      seed_replicator_cache(@store, "v1")
+      stub_health(503, { ready: false, cache_version: "v1" })
+    end
+
+    it "skips the cache and uses the API for single and bulk checks" do
+      stub_api_flags
+      client = build_client(@store)
+
+      refute_predicate datastream(client), :cache_ready?
+      assert_equal [false, true], check_single(client, @company)
+      assert_equal [false, true], check_bulk(client, @company)
+      assert_requested(:post, "#{REPLICATOR_TEST_API_BASE}/flags/flag-a/check", times: 1)
+      assert_requested(:post, "#{REPLICATOR_TEST_API_BASE}/flags/flag-b/check", times: 1)
+      assert_requested(:post, "#{REPLICATOR_TEST_API_BASE}/flags/check", times: 1)
+    ensure
+      close_client(client) if client
+    end
+
+    it "returns flag defaults for single and bulk checks when the API fails" do
+      stub_api_failing
+      client = build_client(@store, flag_defaults: { "flag-a" => false, "flag-b" => true })
+
+      assert_equal [false, true], check_single(client, @company)
+      assert_equal [false, true], check_bulk(client, @company)
+    ensure
+      close_client(client) if client
+    end
+  end
+
+  describe "when the replicator is ready" do
+    before do
+      seed_replicator_cache(@store, "v1")
+      stub_health(200, { ready: true, cache_version: "v1" })
+    end
+
+    it "evaluates single and bulk checks from the cache with no API call" do
+      stub_api_flags
+      client = build_client(@store)
+
+      assert_predicate datastream(client), :cache_ready?
+      single = check_single(client, @company)
+      bulk = check_bulk(client, @company)
+
+      assert_equal [true, false], single
+      assert_equal single, bulk
+      assert_not_requested(:post, %r{\A#{REPLICATOR_TEST_API_BASE}/flags/})
+    ensure
+      close_client(client) if client
+    end
+
+    it "falls back to the API when a flag is missing from the cache" do
+      @store.delete("schematic:flags:v1:flag-b")
+      stub_api_flags
+      client = build_client(@store)
+
+      assert_equal [true, true], check_single(client, @company)
+      assert_equal [false, true], check_bulk(client, @company)
+      assert_not_requested(:post, "#{REPLICATOR_TEST_API_BASE}/flags/flag-a/check")
+      assert_requested(:post, "#{REPLICATOR_TEST_API_BASE}/flags/flag-b/check", times: 1)
+      assert_requested(:post, "#{REPLICATOR_TEST_API_BASE}/flags/check", times: 1)
+    ensure
+      close_client(client) if client
+    end
+  end
+
+  describe "health check" do
+    def build_ds
+      Schematic::DataStream::Client.new(
+        api_key: "test",
+        base_url: REPLICATOR_TEST_API_BASE,
+        logger: Schematic::ConsoleLogger.new(level: :error),
+        rules_engine: nil,
+        flag_cache: TestSharedCache.new,
+        replicator_mode: true,
+        replicator_health_url: REPLICATOR_TEST_HEALTH_URL
+      )
+    end
+
+    it "reads the body of a 503 response: not ready, cache_version recorded" do
+      stub_health(503, { ready: false, cache_version: "vX" })
+      ds = build_ds
+      ds.send(:check_replicator_health)
+
+      refute_predicate ds, :cache_ready?
+      refute_predicate ds, :connected?
+      assert_equal "vX", ds.instance_variable_get(:@cache_version)
+    end
+
+    it "becomes ready once the replicator reports ready" do
+      stub_health(503, { ready: false, cache_version: "v1" })
+      ds = build_ds
+      ds.send(:check_replicator_health)
+
+      refute_predicate ds, :cache_ready?
+
+      stub_health(200, { ready: true, cache_version: "v1" })
+      ds.send(:check_replicator_health)
+
+      assert_predicate ds, :cache_ready?
+      assert_predicate ds, :connected?
+    end
+
+    it "sets not ready and keeps the previous cache_version when unreachable" do
+      stub_health(200, { ready: true, cache_version: "v1" })
+      ds = build_ds
+      ds.send(:check_replicator_health)
+
+      assert_predicate ds, :cache_ready?
+
+      WebMock.reset!
+      stub_request(:get, REPLICATOR_TEST_HEALTH_URL).to_raise(Errno::ECONNREFUSED)
+      ds.send(:check_replicator_health)
+
+      refute_predicate ds, :cache_ready?
+      assert_equal "v1", ds.instance_variable_get(:@cache_version)
+    end
+
+    it "sets not ready and keeps the previous cache_version on an unparseable body" do
+      stub_health(200, { ready: true, cache_version: "v1" })
+      ds = build_ds
+      ds.send(:check_replicator_health)
+
+      stub_request(:get, REPLICATOR_TEST_HEALTH_URL).to_return(status: 502, body: "<html>Bad Gateway</html>")
+      ds.send(:check_replicator_health)
+
+      refute_predicate ds, :cache_ready?
+      assert_equal "v1", ds.instance_variable_get(:@cache_version)
+    end
+
+    it "reports the cache ready outside replicator mode" do
+      ds = Schematic::DataStream::Client.new(
+        api_key: "test",
+        base_url: REPLICATOR_TEST_API_BASE,
+        logger: Schematic::ConsoleLogger.new(level: :error),
+        rules_engine: nil
+      )
+
+      assert_predicate ds, :cache_ready?
+      refute_predicate ds, :connected?
+    end
+
+    it "keeps the previous cache_version when a response has none" do
+      stub_health(200, { ready: true, cache_version: "v1" })
+      ds = build_ds
+      ds.send(:check_replicator_health)
+
+      stub_health(200, { ready: true })
+      ds.send(:check_replicator_health)
+
+      assert_predicate ds, :cache_ready?
+      assert_equal "v1", ds.instance_variable_get(:@cache_version)
+    end
   end
 end
 
