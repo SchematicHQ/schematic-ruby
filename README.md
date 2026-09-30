@@ -482,6 +482,8 @@ is_flag_on = client.check_flag(
 client.close
 ```
 
+With DataStream enabled (including Replicator Mode), `track` also adds the event's quantity to the matching metric on the cached company right away, so usage-based limits reflect it before Schematic sends back an updated value. This happens even while the WebSocket is disconnected or the replicator reports not ready. The next company update from Schematic or the replicator replaces the local value, so usage is never counted twice. Companies that aren't in the cache are left alone.
+
 ### Configuration Options
 
 You can customize DataStream behavior via the `datastream_options` hash:
