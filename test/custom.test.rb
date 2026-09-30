@@ -3412,6 +3412,133 @@ describe "DataStream Client - update_company_metrics" do
   end
 end
 
+# =============================================================================
+# SchematicClient - track metric update while not connected
+# =============================================================================
+# Flag checks can serve a cached company again once the replicator reports ready
+# or the WebSocket reconnects, so track keeps bumping the cached metric while
+# neither is the case. Otherwise metered limits stay frozen at the last value
+# the replicator or stream wrote.
+describe "SchematicClient - track metric update while not connected" do
+  TRACK_TEST_HEALTH_URL = "http://replicator.test/ready"
+
+  def build_redis(store)
+    redis = Object.new
+    redis.define_singleton_method(:get) { |key| store[key] }
+    redis.define_singleton_method(:set) { |key, value| store[key] = value }
+    redis.define_singleton_method(:setex) { |key, _ttl, value| store[key] = value }
+    redis.define_singleton_method(:del) { |*keys| keys.flatten.each { |k| store.delete(k) } }
+    redis
+  end
+
+  # Seed the company the way the replicator writes it: the entity under its ID
+  # and a lookup from each of its keys to that ID.
+  def seed_company(store, version)
+    company = {
+      id: "comp_1",
+      keys: { "org_id" => "acme" },
+      metrics: [{ company_id: "comp_1", event_subtype: "api_call", period: "all_time", value: 10 }]
+    }
+    store["schematic:company:#{version}:comp_1"] = company.to_json
+    store["schematic:company:#{version}:org_id:acme"] = "comp_1".to_json
+  end
+
+  def cached_metric_value(store, version)
+    company = JSON.parse(store["schematic:company:#{version}:comp_1"], symbolize_names: true)
+    company[:metrics].find { |m| m[:event_subtype] == "api_call" }[:value]
+  end
+
+  def build_replicator_client(store)
+    Schematic::SchematicClient.new(
+      api_key: "api_test_key_123",
+      use_data_stream: true,
+      logger: Schematic::ConsoleLogger.new(level: :error),
+      datastream_options: {
+        replicator_mode: true,
+        replicator_health_url: TRACK_TEST_HEALTH_URL,
+        replicator_health_interval: 3600,
+        redis_client: build_redis(store)
+      }
+    )
+  end
+
+  def close_client(client)
+    # The health thread sleeps for the full interval; stop it so close
+    # doesn't wait on it.
+    client.instance_variable_get(:@datastream_client)&.instance_variable_get(:@health_thread)&.kill
+    client.close
+  end
+
+  before do
+    @store = {}
+    stub_request(:get, TRACK_TEST_HEALTH_URL).to_return(
+      status: 503,
+      body: { ready: false, cache_version: "v1" }.to_json,
+      headers: { "Content-Type" => "application/json" }
+    )
+  end
+
+  after { WebMock.reset! }
+
+  it "updates the cached metric while the replicator is not ready" do
+    seed_company(@store, "v1")
+    client = build_replicator_client(@store)
+    ds = client.instance_variable_get(:@datastream_client)
+    # A 503 leaves the cache version at its default; point it at the seeded one.
+    ds.send(:update_cache_version, "v1")
+
+    refute_predicate ds, :connected?
+
+    client.track({ event: "api_call", company: { "org_id" => "acme" }, quantity: 5 })
+
+    assert_equal 15, cached_metric_value(@store, "v1")
+  ensure
+    close_client(client) if client
+  end
+
+  it "leaves the cache untouched for a company that isn't cached" do
+    client = build_replicator_client(@store)
+    client.instance_variable_get(:@datastream_client).send(:update_cache_version, "v1")
+
+    client.track({ event: "api_call", company: { "org_id" => "unknown" }, quantity: 5 })
+
+    assert_empty @store
+  ensure
+    close_client(client) if client
+  end
+
+  it "updates the cached metric while the WebSocket is disconnected" do
+    client = Schematic::SchematicClient.new(api_key: "api_test_key_123")
+    logger = Schematic::ConsoleLogger.new(level: :error)
+    ds = Schematic::DataStream::Client.new(
+      api_key: "api_test_key_123",
+      base_url: "https://api.schematichq.com",
+      logger: logger,
+      rules_engine: Schematic::RulesEngine.new(logger: logger)
+    )
+    client.instance_variable_set(:@datastream_client, ds)
+    ds.send(:handle_message, {
+      entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
+      message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
+      data: {
+        id: "comp_ws",
+        keys: { "org_id" => "ws-org" },
+        metrics: [{ event_subtype: "api_call", period: "all_time", value: 10 }]
+      }
+    })
+
+    refute_predicate ds, :connected?
+
+    client.track({ event: "api_call", company: { "org_id" => "ws-org" }, quantity: 5 })
+
+    cached = ds.instance_variable_get(:@company_cache).get_by_keys({ "org_id" => "ws-org" })
+
+    assert_equal 15, cached[:metrics].first[:value]
+  ensure
+    client&.close
+  end
+end
+
 describe "DataStream Client - Close and Idempotency" do
   it "close is idempotent" do
     ctx = build_ds_client

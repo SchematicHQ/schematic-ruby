@@ -270,8 +270,14 @@ module Schematic
 
       @event_buffer.push(build_event("track", body, options, TRACK_OPTION_KEYS))
 
-      # Update company metrics locally if DataStream is active and connected
-      if @datastream_client&.connected? && body[:company]
+      # Update company metrics locally whenever DataStream is in use. Not gated
+      # on connected?: a cached company outlives a WebSocket disconnect or a
+      # not-ready replicator, and usage tracked in the meantime has to count
+      # against it, or its metered limits stay frozen at the last pushed value.
+      # Whatever the stream or replicator writes next replaces the metric
+      # outright, so the bump is never counted twice. A company that isn't
+      # cached is left alone.
+      if @datastream_client && body[:company]
         event_name = body[:event] || body["event"]
         quantity = body[:quantity] || body["quantity"] || 1
         @datastream_client.update_company_metrics(body[:company], event_name, quantity)
