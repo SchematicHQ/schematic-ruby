@@ -2065,6 +2065,32 @@ describe "DataStream - EvaluationError raises for API fallback" do
     client.close
     WebMock.reset!
   end
+
+  # The engine declining to answer is the one case default_value exists for, so
+  # the DataStream branch has to resolve it the way the offline and API branches
+  # do rather than reaching straight for the registered default.
+  it "honours the caller's default_value when DataStream returns no value" do
+    stub_request(:post, CAPTURE_URL).to_return(status: 200)
+
+    client = Schematic::SchematicClient.new(api_key: "api_test_key_123")
+    client.set_flag_default("ds-no-value", false)
+
+    mock_ds = Object.new
+    mock_ds.define_singleton_method(:connected?) { true }
+    mock_ds.define_singleton_method(:close) { nil }
+    mock_ds.define_singleton_method(:check_flag) do |_eval_ctx, flag_key|
+      { value: nil, flag_key: flag_key, reason: "no verdict" }
+    end
+    client.instance_variable_set(:@datastream_client, mock_ds)
+
+    assert client.check_flag_with_entitlement("ds-no-value", default_value: true).value
+    assert client.check_flag_with_entitlement("ds-no-value", default_value: -> { true }).value
+    # With no caller default the registered one still stands in.
+    refute client.check_flag_with_entitlement("ds-no-value").value
+
+    client.close
+    WebMock.reset!
+  end
 end
 
 # =============================================================================

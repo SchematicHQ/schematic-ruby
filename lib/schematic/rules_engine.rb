@@ -73,12 +73,26 @@ module Schematic
     end
 
     def check_flag(flag, company = nil, user = nil)
+      check_flag_with_options(flag, company, user, nil)
+    end
+
+    # Evaluate a flag with preflight options: a simulated usage, an event-scoped
+    # usage, or a pre-computed per-credit cost. The engine applies them to the
+    # conditions they match without mutating any state, so a caller can ask
+    # "would this call still be allowed after it lands".
+    #
+    # options is a hash with any of :credit_cost (credit id to cost),
+    # :usage, and :event_usage ({ event_subtype:, quantity: }). The engine reads
+    # them snake_case in both directions, so they go on the envelope as given.
+    def check_flag_with_options(flag, company = nil, user = nil, options = nil)
       raise "WASM rules engine not initialized" unless @initialized
 
       # Build combined JSON envelope (same format as Python/C#)
       envelope = { flag: strip_nulls(flag) }
       envelope[:company] = strip_nulls(company) if company
       envelope[:user] = strip_nulls(user) if user
+      # Omitted entirely when empty, so the engine uses its own defaults.
+      envelope[:options] = strip_nulls(engine_options(options)) if options && !options.empty?
 
       json_bytes = JSON.generate(envelope).encode("UTF-8")
 
@@ -122,6 +136,29 @@ module Schematic
     end
 
     private
+
+    # The options as the engine takes them. usage and event_usage.quantity
+    # deserialize as i64 there, so a value with a decimal point fails the whole
+    # check. Rounded through the helper every other wire field uses, so a caller
+    # passing a preflight straight to check_flag_with_entitlement is asked the
+    # same question a lease check asks, and an infinite usage is handed over
+    # rather than raising out of ceil.
+    def engine_options(options)
+      out = options.dup
+      usage_key = out.key?(:usage) ? :usage : "usage"
+      out[usage_key] = Credits::Leases.wire_quantity(out[usage_key]) if out[usage_key].is_a?(Numeric)
+      event_key = out.key?(:event_usage) ? :event_usage : "event_usage"
+      event_usage = out[event_key]
+      return out unless event_usage.is_a?(Hash)
+
+      quantity_key = event_usage.key?(:quantity) ? :quantity : "quantity"
+      return out unless event_usage[quantity_key].is_a?(Numeric)
+
+      out[event_key] = event_usage.merge(
+        quantity_key => Credits::Leases.wire_quantity(event_usage[quantity_key])
+      )
+      out
+    end
 
     def export_func(name)
       exp = @instance.export(name)
