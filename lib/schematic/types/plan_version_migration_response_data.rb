@@ -31,6 +31,8 @@ module Schematic
 
       field :proration_behavior, -> { Schematic::Types::MigrationProrationBehavior }, optional: true, nullable: false
 
+      field :scheduled_at, -> { String }, optional: true, nullable: false
+
       field :skipped_companies, -> { Integer }, optional: false, nullable: false
 
       field :started_at, -> { String }, optional: true, nullable: false

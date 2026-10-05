@@ -5,6 +5,8 @@ module Schematic
     class CheckFlagsResponseData < Internal::Types::Model
       field :credit_balances, -> { Internal::Types::Hash[String, Schematic::Types::CompanyCreditBalance] }, optional: true, nullable: false
 
+      field :credit_spend_policies, -> { Internal::Types::Array[Schematic::Types::CreditSpendPolicy] }, optional: false, nullable: false
+
       field :flags, -> { Internal::Types::Array[Schematic::Types::CheckFlagResponseData] }, optional: false, nullable: false
 
       field :plan, -> { Schematic::Types::DatastreamCompanyPlan }, optional: true, nullable: false

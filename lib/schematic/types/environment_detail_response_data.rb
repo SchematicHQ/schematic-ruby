@@ -13,6 +13,8 @@ module Schematic
 
       field :name, -> { String }, optional: false, nullable: false
 
+      field :require_context_signature, -> { Internal::Types::Boolean }, optional: false, nullable: false
+
       field :updated_at, -> { String }, optional: false, nullable: false
     end
   end

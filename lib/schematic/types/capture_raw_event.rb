@@ -5,6 +5,10 @@ module Schematic
     class CaptureRawEvent < Internal::Types::Model
       field :captured_at, -> { String }, optional: false, nullable: false
 
+      field :context_signature, -> { String }, optional: true, nullable: false
+
+      field :context_signature_checked, -> { Internal::Types::Boolean }, optional: true, nullable: false
+
       field :event_id, -> { String }, optional: true, nullable: false
 
       field :raw_bytes, -> { String }, optional: false, nullable: false

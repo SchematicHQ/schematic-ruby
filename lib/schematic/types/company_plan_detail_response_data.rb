@@ -53,6 +53,8 @@ module Schematic
 
       field :entitlements, -> { Internal::Types::Array[Schematic::Types::PlanEntitlementResponseData] }, optional: true, nullable: false
 
+      field :estimated_totals, -> { Internal::Types::Array[Schematic::Types::EstimatedPlanTotal] }, optional: true, nullable: false
+
       field :features, -> { Internal::Types::Array[Schematic::Types::FeatureInPlanResponseData] }, optional: false, nullable: false
 
       field :icon, -> { Schematic::Types::PlanIcon }, optional: false, nullable: false

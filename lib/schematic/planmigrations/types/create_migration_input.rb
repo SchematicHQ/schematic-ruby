@@ -16,6 +16,8 @@ module Schematic
 
         field :proration_behavior, -> { Schematic::Types::MigrationProrationBehavior }, optional: true, nullable: false
 
+        field :scheduled_at, -> { String }, optional: true, nullable: false
+
         field :strategy, -> { Schematic::Types::PlanVersionMigrationStrategy }, optional: false, nullable: false
 
         field :target_plan_type, -> { Schematic::Types::PlanType }, optional: false, nullable: false

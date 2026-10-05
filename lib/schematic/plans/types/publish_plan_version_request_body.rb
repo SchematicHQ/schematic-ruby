@@ -12,6 +12,8 @@ module Schematic
 
         field :billing_cycle_anchor, -> { String }, optional: true, nullable: false
 
+        field :billing_start_date, -> { String }, optional: true, nullable: false
+
         field :coupon_external_id, -> { String }, optional: true, nullable: false
 
         field :custom_field_values, -> { Internal::Types::Array[Schematic::Types::CheckoutFieldValue] }, optional: true, nullable: false
@@ -31,6 +33,8 @@ module Schematic
         field :proration_behavior, -> { Schematic::Types::MigrationProrationBehavior }, optional: true, nullable: false
 
         field :require_no_migration, -> { Internal::Types::Boolean }, optional: true, nullable: false
+
+        field :scheduled_at, -> { String }, optional: true, nullable: false
 
         field :send_invoice, -> { Internal::Types::Boolean }, optional: true, nullable: false
 

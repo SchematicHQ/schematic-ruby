@@ -10,6 +10,8 @@ module Schematic
 
         field :billing_cycle_anchor, -> { String }, optional: true, nullable: false
 
+        field :billing_start_date, -> { String }, optional: true, nullable: false
+
         field :customer_email, -> { String }, optional: false, nullable: false
 
         field :days_until_due, -> { Integer }, optional: true, nullable: false

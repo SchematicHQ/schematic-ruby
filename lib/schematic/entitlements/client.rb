@@ -1206,6 +1206,171 @@ module Schematic
       # @option params [String] :company_id
       # @option params [String, nil] :end_time
       # @option params [String, nil] :start_time
+      #
+      # @example
+      #   client.entitlements.get_company_user_usage_metrics(
+      #     company_id: "company_id",
+      #     end_time: "2024-01-15T09:30:00Z",
+      #     start_time: "2024-01-15T09:30:00Z"
+      #   )
+      #
+      # @return [Schematic::Entitlements::Types::GetCompanyUserUsageMetricsResponse]
+      def get_company_user_usage_metrics(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        query_params = {}
+        query_params["company_id"] = params[:company_id] if params.key?(:company_id)
+        query_params["end_time"] = params[:end_time] if params.key?(:end_time)
+        query_params["start_time"] = params[:start_time] if params.key?(:start_time)
+
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "GET",
+          path: "user-usage-by-company/metrics",
+          query: query_params,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::GetCompanyUserUsageMetricsResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          raise error_class.new(response.body, code: code)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :company_id
+      # @option params [String, nil] :end_time
+      # @option params [String, nil] :feature_id
+      # @option params [Schematic::Types::UserUsageMetric] :metric
+      # @option params [Integer, nil] :limit
+      # @option params [Integer, nil] :offset
+      # @option params [String, nil] :start_time
+      #
+      # @example
+      #   client.entitlements.list_company_user_usage(
+      #     company_id: "company_id",
+      #     end_time: "2024-01-15T09:30:00Z",
+      #     feature_id: "feature_id",
+      #     metric: "credits",
+      #     limit: 1000000,
+      #     offset: 1000000,
+      #     start_time: "2024-01-15T09:30:00Z"
+      #   )
+      #
+      # @return [Schematic::Entitlements::Types::ListCompanyUserUsageResponse]
+      def list_company_user_usage(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        query_params = {}
+        query_params["company_id"] = params[:company_id] if params.key?(:company_id)
+        query_params["end_time"] = params[:end_time] if params.key?(:end_time)
+        query_params["feature_id"] = params[:feature_id] if params.key?(:feature_id)
+        query_params["metric"] = params[:metric] if params.key?(:metric)
+        query_params["limit"] = params[:limit] if params.key?(:limit)
+        query_params["offset"] = params[:offset] if params.key?(:offset)
+        query_params["start_time"] = params[:start_time] if params.key?(:start_time)
+
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "GET",
+          path: "user-usage-by-company/users",
+          query: query_params,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::ListCompanyUserUsageResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          raise error_class.new(response.body, code: code)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :company_id
+      # @option params [String, nil] :end_time
+      # @option params [String, nil] :feature_id
+      # @option params [Schematic::Types::UserUsageMetric] :metric
+      # @option params [Integer, nil] :limit
+      # @option params [Integer, nil] :offset
+      # @option params [String, nil] :start_time
+      #
+      # @example
+      #   client.entitlements.count_company_user_usage(
+      #     company_id: "company_id",
+      #     end_time: "2024-01-15T09:30:00Z",
+      #     feature_id: "feature_id",
+      #     metric: "credits",
+      #     limit: 1000000,
+      #     offset: 1000000,
+      #     start_time: "2024-01-15T09:30:00Z"
+      #   )
+      #
+      # @return [Schematic::Entitlements::Types::CountCompanyUserUsageResponse]
+      def count_company_user_usage(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        query_params = {}
+        query_params["company_id"] = params[:company_id] if params.key?(:company_id)
+        query_params["end_time"] = params[:end_time] if params.key?(:end_time)
+        query_params["feature_id"] = params[:feature_id] if params.key?(:feature_id)
+        query_params["metric"] = params[:metric] if params.key?(:metric)
+        query_params["limit"] = params[:limit] if params.key?(:limit)
+        query_params["offset"] = params[:offset] if params.key?(:offset)
+        query_params["start_time"] = params[:start_time] if params.key?(:start_time)
+
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "GET",
+          path: "user-usage-by-company/users/count",
+          query: query_params,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Entitlements::Types::CountCompanyUserUsageResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          raise error_class.new(response.body, code: code)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :company_id
+      # @option params [String, nil] :end_time
+      # @option params [String, nil] :start_time
       # @option params [String] :user_id
       #
       # @example

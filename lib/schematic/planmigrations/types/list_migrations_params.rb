@@ -7,6 +7,8 @@ module Schematic
       class ListMigrationsParams < Internal::Types::Model
         field :feature_id, -> { String }, optional: true, nullable: false
 
+        field :feature_plan_rollout_id, -> { String }, optional: true, nullable: false
+
         field :limit, -> { Integer }, optional: true, nullable: false
 
         field :offset, -> { Integer }, optional: true, nullable: false

@@ -7,6 +7,8 @@ module Schematic
 
       field :billing_cycle_anchor, -> { String }, optional: true, nullable: false
 
+      field :billing_start_date, -> { String }, optional: true, nullable: false
+
       field :company_id, -> { String }, optional: false, nullable: false
 
       field :created_at, -> { String }, optional: false, nullable: false

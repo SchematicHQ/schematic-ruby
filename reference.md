@@ -1145,6 +1145,14 @@ client.accounts.update_environment(environment_id: "environment_id")
 <dl>
 <dd>
 
+**require_context_signature:** `Internal::Types::Boolean` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `Schematic::Accounts::RequestOptions` 
     
 </dd>
@@ -5999,6 +6007,14 @@ client.credits.acquire_credit_lease(
 <dl>
 <dd>
 
+**user_id:** `String` — The user drawing the hold, so a user-scope spend policy applies to it
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `Schematic::Credits::RequestOptions` 
     
 </dd>
@@ -6067,6 +6083,14 @@ client.credits.extend_credit_lease(
 <dd>
 
 **idempotency_key:** `String` — A caller-chosen key for safe retries: a second request with the same key returns the lease as it stands instead of growing it again. Keys are unique per environment across every extend
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**user_id:** `String` — The user drawing the top-up, so a user-scope spend policy applies to it
     
 </dd>
 </dl>
@@ -6830,10 +6854,7 @@ client.credits.list_credit_spend_policies(
 <dd>
 
 ```ruby
-client.credits.create_credit_spend_policy(
-  billing_credit_id: "billing_credit_id",
-  max_per_draw: 1.1
-)
+client.credits.create_credit_spend_policy(billing_credit_id: "billing_credit_id")
 ```
 </dd>
 </dl>
@@ -6872,7 +6893,7 @@ client.credits.create_credit_spend_policy(
 <dl>
 <dd>
 
-**max_per_draw:** `Integer` — The largest number of credits a single draw may spend.
+**max_per_draw:** `Integer` — The largest number of credits a single draw may spend. Set either this or window_amount.
     
 </dd>
 </dl>
@@ -6881,6 +6902,22 @@ client.credits.create_credit_spend_policy(
 <dd>
 
 **user_id:** `String` — The user the cap applies to. Set exactly one of company_id and user_id.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**window_amount:** `Integer` — The number of credits the company or user may spend in one window. Set either this or max_per_draw.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**window_unit:** `Schematic::Types::CreditSpendWindowUnit` — The window that window_amount applies to: one UTC hour or one UTC day. Required with window_amount.
     
 </dd>
 </dl>
@@ -6993,6 +7030,22 @@ client.credits.update_credit_spend_policy(spend_policy_id: "spend_policy_id")
 <dd>
 
 **max_per_draw:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**window_amount:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**window_unit:** `Schematic::Types::CreditSpendWindowUnit` 
     
 </dd>
 </dl>
@@ -7164,6 +7217,74 @@ client.credits.count_credit_spend_policies(
 </dl>
 </details>
 
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">get_credit_spend_policy_usage</a>() -> Schematic::Credits::Types::GetCreditSpendPolicyUsageResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.credits.get_credit_spend_policy_usage(
+  billing_credit_id: "billing_credit_id",
+  company_id: "company_id",
+  user_ids: ["user_ids"]
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_credit_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**user_ids:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Credits::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">list_credit_event_ledger</a>() -> Schematic::Credits::Types::ListCreditEventLedgerResponse</code></summary>
 <dl>
 <dd>
@@ -7181,7 +7302,7 @@ client.credits.list_credit_event_ledger(
   billing_credit_id: "billing_credit_id",
   company_id: "company_id",
   end_time: "end_time",
-  event_type: "grant",
+  event_type: "adjustment",
   feature_id: "feature_id",
   start_time: "start_time",
   limit: 1000000,
@@ -7294,7 +7415,7 @@ client.credits.count_credit_event_ledger(
   billing_credit_id: "billing_credit_id",
   company_id: "company_id",
   end_time: "end_time",
-  event_type: "grant",
+  event_type: "adjustment",
   feature_id: "feature_id",
   start_time: "start_time",
   limit: 1000000,
@@ -14894,6 +15015,282 @@ client.entitlements.get_user_usage_by_company(
 </dl>
 </details>
 
+<details><summary><code>client.entitlements.<a href="/lib/schematic/entitlements/client.rb">get_company_user_usage_metrics</a>() -> Schematic::Entitlements::Types::GetCompanyUserUsageMetricsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.entitlements.get_company_user_usage_metrics(
+  company_id: "company_id",
+  end_time: "2024-01-15T09:30:00Z",
+  start_time: "2024-01-15T09:30:00Z"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `String` — Company to list available metrics for
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_time:** `String` — End of the usage window (exclusive); defaults to now
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_time:** `String` — Start of the usage window; defaults to 30 days before the end
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Entitlements::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entitlements.<a href="/lib/schematic/entitlements/client.rb">list_company_user_usage</a>() -> Schematic::Entitlements::Types::ListCompanyUserUsageResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.entitlements.list_company_user_usage(
+  company_id: "company_id",
+  end_time: "2024-01-15T09:30:00Z",
+  feature_id: "feature_id",
+  metric: "credits",
+  limit: 1000000,
+  offset: 1000000,
+  start_time: "2024-01-15T09:30:00Z"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `String` — Company to break usage down for
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_time:** `String` — End of the usage window (exclusive); defaults to now
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**feature_id:** `String` — The event-based feature to break down; required when metric is feature
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metric:** `Schematic::Types::UserUsageMetric` — Which metric to break usage down by
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Integer` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `Integer` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_time:** `String` — Start of the usage window; defaults to 30 days before the end
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Entitlements::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entitlements.<a href="/lib/schematic/entitlements/client.rb">count_company_user_usage</a>() -> Schematic::Entitlements::Types::CountCompanyUserUsageResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.entitlements.count_company_user_usage(
+  company_id: "company_id",
+  end_time: "2024-01-15T09:30:00Z",
+  feature_id: "feature_id",
+  metric: "credits",
+  limit: 1000000,
+  offset: 1000000,
+  start_time: "2024-01-15T09:30:00Z"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `String` — Company to break usage down for
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_time:** `String` — End of the usage window (exclusive); defaults to now
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**feature_id:** `String` — The event-based feature to break down; required when metric is feature
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metric:** `Schematic::Types::UserUsageMetric` — Which metric to break usage down by
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Integer` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `Integer` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_time:** `String` — Start of the usage window; defaults to 30 days before the end
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Entitlements::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.entitlements.<a href="/lib/schematic/entitlements/client.rb">get_user_usage_detail</a>() -> Schematic::Entitlements::Types::GetUserUsageDetailResponse</code></summary>
 <dl>
 <dd>
@@ -15252,6 +15649,14 @@ client.plans.retry_custom_plan_billing(
 <dd>
 
 **billing_cycle_anchor:** `String` — The date the subscription's billing period renews on. Only honored when the retry creates a subscription.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billing_start_date:** `String` — The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. When both are omitted, the term pinned at finalize is reissued. Only honored when the retry creates a subscription.
     
 </dd>
 </dl>
@@ -16550,6 +16955,14 @@ client.plans.publish_plan_version(
 <dl>
 <dd>
 
+**billing_start_date:** `String` — The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. Only honored on a first publish that starts a subscription.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **coupon_external_id:** `String` 
     
 </dd>
@@ -16614,7 +17027,7 @@ client.plans.publish_plan_version(
 <dl>
 <dd>
 
-**proration_behavior:** `Schematic::Types::MigrationProrationBehavior` 
+**proration_behavior:** `Schematic::Types::MigrationProrationBehavior` — How Stripe handles the price difference when companies are migrated. With migration_strategy immediate, omitted means create_prorations. With end_of_billing_period only none is accepted and means the same as omitting it: the change lands on the renewal boundary, so there is nothing to prorate. With scheduled any value is accepted and omitted means none. Not accepted with leave.
     
 </dd>
 </dl>
@@ -16623,6 +17036,14 @@ client.plans.publish_plan_version(
 <dd>
 
 **require_no_migration:** `Internal::Types::Boolean` — Refuse the publish if any company would be migrated onto the new version
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scheduled_at:** `String` — When every company moves, for migration_strategy scheduled. Must be in the future; the migration runs within about a minute of this time. Not accepted with other strategies.
     
 </dd>
 </dl>
@@ -21078,6 +21499,7 @@ client.plangroups.create_plan_group(
   proration_behavior: "create_prorations",
   show_as_monthly_prices: true,
   show_credits: true,
+  show_estimated_total: true,
   show_feature_description: true,
   show_hard_limit: true,
   show_period_toggle: true,
@@ -21330,6 +21752,14 @@ client.plangroups.create_plan_group(
 <dl>
 <dd>
 
+**show_estimated_total:** `Internal::Types::Boolean` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **show_feature_description:** `Internal::Types::Boolean` 
     
 </dd>
@@ -21458,6 +21888,7 @@ client.plangroups.update_plan_group(
   proration_behavior: "create_prorations",
   show_as_monthly_prices: true,
   show_credits: true,
+  show_estimated_total: true,
   show_feature_description: true,
   show_hard_limit: true,
   show_period_toggle: true,
@@ -21711,6 +22142,14 @@ client.plangroups.update_plan_group(
 <dd>
 
 **show_credits:** `Internal::Types::Boolean` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**show_estimated_total:** `Internal::Types::Boolean` 
     
 </dd>
 </dl>
@@ -22046,6 +22485,7 @@ client.planmigrations.count_company_migrations(
 ```ruby
 client.planmigrations.list_migrations(
   feature_id: "feature_id",
+  feature_plan_rollout_id: "feature_plan_rollout_id",
   plan_version_id: "plan_version_id",
   status: "cancelled",
   limit: 1000000,
@@ -22066,6 +22506,14 @@ client.planmigrations.list_migrations(
 <dd>
 
 **feature_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**feature_plan_rollout_id:** `String` 
     
 </dd>
 </dl>
@@ -22190,7 +22638,15 @@ client.planmigrations.create_migration(
 <dl>
 <dd>
 
-**proration_behavior:** `Schematic::Types::MigrationProrationBehavior` 
+**proration_behavior:** `Schematic::Types::MigrationProrationBehavior` — How Stripe handles the price difference when companies are migrated. With strategy immediate, omitted means create_prorations. With end_of_billing_period only none is accepted and means the same as omitting it: the change lands on the renewal boundary, so there is nothing to prorate. With scheduled any value is accepted and omitted means none.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scheduled_at:** `String` — When every company moves, for strategy scheduled. Must be in the future; the migration runs within about a minute of this time. Not accepted with other strategies.
     
 </dd>
 </dl>
@@ -22452,6 +22908,7 @@ client.planmigrations.retry_migration(
 ```ruby
 client.planmigrations.count_migrations(
   feature_id: "feature_id",
+  feature_plan_rollout_id: "feature_plan_rollout_id",
   plan_version_id: "plan_version_id",
   status: "cancelled",
   limit: 1000000,
@@ -22472,6 +22929,14 @@ client.planmigrations.count_migrations(
 <dd>
 
 **feature_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**feature_plan_rollout_id:** `String` 
     
 </dd>
 </dl>

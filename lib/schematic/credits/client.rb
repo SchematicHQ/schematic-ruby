@@ -1399,10 +1399,7 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       #
       # @example
-      #   client.credits.create_credit_spend_policy(
-      #     billing_credit_id: "billing_credit_id",
-      #     max_per_draw: 1.1
-      #   )
+      #   client.credits.create_credit_spend_policy(billing_credit_id: "billing_credit_id")
       #
       # @return [Schematic::Credits::Types::CreateCreditSpendPolicyResponse]
       def create_credit_spend_policy(request_options: {}, **params)
@@ -1606,6 +1603,53 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String, nil] :billing_credit_id
       # @option params [String] :company_id
+      # @option params [String, nil] :user_ids
+      #
+      # @example
+      #   client.credits.get_credit_spend_policy_usage(
+      #     billing_credit_id: "billing_credit_id",
+      #     company_id: "company_id",
+      #     user_ids: ["user_ids"]
+      #   )
+      #
+      # @return [Schematic::Credits::Types::GetCreditSpendPolicyUsageResponse]
+      def get_credit_spend_policy_usage(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        query_params = {}
+        query_params["billing_credit_id"] = params[:billing_credit_id] if params.key?(:billing_credit_id)
+        query_params["company_id"] = params[:company_id] if params.key?(:company_id)
+        query_params["user_ids"] = params[:user_ids] if params.key?(:user_ids)
+
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "GET",
+          path: "billing/credits/spend-policies/usage",
+          query: query_params,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::GetCreditSpendPolicyUsageResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          raise error_class.new(response.body, code: code)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String, nil] :billing_credit_id
+      # @option params [String] :company_id
       # @option params [String, nil] :end_time
       # @option params [Schematic::Types::CreditEventType, nil] :event_type
       # @option params [String, nil] :feature_id
@@ -1618,7 +1662,7 @@ module Schematic
       #     billing_credit_id: "billing_credit_id",
       #     company_id: "company_id",
       #     end_time: "end_time",
-      #     event_type: "grant",
+      #     event_type: "adjustment",
       #     feature_id: "feature_id",
       #     start_time: "start_time",
       #     limit: 1000000,
@@ -1680,7 +1724,7 @@ module Schematic
       #     billing_credit_id: "billing_credit_id",
       #     company_id: "company_id",
       #     end_time: "end_time",
-      #     event_type: "grant",
+      #     event_type: "adjustment",
       #     feature_id: "feature_id",
       #     start_time: "start_time",
       #     limit: 1000000,
