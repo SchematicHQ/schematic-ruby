@@ -9,6 +9,8 @@ module Schematic
         field :environment_type, -> { Schematic::Types::EnvironmentType }, optional: true, nullable: false
 
         field :name, -> { String }, optional: true, nullable: false
+
+        field :require_context_signature, -> { Internal::Types::Boolean }, optional: true, nullable: false
       end
     end
   end

@@ -13,6 +13,8 @@ module Schematic
 
       field :credit_postpaid, -> { Internal::Types::Hash[String, Schematic::Types::RulesengineCreditPostpaidConfig] }, optional: true, nullable: false
 
+      field :credit_spend_policies, -> { Internal::Types::Array[Schematic::Types::RulesengineCreditSpendPolicy] }, optional: true, nullable: false
+
       field :entitlements, -> { Internal::Types::Array[Schematic::Types::RulesengineFeatureEntitlement] }, optional: true, nullable: false
 
       field :environment_id, -> { String }, optional: false, nullable: false

@@ -5,6 +5,8 @@ module Schematic
     class RulesengineUser < Internal::Types::Model
       field :account_id, -> { String }, optional: false, nullable: false
 
+      field :credit_spend_policies, -> { Internal::Types::Array[Schematic::Types::RulesengineCreditSpendPolicy] }, optional: true, nullable: false
+
       field :environment_id, -> { String }, optional: false, nullable: false
 
       field :id, -> { String }, optional: false, nullable: false

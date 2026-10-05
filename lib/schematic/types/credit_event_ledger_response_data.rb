@@ -9,7 +9,7 @@ module Schematic
 
       field :billing_credit_bundle_id, -> { String }, optional: true, nullable: false
 
-      field :billing_credit_id, -> { String }, optional: false, nullable: false
+      field :billing_credit_id, -> { String }, optional: true, nullable: false
 
       field :company, -> { Schematic::Types::CompanyLedgerResponseData }, optional: true, nullable: false
 
@@ -18,6 +18,8 @@ module Schematic
       field :credit, -> { Schematic::Types::BillingCreditLedgerResponseData }, optional: true, nullable: false
 
       field :credit_name, -> { String }, optional: false, nullable: false
+
+      field :currency, -> { String }, optional: true, nullable: false
 
       field :environment_id, -> { String }, optional: false, nullable: false
 
@@ -50,6 +52,8 @@ module Schematic
       field :grant_reason, -> { Schematic::Types::BillingCreditGrantReason }, optional: true, nullable: false
 
       field :grant_valid_from, -> { String }, optional: true, nullable: false
+
+      field :kind, -> { Schematic::Types::CreditLedgerEntryKind }, optional: false, nullable: false
 
       field :plan_id, -> { String }, optional: true, nullable: false
 

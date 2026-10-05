@@ -6,6 +6,8 @@ module Schematic
       class ListMigrationsRequest < Internal::Types::Model
         field :feature_id, -> { String }, optional: true, nullable: false
 
+        field :feature_plan_rollout_id, -> { String }, optional: true, nullable: false
+
         field :plan_version_id, -> { String }, optional: true, nullable: false
 
         field :status, -> { Schematic::Types::PlanVersionMigrationStatus }, optional: true, nullable: false

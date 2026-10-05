@@ -64,6 +64,8 @@ module Schematic
 
         field :show_credits, -> { Internal::Types::Boolean }, optional: false, nullable: false
 
+        field :show_estimated_total, -> { Internal::Types::Boolean }, optional: false, nullable: false
+
         field :show_feature_description, -> { Internal::Types::Boolean }, optional: false, nullable: false
 
         field :show_hard_limit, -> { Internal::Types::Boolean }, optional: false, nullable: false

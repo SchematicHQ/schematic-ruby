@@ -11,6 +11,8 @@ module Schematic
         field :expires_at, -> { String }, optional: true, nullable: false
 
         field :idempotency_key, -> { String }, optional: true, nullable: false
+
+        field :user_id, -> { String }, optional: true, nullable: false
       end
     end
   end
