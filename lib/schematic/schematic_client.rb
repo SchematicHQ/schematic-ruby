@@ -657,6 +657,20 @@ module Schematic
     # Cache providers that serialize (RedisCacheProvider) hand back a Hash, not
     # the CheckFlagResponse that was stored; the in-memory cache returns the
     # object itself. Normalize so callers can use the response API either way.
+    # The REST preflight body has no event_quantities yet; only the local
+    # engine applies it. Sending it would ask the API a question it cannot
+    # read, so it comes off here, and the check answers without it. A preflight
+    # left empty becomes nil, so the check is a plain, cacheable one.
+    def rest_preflight(flag_key, preflight)
+      return preflight unless preflight.is_a?(Hash)
+      return preflight unless preflight.key?(:event_quantities) || preflight.key?("event_quantities")
+
+      @logger.warn("Preflight event_quantities for flag '#{flag_key}' is only applied by local evaluation; " \
+                   "the API check ignores it, so the check answers without it")
+      rest = preflight.reject { |key, _| key.to_s == "event_quantities" }
+      rest.empty? ? nil : rest
+    end
+
     def coerce_cached_response(cached)
       return cached unless cached.is_a?(Hash)
 
@@ -665,6 +679,7 @@ module Schematic
 
     def check_flag_via_api(flag_key, company, user, preflight: nil, timeout_ms: nil, get_default: nil)
       get_default ||= -> { get_flag_default(flag_key) }
+      preflight = rest_preflight(flag_key, preflight)
       cache_key = build_cache_key(flag_key, company, user)
       # The cache is keyed by flag, company and user, so a preflighted check and
       # a plain one collide on one entry while asking different questions ("is

@@ -82,8 +82,20 @@ module Schematic
     # "would this call still be allowed after it lands".
     #
     # options is a hash with any of :credit_cost (credit id to cost),
-    # :usage, and :event_usage ({ event_subtype:, quantity: }). The engine reads
-    # them snake_case in both directions, so they go on the envelope as given.
+    # :usage, :event_usage ({ event_subtype:, quantity: }), and
+    # :event_quantities ({ event_subtype:, quantity:, quantities: }). The engine
+    # reads them snake_case in both directions, so they go on the envelope as
+    # given.
+    #
+    # event_quantities prices an event against credit-balance conditions whose
+    # event_subtype matches, the way the API burns it: quantity times the
+    # condition's consumption_rate, plus each named quantity times its rate in
+    # the condition's quantity_rates. For an inference call, quantity is the
+    # request count and quantities the token counts as the event reports them
+    # (input tokens including the cached and cache-creation subsets). Keys
+    # without a rate cost nothing; an absent or zero quantity means one. It
+    # ranks below credit_cost and above event_usage and usage, and the engine
+    # reads its values as floats, so unlike event_usage they are not rounded.
     def check_flag_with_options(flag, company = nil, user = nil, options = nil)
       raise "WASM rules engine not initialized" unless @initialized
 
