@@ -7,17 +7,17 @@ module Schematic
 
       field :company_id, -> { String }, optional: true, nullable: false
 
-      field :consumed, -> { Integer }, optional: true, nullable: false
+      field :consumed, -> { Float }, optional: true, nullable: false
 
       field :created_at, -> { String }, optional: false, nullable: false
 
-      field :headroom, -> { Integer }, optional: true, nullable: false
+      field :headroom, -> { Float }, optional: true, nullable: false
 
       field :id, -> { String }, optional: false, nullable: false
 
       field :label, -> { String }, optional: true, nullable: false
 
-      field :max_per_draw, -> { Integer }, optional: true, nullable: false
+      field :max_per_draw, -> { Float }, optional: true, nullable: false
 
       field :resets_at, -> { String }, optional: true, nullable: false
 
@@ -27,7 +27,7 @@ module Schematic
 
       field :user_id, -> { String }, optional: true, nullable: false
 
-      field :window_amount, -> { Integer }, optional: true, nullable: false
+      field :window_amount, -> { Float }, optional: true, nullable: false
 
       field :window_count, -> { Integer }, optional: false, nullable: false
 

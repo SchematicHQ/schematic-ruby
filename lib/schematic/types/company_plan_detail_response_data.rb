@@ -37,6 +37,8 @@ module Schematic
 
       field :created_at, -> { String }, optional: false, nullable: false
 
+      field :credit_visibility, -> { Internal::Types::Array[Schematic::Types::PlanCreditVisibility] }, optional: true, nullable: false
+
       field :credits, -> { Internal::Types::Array[Schematic::Types::BillingCreditResponseData] }, optional: false, nullable: false
 
       field :currency_prices, -> { Internal::Types::Array[Schematic::Types::PlanCurrencyPricesResponseData] }, optional: false, nullable: false

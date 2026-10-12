@@ -9,7 +9,7 @@ module Schematic
 
       field :created_at, -> { String }, optional: false, nullable: false
 
-      field :currency, -> { String }, optional: false, nullable: false
+      field :currency, -> { Schematic::Types::Currency }, optional: false, nullable: false
 
       field :environment_id, -> { String }, optional: false, nullable: false
 
@@ -39,7 +39,7 @@ module Schematic
 
       field :provider_type, -> { Schematic::Types::BillingProviderType }, optional: false, nullable: false
 
-      field :quantity, -> { Integer }, optional: false, nullable: false
+      field :quantity, -> { Float }, optional: false, nullable: false
 
       field :subscription_id, -> { String }, optional: false, nullable: false
 

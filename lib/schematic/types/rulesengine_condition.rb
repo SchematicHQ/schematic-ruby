@@ -9,7 +9,7 @@ module Schematic
 
       field :condition_type, -> { Schematic::Types::RulesengineConditionType }, optional: false, nullable: false
 
-      field :consumption_rate, -> { Integer }, optional: true, nullable: false
+      field :consumption_rate, -> { Float }, optional: true, nullable: false
 
       field :credit_id, -> { String }, optional: true, nullable: false
 
@@ -26,6 +26,8 @@ module Schematic
       field :metric_value, -> { Integer }, optional: true, nullable: false
 
       field :operator, -> { Schematic::Types::RulesengineComparableOperator }, optional: false, nullable: false
+
+      field :quantity_rates, -> { Internal::Types::Hash[String, Float] }, optional: true, nullable: false
 
       field :resource_ids, -> { Internal::Types::Array[String] }, optional: false, nullable: false
 

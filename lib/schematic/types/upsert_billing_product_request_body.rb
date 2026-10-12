@@ -9,7 +9,7 @@ module Schematic
 
       field :charge_type, -> { Schematic::Types::ChargeType }, optional: false, nullable: false
 
-      field :currency, -> { String }, optional: true, nullable: false
+      field :currency, -> { Schematic::Types::Currency }, optional: true, nullable: false
 
       field :currency_prices, -> { Internal::Types::Array[Schematic::Types::PlanCurrencyPriceRequestBody] }, optional: true, nullable: false
 

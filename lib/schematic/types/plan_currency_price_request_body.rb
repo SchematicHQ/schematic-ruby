@@ -3,7 +3,7 @@
 module Schematic
   module Types
     class PlanCurrencyPriceRequestBody < Internal::Types::Model
-      field :currency, -> { String }, optional: false, nullable: false
+      field :currency, -> { Schematic::Types::Currency }, optional: false, nullable: false
 
       field :monthly_price, -> { Integer }, optional: true, nullable: false
 

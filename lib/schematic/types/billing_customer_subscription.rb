@@ -3,7 +3,7 @@
 module Schematic
   module Types
     class BillingCustomerSubscription < Internal::Types::Model
-      field :currency, -> { String }, optional: false, nullable: false
+      field :currency, -> { Schematic::Types::Currency }, optional: false, nullable: false
 
       field :expired_at, -> { String }, optional: true, nullable: false
 

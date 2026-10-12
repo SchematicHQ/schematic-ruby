@@ -6,6 +6,8 @@ module Schematic
       class CreateFeatureRequestBody < Internal::Types::Model
         field :description, -> { String }, optional: false, nullable: false
 
+        field :event_source, -> { Schematic::Types::FeatureEventSource }, optional: true, nullable: false
+
         field :event_subtype, -> { String }, optional: true, nullable: false
 
         field :feature_type, -> { Schematic::Types::FeatureType }, optional: false, nullable: false

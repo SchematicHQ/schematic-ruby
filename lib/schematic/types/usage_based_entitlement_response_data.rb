@@ -5,7 +5,7 @@ module Schematic
     class UsageBasedEntitlementResponseData < Internal::Types::Model
       field :billing_threshold, -> { Integer }, optional: true, nullable: false
 
-      field :consumption_rate, -> { Integer }, optional: true, nullable: false
+      field :consumption_rate, -> { Float }, optional: true, nullable: false
 
       field :feature_id, -> { String }, optional: false, nullable: false
 

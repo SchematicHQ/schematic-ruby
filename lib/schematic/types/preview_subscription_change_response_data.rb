@@ -21,9 +21,11 @@ module Schematic
 
       field :payment_method_required, -> { Internal::Types::Boolean }, optional: false, nullable: false
 
-      field :percent_off, -> { Integer }, optional: false, nullable: false
+      field :percent_off, -> { Float }, optional: false, nullable: false
 
       field :period_start, -> { String }, optional: false, nullable: false
+
+      field :problems, -> { Internal::Types::Array[Schematic::Types::CheckoutProblemResponseData] }, optional: false, nullable: false
 
       field :promo_code_applied, -> { Internal::Types::Boolean }, optional: false, nullable: false
 

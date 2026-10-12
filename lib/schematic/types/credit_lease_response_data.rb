@@ -11,13 +11,13 @@ module Schematic
 
       field :expires_at, -> { String }, optional: false, nullable: false
 
-      field :granted_amount, -> { Integer }, optional: false, nullable: false
+      field :granted_amount, -> { Float }, optional: false, nullable: false
 
       field :id, -> { String }, optional: false, nullable: false
 
       field :released_at, -> { String }, optional: true, nullable: false
 
-      field :tracked_amount, -> { Integer }, optional: false, nullable: false
+      field :tracked_amount, -> { Float }, optional: false, nullable: false
 
       field :updated_at, -> { String }, optional: false, nullable: false
     end

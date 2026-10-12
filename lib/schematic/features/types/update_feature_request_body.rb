@@ -8,6 +8,8 @@ module Schematic
 
         field :description, -> { String }, optional: true, nullable: false
 
+        field :event_source, -> { Schematic::Types::FeatureEventSource }, optional: true, nullable: false
+
         field :event_subtype, -> { String }, optional: true, nullable: false
 
         field :feature_type, -> { Schematic::Types::FeatureType }, optional: true, nullable: false

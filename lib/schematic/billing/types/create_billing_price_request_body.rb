@@ -6,7 +6,7 @@ module Schematic
       class CreateBillingPriceRequestBody < Internal::Types::Model
         field :billing_scheme, -> { Schematic::Types::BillingPriceScheme }, optional: false, nullable: false
 
-        field :currency, -> { String }, optional: false, nullable: false
+        field :currency, -> { Schematic::Types::Currency }, optional: false, nullable: false
 
         field :external_account_id, -> { String }, optional: false, nullable: false
 

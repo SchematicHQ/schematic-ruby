@@ -1544,7 +1544,7 @@ client.billing.upsert_billing_coupon(
 <dl>
 <dd>
 
-**currency:** `String` 
+**currency:** `Schematic::Types::Currency` 
     
 </dd>
 </dl>
@@ -1592,7 +1592,7 @@ client.billing.upsert_billing_coupon(
 <dl>
 <dd>
 
-**percent_off:** `Integer` 
+**percent_off:** `Float` 
     
 </dd>
 </dl>
@@ -2113,7 +2113,7 @@ client.billing.upsert_invoice(
   amount_paid: 1000000,
   amount_remaining: 1000000,
   collection_method: "collection_method",
-  currency: "currency",
+  currency: "aed",
   customer_external_id: "customer_external_id",
   subtotal: 1000000
 )
@@ -2163,7 +2163,7 @@ client.billing.upsert_invoice(
 <dl>
 <dd>
 
-**currency:** `String` 
+**currency:** `Schematic::Types::Currency` 
     
 </dd>
 </dl>
@@ -2751,7 +2751,7 @@ client.billing.delete_payment_method_by_external_id(billing_id: "billing_id")
 
 ```ruby
 client.billing.list_billing_prices(
-  currency: "currency",
+  currency: "aed",
   for_initial_plan: true,
   for_trial_expiry_plan: true,
   ids: ["ids"],
@@ -2784,7 +2784,7 @@ client.billing.list_billing_prices(
 <dl>
 <dd>
 
-**currency:** `String` — Filter for prices in a specific currency (e.g. usd, eur)
+**currency:** `Schematic::Types::Currency` — Filter for prices in a specific currency (e.g. usd, eur)
     
 </dd>
 </dl>
@@ -2955,7 +2955,7 @@ client.billing.list_billing_prices(
 ```ruby
 client.billing.upsert_billing_price(
   billing_scheme: "per_unit",
-  currency: "currency",
+  currency: "aed",
   external_account_id: "external_account_id",
   interval: "interval",
   is_active: true,
@@ -2989,7 +2989,7 @@ client.billing.upsert_billing_price(
 <dl>
 <dd>
 
-**currency:** `String` 
+**currency:** `Schematic::Types::Currency` 
     
 </dd>
 </dl>
@@ -3191,7 +3191,7 @@ client.billing.delete_billing_product(billing_id: "billing_id")
 
 ```ruby
 client.billing.list_billing_product_prices(
-  currency: "currency",
+  currency: "aed",
   for_initial_plan: true,
   for_trial_expiry_plan: true,
   ids: ["ids"],
@@ -3224,7 +3224,7 @@ client.billing.list_billing_product_prices(
 <dl>
 <dd>
 
-**currency:** `String` — Filter for prices in a specific currency (e.g. usd, eur)
+**currency:** `Schematic::Types::Currency` — Filter for prices in a specific currency (e.g. usd, eur)
     
 </dd>
 </dl>
@@ -3483,7 +3483,7 @@ client.billing.upsert_billing_product(
 <dl>
 <dd>
 
-**price:** `Integer` 
+**price:** `Float` 
     
 </dd>
 </dl>
@@ -4012,6 +4012,94 @@ client.billing.update_company_billing_profile(
 </dl>
 </details>
 
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">get_billing_settings</a>() -> Schematic::Billing::Types::GetBillingSettingsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.billing.get_billing_settings
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Billing::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">update_billing_settings</a>(request) -> Schematic::Billing::Types::UpdateBillingSettingsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.billing.update_billing_settings
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**default_provider_type:** `Schematic::Types::BillingProviderType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Billing::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">upsert_billing_subscription</a>(request) -> Schematic::Billing::Types::UpsertBillingSubscriptionResponse</code></summary>
 <dl>
 <dd>
@@ -4027,7 +4115,7 @@ client.billing.update_company_billing_profile(
 ```ruby
 client.billing.upsert_billing_subscription(
   cancel_at_period_end: true,
-  currency: "currency",
+  currency: "aed",
   customer_external_id: "customer_external_id",
   discounts: [{
     coupon_external_id: "coupon_external_id",
@@ -4037,7 +4125,7 @@ client.billing.upsert_billing_subscription(
   }],
   expired_at: "2024-01-15T09:30:00Z",
   product_external_ids: [{
-    currency: "currency",
+    currency: "aed",
     interval: "interval",
     price: 1000000,
     price_external_id: "price_external_id",
@@ -4094,7 +4182,7 @@ client.billing.upsert_billing_subscription(
 <dl>
 <dd>
 
-**currency:** `String` 
+**currency:** `Schematic::Types::Currency` 
     
 </dd>
 </dl>
@@ -4342,7 +4430,7 @@ client.credits.list_billing_credits(
 
 ```ruby
 client.credits.create_billing_credit(
-  currency: "currency",
+  currency: "aed",
   description: "description",
   name: "name"
 )
@@ -4368,7 +4456,7 @@ client.credits.create_billing_credit(
 <dl>
 <dd>
 
-**currency:** `String` 
+**currency:** `Schematic::Types::Currency` 
     
 </dd>
 </dl>
@@ -4768,6 +4856,83 @@ client.credits.list_company_credit_balances(company_id: "company_id")
 </dl>
 </details>
 
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">get_credit_balance_time_series</a>() -> Schematic::Credits::Types::GetCreditBalanceTimeSeriesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.credits.get_credit_balance_time_series(
+  billing_credit_id: "billing_credit_id",
+  company_id: "company_id",
+  end_time: "2024-01-15T09:30:00Z",
+  start_time: "2024-01-15T09:30:00Z"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billing_credit_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_time:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_time:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Credits::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">list_credit_bundles</a>() -> Schematic::Credits::Types::ListCreditBundlesResponse</code></summary>
 <dl>
 <dd>
@@ -4879,7 +5044,7 @@ client.credits.list_credit_bundles(
 client.credits.create_credit_bundle(
   bundle_name: "bundle_name",
   credit_id: "credit_id",
-  currency: "currency",
+  currency: "aed",
   price_per_unit: 1000000
 )
 ```
@@ -4928,7 +5093,7 @@ client.credits.create_credit_bundle(
 <dl>
 <dd>
 
-**currency:** `String` 
+**currency:** `Schematic::Types::Currency` 
     
 </dd>
 </dl>
@@ -5533,7 +5698,7 @@ client.credits.grant_billing_credits_to_company(
 <dl>
 <dd>
 
-**currency:** `String` 
+**currency:** `Schematic::Types::Currency` 
     
 </dd>
 </dl>
@@ -5999,7 +6164,7 @@ client.credits.acquire_credit_lease(
 <dl>
 <dd>
 
-**requested_amount:** `Integer` 
+**requested_amount:** `Float` 
     
 </dd>
 </dl>
@@ -6066,7 +6231,7 @@ client.credits.extend_credit_lease(
 <dl>
 <dd>
 
-**additional_amount:** `Integer` 
+**additional_amount:** `Float` 
     
 </dd>
 </dl>
@@ -6637,7 +6802,7 @@ client.credits.reserve_credits(
 <dl>
 <dd>
 
-**amount:** `Integer` — Credits to hold for the operation. The full amount must be available; a partial hold is never taken
+**amount:** `Float` — Credits to hold for the operation. The full amount must be available; a partial hold is never taken
     
 </dd>
 </dl>
@@ -6893,7 +7058,7 @@ client.credits.create_credit_spend_policy(billing_credit_id: "billing_credit_id"
 <dl>
 <dd>
 
-**max_per_draw:** `Integer` — The largest number of credits a single draw may spend. Set either this or window_amount.
+**max_per_draw:** `Float` — The largest number of credits a single draw may spend. Set either this or window_amount.
     
 </dd>
 </dl>
@@ -6909,7 +7074,7 @@ client.credits.create_credit_spend_policy(billing_credit_id: "billing_credit_id"
 <dl>
 <dd>
 
-**window_amount:** `Integer` — The number of credits the company or user may spend in one window. Set either this or max_per_draw.
+**window_amount:** `Float` — The number of credits the company or user may spend in one window. Set either this or max_per_draw.
     
 </dd>
 </dl>
@@ -7029,7 +7194,7 @@ client.credits.update_credit_spend_policy(spend_policy_id: "spend_policy_id")
 <dl>
 <dd>
 
-**max_per_draw:** `Integer` 
+**max_per_draw:** `Float` 
     
 </dd>
 </dl>
@@ -7037,7 +7202,7 @@ client.credits.update_credit_spend_policy(spend_policy_id: "spend_policy_id")
 <dl>
 <dd>
 
-**window_amount:** `Integer` 
+**window_amount:** `Float` 
     
 </dd>
 </dl>
@@ -8470,7 +8635,7 @@ client.checkout.get_checkout_data(company_id: "company_id")
 <dl>
 <dd>
 
-**currency:** `String` 
+**currency:** `Schematic::Types::Currency` 
     
 </dd>
 </dl>
@@ -11127,7 +11292,7 @@ client.companies.count_entity_traits(
 
 ```ruby
 client.companies.list_plan_changes(
-  action: "checkout",
+  action: "amendment",
   base_plan_action: "fallback",
   company_id: "company_id",
   company_ids: ["company_ids"],
@@ -12267,7 +12432,7 @@ client.entitlements.create_company_override(
 <dl>
 <dd>
 
-**credit_consumption_rate:** `Integer` 
+**credit_consumption_rate:** `Float` 
     
 </dd>
 </dl>
@@ -12308,6 +12473,14 @@ client.entitlements.create_company_override(
 <dd>
 
 **note:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**quantity_rates:** `Internal::Types::Hash[String, Float]` — Credits per unit of the quantity (per token for inference features), keyed by quantity key. Inference features may price input_tokens, output_tokens, cached_input_tokens, cache_creation_input_tokens and reasoning_tokens; reasoning_tokens is priced on top of output_tokens, so leave its rate at zero for providers that count reasoning inside output. Omit to leave the schedule as it is; send null to clear it.
     
 </dd>
 </dl>
@@ -12454,7 +12627,7 @@ client.entitlements.update_company_override(
 <dl>
 <dd>
 
-**credit_consumption_rate:** `Integer` 
+**credit_consumption_rate:** `Float` 
     
 </dd>
 </dl>
@@ -12487,6 +12660,14 @@ client.entitlements.update_company_override(
 <dd>
 
 **note:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**quantity_rates:** `Internal::Types::Hash[String, Float]` — Credits per unit of the quantity (per token for inference features), keyed by quantity key. Inference features may price input_tokens, output_tokens, cached_input_tokens, cache_creation_input_tokens and reasoning_tokens; reasoning_tokens is priced on top of output_tokens, so leave its rate at zero for providers that count reasoning inside output. Omit to leave the schedule as it is; send null to clear it.
     
 </dd>
 </dl>
@@ -13644,7 +13825,7 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
-**credit_consumption_rate:** `Integer` 
+**credit_consumption_rate:** `Float` 
     
 </dd>
 </dl>
@@ -13652,7 +13833,7 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
-**currency:** `String` 
+**currency:** `Schematic::Types::Currency` 
     
 </dd>
 </dl>
@@ -13773,6 +13954,14 @@ client.entitlements.create_plan_entitlement(
 <dd>
 
 **price_tiers:** `Internal::Types::Array[Schematic::Types::CreatePriceTierRequestBody]` — Use MonthlyPriceTiers or YearlyPriceTiers instead
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**quantity_rates:** `Internal::Types::Hash[String, Float]` — Credits per unit of the quantity (per token for inference features), keyed by quantity key. Inference features may price input_tokens, output_tokens, cached_input_tokens, cache_creation_input_tokens and reasoning_tokens; reasoning_tokens is priced on top of output_tokens, so leave its rate at zero for providers that count reasoning inside output. Omit to leave the schedule as it is; send null to clear it.
     
 </dd>
 </dl>
@@ -14031,7 +14220,7 @@ client.entitlements.update_plan_entitlement(
 <dl>
 <dd>
 
-**credit_consumption_rate:** `Integer` 
+**credit_consumption_rate:** `Float` 
     
 </dd>
 </dl>
@@ -14039,7 +14228,7 @@ client.entitlements.update_plan_entitlement(
 <dl>
 <dd>
 
-**currency:** `String` 
+**currency:** `Schematic::Types::Currency` 
     
 </dd>
 </dl>
@@ -14136,6 +14325,14 @@ client.entitlements.update_plan_entitlement(
 <dd>
 
 **price_tiers:** `Internal::Types::Array[Schematic::Types::CreatePriceTierRequestBody]` — Use MonthlyPriceTiers or YearlyPriceTiers instead
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**quantity_rates:** `Internal::Types::Hash[String, Float]` — Credits per unit of the quantity (per token for inference features), keyed by quantity key. Inference features may price input_tokens, output_tokens, cached_input_tokens, cache_creation_input_tokens and reasoning_tokens; reasoning_tokens is priced on top of output_tokens, so leave its rate at zero for providers that count reasoning inside output. Omit to leave the schedule as it is; send null to clear it.
     
 </dd>
 </dl>
@@ -14397,7 +14594,7 @@ client.entitlements.upsert_plan_entitlement_for_billing_product(
 <dl>
 <dd>
 
-**credit_consumption_rate:** `Integer` 
+**credit_consumption_rate:** `Float` 
     
 </dd>
 </dl>
@@ -14405,7 +14602,7 @@ client.entitlements.upsert_plan_entitlement_for_billing_product(
 <dl>
 <dd>
 
-**currency:** `String` 
+**currency:** `Schematic::Types::Currency` 
     
 </dd>
 </dl>
@@ -14534,6 +14731,14 @@ client.entitlements.upsert_plan_entitlement_for_billing_product(
 <dd>
 
 **price_tiers:** `Internal::Types::Array[Schematic::Types::CreatePriceTierRequestBody]` — Use MonthlyPriceTiers or YearlyPriceTiers instead
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**quantity_rates:** `Internal::Types::Hash[String, Float]` — Credits per unit of the quantity (per token for inference features), keyed by quantity key. Inference features may price input_tokens, output_tokens, cached_input_tokens, cache_creation_input_tokens and reasoning_tokens; reasoning_tokens is priced on top of output_tokens, so leave its rate at zero for providers that count reasoning inside output. Omit to leave the schedule as it is; send null to clear it.
     
 </dd>
 </dl>
@@ -15452,7 +15657,7 @@ client.plans.update_company_plans(
 client.plans.list_custom_plan_billings(
   company_id: "company_id",
   plan_id: "plan_id",
-  plan_billing_source: "custom_plan",
+  plan_billing_source: "amendment",
   status: "active",
   statuses: ["active"],
   limit: 1000000,
@@ -15488,7 +15693,7 @@ client.plans.list_custom_plan_billings(
 <dl>
 <dd>
 
-**plan_billing_source:** `Schematic::Types::PlanBillingSource` — Filter by the flow that created the billing record. Defaults to custom_plan.
+**plan_billing_source:** `Schematic::Types::PlanBillingSource` — Filter by the flow that created the billing record: custom_plan for a first publish, amendment for a republish, manage_plan for a standard plan assigned by invoice. Defaults to custom_plan.
     
 </dd>
 </dl>
@@ -16891,6 +17096,65 @@ client.plans.delete_plan_version(
 </dl>
 </details>
 
+<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">get_plan_version_diff</a>(plan_version_id:) -> Schematic::Plans::Types::GetPlanVersionDiffResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.plans.get_plan_version_diff(
+  plan_version_id: "plan_version_id",
+  against: "against"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_version_id:** `String` — plan_version_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**against:** `String` — The version to compare against. Defaults to the plan's published version.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Plans::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">publish_plan_version</a>(plan_version_id:, request) -> Schematic::Plans::Types::PublishPlanVersionResponse</code></summary>
 <dl>
 <dd>
@@ -16931,7 +17195,7 @@ client.plans.publish_plan_version(
 <dl>
 <dd>
 
-**activation_strategy:** `Schematic::Types::CustomPlanActivationStrategy` 
+**activation_strategy:** `Schematic::Types::CustomPlanActivationStrategy` — When the company gets the plan. On a custom-plan republish, on_payment is only accepted when the amendment is invoiced today (migration_strategy immediate, proration_behavior always_invoice, collection_method send_invoice): the company stays on its current version until that invoice is paid.
     
 </dd>
 </dl>
@@ -16963,7 +17227,15 @@ client.plans.publish_plan_version(
 <dl>
 <dd>
 
-**coupon_external_id:** `String` 
+**collection_method:** `Schematic::Types::BillingCollectionMethod` — How the invoice a custom-plan republish raises today is collected. send_invoice (the default) issues it for the company to pay; charge_automatically charges the default payment method straight away. Only accepted on a custom-plan republish with migration_strategy immediate and proration_behavior always_invoice.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**coupon_external_id:** `String` — A Stripe coupon to apply. On a custom-plan republish it discounts the amendment invoice and is only used when that invoice is raised today; it must exist in Stripe. It is attached to the subscription, so a repeating or forever coupon also discounts the renewals that follow.
     
 </dd>
 </dl>
@@ -16987,7 +17259,7 @@ client.plans.publish_plan_version(
 <dl>
 <dd>
 
-**days_until_due:** `Integer` 
+**days_until_due:** `Integer` — Payment terms in days. On a custom-plan republish they apply to the amendment invoice only, leave the subscription's renewal terms unchanged, and are only used when that invoice is raised today and sent rather than charged. Defaults to the subscription's terms.
     
 </dd>
 </dl>
@@ -17179,7 +17451,7 @@ client.components.create_component(
 <dl>
 <dd>
 
-**ast:** `Internal::Types::Hash[String, Integer]` 
+**ast:** `Internal::Types::Hash[String, Float]` 
     
 </dd>
 </dl>
@@ -17299,7 +17571,7 @@ client.components.update_component(component_id: "component_id")
 <dl>
 <dd>
 
-**ast:** `Internal::Types::Hash[String, Integer]` 
+**ast:** `Internal::Types::Hash[String, Float]` 
     
 </dd>
 </dl>
@@ -18785,6 +19057,14 @@ client.features.create_feature(
 <dl>
 <dd>
 
+**event_source:** `Schematic::Types::FeatureEventSource` — Which event stream meters this feature; defaults to track, and cannot change after creation. Inference is only valid on event features: their event_subtype matches the event label on inference events, and they meter through credits only.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **event_subtype:** `String` 
     
 </dd>
@@ -18962,6 +19242,14 @@ client.features.update_feature(feature_id: "feature_id")
 <dd>
 
 **description:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**event_source:** `Schematic::Types::FeatureEventSource` — Which event stream meters this feature. It is fixed at creation: an update that changes it is rejected.
     
 </dd>
 </dl>
@@ -19152,6 +19440,14 @@ client.features.upsert_feature_for_billing_product(
 <dd>
 
 **description:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**event_source:** `Schematic::Types::FeatureEventSource` — Which event stream meters this feature; defaults to track, and cannot change after creation. Inference is only valid on event features: their event_subtype matches the event label on inference events, and they meter through credits only.
     
 </dd>
 </dl>
@@ -19888,7 +20184,7 @@ client.features.check_and_reserve_flag(key: "key")
 <dl>
 <dd>
 
-**quantity:** `Integer` — Units of the feature the operation will consume. Sets the hold size together with the entitlement's consumption rate, and is echoed back on the reservation for the settling track event. When it is omitted the units come from preflight.event_usage.quantity, if that event subtype is the entitlement's, else from preflight.usage, else 1
+**quantity:** `Float` — Units of the feature the operation will consume. Sets the hold size together with the entitlement's consumption rate, and is echoed back on the reservation for the settling track event. When it is omitted the units come from preflight.event_usage.quantity, if that event subtype is the entitlement's, else from preflight.usage, else 1
     
 </dd>
 </dl>

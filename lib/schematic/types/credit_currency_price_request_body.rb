@@ -3,7 +3,7 @@
 module Schematic
   module Types
     class CreditCurrencyPriceRequestBody < Internal::Types::Model
-      field :currency, -> { String }, optional: false, nullable: false
+      field :currency, -> { Schematic::Types::Currency }, optional: false, nullable: false
 
       field :price_per_unit, -> { Integer }, optional: true, nullable: false
 

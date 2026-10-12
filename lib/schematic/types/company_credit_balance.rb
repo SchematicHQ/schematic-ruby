@@ -3,11 +3,11 @@
 module Schematic
   module Types
     class CompanyCreditBalance < Internal::Types::Model
-      field :remaining, -> { Integer }, optional: false, nullable: false
+      field :remaining, -> { Float }, optional: false, nullable: false
 
-      field :reserved, -> { Integer }, optional: false, nullable: false
+      field :reserved, -> { Float }, optional: false, nullable: false
 
-      field :settled, -> { Integer }, optional: false, nullable: false
+      field :settled, -> { Float }, optional: false, nullable: false
     end
   end
 end

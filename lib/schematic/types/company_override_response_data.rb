@@ -7,7 +7,7 @@ module Schematic
 
       field :company_id, -> { String }, optional: false, nullable: false
 
-      field :consumption_rate, -> { Integer }, optional: true, nullable: false
+      field :consumption_rate, -> { Float }, optional: true, nullable: false
 
       field :created_at, -> { String }, optional: false, nullable: false
 
@@ -26,6 +26,8 @@ module Schematic
       field :metric_period_month_reset, -> { Schematic::Types::MetricPeriodMonthReset }, optional: true, nullable: false
 
       field :notes, -> { Internal::Types::Array[Schematic::Types::CompanyOverrideNoteResponseData] }, optional: false, nullable: false
+
+      field :quantity_rates, -> { Internal::Types::Hash[String, Float] }, optional: true, nullable: false
 
       field :rule_id, -> { String }, optional: true, nullable: false
 

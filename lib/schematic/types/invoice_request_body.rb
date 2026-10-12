@@ -11,7 +11,7 @@ module Schematic
 
       field :collection_method, -> { String }, optional: false, nullable: false
 
-      field :currency, -> { String }, optional: false, nullable: false
+      field :currency, -> { Schematic::Types::Currency }, optional: false, nullable: false
 
       field :customer_external_id, -> { String }, optional: false, nullable: false
 

@@ -9,7 +9,7 @@ module Schematic
 
       field :billing_product_ids, -> { Internal::Types::Array[String] }, optional: false, nullable: false
 
-      field :credit_balances, -> { Internal::Types::Hash[String, Integer] }, optional: false, nullable: false
+      field :credit_balances, -> { Internal::Types::Hash[String, Float] }, optional: false, nullable: false
 
       field :credit_postpaid, -> { Internal::Types::Hash[String, Schematic::Types::RulesengineCreditPostpaidConfig] }, optional: true, nullable: false
 

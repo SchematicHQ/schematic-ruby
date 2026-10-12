@@ -12,7 +12,7 @@ module Schematic
 
         field :credit_id, -> { String }, optional: false, nullable: false
 
-        field :currency, -> { String }, optional: true, nullable: false
+        field :currency, -> { Schematic::Types::Currency }, optional: true, nullable: false
 
         field :expires_at, -> { String }, optional: true, nullable: false
 

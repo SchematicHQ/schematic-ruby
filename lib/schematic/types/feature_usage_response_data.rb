@@ -11,27 +11,27 @@ module Schematic
 
       field :company_override, -> { Schematic::Types::CompanyOverrideResponseData }, optional: true, nullable: false
 
-      field :credit_consumption_rate, -> { Integer }, optional: true, nullable: false
+      field :credit_consumption_rate, -> { Float }, optional: true, nullable: false
 
-      field :credit_grant_counts, -> { Internal::Types::Hash[String, Integer] }, optional: true, nullable: false
+      field :credit_grant_counts, -> { Internal::Types::Hash[String, Float] }, optional: true, nullable: false
 
       field :credit_grant_details, -> { Internal::Types::Array[Schematic::Types::CreditGrantDetail] }, optional: true, nullable: false
 
       field :credit_grant_reason, -> { Schematic::Types::BillingCreditGrantReason }, optional: true, nullable: false
 
-      field :credit_remaining, -> { Integer }, optional: true, nullable: false
+      field :credit_remaining, -> { Float }, optional: true, nullable: false
 
-      field :credit_total, -> { Integer }, optional: true, nullable: false
+      field :credit_total, -> { Float }, optional: true, nullable: false
 
       field :credit_type_icon, -> { String }, optional: true, nullable: false
 
       field :credit_usage_aggregation, -> { Schematic::Types::CreditUsageAggregation }, optional: true, nullable: false
 
-      field :credit_used, -> { Integer }, optional: true, nullable: false
+      field :credit_used, -> { Float }, optional: true, nullable: false
 
       field :effective_limit, -> { Integer }, optional: true, nullable: false
 
-      field :effective_price, -> { Integer }, optional: true, nullable: false
+      field :effective_price, -> { Float }, optional: true, nullable: false
 
       field :entitlement_expiration_date, -> { String }, optional: true, nullable: false
 
@@ -55,7 +55,7 @@ module Schematic
 
       field :overuse, -> { Integer }, optional: true, nullable: false
 
-      field :percent_used, -> { Integer }, optional: true, nullable: false
+      field :percent_used, -> { Float }, optional: true, nullable: false
 
       field :period, -> { Schematic::Types::MetricPeriod }, optional: true, nullable: false
 

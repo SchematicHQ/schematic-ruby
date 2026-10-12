@@ -107,7 +107,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::ListCompaniesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -144,7 +152,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::UpsertCompanyResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -179,7 +195,14 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetCompanyResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -225,7 +248,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::DeleteCompanyResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -326,7 +357,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::CountCompaniesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -363,7 +402,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::CreateCompanyResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -400,7 +447,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::DeleteCompanyByKeysResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -447,7 +502,14 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::LookupCompanyResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -486,7 +548,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetCompanyBillingEntityResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -525,7 +595,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetBillingEntityChildSubscriptionsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -575,7 +653,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::ListCompanyMembershipsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -613,7 +699,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetOrCreateCompanyMembershipResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -648,7 +742,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::DeleteCompanyMembershipResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -698,7 +800,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetActiveCompanySubscriptionResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -738,7 +848,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::UpsertCompanyTraitResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -791,7 +909,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::ListEntityKeyDefinitionsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -826,7 +952,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::DeleteEntityKeyDefinitionResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -879,7 +1013,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::CountEntityKeyDefinitionsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -929,7 +1071,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::CountEntityKeysResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -988,7 +1138,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::ListEntityTraitDefinitionsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -1027,7 +1185,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetOrCreateEntityTraitDefinitionResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -1062,7 +1228,14 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetEntityTraitDefinitionResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -1105,7 +1278,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::UpdateEntityTraitDefinitionResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -1140,7 +1321,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::DeleteEntityTraitDefinitionResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -1175,7 +1364,14 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetEntityTraitDefinitionUsageResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -1234,7 +1430,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::CountEntityTraitDefinitionsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -1284,7 +1488,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetEntityTraitValuesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -1334,7 +1546,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::CountEntityTraitsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -1354,7 +1574,7 @@ module Schematic
       #
       # @example
       #   client.companies.list_plan_changes(
-      #     action: "checkout",
+      #     action: "amendment",
       #     base_plan_action: "fallback",
       #     company_id: "company_id",
       #     company_ids: ["company_ids"],
@@ -1390,7 +1610,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::ListPlanChangesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -1425,7 +1653,14 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetPlanChangeResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -1481,7 +1716,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::ListPlanTraitsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -1516,7 +1759,14 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetPlanTraitResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -1558,7 +1808,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::UpdatePlanTraitsBulkResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -1614,7 +1872,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::CountPlanTraitsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -1654,7 +1920,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::UpsertUserTraitResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -1710,7 +1984,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::ListUsersResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -1747,7 +2029,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::UpsertUserResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -1782,7 +2072,14 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetUserResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -1817,7 +2114,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::DeleteUserResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -1873,7 +2178,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::CountUsersResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -1910,7 +2223,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::CreateUserResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -1947,7 +2268,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::DeleteUserByKeysResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -1988,7 +2317,14 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Companies::Types::LookupUserResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
     end

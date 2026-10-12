@@ -11,6 +11,8 @@ module Schematic
 
       field :add_ons_removed, -> { Internal::Types::Array[Schematic::Types::PlanSnapshotView] }, optional: false, nullable: false
 
+      field :amendment_status, -> { Schematic::Types::PlanChangeAmendmentStatus }, optional: true, nullable: false
+
       field :api_key, -> { Schematic::Types::ApiKeyResponseData }, optional: true, nullable: false
 
       field :audit_log, -> { Schematic::Types::AuditLogListResponseData }, optional: true, nullable: false
@@ -34,6 +36,8 @@ module Schematic
       field :integration, -> { Schematic::Types::IntegrationResponseData }, optional: true, nullable: false
 
       field :is_version_upgrade, -> { Internal::Types::Boolean }, optional: false, nullable: false
+
+      field :migration_id, -> { String }, optional: true, nullable: false
 
       field :previous_base_plan, -> { Schematic::Types::PlanSnapshotView }, optional: true, nullable: false
 

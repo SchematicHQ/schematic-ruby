@@ -10,7 +10,7 @@ module Schematic
 
         field :expires_at, -> { String }, optional: true, nullable: false
 
-        field :requested_amount, -> { Integer }, optional: false, nullable: false
+        field :requested_amount, -> { Float }, optional: false, nullable: false
 
         field :user_id, -> { String }, optional: true, nullable: false
       end

@@ -3,7 +3,7 @@
 module Schematic
   module Types
     class TopFeatureByUsageResponseData < Internal::Types::Model
-      field :change_pct, -> { Integer }, optional: true, nullable: false
+      field :change_pct, -> { Float }, optional: true, nullable: false
 
       field :feature_id, -> { String }, optional: false, nullable: false
 

@@ -6,7 +6,7 @@ module Schematic
       class UpdateComponentRequestBody < Internal::Types::Model
         field :component_id, -> { String }, optional: false, nullable: false
 
-        field :ast, -> { Internal::Types::Hash[String, Integer] }, optional: true, nullable: false
+        field :ast, -> { Internal::Types::Hash[String, Float] }, optional: true, nullable: false
 
         field :entity_type, -> { Schematic::Types::ComponentEntityType }, optional: true, nullable: false
 

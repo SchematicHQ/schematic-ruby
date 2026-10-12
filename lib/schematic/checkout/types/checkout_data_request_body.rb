@@ -6,7 +6,7 @@ module Schematic
       class CheckoutDataRequestBody < Internal::Types::Model
         field :company_id, -> { String }, optional: false, nullable: false
 
-        field :currency, -> { String }, optional: true, nullable: false
+        field :currency, -> { Schematic::Types::Currency }, optional: true, nullable: false
 
         field :selected_plan_id, -> { String }, optional: true, nullable: false
       end

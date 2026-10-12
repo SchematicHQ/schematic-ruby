@@ -56,7 +56,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Dataexports::Types::ListDataExportsResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -94,7 +102,15 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Dataexports::Types::CreateDataExportResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -129,7 +145,14 @@ module Schematic
           (response.body.to_s.empty? ? nil : Schematic::Dataexports::Types::GetDataExportResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-          raise error_class.new(response.body, code: code)
+          error_types = {
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
         end
       end
 
@@ -145,7 +168,7 @@ module Schematic
       # @example
       #   client.dataexports.get_data_export_artifact(data_export_id: "data_export_id")
       #
-      # @return [untyped]
+      # @return [String]
       def get_data_export_artifact(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         request = Schematic::Internal::JSON::Request.new(
@@ -160,10 +183,17 @@ module Schematic
           raise Schematic::Errors::TimeoutError
         end
         code = response.code.to_i
-        return if code.between?(200, 299)
+        return response.body if code.between?(200, 299)
 
         error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          401 => Schematic::Types::ApiError,
+          403 => Schematic::Types::ApiError,
+          404 => Schematic::Types::ApiError,
+          500 => Schematic::Types::ApiError
+        }
+        error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body)
       end
     end
   end

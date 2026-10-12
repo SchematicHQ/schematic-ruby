@@ -7,7 +7,7 @@ module Schematic
 
       field :condition_type, -> { Schematic::Types::ConditionType }, optional: false, nullable: false
 
-      field :credit_cost, -> { Integer }, optional: true, nullable: false
+      field :credit_cost, -> { Float }, optional: true, nullable: false
 
       field :credit_id, -> { String }, optional: true, nullable: false
 

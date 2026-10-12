@@ -36,17 +36,19 @@ module Schematic
     # @param api_key [String]
     # @param base_url [String, nil]
     # @param max_retries [Integer]
+    # @param timeout [Numeric]
     #
     # @return [void]
-    def initialize(api_key:, base_url: nil, max_retries: 2)
+    def initialize(api_key:, base_url: nil, max_retries: 2, timeout: 60)
       @raw_client = Schematic::Internal::Http::RawClient.new(
         base_url: base_url || Schematic::Environment::DEFAULT,
         headers: {
-          "User-Agent" => "schematichq/1.5.3",
+          "User-Agent" => "schematichq/1.5.4",
           "X-Fern-Language" => "Ruby",
           "X-Schematic-Api-Key" => api_key.to_s
         },
-        max_retries: max_retries
+        max_retries: max_retries,
+        timeout: timeout
       )
     end
 

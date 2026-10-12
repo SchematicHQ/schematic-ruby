@@ -3,7 +3,7 @@
 module Schematic
   module Types
     class ComponentResponseData < Internal::Types::Model
-      field :ast, -> { Internal::Types::Hash[String, Integer] }, optional: true, nullable: false
+      field :ast, -> { Internal::Types::Hash[String, Float] }, optional: true, nullable: false
 
       field :catalog_id, -> { String }, optional: true, nullable: false
 

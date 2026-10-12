@@ -15,9 +15,9 @@ module Schematic
 
       field :released_at, -> { String }, optional: true, nullable: false
 
-      field :reserved_amount, -> { Integer }, optional: false, nullable: false
+      field :reserved_amount, -> { Float }, optional: false, nullable: false
 
-      field :settled_amount, -> { Integer }, optional: false, nullable: false
+      field :settled_amount, -> { Float }, optional: false, nullable: false
 
       field :updated_at, -> { String }, optional: false, nullable: false
     end

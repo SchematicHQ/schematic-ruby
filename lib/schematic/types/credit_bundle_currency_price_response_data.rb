@@ -3,7 +3,7 @@
 module Schematic
   module Types
     class CreditBundleCurrencyPriceResponseData < Internal::Types::Model
-      field :currency, -> { String }, optional: false, nullable: false
+      field :currency, -> { Schematic::Types::Currency }, optional: false, nullable: false
 
       field :price, -> { Schematic::Types::BillingPriceResponseData }, optional: true, nullable: false
     end
