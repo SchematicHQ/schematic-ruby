@@ -1771,22 +1771,26 @@ class CreditLeaseClientWiringTest < Minitest::Test
     client&.close
   end
 
-  # The generated transport takes its timeout from the client, not from a
-  # request, so a per-check timeout is carried and not yet applied. This pins
-  # the half this SDK owns: the request does carry it, in seconds, so it starts
-  # working the moment the transport honors it.
-  def test_a_per_check_timeout_is_carried_on_the_request_in_seconds
+  # A per-check timeout goes out on the request in seconds, and the generated
+  # transport applies it in place of its client-wide default. Both halves are
+  # pinned: a regeneration that stops reading the key would make timeout_ms
+  # inert again without anything else failing.
+  def test_a_per_check_timeout_is_applied_by_the_transport_in_seconds
     client = Schematic::SchematicClient.new(api_key: "sch_test", base_url: "https://api.schematichq.test",
                                             logger: silent_logger)
 
     assert_empty client.send(:api_request_options, nil)
     assert_in_delta 1.5, client.send(:api_request_options, 1500)[:timeout_in_seconds]
-    # And pins the half it does not: the generated transport never reads the
-    # key. When a regeneration makes it read one, this fails, and the README
-    # note saying the timeout is inert has to go with it.
-    transport = File.read(File.expand_path("../lib/schematic/internal/http/raw_client.rb", __dir__))
 
-    refute_includes transport.gsub(/^\s*#.*$/, ""), "timeout_in_seconds"
+    transport = Schematic::Internal::Http::RawClient.new(base_url: "https://api.schematichq.test", timeout: 60.0)
+    request = ->(request_options) {
+      Schematic::Internal::JSON::Request.new(base_url: "https://api.schematichq.test", path: "/flags/check",
+                                             method: "POST", request_options: request_options)
+    }
+
+    # RawClient defines its own #send (it issues the HTTP request), hence __send__.
+    assert_in_delta 1.5, transport.__send__(:request_timeout, request.call(client.send(:api_request_options, 1500)))
+    assert_in_delta 60.0, transport.__send__(:request_timeout, request.call(client.send(:api_request_options, nil)))
   ensure
     client&.close
   end
