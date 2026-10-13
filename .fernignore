@@ -23,8 +23,10 @@ scripts/
 test/conformance_test.rb
 test/credits_test.rb
 test/custom.test.rb
+test/event_quantities_test.rb
 test/lease_support.rb
 test/rules_engine_clock_test.rb
+test/testdata/
 testapp/
 .fern/replay.lock
 .fern/replay.yml
