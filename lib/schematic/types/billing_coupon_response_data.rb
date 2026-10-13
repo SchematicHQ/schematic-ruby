@@ -7,7 +7,7 @@ module Schematic
 
       field :amount_off, -> { Integer }, optional: true, nullable: false
 
-      field :currency, -> { String }, optional: true, nullable: false
+      field :currency, -> { Schematic::Types::Currency }, optional: true, nullable: false
 
       field :duration, -> { String }, optional: true, nullable: false
 
@@ -27,7 +27,7 @@ module Schematic
 
       field :name, -> { String }, optional: false, nullable: false
 
-      field :percent_off, -> { Integer }, optional: true, nullable: false
+      field :percent_off, -> { Float }, optional: true, nullable: false
 
       field :provider_type, -> { Schematic::Types::BillingProviderType }, optional: false, nullable: false
 

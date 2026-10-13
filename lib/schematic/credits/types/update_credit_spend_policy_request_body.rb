@@ -8,9 +8,9 @@ module Schematic
 
         field :label, -> { String }, optional: true, nullable: false
 
-        field :max_per_draw, -> { Integer }, optional: true, nullable: false
+        field :max_per_draw, -> { Float }, optional: true, nullable: false
 
-        field :window_amount, -> { Integer }, optional: true, nullable: false
+        field :window_amount, -> { Float }, optional: true, nullable: false
 
         field :window_unit, -> { Schematic::Types::CreditSpendWindowUnit }, optional: true, nullable: false
       end

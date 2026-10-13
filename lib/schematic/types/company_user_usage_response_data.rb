@@ -9,9 +9,9 @@ module Schematic
 
       field :start_time, -> { String }, optional: false, nullable: false
 
-      field :top_user_share, -> { Integer }, optional: false, nullable: false
+      field :top_user_share, -> { Float }, optional: false, nullable: false
 
-      field :total, -> { Integer }, optional: false, nullable: false
+      field :total, -> { Float }, optional: false, nullable: false
 
       field :unattributed, -> { Schematic::Types::CompanyUserUsageRowResponseData }, optional: true, nullable: false
     end

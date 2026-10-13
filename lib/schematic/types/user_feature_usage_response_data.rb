@@ -7,7 +7,7 @@ module Schematic
 
       field :last_seen, -> { String }, optional: false, nullable: false
 
-      field :share, -> { Integer }, optional: false, nullable: false
+      field :share, -> { Float }, optional: false, nullable: false
 
       field :user, -> { Schematic::Types::UserResponseData }, optional: true, nullable: false
 

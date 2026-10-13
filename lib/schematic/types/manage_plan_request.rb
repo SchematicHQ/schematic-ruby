@@ -29,11 +29,13 @@ module Schematic
 
       field :credit_bundles, -> { Internal::Types::Array[Schematic::Types::UpdateCreditBundleRequestBody] }, optional: false, nullable: false
 
-      field :currency, -> { String }, optional: true, nullable: false
+      field :currency, -> { Schematic::Types::Currency }, optional: true, nullable: false
 
       field :custom_field_values, -> { Internal::Types::Array[Schematic::Types::CheckoutFieldValue] }, optional: false, nullable: false
 
       field :days_until_due, -> { Integer }, optional: true, nullable: false
+
+      field :paid_outside_stripe, -> { Internal::Types::Boolean }, optional: true, nullable: false
 
       field :pay_in_advance_entitlements, -> { Internal::Types::Array[Schematic::Types::UpdatePayInAdvanceRequestBody] }, optional: false, nullable: false
 

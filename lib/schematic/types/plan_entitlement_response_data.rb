@@ -7,7 +7,7 @@ module Schematic
 
       field :billing_threshold, -> { Integer }, optional: true, nullable: false
 
-      field :consumption_rate, -> { Integer }, optional: true, nullable: false
+      field :consumption_rate, -> { Float }, optional: true, nullable: false
 
       field :created_at, -> { String }, optional: false, nullable: false
 
@@ -40,6 +40,8 @@ module Schematic
       field :plan_id, -> { String }, optional: false, nullable: false
 
       field :price_behavior, -> { Schematic::Types::EntitlementPriceBehavior }, optional: true, nullable: false
+
+      field :quantity_rates, -> { Internal::Types::Hash[String, Float] }, optional: true, nullable: false
 
       field :rule_id, -> { String }, optional: false, nullable: false
 

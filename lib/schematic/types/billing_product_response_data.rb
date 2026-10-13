@@ -17,7 +17,7 @@ module Schematic
 
       field :name, -> { String }, optional: false, nullable: false
 
-      field :price, -> { Integer }, optional: false, nullable: false
+      field :price, -> { Float }, optional: false, nullable: false
 
       field :price_decimal, -> { String }, optional: true, nullable: false
 
@@ -25,7 +25,7 @@ module Schematic
 
       field :provider_type, -> { Schematic::Types::BillingProviderType }, optional: false, nullable: false
 
-      field :quantity, -> { Integer }, optional: false, nullable: false
+      field :quantity, -> { Float }, optional: false, nullable: false
 
       field :updated_at, -> { String }, optional: false, nullable: false
     end

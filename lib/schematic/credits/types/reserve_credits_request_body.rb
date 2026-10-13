@@ -4,7 +4,7 @@ module Schematic
   module Credits
     module Types
       class ReserveCreditsRequestBody < Internal::Types::Model
-        field :amount, -> { Integer }, optional: false, nullable: false
+        field :amount, -> { Float }, optional: false, nullable: false
 
         field :company_id, -> { String }, optional: false, nullable: false
 

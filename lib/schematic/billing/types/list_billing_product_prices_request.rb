@@ -4,7 +4,7 @@ module Schematic
   module Billing
     module Types
       class ListBillingProductPricesRequest < Internal::Types::Model
-        field :currency, -> { String }, optional: true, nullable: false
+        field :currency, -> { Schematic::Types::Currency }, optional: true, nullable: false
 
         field :for_initial_plan, -> { Internal::Types::Boolean }, optional: true, nullable: false
 

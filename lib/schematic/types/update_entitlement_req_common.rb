@@ -3,11 +3,13 @@
 module Schematic
   module Types
     class UpdateEntitlementReqCommon < Internal::Types::Model
-      field :credit_consumption_rate, -> { Integer }, optional: true, nullable: false
+      field :credit_consumption_rate, -> { Float }, optional: true, nullable: false
 
       field :metric_period, -> { Schematic::Types::MetricPeriod }, optional: true, nullable: false
 
       field :metric_period_month_reset, -> { Schematic::Types::MetricPeriodMonthReset }, optional: true, nullable: false
+
+      field :quantity_rates, -> { Internal::Types::Hash[String, Float] }, optional: true, nullable: false
 
       field :value_bool, -> { Internal::Types::Boolean }, optional: true, nullable: false
 

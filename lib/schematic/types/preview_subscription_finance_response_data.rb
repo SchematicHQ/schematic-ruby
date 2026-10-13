@@ -5,7 +5,7 @@ module Schematic
     class PreviewSubscriptionFinanceResponseData < Internal::Types::Model
       field :amount_off, -> { Integer }, optional: false, nullable: false
 
-      field :currency, -> { String }, optional: false, nullable: false
+      field :currency, -> { Schematic::Types::Currency }, optional: false, nullable: false
 
       field :discount_amount, -> { Integer }, optional: false, nullable: false
 
@@ -15,7 +15,7 @@ module Schematic
 
       field :new_charges, -> { Integer }, optional: false, nullable: false
 
-      field :percent_off, -> { Integer }, optional: false, nullable: false
+      field :percent_off, -> { Float }, optional: false, nullable: false
 
       field :period_end, -> { String }, optional: false, nullable: false
 

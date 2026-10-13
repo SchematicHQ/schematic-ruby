@@ -14,6 +14,8 @@ module Schematic
 
         field :billing_start_date, -> { String }, optional: true, nullable: false
 
+        field :collection_method, -> { Schematic::Types::BillingCollectionMethod }, optional: true, nullable: false
+
         field :coupon_external_id, -> { String }, optional: true, nullable: false
 
         field :custom_field_values, -> { Internal::Types::Array[Schematic::Types::CheckoutFieldValue] }, optional: true, nullable: false

@@ -7,7 +7,7 @@ module Schematic
 
       field :missing, -> { Internal::Types::Array[Schematic::Types::OnboardingRequirement] }, optional: false, nullable: false
 
-      field :progress, -> { Integer }, optional: false, nullable: false
+      field :progress, -> { Float }, optional: false, nullable: false
 
       field :reached_at, -> { String }, optional: true, nullable: false
     end

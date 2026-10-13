@@ -9,6 +9,8 @@ module Schematic
 
       field :billing_start_date, -> { String }, optional: true, nullable: false
 
+      field :checkout_id, -> { String }, optional: true, nullable: false
+
       field :company_id, -> { String }, optional: false, nullable: false
 
       field :created_at, -> { String }, optional: false, nullable: false
@@ -19,11 +21,15 @@ module Schematic
 
       field :id, -> { String }, optional: false, nullable: false
 
+      field :migration_id, -> { String }, optional: true, nullable: false
+
       field :paid_at, -> { String }, optional: true, nullable: false
 
       field :plan_billing_source, -> { Schematic::Types::PlanBillingSource }, optional: false, nullable: false
 
       field :plan_id, -> { String }, optional: false, nullable: false
+
+      field :problems, -> { Internal::Types::Array[Schematic::Types::CheckoutProblemResponseData] }, optional: false, nullable: false
 
       field :prorate_first_period, -> { Internal::Types::Boolean }, optional: true, nullable: false
 

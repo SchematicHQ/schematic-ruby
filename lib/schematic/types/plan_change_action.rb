@@ -5,6 +5,7 @@ module Schematic
     module PlanChangeAction
       extend Schematic::Internal::Types::Enum
 
+      AMENDMENT = "amendment"
       CHECKOUT = "checkout"
       COMPANY_UPSERT = "company_upsert"
       FALLBACK_PLAN = "fallback_plan"

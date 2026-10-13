@@ -9,7 +9,7 @@ module Schematic
 
       field :grant_reason, -> { Schematic::Types::BillingCreditGrantReason }, optional: false, nullable: false
 
-      field :quantity, -> { Integer }, optional: false, nullable: false
+      field :quantity, -> { Float }, optional: false, nullable: false
     end
   end
 end

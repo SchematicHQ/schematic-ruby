@@ -5,11 +5,11 @@ module Schematic
     class FlagCheckReservationResponseData < Internal::Types::Model
       field :company_id, -> { String }, optional: false, nullable: false
 
-      field :consumption_rate, -> { Integer }, optional: false, nullable: false
+      field :consumption_rate, -> { Float }, optional: false, nullable: false
 
       field :credit_type_id, -> { String }, optional: false, nullable: false
 
-      field :credits_reserved, -> { Integer }, optional: false, nullable: false
+      field :credits_reserved, -> { Float }, optional: false, nullable: false
 
       field :event_subtype, -> { String }, optional: true, nullable: false
 
@@ -17,7 +17,7 @@ module Schematic
 
       field :id, -> { String }, optional: false, nullable: false
 
-      field :quantity_reserved, -> { Integer }, optional: false, nullable: false
+      field :quantity_reserved, -> { Float }, optional: false, nullable: false
     end
   end
 end

@@ -7,7 +7,7 @@ module Schematic
 
       field :created_at, -> { String }, optional: false, nullable: false
 
-      field :currency, -> { String }, optional: false, nullable: false
+      field :currency, -> { Schematic::Types::Currency }, optional: false, nullable: false
 
       field :id, -> { String }, optional: false, nullable: false
 

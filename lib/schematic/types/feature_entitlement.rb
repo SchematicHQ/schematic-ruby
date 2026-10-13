@@ -5,19 +5,19 @@ module Schematic
     class FeatureEntitlement < Internal::Types::Model
       field :allocation, -> { Integer }, optional: true, nullable: false
 
-      field :consumption_rate, -> { Integer }, optional: true, nullable: false
+      field :consumption_rate, -> { Float }, optional: true, nullable: false
 
       field :credit_id, -> { String }, optional: true, nullable: false
 
-      field :credit_remaining, -> { Integer }, optional: true, nullable: false
+      field :credit_remaining, -> { Float }, optional: true, nullable: false
 
-      field :credit_reserved, -> { Integer }, optional: true, nullable: false
+      field :credit_reserved, -> { Float }, optional: true, nullable: false
 
-      field :credit_settled, -> { Integer }, optional: true, nullable: false
+      field :credit_settled, -> { Float }, optional: true, nullable: false
 
-      field :credit_total, -> { Integer }, optional: true, nullable: false
+      field :credit_total, -> { Float }, optional: true, nullable: false
 
-      field :credit_used, -> { Integer }, optional: true, nullable: false
+      field :credit_used, -> { Float }, optional: true, nullable: false
 
       field :event_name, -> { String }, optional: true, nullable: false
 
@@ -32,6 +32,8 @@ module Schematic
       field :metric_reset_at, -> { String }, optional: true, nullable: false
 
       field :month_reset, -> { Schematic::Types::MetricPeriodMonthReset }, optional: true, nullable: false
+
+      field :quantity_rates, -> { Internal::Types::Hash[String, Float] }, optional: true, nullable: false
 
       field :soft_limit, -> { Integer }, optional: true, nullable: false
 

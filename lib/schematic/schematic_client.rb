@@ -175,9 +175,8 @@ module Schematic
 
     # default_value overrides the registered flag default on every path that
     # cannot answer from the flag itself: offline, an API error, or a response
-    # with no value. Leaving it nil keeps the registered default. timeout_ms is
-    # threaded to the API call, but see the note on check: the generated
-    # transport does not yet apply a per-request timeout.
+    # with no value. Leaving it nil keeps the registered default. timeout_ms
+    # bounds each attempt of the API call.
     def check_flag_with_entitlement(flag_key, company: nil, user: nil, preflight: nil, default_value: nil,
                                     timeout_ms: nil)
       get_default = -> { resolve_default_value(flag_key, default_value) }
@@ -345,10 +344,9 @@ module Schematic
     # governs that fallback too, so a check that cannot reach the credit path
     # still answers the way the caller asked.
     #
-    # timeout_ms is carried on the API request but not yet applied: the
-    # generated transport takes its timeout from the construction of its HTTP
-    # client, and nothing exposes that, so no per-check or client-level timeout
-    # is configurable today.
+    # timeout_ms bounds each attempt of the API calls the check makes (the
+    # plain flag check, check-and-reserve, or a lease acquire or extend), and
+    # caps how long the check waits on another caller's acquire or extend.
     def check(flag_key, company: nil, user: nil, usage: nil, event_subtype: nil, on_acquire_failure: nil,
               default_value: nil, timeout_ms: nil)
       options = {
@@ -751,10 +749,8 @@ module Schematic
       end
     end
 
-    # The generated transport reads its timeout from its own construction, not
-    # from a request, so timeout_in_seconds is carried but not yet honored.
-    # Sending it anyway means a per-check timeout starts working the moment the
-    # transport does, without another change here.
+    # The generated transport reads timeout_in_seconds per request, falling
+    # back to its client-wide timeout when the key is absent.
     def api_request_options(timeout_ms)
       return {} if timeout_ms.nil?
 

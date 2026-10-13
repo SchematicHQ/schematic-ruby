@@ -10,9 +10,9 @@ module Schematic
 
         field :billing_threshold, -> { Integer }, optional: true, nullable: false
 
-        field :credit_consumption_rate, -> { Integer }, optional: true, nullable: false
+        field :credit_consumption_rate, -> { Float }, optional: true, nullable: false
 
-        field :currency, -> { String }, optional: true, nullable: false
+        field :currency, -> { Schematic::Types::Currency }, optional: true, nullable: false
 
         field :currency_prices, -> { Internal::Types::Array[Schematic::Types::CurrencyPriceRequestBody] }, optional: true, nullable: false
 
@@ -37,6 +37,8 @@ module Schematic
         field :price_behavior, -> { Schematic::Types::EntitlementPriceBehavior }, optional: true, nullable: false
 
         field :price_tiers, -> { Internal::Types::Array[Schematic::Types::CreatePriceTierRequestBody] }, optional: true, nullable: false
+
+        field :quantity_rates, -> { Internal::Types::Hash[String, Float] }, optional: true, nullable: false
 
         field :quarterly_metered_price_id, -> { String }, optional: true, nullable: false
 

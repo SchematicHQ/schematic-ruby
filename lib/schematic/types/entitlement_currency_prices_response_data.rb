@@ -3,7 +3,7 @@
 module Schematic
   module Types
     class EntitlementCurrencyPricesResponseData < Internal::Types::Model
-      field :currency, -> { String }, optional: false, nullable: false
+      field :currency, -> { Schematic::Types::Currency }, optional: false, nullable: false
 
       field :monthly_price, -> { Schematic::Types::BillingPriceView }, optional: true, nullable: false
 

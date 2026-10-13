@@ -14,7 +14,7 @@ module Schematic
 
         field :preflight, -> { Schematic::Types::PreflightRequestBody }, optional: true, nullable: false
 
-        field :quantity, -> { Integer }, optional: true, nullable: false
+        field :quantity, -> { Float }, optional: true, nullable: false
 
         field :user, -> { Internal::Types::Hash[String, String] }, optional: true, nullable: false
       end

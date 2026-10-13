@@ -29,7 +29,7 @@ module Schematic
 
       field :billing_credit_can_buy_bundles, -> { Internal::Types::Boolean }, optional: false, nullable: false
 
-      field :billing_credit_overdraft_limit, -> { Integer }, optional: true, nullable: false
+      field :billing_credit_overdraft_limit, -> { Float }, optional: true, nullable: false
 
       field :billing_credit_postpaid_enabled, -> { Internal::Types::Boolean }, optional: false, nullable: false
 

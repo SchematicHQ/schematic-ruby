@@ -47,7 +47,7 @@ module Schematic
 
       field :license_id, -> { String }, optional: true, nullable: false
 
-      field :overdraft_limit, -> { Integer }, optional: true, nullable: false
+      field :overdraft_limit, -> { Float }, optional: true, nullable: false
 
       field :plan_id, -> { String }, optional: false, nullable: false
 

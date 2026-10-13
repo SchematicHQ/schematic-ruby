@@ -3,7 +3,7 @@
 module Schematic
   module Types
     class CreditSpendPolicy < Internal::Types::Model
-      field :consumed, -> { Integer }, optional: true, nullable: false
+      field :consumed, -> { Float }, optional: true, nullable: false
 
       field :credit_id, -> { String }, optional: false, nullable: false
 
@@ -13,7 +13,7 @@ module Schematic
 
       field :label, -> { String }, optional: true, nullable: false
 
-      field :limit, -> { Integer }, optional: false, nullable: false
+      field :limit, -> { Float }, optional: false, nullable: false
 
       field :resets_at, -> { String }, optional: true, nullable: false
 

@@ -19,7 +19,7 @@ module Schematic
 
       field :credit_name, -> { String }, optional: false, nullable: false
 
-      field :currency, -> { String }, optional: true, nullable: false
+      field :currency, -> { Schematic::Types::Currency }, optional: true, nullable: false
 
       field :expires_at, -> { String }, optional: true, nullable: false
 
@@ -35,25 +35,25 @@ module Schematic
 
       field :postpaid_charge_amount, -> { Integer }, optional: true, nullable: false
 
-      field :postpaid_charge_currency, -> { String }, optional: true, nullable: false
+      field :postpaid_charge_currency, -> { Schematic::Types::Currency }, optional: true, nullable: false
 
-      field :postpaid_charged_credits, -> { Integer }, optional: true, nullable: false
+      field :postpaid_charged_credits, -> { Float }, optional: true, nullable: false
 
       field :price, -> { Schematic::Types::BillingPriceResponseData }, optional: true, nullable: false
 
-      field :quantity, -> { Integer }, optional: false, nullable: false
+      field :quantity, -> { Float }, optional: false, nullable: false
 
-      field :quantity_remaining, -> { Integer }, optional: false, nullable: false
+      field :quantity_remaining, -> { Float }, optional: false, nullable: false
 
-      field :quantity_used, -> { Integer }, optional: false, nullable: false
+      field :quantity_used, -> { Float }, optional: false, nullable: false
 
       field :renewal_enabled, -> { Internal::Types::Boolean }, optional: false, nullable: false
 
       field :renewal_period, -> { Schematic::Types::BillingPlanCreditGrantResetCadence }, optional: true, nullable: false
 
-      field :reserved, -> { Integer }, optional: true, nullable: false
+      field :reserved, -> { Float }, optional: true, nullable: false
 
-      field :settled, -> { Integer }, optional: true, nullable: false
+      field :settled, -> { Float }, optional: true, nullable: false
 
       field :source_grant_id, -> { String }, optional: true, nullable: false
 

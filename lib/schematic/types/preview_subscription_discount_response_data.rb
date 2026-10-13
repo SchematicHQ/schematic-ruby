@@ -7,7 +7,7 @@ module Schematic
 
       field :coupon_name, -> { String }, optional: false, nullable: false
 
-      field :currency, -> { String }, optional: true, nullable: false
+      field :currency, -> { Schematic::Types::Currency }, optional: true, nullable: false
 
       field :customer_facing_code, -> { String }, optional: true, nullable: false
 
@@ -19,7 +19,7 @@ module Schematic
 
       field :is_active, -> { Internal::Types::Boolean }, optional: false, nullable: false
 
-      field :percent_off, -> { Integer }, optional: true, nullable: false
+      field :percent_off, -> { Float }, optional: true, nullable: false
 
       field :promo_code_external_id, -> { String }, optional: true, nullable: false
 

@@ -3,7 +3,7 @@
 module Schematic
   module Types
     class CreditTransferResponseData < Internal::Types::Model
-      field :amount, -> { Integer }, optional: false, nullable: false
+      field :amount, -> { Float }, optional: false, nullable: false
 
       field :created_at, -> { String }, optional: false, nullable: false
 

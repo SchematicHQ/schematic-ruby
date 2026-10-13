@@ -12,7 +12,7 @@ module Schematic
 
         field :credit_id, -> { String }, optional: false, nullable: false
 
-        field :currency, -> { String }, optional: false, nullable: false
+        field :currency, -> { Schematic::Types::Currency }, optional: false, nullable: false
 
         field :currency_prices, -> { Internal::Types::Array[Schematic::Types::CreditBundleCurrencyPriceRequestBody] }, optional: true, nullable: false
 

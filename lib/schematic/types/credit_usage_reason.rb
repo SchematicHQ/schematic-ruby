@@ -5,6 +5,7 @@ module Schematic
     module CreditUsageReason
       extend Schematic::Internal::Types::Enum
 
+      INFERENCE = "inference"
       LEASE_HOLD = "lease_hold"
       LEASE_RELEASE = "lease_release"
       MANUAL_ADJUSTMENT = "manual_adjustment"

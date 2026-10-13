@@ -3,7 +3,7 @@
 module Schematic
   module Types
     class InsightsSummaryResponseData < Internal::Types::Model
-      field :active_credits, -> { Integer }, optional: false, nullable: false
+      field :active_credits, -> { Float }, optional: false, nullable: false
 
       field :mrr, -> { Internal::Types::Array[Schematic::Types::MrrResponseData] }, optional: false, nullable: false
 

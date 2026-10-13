@@ -5,7 +5,7 @@ module Schematic
     class BillingProductPricing < Internal::Types::Model
       field :billing_threshold, -> { Integer }, optional: true, nullable: false
 
-      field :currency, -> { String }, optional: false, nullable: false
+      field :currency, -> { Schematic::Types::Currency }, optional: false, nullable: false
 
       field :interval, -> { String }, optional: false, nullable: false
 

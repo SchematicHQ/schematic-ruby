@@ -9,7 +9,7 @@ module Schematic
 
       field :company, -> { Schematic::Types::CompanyResponseData }, optional: true, nullable: false
 
-      field :currency, -> { String }, optional: false, nullable: false
+      field :currency, -> { Schematic::Types::Currency }, optional: false, nullable: false
 
       field :customer_external_id, -> { String }, optional: false, nullable: false
 

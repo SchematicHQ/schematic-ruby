@@ -3,7 +3,7 @@
 module Schematic
   module Types
     class ScheduledDowngradeResponseData < Internal::Types::Model
-      field :currency, -> { String }, optional: false, nullable: false
+      field :currency, -> { Schematic::Types::Currency }, optional: false, nullable: false
 
       field :effective_after, -> { String }, optional: false, nullable: false
 
