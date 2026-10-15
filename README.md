@@ -703,6 +703,10 @@ When running in Replicator Mode, the client will:
 - Use cached data populated by the external replicator service
 - Fall back to direct API calls if the replicator is not available
 
+The client serves flag checks from the cache only once the replicator reports that its cache is ready. The replicator's health endpoint returns `ready: true` once it has fully loaded the cache for its current `cache_version`, and `ready: false` (HTTP 503) before that. Until the client sees `ready: true`, `check_flag`, `check_flag_with_entitlement` and `check_flags` all skip the cache and call the Schematic API, falling back to your flag defaults if the API call fails. Single and bulk checks follow the same rule. If the health endpoint can't be reached or returns a body the client can't parse, the client treats the replicator as not ready and keeps the last `cache_version` it saw.
+
+Once the cache is ready, flag checks evaluate locally from the cache. A flag that isn't in the cache still falls back to the API. The DataStream client's `cache_ready?` reports the same readiness the flag checks use.
+
 ## Testing
 
 ### Offline Mode
