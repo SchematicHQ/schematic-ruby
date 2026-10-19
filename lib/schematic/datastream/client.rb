@@ -129,8 +129,23 @@ module Schematic
         end
       end
 
+      # Whether the DataStream is connected. In websocket mode this is the
+      # WebSocket connection state. In replicator mode it reports replicator
+      # readiness (the same value as cache_ready?), kept for backward
+      # compatibility; use cache_ready? to decide whether the replicator cache
+      # can be served.
       def connected?
         @replicator_mode ? @replicator_ready : (@ws_client&.connected || false)
+      end
+
+      # Whether the cache is ready to serve flag checks. In replicator mode this
+      # is the `ready` field from the replicator's health endpoint, which is true
+      # only once the replicator has fully loaded the cache for its current
+      # cache_version. It is false until the first successful health check and
+      # after any failed one. Outside replicator mode it is always true: the SDK
+      # fills its own cache over the WebSocket, so there is nothing to wait for.
+      def cache_ready?
+        @replicator_mode ? @replicator_ready : true
       end
 
       def close
@@ -499,6 +514,12 @@ module Schematic
         @health_thread.abort_on_exception = false
       end
 
+      # Polls the replicator health endpoint. The body is read whatever the
+      # HTTP status: a replicator that is still loading its cache answers 503
+      # with {"ready": false, "cache_version": "..."}. Readiness comes from the
+      # `ready` field, and any non-empty cache_version is recorded. A failed
+      # poll (connection error, timeout, unparseable body) marks the replicator
+      # not ready and keeps the last known cache_version.
       def check_replicator_health
         uri = URI.parse(@replicator_health_url)
         http = Net::HTTP.new(uri.host, uri.port)
@@ -507,29 +528,19 @@ module Schematic
         http.read_timeout = 5
         response = http.get(uri.request_uri)
 
-        if response.is_a?(Net::HTTPSuccess)
-          body = begin
-            JSON.parse(response.body, symbolize_names: true)
-          rescue StandardError
-            {}
-          end
-          was_ready = @replicator_ready
-          @replicator_ready = body[:ready] == true
-
-          update_cache_version(body[:cache_version].to_s)
-
-          @logger.info("Replicator is ready") if @replicator_ready && !was_ready
-          @logger.info("Replicator is no longer ready") if !@replicator_ready && was_ready
-        else
-          was_ready = @replicator_ready
-          @replicator_ready = false
-          @logger.info("Replicator is no longer ready") if was_ready
-          @logger.warn("Replicator health check failed: #{response.code}")
+        body = parse_health_body(response.body)
+        unless body
+          update_replicator_ready(false)
+          @logger.warn("Replicator health check returned an unparseable body (HTTP #{response.code})")
+          return
         end
+
+        cache_version = body[:cache_version].to_s
+        update_cache_version(cache_version) unless cache_version.empty?
+        update_replicator_ready(body[:ready] == true)
+        @logger.debug("Replicator not ready (HTTP #{response.code})") unless @replicator_ready
       rescue StandardError => e
-        was_ready = @replicator_ready
-        @replicator_ready = false
-        @logger.info("Replicator is no longer ready") if was_ready
+        update_replicator_ready(false)
         @logger.warn("Replicator health check error: #{e.message}")
       end
 
@@ -543,6 +554,20 @@ module Schematic
       # definitions. The credit-lease check path resolves the flag, the company,
       # and the user itself before evaluating, so it needs all three.
       public :get_flag, :get_company, :get_user, :get_cached_company
+
+      def parse_health_body(raw)
+        body = JSON.parse(raw.to_s, symbolize_names: true)
+        body.is_a?(Hash) ? body : nil
+      rescue JSON::ParserError
+        nil
+      end
+
+      def update_replicator_ready(ready)
+        was_ready = @replicator_ready
+        @replicator_ready = ready
+        @logger.info("Replicator is ready (cache_version: #{@cache_version})") if ready && !was_ready
+        @logger.info("Replicator is no longer ready") if !ready && was_ready
+      end
     end
   end
 end
