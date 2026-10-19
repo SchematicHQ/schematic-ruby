@@ -3,6 +3,8 @@
 module Schematic
   module Types
     class CreditSpendPolicy < Internal::Types::Model
+      field :company_id, -> { String }, optional: true, nullable: false
+
       field :consumed, -> { Float }, optional: true, nullable: false
 
       field :credit_id, -> { String }, optional: false, nullable: false

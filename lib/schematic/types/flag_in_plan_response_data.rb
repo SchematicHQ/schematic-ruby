@@ -5,7 +5,7 @@ module Schematic
     class FlagInPlanResponseData < Internal::Types::Model
       field :created_at, -> { String }, optional: false, nullable: false
 
-      field :default_value, -> { Internal::Types::Boolean }, optional: false, nullable: false
+      field :default_value, -> { Internal::Types::Boolean }, optional: true, nullable: false
 
       field :description, -> { String }, optional: false, nullable: false
 

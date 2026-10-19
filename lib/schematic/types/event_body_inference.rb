@@ -17,6 +17,8 @@ module Schematic
 
       field :input_tokens, -> { Integer }, optional: false, nullable: false
 
+      field :lease_id, -> { String }, optional: true, nullable: false
+
       field :operation, -> { String }, optional: true, nullable: false
 
       field :output_tokens, -> { Integer }, optional: false, nullable: false
@@ -28,6 +30,8 @@ module Schematic
       field :request_model, -> { String }, optional: true, nullable: false
 
       field :requests, -> { Integer }, optional: true, nullable: false
+
+      field :reservation_id, -> { String }, optional: true, nullable: false
 
       field :response_model, -> { String }, optional: false, nullable: false
 

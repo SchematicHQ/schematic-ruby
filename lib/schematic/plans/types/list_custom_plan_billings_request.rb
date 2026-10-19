@@ -8,7 +8,11 @@ module Schematic
 
         field :plan_id, -> { String }, optional: true, nullable: false
 
+        field :plan_version_id, -> { String }, optional: true, nullable: false
+
         field :plan_billing_source, -> { Schematic::Types::PlanBillingSource }, optional: true, nullable: false
+
+        field :plan_billing_sources, -> { Schematic::Types::PlanBillingSource }, optional: true, nullable: false
 
         field :status, -> { Schematic::Types::CustomPlanBillingStatus }, optional: true, nullable: false
 

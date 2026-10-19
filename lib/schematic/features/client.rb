@@ -462,7 +462,6 @@ module Schematic
       #
       # @example
       #   client.features.create_flag(
-      #     default_value: true,
       #     description: "description",
       #     flag_type: "boolean",
       #     key: "key",
@@ -555,7 +554,6 @@ module Schematic
       # @example
       #   client.features.update_flag(
       #     flag_id: "flag_id",
-      #     default_value: true,
       #     description: "description",
       #     flag_type: "boolean",
       #     key: "key",
