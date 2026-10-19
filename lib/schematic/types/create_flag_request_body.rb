@@ -3,7 +3,7 @@
 module Schematic
   module Types
     class CreateFlagRequestBody < Internal::Types::Model
-      field :default_value, -> { Internal::Types::Boolean }, optional: false, nullable: false
+      field :default_value, -> { Internal::Types::Boolean }, optional: true, nullable: false
 
       field :description, -> { String }, optional: false, nullable: false
 

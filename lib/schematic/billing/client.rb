@@ -1607,6 +1607,429 @@ module Schematic
           raise error_class.new(response.body, code: code, body: error_body)
         end
       end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :company_id
+      #
+      # @example
+      #   client.billing.get_company_native_subscription(company_id: "company_id")
+      #
+      # @return [Schematic::Billing::Types::GetCompanyNativeSubscriptionResponse]
+      def get_company_native_subscription(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "GET",
+          path: "companies/#{URI.encode_uri_component(params[:company_id].to_s)}/native-subscription",
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::GetCompanyNativeSubscriptionResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String, nil] :company_id
+      # @option params [String, nil] :contract_id
+      # @option params [Schematic::Types::InvoiceDocumentState, nil] :document_state
+      # @option params [Integer, nil] :limit
+      # @option params [Integer, nil] :offset
+      #
+      # @example
+      #   client.billing.list_native_invoices(
+      #     company_id: "company_id",
+      #     contract_id: "contract_id",
+      #     document_state: "credited",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
+      # @return [Schematic::Billing::Types::ListNativeInvoicesResponse]
+      def list_native_invoices(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        query_params = {}
+        query_params["company_id"] = params[:company_id] if params.key?(:company_id)
+        query_params["contract_id"] = params[:contract_id] if params.key?(:contract_id)
+        query_params["document_state"] = params[:document_state] if params.key?(:document_state)
+        query_params["limit"] = params[:limit] if params.key?(:limit)
+        query_params["offset"] = params[:offset] if params.key?(:offset)
+
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "GET",
+          path: "invoices",
+          query: query_params,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::ListNativeInvoicesResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :invoice_id
+      #
+      # @example
+      #   client.billing.get_native_invoice(invoice_id: "invoice_id")
+      #
+      # @return [Schematic::Billing::Types::GetNativeInvoiceResponse]
+      def get_native_invoice(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "GET",
+          path: "invoices/#{URI.encode_uri_component(params[:invoice_id].to_s)}",
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::GetNativeInvoiceResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :invoice_id
+      #
+      # @example
+      #   client.billing.export_native_invoice(invoice_id: "invoice_id")
+      #
+      # @return [String]
+      def export_native_invoice(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "GET",
+          path: "invoices/#{URI.encode_uri_component(params[:invoice_id].to_s)}/export",
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        return response.body if code.between?(200, 299)
+
+        error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+        error_types = {
+          401 => Schematic::Types::ApiError,
+          403 => Schematic::Types::ApiError,
+          404 => Schematic::Types::ApiError,
+          500 => Schematic::Types::ApiError
+        }
+        error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body)
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :invoice_id
+      #
+      # @example
+      #   client.billing.finalize_native_invoice(invoice_id: "invoice_id")
+      #
+      # @return [Schematic::Billing::Types::FinalizeNativeInvoiceResponse]
+      def finalize_native_invoice(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "POST",
+          path: "invoices/#{URI.encode_uri_component(params[:invoice_id].to_s)}/finalize",
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::FinalizeNativeInvoiceResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Schematic::Billing::Types::MarkInvoicePaidRequestBody]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :invoice_id
+      #
+      # @example
+      #   client.billing.mark_native_invoice_paid(
+      #     invoice_id: "invoice_id",
+      #     idempotency_key: "idempotency_key"
+      #   )
+      #
+      # @return [Schematic::Billing::Types::MarkNativeInvoicePaidResponse]
+      def mark_native_invoice_paid(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request_data = Schematic::Billing::Types::MarkInvoicePaidRequestBody.new(params).to_h
+        non_body_param_names = %w[invoice_id]
+        body = request_data.except(*non_body_param_names)
+
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "POST",
+          path: "invoices/#{URI.encode_uri_component(params[:invoice_id].to_s)}/mark-paid",
+          body: body,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::MarkNativeInvoicePaidResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :invoice_id
+      #
+      # @example
+      #   client.billing.download_native_invoice_pdf(invoice_id: "invoice_id")
+      #
+      # @return [String]
+      def download_native_invoice_pdf(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "GET",
+          path: "invoices/#{URI.encode_uri_component(params[:invoice_id].to_s)}/pdf",
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        return response.body if code.between?(200, 299)
+
+        error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+        error_types = {
+          401 => Schematic::Types::ApiError,
+          403 => Schematic::Types::ApiError,
+          404 => Schematic::Types::ApiError,
+          500 => Schematic::Types::ApiError
+        }
+        error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body)
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :invoice_id
+      #
+      # @example
+      #   client.billing.void_native_invoice(invoice_id: "invoice_id")
+      #
+      # @return [Schematic::Billing::Types::VoidNativeInvoiceResponse]
+      def void_native_invoice(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "POST",
+          path: "invoices/#{URI.encode_uri_component(params[:invoice_id].to_s)}/void",
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::VoidNativeInvoiceResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String, nil] :company_id
+      # @option params [String, nil] :contract_id
+      # @option params [Schematic::Types::InvoiceDocumentState, nil] :document_state
+      # @option params [Integer, nil] :limit
+      # @option params [Integer, nil] :offset
+      #
+      # @example
+      #   client.billing.count_native_invoices(
+      #     company_id: "company_id",
+      #     contract_id: "contract_id",
+      #     document_state: "credited",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
+      # @return [Schematic::Billing::Types::CountNativeInvoicesResponse]
+      def count_native_invoices(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        query_params = {}
+        query_params["company_id"] = params[:company_id] if params.key?(:company_id)
+        query_params["contract_id"] = params[:contract_id] if params.key?(:contract_id)
+        query_params["document_state"] = params[:document_state] if params.key?(:document_state)
+        query_params["limit"] = params[:limit] if params.key?(:limit)
+        query_params["offset"] = params[:offset] if params.key?(:offset)
+
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "GET",
+          path: "invoices/count",
+          query: query_params,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::CountNativeInvoicesResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
+        end
+      end
     end
   end
 end

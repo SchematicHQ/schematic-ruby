@@ -70,7 +70,9 @@ module Schematic
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [String, nil] :company_id
       # @option params [String, nil] :plan_id
+      # @option params [String, nil] :plan_version_id
       # @option params [Schematic::Types::PlanBillingSource, nil] :plan_billing_source
+      # @option params [Schematic::Types::PlanBillingSource, nil] :plan_billing_sources
       # @option params [Schematic::Types::CustomPlanBillingStatus, nil] :status
       # @option params [Schematic::Types::CustomPlanBillingStatus, nil] :statuses
       # @option params [Integer, nil] :limit
@@ -80,7 +82,9 @@ module Schematic
       #   client.plans.list_custom_plan_billings(
       #     company_id: "company_id",
       #     plan_id: "plan_id",
+      #     plan_version_id: "plan_version_id",
       #     plan_billing_source: "amendment",
+      #     plan_billing_sources: ["amendment"],
       #     status: "active",
       #     statuses: ["active"],
       #     limit: 1000000,
@@ -93,7 +97,9 @@ module Schematic
         query_params = {}
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["plan_id"] = params[:plan_id] if params.key?(:plan_id)
+        query_params["plan_version_id"] = params[:plan_version_id] if params.key?(:plan_version_id)
         query_params["plan_billing_source"] = params[:plan_billing_source] if params.key?(:plan_billing_source)
+        query_params["plan_billing_sources"] = params[:plan_billing_sources] if params.key?(:plan_billing_sources)
         query_params["status"] = params[:status] if params.key?(:status)
         query_params["statuses"] = params[:statuses] if params.key?(:statuses)
         query_params["limit"] = params[:limit] if params.key?(:limit)
@@ -1044,7 +1050,7 @@ module Schematic
       end
 
       # @param request_options [Hash]
-      # @param params [Schematic::Plans::Types::PublishPlanVersionRequestBody]
+      # @param params [Schematic::Types::PublishPlanVersionRequestBody]
       # @option request_options [String] :base_url
       # @option request_options [Hash{String => Object}] :additional_headers
       # @option request_options [Hash{String => Object}] :additional_query_parameters
@@ -1062,15 +1068,14 @@ module Schematic
       # @return [Schematic::Plans::Types::PublishPlanVersionResponse]
       def publish_plan_version(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
-        request_data = Schematic::Plans::Types::PublishPlanVersionRequestBody.new(params).to_h
-        non_body_param_names = %w[plan_version_id]
-        body = request_data.except(*non_body_param_names)
+        path_param_names = %i[plan_version_id]
+        body_params = params.except(*path_param_names)
 
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
           method: "PUT",
           path: "plans/version/#{URI.encode_uri_component(params[:plan_version_id].to_s)}/publish",
-          body: body,
+          body: Schematic::Types::PublishPlanVersionRequestBody.new(body_params).to_h,
           request_options: request_options
         )
         begin
@@ -1081,6 +1086,57 @@ module Schematic
         code = response.code.to_i
         if code.between?(200, 299)
           (response.body.to_s.empty? ? nil : Schematic::Plans::Types::PublishPlanVersionResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Schematic::Types::PublishPlanVersionRequestBody]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :plan_version_id
+      #
+      # @example
+      #   client.plans.preview_publish_plan_version(
+      #     plan_version_id: "plan_version_id",
+      #     excluded_company_ids: ["excluded_company_ids"],
+      #     migration_strategy: "end_of_billing_period"
+      #   )
+      #
+      # @return [Schematic::Plans::Types::PreviewPublishPlanVersionResponse]
+      def preview_publish_plan_version(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        path_param_names = %i[plan_version_id]
+        body_params = params.except(*path_param_names)
+
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "POST",
+          path: "plans/version/#{URI.encode_uri_component(params[:plan_version_id].to_s)}/publish-preview",
+          body: Schematic::Types::PublishPlanVersionRequestBody.new(body_params).to_h,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Plans::Types::PreviewPublishPlanVersionResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           error_types = {

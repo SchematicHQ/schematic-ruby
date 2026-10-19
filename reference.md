@@ -4338,6 +4338,549 @@ client.billing.upsert_billing_subscription(
 </dl>
 </details>
 
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">get_company_native_subscription</a>(company_id:) -> Schematic::Billing::Types::GetCompanyNativeSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.billing.get_company_native_subscription(company_id: "company_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `String` — company_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Billing::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">list_native_invoices</a>() -> Schematic::Billing::Types::ListNativeInvoicesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.billing.list_native_invoices(
+  company_id: "company_id",
+  contract_id: "contract_id",
+  document_state: "credited",
+  limit: 1000000,
+  offset: 1000000
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**contract_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**document_state:** `Schematic::Types::InvoiceDocumentState` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Integer` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `Integer` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Billing::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">get_native_invoice</a>(invoice_id:) -> Schematic::Billing::Types::GetNativeInvoiceResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.billing.get_native_invoice(invoice_id: "invoice_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoice_id:** `String` — invoice_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Billing::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">export_native_invoice</a>(invoice_id:) -> String</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.billing.export_native_invoice(invoice_id: "invoice_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoice_id:** `String` — invoice_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Billing::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">finalize_native_invoice</a>(invoice_id:) -> Schematic::Billing::Types::FinalizeNativeInvoiceResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.billing.finalize_native_invoice(invoice_id: "invoice_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoice_id:** `String` — invoice_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Billing::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">mark_native_invoice_paid</a>(invoice_id:, request) -> Schematic::Billing::Types::MarkNativeInvoicePaidResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.billing.mark_native_invoice_paid(
+  invoice_id: "invoice_id",
+  idempotency_key: "idempotency_key"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoice_id:** `String` — invoice_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**amount:** `Integer` — Amount paid, in minor units of the invoice's currency. Leave empty to mark the whole remaining amount as paid.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotency_key:** `String` — A retry with the same key records the payment once.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**reference:** `String` — A note that identifies the payment, such as a bank transfer reference.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**settled_at:** `String` — When the payment arrived. Defaults to now, and cannot be in the future.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Billing::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">download_native_invoice_pdf</a>(invoice_id:) -> String</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.billing.download_native_invoice_pdf(invoice_id: "invoice_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoice_id:** `String` — invoice_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Billing::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">void_native_invoice</a>(invoice_id:) -> Schematic::Billing::Types::VoidNativeInvoiceResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.billing.void_native_invoice(invoice_id: "invoice_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoice_id:** `String` — invoice_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Billing::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">count_native_invoices</a>() -> Schematic::Billing::Types::CountNativeInvoicesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.billing.count_native_invoices(
+  company_id: "company_id",
+  contract_id: "contract_id",
+  document_state: "credited",
+  limit: 1000000,
+  offset: 1000000
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**contract_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**document_state:** `Schematic::Types::InvoiceDocumentState` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Integer` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `Integer` — Page offset (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Billing::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## credits
 <details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">list_billing_credits</a>() -> Schematic::Credits::Types::ListBillingCreditsResponse</code></summary>
 <dl>
@@ -7042,7 +7585,7 @@ client.credits.create_credit_spend_policy(billing_credit_id: "billing_credit_id"
 <dl>
 <dd>
 
-**company_id:** `String` — The company the cap applies to. Set exactly one of company_id and user_id.
+**company_id:** `String` — The company the cap applies in. Alone, it caps the whole company. With user_id, it caps that user's spend in this company. Required with user_id when the user belongs to more than one company.
     
 </dd>
 </dl>
@@ -7066,7 +7609,7 @@ client.credits.create_credit_spend_policy(billing_credit_id: "billing_credit_id"
 <dl>
 <dd>
 
-**user_id:** `String` — The user the cap applies to. Set exactly one of company_id and user_id.
+**user_id:** `String` — The user the cap applies to. The user must belong to company_id, and with no company_id, to exactly one company.
     
 </dd>
 </dl>
@@ -9298,7 +9841,7 @@ client.companies.list_companies(
 <dl>
 <dd>
 
-**without_feature_override_for:** `String` — Filter out companies that already have a company override for the specified feature ID
+**without_feature_override_for:** `String` — Filter out companies that have an unexpired company override for the specified feature ID
     
 </dd>
 </dl>
@@ -9694,7 +10237,7 @@ client.companies.count_companies(
 <dl>
 <dd>
 
-**without_feature_override_for:** `String` — Filter out companies that already have a company override for the specified feature ID
+**without_feature_override_for:** `String` — Filter out companies that have an unexpired company override for the specified feature ID
     
 </dd>
 </dl>
@@ -15657,7 +16200,9 @@ client.plans.update_company_plans(
 client.plans.list_custom_plan_billings(
   company_id: "company_id",
   plan_id: "plan_id",
+  plan_version_id: "plan_version_id",
   plan_billing_source: "amendment",
+  plan_billing_sources: ["amendment"],
   status: "active",
   statuses: ["active"],
   limit: 1000000,
@@ -15693,7 +16238,23 @@ client.plans.list_custom_plan_billings(
 <dl>
 <dd>
 
-**plan_billing_source:** `Schematic::Types::PlanBillingSource` — Filter by the flow that created the billing record: custom_plan for a first publish, amendment for a republish, manage_plan for a standard plan assigned by invoice. Defaults to custom_plan.
+**plan_version_id:** `String` — Filter by the plan version the billing record was created for
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_billing_source:** `Schematic::Types::PlanBillingSource` — Filter by the flow that created the billing record: custom_plan for a first publish, amendment for a republish, manage_plan for a standard plan assigned by invoice. Defaults to custom_plan unless plan_billing_sources is set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_billing_sources:** `Schematic::Types::PlanBillingSource` — Filter by multiple billing sources. Takes precedence over plan_billing_source.
     
 </dd>
 </dl>
@@ -17195,7 +17756,7 @@ client.plans.publish_plan_version(
 <dl>
 <dd>
 
-**activation_strategy:** `Schematic::Types::CustomPlanActivationStrategy` — When the company gets the plan. On a custom-plan republish, on_payment is only accepted when the amendment is invoiced today (migration_strategy immediate, proration_behavior always_invoice, collection_method send_invoice): the company stays on its current version until that invoice is paid.
+**request:** `Schematic::Types::PublishPlanVersionRequestBody` 
     
 </dd>
 </dl>
@@ -17203,7 +17764,51 @@ client.plans.publish_plan_version(
 <dl>
 <dd>
 
-**address:** `Schematic::Types::CustomerBillingAddress` 
+**request_options:** `Schematic::Plans::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.plans.<a href="/lib/schematic/plans/client.rb">preview_publish_plan_version</a>(plan_version_id:, request) -> Schematic::Plans::Types::PreviewPublishPlanVersionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.plans.preview_publish_plan_version(
+  plan_version_id: "plan_version_id",
+  excluded_company_ids: ["excluded_company_ids"],
+  migration_strategy: "end_of_billing_period"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**plan_version_id:** `String` — plan_version_id
     
 </dd>
 </dl>
@@ -17211,127 +17816,7 @@ client.plans.publish_plan_version(
 <dl>
 <dd>
 
-**billing_cycle_anchor:** `String` — The date the subscription's billing period renews on. Only honored on a first publish that starts a subscription.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**billing_start_date:** `String` — The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. Only honored on a first publish that starts a subscription.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**collection_method:** `Schematic::Types::BillingCollectionMethod` — How the invoice a custom-plan republish raises today is collected. send_invoice (the default) issues it for the company to pay; charge_automatically charges the default payment method straight away. Only accepted on a custom-plan republish with migration_strategy immediate and proration_behavior always_invoice.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**coupon_external_id:** `String` — A Stripe coupon to apply. On a custom-plan republish it discounts the amendment invoice and is only used when that invoice is raised today; it must exist in Stripe. It is attached to the subscription, so a repeating or forever coupon also discounts the renewals that follow.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**custom_field_values:** `Internal::Types::Array[Schematic::Types::CheckoutFieldValue]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**customer_email:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**days_until_due:** `Integer` — Payment terms in days. On a custom-plan republish they apply to the amendment invoice only, leave the subscription's renewal terms unchanged, and are only used when that invoice is raised today and sent rather than charged. Defaults to the subscription's terms.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**excluded_company_ids:** `Internal::Types::Array[String]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**migration_strategy:** `Schematic::Types::PlanVersionMigrationStrategy` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**phone:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**prorate_first_period:** `Internal::Types::Boolean` — When true, the partial period between the subscription starting and its renewal date is billed pro rata straight away. When false that period is free and no invoice is raised until the renewal date. Only applies alongside billing_cycle_anchor. Defaults to true.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**proration_behavior:** `Schematic::Types::MigrationProrationBehavior` — How Stripe handles the price difference when companies are migrated. With migration_strategy immediate, omitted means create_prorations. With end_of_billing_period only none is accepted and means the same as omitting it: the change lands on the renewal boundary, so there is nothing to prorate. With scheduled any value is accepted and omitted means none. Not accepted with leave.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**require_no_migration:** `Internal::Types::Boolean` — Refuse the publish if any company would be migrated onto the new version
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**scheduled_at:** `String` — When every company moves, for migration_strategy scheduled. Must be in the future; the migration runs within about a minute of this time. Not accepted with other strategies.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**send_invoice:** `Internal::Types::Boolean` — Whether Stripe emails the invoice when it is finalized. Defaults to true.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**tax_id:** `Schematic::Types::TaxIdInput` 
+**request:** `Schematic::Types::PublishPlanVersionRequestBody` 
     
 </dd>
 </dl>
@@ -18973,7 +19458,7 @@ client.features.list_features(
 <dl>
 <dd>
 
-**without_company_override_for:** `String` — Filter out features that already have a company override for the specified company ID
+**without_company_override_for:** `String` — Filter out features that have an unexpired company override for the specified company ID
     
 </dd>
 </dl>
@@ -19642,7 +20127,7 @@ client.features.count_features(
 <dl>
 <dd>
 
-**without_company_override_for:** `String` — Filter out features that already have a company override for the specified company ID
+**without_company_override_for:** `String` — Filter out features that have an unexpired company override for the specified company ID
     
 </dd>
 </dl>
@@ -19786,7 +20271,6 @@ client.features.list_flags(
 
 ```ruby
 client.features.create_flag(
-  default_value: true,
   description: "description",
   flag_type: "boolean",
   key: "key",
@@ -19889,7 +20373,6 @@ client.features.get_flag(flag_id: "flag_id")
 ```ruby
 client.features.update_flag(
   flag_id: "flag_id",
-  default_value: true,
   description: "description",
   flag_type: "boolean",
   key: "key",
@@ -20160,7 +20643,7 @@ client.features.check_and_reserve_flag(key: "key")
 <dl>
 <dd>
 
-**expires_at:** `String` — When the hold lapses if no track event settles it; defaults to one minute from now and may be at most one hour out. The unspent hold is refunded on expiry
+**expires_at:** `String` — When the hold lapses if no track or inference event settles it; defaults to one minute from now and may be at most one hour out. The unspent hold is refunded on expiry
     
 </dd>
 </dl>
@@ -20176,7 +20659,7 @@ client.features.check_and_reserve_flag(key: "key")
 <dl>
 <dd>
 
-**preflight:** `Schematic::Types::PreflightRequestBody` — Hypothetical usage to evaluate the flag against. When credit_cost names the entitlement's credit, that cost is what gets held; otherwise the hold is the entitlement's consumption rate times quantity, or, when quantity is omitted, times the usage stated here
+**preflight:** `Schematic::Types::PreflightRequestBody` — Hypothetical usage to evaluate the flag against. When credit_cost names the entitlement's credit, that cost is what gets held; otherwise, when event_quantities names the entitlement's event subtype, the hold is that event priced at the entitlement's consumption rate and quantity rates, and quantity is ignored; otherwise the hold is the entitlement's consumption rate times quantity, or, when quantity is omitted, times the usage stated here
     
 </dd>
 </dl>
@@ -20184,7 +20667,7 @@ client.features.check_and_reserve_flag(key: "key")
 <dl>
 <dd>
 
-**quantity:** `Float` — Units of the feature the operation will consume. Sets the hold size together with the entitlement's consumption rate, and is echoed back on the reservation for the settling track event. When it is omitted the units come from preflight.event_usage.quantity, if that event subtype is the entitlement's, else from preflight.usage, else 1
+**quantity:** `Float` — Units of the feature the operation will consume. Sets the hold size together with the entitlement's consumption rate, and is echoed back on the reservation for the settling track event. When it is omitted the units come from preflight.event_usage.quantity, if that event subtype is the entitlement's, else from preflight.usage, else 1. Ignored when preflight.event_quantities names the entitlement's event subtype, whose quantity is used instead
     
 </dd>
 </dl>
