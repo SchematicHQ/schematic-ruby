@@ -11,6 +11,8 @@ module Schematic
         field :entitlements, -> { Internal::Types::Array[Schematic::Types::PlanBundleEntitlementRequestBody] }, optional: false, nullable: false
 
         field :plan, -> { Schematic::Types::CreatePlanRequestBody }, optional: false, nullable: false
+
+        field :renewal_policy, -> { Schematic::Types::RenewalPolicy }, optional: true, nullable: false
       end
     end
   end

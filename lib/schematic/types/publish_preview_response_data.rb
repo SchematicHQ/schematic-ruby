@@ -19,6 +19,8 @@ module Schematic
 
       field :effective_at, -> { String }, optional: true, nullable: false
 
+      field :ends_at, -> { String }, optional: true, nullable: false
+
       field :has_billing_changes, -> { Internal::Types::Boolean }, optional: false, nullable: false
 
       field :immediate_invoice_amount, -> { Integer }, optional: true, nullable: false

@@ -76,6 +76,8 @@ module Schematic
       field :unit_price, -> { Integer }, optional: true, nullable: false
 
       field :unit_price_decimal, -> { String }, optional: true, nullable: false
+
+      field :warning_tiers, -> { Internal::Types::Array[Schematic::Types::PlanCreditGrantWarningTierRequestBody] }, optional: true, nullable: false
     end
   end
 end

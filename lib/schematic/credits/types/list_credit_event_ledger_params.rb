@@ -19,6 +19,8 @@ module Schematic
 
         field :offset, -> { Integer }, optional: true, nullable: false
 
+        field :source_event_id, -> { String }, optional: true, nullable: false
+
         field :start_time, -> { String }, optional: true, nullable: false
       end
     end

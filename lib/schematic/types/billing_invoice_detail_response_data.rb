@@ -13,15 +13,19 @@ module Schematic
 
       field :company_id, -> { String }, optional: false, nullable: false
 
-      field :contract_id, -> { String }, optional: false, nullable: false
+      field :contract_id, -> { String }, optional: true, nullable: false
 
       field :created_at, -> { String }, optional: false, nullable: false
 
       field :currency, -> { Schematic::Types::Currency }, optional: false, nullable: false
 
-      field :document_state, -> { Schematic::Types::InvoiceDocumentState }, optional: false, nullable: false
+      field :discount, -> { Integer }, optional: false, nullable: false
+
+      field :document_state, -> { Schematic::Types::InvoiceDocumentState }, optional: true, nullable: false
 
       field :due_at, -> { String }, optional: true, nullable: false
+
+      field :external_id, -> { String }, optional: true, nullable: false
 
       field :finalized_at, -> { String }, optional: true, nullable: false
 
@@ -31,19 +35,31 @@ module Schematic
 
       field :number, -> { String }, optional: true, nullable: false
 
-      field :period_end, -> { String }, optional: false, nullable: false
+      field :pdf_url, -> { String }, optional: true, nullable: false
 
-      field :period_start, -> { String }, optional: false, nullable: false
+      field :period_end, -> { String }, optional: true, nullable: false
+
+      field :period_start, -> { String }, optional: true, nullable: false
+
+      field :provider_type, -> { Schematic::Types::BillingProviderType }, optional: false, nullable: false
 
       field :settlements, -> { Internal::Types::Array[Schematic::Types::BillingInvoiceSettlementResponseData] }, optional: false, nullable: false
 
       field :status, -> { Schematic::Types::InvoiceStatus }, optional: false, nullable: false
 
+      field :subscription_external_id, -> { String }, optional: true, nullable: false
+
+      field :subscription_id, -> { String }, optional: true, nullable: false
+
       field :subtotal, -> { Integer }, optional: false, nullable: false
+
+      field :tax, -> { Integer }, optional: false, nullable: false
 
       field :terms, -> { Schematic::Types::BillingInvoiceTermsResponseData }, optional: true, nullable: false
 
       field :total, -> { Integer }, optional: false, nullable: false
+
+      field :url, -> { String }, optional: true, nullable: false
     end
   end
 end

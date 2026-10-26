@@ -7,6 +7,10 @@ module Schematic
 
       field :currency, -> { Schematic::Types::Currency }, optional: false, nullable: false
 
+      field :customer_balance_applied, -> { Integer }, optional: false, nullable: false
+
+      field :customer_balance_remaining, -> { Integer }, optional: false, nullable: false
+
       field :discount_amount, -> { Integer }, optional: false, nullable: false
 
       field :discounts, -> { Internal::Types::Array[Schematic::Types::PreviewSubscriptionDiscountResponseData] }, optional: false, nullable: false
@@ -26,6 +30,8 @@ module Schematic
       field :proration, -> { Integer }, optional: false, nullable: false
 
       field :proration_billed_at, -> { String }, optional: true, nullable: false
+
+      field :proration_detail, -> { Schematic::Types::PreviewSubscriptionProrationResponseData }, optional: true, nullable: false
 
       field :tax_amount, -> { Integer }, optional: true, nullable: false
 

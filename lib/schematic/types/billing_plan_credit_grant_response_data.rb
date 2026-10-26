@@ -94,6 +94,8 @@ module Schematic
       field :unit_price_decimal, -> { String }, optional: true, nullable: false
 
       field :updated_at, -> { String }, optional: false, nullable: false
+
+      field :warning_tiers, -> { Internal::Types::Array[Schematic::Types::BillingPlanCreditGrantWarningTierResponseData] }, optional: false, nullable: false
     end
   end
 end

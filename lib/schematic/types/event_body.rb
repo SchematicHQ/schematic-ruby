@@ -5,13 +5,13 @@ module Schematic
     class EventBody < Internal::Types::Model
       extend Schematic::Internal::Types::Union
 
-      member -> { Schematic::Types::EventBodyTrack }
+      member -> { Schematic::Types::EventBodyInference }
 
       member -> { Schematic::Types::EventBodyFlagCheck }
 
-      member -> { Schematic::Types::EventBodyIdentify }
+      member -> { Schematic::Types::EventBodyTrack }
 
-      member -> { Schematic::Types::EventBodyInference }
+      member -> { Schematic::Types::EventBodyIdentify }
     end
   end
 end
