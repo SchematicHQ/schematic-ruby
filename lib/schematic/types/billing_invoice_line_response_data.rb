@@ -7,7 +7,11 @@ module Schematic
 
       field :charge_ids, -> { Internal::Types::Array[String] }, optional: false, nullable: false
 
-      field :id, -> { String }, optional: false, nullable: false
+      field :description, -> { String }, optional: true, nullable: false
+
+      field :external_id, -> { String }, optional: true, nullable: false
+
+      field :id, -> { String }, optional: true, nullable: false
 
       field :kind, -> { Schematic::Types::InvoiceLineKind }, optional: false, nullable: false
 

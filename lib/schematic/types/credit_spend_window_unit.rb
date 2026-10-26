@@ -7,6 +7,8 @@ module Schematic
 
       HOUR = "hour"
       DAY = "day"
+      WEEK = "week"
+      MONTH = "month"
       BILLING_PERIOD = "billing_period"
     end
   end

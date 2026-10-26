@@ -3,7 +3,7 @@
 module Schematic
   module Billing
     module Types
-      class MarkNativeInvoicePaidResponse < Internal::Types::Model
+      class GetBillingInvoiceResponse < Internal::Types::Model
         field :data, -> { Schematic::Types::BillingInvoiceDetailResponseData }, optional: false, nullable: false
 
         field :params, -> { Internal::Types::Hash[String, Object] }, optional: false, nullable: false

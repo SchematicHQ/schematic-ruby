@@ -3,6 +3,8 @@
 module Schematic
   module Types
     class BillingInvoiceTermsResponseData < Internal::Types::Model
+      field :billing_details, -> { Schematic::Types::BillingInvoiceBillingDetailsResponseData }, optional: true, nullable: false
+
       field :collection_method, -> { Schematic::Types::BillingCollectionMethod }, optional: false, nullable: false
 
       field :collector, -> { Schematic::Types::Collector }, optional: false, nullable: false

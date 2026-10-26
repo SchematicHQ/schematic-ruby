@@ -22,6 +22,8 @@ module Schematic
 
         field :card_last_4, -> { String }, optional: true, nullable: false, api_name: "card_last4"
 
+        field :customer_billing_details, -> { Schematic::Types::PaymentMethodBillingDetailsRequestBody }, optional: true, nullable: false
+
         field :customer_external_id, -> { String }, optional: false, nullable: false
 
         field :external_id, -> { String }, optional: false, nullable: false

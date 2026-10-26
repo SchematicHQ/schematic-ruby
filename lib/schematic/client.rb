@@ -11,6 +11,200 @@ module Schematic
     # @option request_options [Integer] :timeout_in_seconds
     #
     # @example
+    #   client.post_api_keys
+    #
+    # @return [untyped]
+    def post_api_keys(request_options: {}, **_params)
+      request = Schematic::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "POST",
+        path: "api-keys",
+        request_options: request_options
+      )
+      begin
+        response = @client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Schematic::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      return if code.between?(200, 299)
+
+      error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+      raise error_class.new(response.body, code: code)
+    end
+
+    # @param request_options [Hash]
+    # @param params [Hash]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key_id
+    #
+    # @example
+    #   client.put_api_keys_api_key_id(api_key_id: "api_key_id")
+    #
+    # @return [untyped]
+    def put_api_keys_api_key_id(request_options: {}, **params)
+      params = Schematic::Internal::Types::Utils.normalize_keys(params)
+      request = Schematic::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "PUT",
+        path: "api-keys/#{URI.encode_uri_component(params[:api_key_id].to_s)}",
+        request_options: request_options
+      )
+      begin
+        response = @client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Schematic::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      return if code.between?(200, 299)
+
+      error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+      raise error_class.new(response.body, code: code)
+    end
+
+    # @param request_options [Hash]
+    # @param params [Hash]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key_id
+    #
+    # @example
+    #   client.delete_api_keys_api_key_id(api_key_id: "api_key_id")
+    #
+    # @return [untyped]
+    def delete_api_keys_api_key_id(request_options: {}, **params)
+      params = Schematic::Internal::Types::Utils.normalize_keys(params)
+      request = Schematic::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "DELETE",
+        path: "api-keys/#{URI.encode_uri_component(params[:api_key_id].to_s)}",
+        request_options: request_options
+      )
+      begin
+        response = @client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Schematic::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      return if code.between?(200, 299)
+
+      error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+      raise error_class.new(response.body, code: code)
+    end
+
+    # @param request_options [Hash]
+    # @param _params [Hash]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    #
+    # @example
+    #   client.post_environments
+    #
+    # @return [untyped]
+    def post_environments(request_options: {}, **_params)
+      request = Schematic::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "POST",
+        path: "environments",
+        request_options: request_options
+      )
+      begin
+        response = @client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Schematic::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      return if code.between?(200, 299)
+
+      error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+      raise error_class.new(response.body, code: code)
+    end
+
+    # @param request_options [Hash]
+    # @param params [Hash]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :environment_id
+    #
+    # @example
+    #   client.put_environments_environment_id(environment_id: "environment_id")
+    #
+    # @return [untyped]
+    def put_environments_environment_id(request_options: {}, **params)
+      params = Schematic::Internal::Types::Utils.normalize_keys(params)
+      request = Schematic::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "PUT",
+        path: "environments/#{URI.encode_uri_component(params[:environment_id].to_s)}",
+        request_options: request_options
+      )
+      begin
+        response = @client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Schematic::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      return if code.between?(200, 299)
+
+      error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+      raise error_class.new(response.body, code: code)
+    end
+
+    # @param request_options [Hash]
+    # @param params [Hash]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :environment_id
+    #
+    # @example
+    #   client.delete_environments_environment_id(environment_id: "environment_id")
+    #
+    # @return [untyped]
+    def delete_environments_environment_id(request_options: {}, **params)
+      params = Schematic::Internal::Types::Utils.normalize_keys(params)
+      request = Schematic::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "DELETE",
+        path: "environments/#{URI.encode_uri_component(params[:environment_id].to_s)}",
+        request_options: request_options
+      )
+      begin
+        response = @client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Schematic::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      return if code.between?(200, 299)
+
+      error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+      raise error_class.new(response.body, code: code)
+    end
+
+    # @param request_options [Hash]
+    # @param _params [Hash]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    #
+    # @example
     #   client.get_credit_ledger
     #
     # @return [untyped]
@@ -43,7 +237,7 @@ module Schematic
       @raw_client = Schematic::Internal::Http::RawClient.new(
         base_url: base_url || Schematic::Environment::DEFAULT,
         headers: {
-          "User-Agent" => "schematichq/1.5.5",
+          "User-Agent" => "schematichq/1.5.6",
           "X-Fern-Language" => "Ruby",
           "X-Schematic-Api-Key" => api_key.to_s
         },

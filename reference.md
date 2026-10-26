@@ -1,4 +1,276 @@
 # Reference
+<details><summary><code>client.<a href="/lib/schematic/client.rb">post_api_keys</a>() -> </code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.post_api_keys
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.<a href="/lib/schematic/client.rb">put_api_keys_api_key_id</a>(api_key_id:) -> </code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.put_api_keys_api_key_id(api_key_id: "api_key_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**api_key_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.<a href="/lib/schematic/client.rb">delete_api_keys_api_key_id</a>(api_key_id:) -> </code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.delete_api_keys_api_key_id(api_key_id: "api_key_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**api_key_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.<a href="/lib/schematic/client.rb">post_environments</a>() -> </code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.post_environments
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.<a href="/lib/schematic/client.rb">put_environments_environment_id</a>(environment_id:) -> </code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.put_environments_environment_id(environment_id: "environment_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**environment_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.<a href="/lib/schematic/client.rb">delete_environments_environment_id</a>(environment_id:) -> </code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.delete_environments_environment_id(environment_id: "environment_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**environment_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.<a href="/lib/schematic/client.rb">get_credit_ledger</a>() -> </code></summary>
 <dl>
 <dd>
@@ -337,86 +609,6 @@ client.accounts.list_api_keys(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">create_api_key</a>(request) -> Schematic::Accounts::Types::CreateApiKeyResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```ruby
-client.accounts.create_api_key(name: "name")
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**description:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**environment_id:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**name:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**rate_limit_percent:** `Integer` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**readonly:** `Internal::Types::Boolean` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `Schematic::Accounts::RequestOptions` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">get_api_key</a>(api_key_id:) -> Schematic::Accounts::Types::GetApiKeyResponse</code></summary>
 <dl>
 <dd>
@@ -431,126 +623,6 @@ client.accounts.create_api_key(name: "name")
 
 ```ruby
 client.accounts.get_api_key(api_key_id: "api_key_id")
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**api_key_id:** `String` — api_key_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `Schematic::Accounts::RequestOptions` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">update_api_key</a>(api_key_id:, request) -> Schematic::Accounts::Types::UpdateApiKeyResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```ruby
-client.accounts.update_api_key(api_key_id: "api_key_id")
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**api_key_id:** `String` — api_key_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**description:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**name:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**rate_limit_percent:** `Integer` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `Schematic::Accounts::RequestOptions` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">delete_api_key</a>(api_key_id:) -> Schematic::Accounts::Types::DeleteApiKeyResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```ruby
-client.accounts.delete_api_key(api_key_id: "api_key_id")
 ```
 </dd>
 </dl>
@@ -986,65 +1058,6 @@ client.accounts.list_environments(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">create_environment</a>(request) -> Schematic::Accounts::Types::CreateEnvironmentResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```ruby
-client.accounts.create_environment(
-  environment_type: "development",
-  name: "name"
-)
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**environment_type:** `Schematic::Types::EnvironmentType` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**name:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `Schematic::Accounts::RequestOptions` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">get_environment</a>(environment_id:) -> Schematic::Accounts::Types::GetEnvironmentResponse</code></summary>
 <dl>
 <dd>
@@ -1059,126 +1072,6 @@ client.accounts.create_environment(
 
 ```ruby
 client.accounts.get_environment(environment_id: "environment_id")
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**environment_id:** `String` — environment_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `Schematic::Accounts::RequestOptions` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">update_environment</a>(environment_id:, request) -> Schematic::Accounts::Types::UpdateEnvironmentResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```ruby
-client.accounts.update_environment(environment_id: "environment_id")
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**environment_id:** `String` — environment_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**environment_type:** `Schematic::Types::EnvironmentType` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**name:** `String` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**require_context_signature:** `Internal::Types::Boolean` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `Schematic::Accounts::RequestOptions` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.accounts.<a href="/lib/schematic/accounts/client.rb">delete_environment</a>(environment_id:) -> Schematic::Accounts::Types::DeleteEnvironmentResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```ruby
-client.accounts.delete_environment(environment_id: "environment_id")
 ```
 </dd>
 </dl>
@@ -2646,6 +2539,14 @@ client.billing.upsert_payment_method(
 <dd>
 
 **card_last_4:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**customer_billing_details:** `Schematic::Types::PaymentMethodBillingDetailsRequestBody` 
     
 </dd>
 </dl>
@@ -4386,7 +4287,7 @@ client.billing.get_company_native_subscription(company_id: "company_id")
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">list_native_invoices</a>() -> Schematic::Billing::Types::ListNativeInvoicesResponse</code></summary>
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">list_billing_invoices</a>() -> Schematic::Billing::Types::ListBillingInvoicesResponse</code></summary>
 <dl>
 <dd>
 
@@ -4399,10 +4300,14 @@ client.billing.get_company_native_subscription(company_id: "company_id")
 <dd>
 
 ```ruby
-client.billing.list_native_invoices(
+client.billing.list_billing_invoices(
   company_id: "company_id",
   contract_id: "contract_id",
   document_state: "credited",
+  past_due: true,
+  provider_type: "metronome",
+  q: "q",
+  status: "draft",
   limit: 1000000,
   offset: 1000000
 )
@@ -4444,6 +4349,38 @@ client.billing.list_native_invoices(
 <dl>
 <dd>
 
+**past_due:** `Internal::Types::Boolean` — Only open invoices with an amount left to pay whose due date has passed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**provider_type:** `Schematic::Types::BillingProviderType` — Only invoices from this billing provider. Leave empty for invoices from Schematic and Stripe.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `String` — Search by invoice number, provider invoice ID or company name.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `Schematic::Types::InvoiceStatus` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **limit:** `Integer` — Page limit (default 100)
     
 </dd>
@@ -4472,7 +4409,7 @@ client.billing.list_native_invoices(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">get_native_invoice</a>(invoice_id:) -> Schematic::Billing::Types::GetNativeInvoiceResponse</code></summary>
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">get_billing_invoice</a>(invoice_id:) -> Schematic::Billing::Types::GetBillingInvoiceResponse</code></summary>
 <dl>
 <dd>
 
@@ -4485,7 +4422,7 @@ client.billing.list_native_invoices(
 <dd>
 
 ```ruby
-client.billing.get_native_invoice(invoice_id: "invoice_id")
+client.billing.get_billing_invoice(invoice_id: "invoice_id")
 ```
 </dd>
 </dl>
@@ -4616,7 +4553,7 @@ client.billing.finalize_native_invoice(invoice_id: "invoice_id")
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">mark_native_invoice_paid</a>(invoice_id:, request) -> Schematic::Billing::Types::MarkNativeInvoicePaidResponse</code></summary>
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">mark_billing_invoice_paid</a>(invoice_id:, request) -> Schematic::Billing::Types::MarkBillingInvoicePaidResponse</code></summary>
 <dl>
 <dd>
 
@@ -4629,7 +4566,7 @@ client.billing.finalize_native_invoice(invoice_id: "invoice_id")
 <dd>
 
 ```ruby
-client.billing.mark_native_invoice_paid(
+client.billing.mark_billing_invoice_paid(
   invoice_id: "invoice_id",
   idempotency_key: "idempotency_key"
 )
@@ -4795,7 +4732,7 @@ client.billing.void_native_invoice(invoice_id: "invoice_id")
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">count_native_invoices</a>() -> Schematic::Billing::Types::CountNativeInvoicesResponse</code></summary>
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">count_billing_invoices</a>() -> Schematic::Billing::Types::CountBillingInvoicesResponse</code></summary>
 <dl>
 <dd>
 
@@ -4808,10 +4745,14 @@ client.billing.void_native_invoice(invoice_id: "invoice_id")
 <dd>
 
 ```ruby
-client.billing.count_native_invoices(
+client.billing.count_billing_invoices(
   company_id: "company_id",
   contract_id: "contract_id",
   document_state: "credited",
+  past_due: true,
+  provider_type: "metronome",
+  q: "q",
+  status: "draft",
   limit: 1000000,
   offset: 1000000
 )
@@ -4846,6 +4787,38 @@ client.billing.count_native_invoices(
 <dd>
 
 **document_state:** `Schematic::Types::InvoiceDocumentState` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**past_due:** `Internal::Types::Boolean` — Only open invoices with an amount left to pay whose due date has passed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**provider_type:** `Schematic::Types::BillingProviderType` — Only invoices from this billing provider. Leave empty for invoices from Schematic and Stripe.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `String` — Search by invoice number, provider invoice ID or company name.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `Schematic::Types::InvoiceStatus` 
     
 </dd>
 </dl>
@@ -7625,7 +7598,7 @@ client.credits.create_credit_spend_policy(billing_credit_id: "billing_credit_id"
 <dl>
 <dd>
 
-**window_unit:** `Schematic::Types::CreditSpendWindowUnit` — The window that window_amount applies to: one UTC hour or one UTC day. Required with window_amount.
+**window_unit:** `Schematic::Types::CreditSpendWindowUnit` — The window that window_amount applies to: one UTC hour, one UTC day, one week from Monday 00:00 UTC, one calendar month from the 1st 00:00 UTC, or the company's current billing period. billing_period applies to company policies only, and a company without an active subscription falls back to the calendar month. Required with window_amount.
     
 </dd>
 </dl>
@@ -8012,6 +7985,7 @@ client.credits.list_credit_event_ledger(
   end_time: "end_time",
   event_type: "adjustment",
   feature_id: "feature_id",
+  source_event_id: "source_event_id",
   start_time: "start_time",
   limit: 1000000,
   offset: 1000000
@@ -8063,6 +8037,14 @@ client.credits.list_credit_event_ledger(
 <dd>
 
 **feature_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**source_event_id:** `String` — Return only entries drawn by this track or inference event. Pass the event ID that POST /events returned for it.
     
 </dd>
 </dl>
@@ -8106,6 +8088,54 @@ client.credits.list_credit_event_ledger(
 </dl>
 </details>
 
+<details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">get_credit_event_ledger_entry</a>(ledger_entry_id:) -> Schematic::Credits::Types::GetCreditEventLedgerEntryResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.credits.get_credit_event_ledger_entry(ledger_entry_id: "ledger_entry_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**ledger_entry_id:** `String` — ledger_entry_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Credits::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.credits.<a href="/lib/schematic/credits/client.rb">count_credit_event_ledger</a>() -> Schematic::Credits::Types::CountCreditEventLedgerResponse</code></summary>
 <dl>
 <dd>
@@ -8125,6 +8155,7 @@ client.credits.count_credit_event_ledger(
   end_time: "end_time",
   event_type: "adjustment",
   feature_id: "feature_id",
+  source_event_id: "source_event_id",
   start_time: "start_time",
   limit: 1000000,
   offset: 1000000
@@ -8176,6 +8207,14 @@ client.credits.count_credit_event_ledger(
 <dd>
 
 **feature_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**source_event_id:** `String` — Return only entries drawn by this track or inference event. Pass the event ID that POST /events returned for it.
     
 </dd>
 </dl>
@@ -9050,6 +9089,94 @@ client.catalogs.remove_plan(
 <dd>
 
 **plan_id:** `String` — plan_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Catalogs::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">get_public_catalog</a>() -> Schematic::Catalogs::Types::GetPublicCatalogResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.catalogs.get_public_catalog
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Catalogs::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.catalogs.<a href="/lib/schematic/catalogs/client.rb">get_public_catalog_by_id</a>(catalog_id:) -> Schematic::Catalogs::Types::GetPublicCatalogByIdResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.catalogs.get_public_catalog_by_id(catalog_id: "catalog_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalog_id:** `String` — catalog_id
     
 </dd>
 </dl>
@@ -16446,6 +16573,14 @@ client.plans.retry_custom_plan_billing(
 <dl>
 <dd>
 
+**end_date:** `String` — When a plan that doesn't renew ends. Moved back to the last renewal on or before it. When omitted, the end date set at finalize is reissued. Only honored when the retry creates a subscription.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **prorate_first_period:** `Internal::Types::Boolean` — When true, the partial period between the subscription starting and its renewal date is billed pro rata straight away. When false that period is free and no invoice is raised until the renewal date. Only applies alongside billing_cycle_anchor. Defaults to true.
     
 </dd>
@@ -18404,6 +18539,14 @@ client.planbundle.create_custom_plan_bundle(
 <dl>
 <dd>
 
+**renewal_policy:** `Schematic::Types::RenewalPolicy` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `Schematic::Planbundle::RequestOptions` 
     
 </dd>
@@ -18477,6 +18620,14 @@ client.planbundle.create_plan_bundle(
 <dd>
 
 **plan:** `Schematic::Types::CreatePlanRequestBody` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**renewal_policy:** `Schematic::Types::RenewalPolicy` 
     
 </dd>
 </dl>
@@ -18573,6 +18724,14 @@ client.planbundle.update_plan_bundle(
 <dd>
 
 **plan_version_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**renewal_policy:** `Schematic::Types::RenewalPolicy` 
     
 </dd>
 </dl>

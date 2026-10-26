@@ -18,6 +18,7 @@ module Schematic
       CREDIT_LIMIT_REACHED = "credit.limit.reached"
       CREDIT_LIMIT_WARNING = "credit.limit.warning"
       CREDIT_PURCHASE_SUCCESS = "credit.purchase.success"
+      CREDIT_USAGE_WARNING_REACHED = "credit.usage_warning_reached"
       ENTITLEMENT_LIMIT_REACHED = "entitlement.limit.reached"
       ENTITLEMENT_LIMIT_WARNING = "entitlement.limit.warning"
       ENTITLEMENT_SOFT_LIMIT_REACHED = "entitlement.soft_limit.reached"

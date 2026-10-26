@@ -16,6 +16,8 @@ module Schematic
 
         field :days_until_due, -> { Integer }, optional: true, nullable: false
 
+        field :end_date, -> { String }, optional: true, nullable: false
+
         field :prorate_first_period, -> { Internal::Types::Boolean }, optional: true, nullable: false
 
         field :send_invoice, -> { Internal::Types::Boolean }, optional: true, nullable: false

@@ -7,7 +7,7 @@ module Schematic
 
       field :collector, -> { Schematic::Types::Collector }, optional: false, nullable: false
 
-      field :id, -> { String }, optional: false, nullable: false
+      field :id, -> { String }, optional: true, nullable: false
 
       field :reference, -> { String }, optional: true, nullable: false
 

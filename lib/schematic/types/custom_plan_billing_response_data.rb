@@ -17,6 +17,8 @@ module Schematic
 
       field :days_until_due, -> { Integer }, optional: false, nullable: false
 
+      field :end_date, -> { String }, optional: true, nullable: false
+
       field :external_invoice_id, -> { String }, optional: true, nullable: false
 
       field :id, -> { String }, optional: false, nullable: false

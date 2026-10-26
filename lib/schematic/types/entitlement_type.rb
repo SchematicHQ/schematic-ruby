@@ -6,6 +6,7 @@ module Schematic
       extend Schematic::Internal::Types::Enum
 
       COMPANY_OVERRIDE = "company_override"
+      PLAN_CREDIT_GRANT = "plan_credit_grant"
       PLAN_ENTITLEMENT = "plan_entitlement"
       UNKNOWN = "unknown"
     end

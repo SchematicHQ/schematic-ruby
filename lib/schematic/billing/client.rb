@@ -1660,25 +1660,37 @@ module Schematic
       # @option params [String, nil] :company_id
       # @option params [String, nil] :contract_id
       # @option params [Schematic::Types::InvoiceDocumentState, nil] :document_state
+      # @option params [Boolean, nil] :past_due
+      # @option params [Schematic::Types::BillingProviderType, nil] :provider_type
+      # @option params [String, nil] :q
+      # @option params [Schematic::Types::InvoiceStatus, nil] :status
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
       # @example
-      #   client.billing.list_native_invoices(
+      #   client.billing.list_billing_invoices(
       #     company_id: "company_id",
       #     contract_id: "contract_id",
       #     document_state: "credited",
+      #     past_due: true,
+      #     provider_type: "metronome",
+      #     q: "q",
+      #     status: "draft",
       #     limit: 1000000,
       #     offset: 1000000
       #   )
       #
-      # @return [Schematic::Billing::Types::ListNativeInvoicesResponse]
-      def list_native_invoices(request_options: {}, **params)
+      # @return [Schematic::Billing::Types::ListBillingInvoicesResponse]
+      def list_billing_invoices(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         query_params = {}
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["contract_id"] = params[:contract_id] if params.key?(:contract_id)
         query_params["document_state"] = params[:document_state] if params.key?(:document_state)
+        query_params["past_due"] = params[:past_due] if params.key?(:past_due)
+        query_params["provider_type"] = params[:provider_type] if params.key?(:provider_type)
+        query_params["q"] = params[:q] if params.key?(:q)
+        query_params["status"] = params[:status] if params.key?(:status)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
 
@@ -1696,7 +1708,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::ListNativeInvoicesResponse.load(response.body))
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::ListBillingInvoicesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           error_types = {
@@ -1721,10 +1733,10 @@ module Schematic
       # @option params [String] :invoice_id
       #
       # @example
-      #   client.billing.get_native_invoice(invoice_id: "invoice_id")
+      #   client.billing.get_billing_invoice(invoice_id: "invoice_id")
       #
-      # @return [Schematic::Billing::Types::GetNativeInvoiceResponse]
-      def get_native_invoice(request_options: {}, **params)
+      # @return [Schematic::Billing::Types::GetBillingInvoiceResponse]
+      def get_billing_invoice(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
@@ -1739,7 +1751,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::GetNativeInvoiceResponse.load(response.body))
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::GetBillingInvoiceResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           error_types = {
@@ -1846,13 +1858,13 @@ module Schematic
       # @option params [String] :invoice_id
       #
       # @example
-      #   client.billing.mark_native_invoice_paid(
+      #   client.billing.mark_billing_invoice_paid(
       #     invoice_id: "invoice_id",
       #     idempotency_key: "idempotency_key"
       #   )
       #
-      # @return [Schematic::Billing::Types::MarkNativeInvoicePaidResponse]
-      def mark_native_invoice_paid(request_options: {}, **params)
+      # @return [Schematic::Billing::Types::MarkBillingInvoicePaidResponse]
+      def mark_billing_invoice_paid(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         request_data = Schematic::Billing::Types::MarkInvoicePaidRequestBody.new(params).to_h
         non_body_param_names = %w[invoice_id]
@@ -1872,7 +1884,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::MarkNativeInvoicePaidResponse.load(response.body))
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::MarkBillingInvoicePaidResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           error_types = {
@@ -1980,25 +1992,37 @@ module Schematic
       # @option params [String, nil] :company_id
       # @option params [String, nil] :contract_id
       # @option params [Schematic::Types::InvoiceDocumentState, nil] :document_state
+      # @option params [Boolean, nil] :past_due
+      # @option params [Schematic::Types::BillingProviderType, nil] :provider_type
+      # @option params [String, nil] :q
+      # @option params [Schematic::Types::InvoiceStatus, nil] :status
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
       # @example
-      #   client.billing.count_native_invoices(
+      #   client.billing.count_billing_invoices(
       #     company_id: "company_id",
       #     contract_id: "contract_id",
       #     document_state: "credited",
+      #     past_due: true,
+      #     provider_type: "metronome",
+      #     q: "q",
+      #     status: "draft",
       #     limit: 1000000,
       #     offset: 1000000
       #   )
       #
-      # @return [Schematic::Billing::Types::CountNativeInvoicesResponse]
-      def count_native_invoices(request_options: {}, **params)
+      # @return [Schematic::Billing::Types::CountBillingInvoicesResponse]
+      def count_billing_invoices(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         query_params = {}
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["contract_id"] = params[:contract_id] if params.key?(:contract_id)
         query_params["document_state"] = params[:document_state] if params.key?(:document_state)
+        query_params["past_due"] = params[:past_due] if params.key?(:past_due)
+        query_params["provider_type"] = params[:provider_type] if params.key?(:provider_type)
+        query_params["q"] = params[:q] if params.key?(:q)
+        query_params["status"] = params[:status] if params.key?(:status)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
 
@@ -2016,7 +2040,7 @@ module Schematic
         end
         code = response.code.to_i
         if code.between?(200, 299)
-          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::CountNativeInvoicesResponse.load(response.body))
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::CountBillingInvoicesResponse.load(response.body))
         else
           error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
           error_types = {

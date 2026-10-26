@@ -2005,6 +2005,7 @@ module Schematic
       # @option params [String, nil] :end_time
       # @option params [Schematic::Types::CreditEventType, nil] :event_type
       # @option params [String, nil] :feature_id
+      # @option params [String, nil] :source_event_id
       # @option params [String, nil] :start_time
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
@@ -2016,6 +2017,7 @@ module Schematic
       #     end_time: "end_time",
       #     event_type: "adjustment",
       #     feature_id: "feature_id",
+      #     source_event_id: "source_event_id",
       #     start_time: "start_time",
       #     limit: 1000000,
       #     offset: 1000000
@@ -2030,6 +2032,7 @@ module Schematic
         query_params["end_time"] = params[:end_time] if params.key?(:end_time)
         query_params["event_type"] = params[:event_type] if params.key?(:event_type)
         query_params["feature_id"] = params[:feature_id] if params.key?(:feature_id)
+        query_params["source_event_id"] = params[:source_event_id] if params.key?(:source_event_id)
         query_params["start_time"] = params[:start_time] if params.key?(:start_time)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
@@ -2070,11 +2073,54 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :ledger_entry_id
+      #
+      # @example
+      #   client.credits.get_credit_event_ledger_entry(ledger_entry_id: "ledger_entry_id")
+      #
+      # @return [Schematic::Credits::Types::GetCreditEventLedgerEntryResponse]
+      def get_credit_event_ledger_entry(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "GET",
+          path: "v2/billing/credits/ledger/#{URI.encode_uri_component(params[:ledger_entry_id].to_s)}",
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Credits::Types::GetCreditEventLedgerEntryResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
       # @option params [String, nil] :billing_credit_id
       # @option params [String] :company_id
       # @option params [String, nil] :end_time
       # @option params [Schematic::Types::CreditEventType, nil] :event_type
       # @option params [String, nil] :feature_id
+      # @option params [String, nil] :source_event_id
       # @option params [String, nil] :start_time
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
@@ -2086,6 +2132,7 @@ module Schematic
       #     end_time: "end_time",
       #     event_type: "adjustment",
       #     feature_id: "feature_id",
+      #     source_event_id: "source_event_id",
       #     start_time: "start_time",
       #     limit: 1000000,
       #     offset: 1000000
@@ -2100,6 +2147,7 @@ module Schematic
         query_params["end_time"] = params[:end_time] if params.key?(:end_time)
         query_params["event_type"] = params[:event_type] if params.key?(:event_type)
         query_params["feature_id"] = params[:feature_id] if params.key?(:feature_id)
+        query_params["source_event_id"] = params[:source_event_id] if params.key?(:source_event_id)
         query_params["start_time"] = params[:start_time] if params.key?(:start_time)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)

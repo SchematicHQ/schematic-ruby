@@ -11,6 +11,8 @@ module Schematic
 
       field :note, -> { String }, optional: true, nullable: false
 
+      field :notes, -> { Internal::Types::Array[Schematic::Types::PlanVersionMigrationPreviewNoteResponseData] }, optional: false, nullable: false
+
       field :plan_version_id_from, -> { String }, optional: true, nullable: false
 
       field :will_update_subscription, -> { Internal::Types::Boolean }, optional: false, nullable: false
