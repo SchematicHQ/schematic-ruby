@@ -406,7 +406,7 @@ Server mode needs only a TTL:
 client = Schematic::SchematicClient.new(
   api_key: ENV["SCHEMATIC_API_KEY"],
   credit_leases: {
-    default_reservation_ttl: 60 * 1000 # how long the server holds the credits if no track settles them (ms, max 1 hour)
+    default_reservation_ttl: 60 * 1000 # how long the server holds the credits if no track settles them (ms, max 24 hours)
   }
 )
 ```

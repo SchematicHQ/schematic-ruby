@@ -1522,10 +1522,10 @@ class CreditLeaseClientWiringTest < Minitest::Test
     client&.close
   end
 
-  # The API refuses a hold expiring more than an hour out, measured against its
+  # The API refuses a hold expiring more than 24 hours out, measured against its
   # own clock, so a server-mode TTL is clamped a step below the cap.
   def test_a_server_mode_reservation_ttl_is_clamped_below_the_api_cap
-    client = build_client(credit_leases: { mode: :server, default_reservation_ttl: 2 * 60 * 60 * 1000 })
+    client = build_client(credit_leases: { mode: :server, default_reservation_ttl: 25 * 60 * 60 * 1000 })
 
     assert_equal Leases::MAX_RESERVATION_TTL_MS - Leases::RESERVATION_TTL_SKEW_ALLOWANCE_MS,
                  client.instance_variable_get(:@server_reservation_ttl_ms)
@@ -1536,9 +1536,9 @@ class CreditLeaseClientWiringTest < Minitest::Test
   # In client mode the TTL sizes the local sweep, so clamping it would shorten
   # holds for no reason.
   def test_a_client_mode_reservation_ttl_is_left_alone
-    client = build_client(credit_leases: { mode: :client, default_reservation_ttl: 2 * 60 * 60 * 1000 })
+    client = build_client(credit_leases: { mode: :client, default_reservation_ttl: 25 * 60 * 60 * 1000 })
 
-    assert_equal 2 * 60 * 60 * 1000, client.instance_variable_get(:@server_reservation_ttl_ms)
+    assert_equal 25 * 60 * 60 * 1000, client.instance_variable_get(:@server_reservation_ttl_ms)
   ensure
     client&.close
   end

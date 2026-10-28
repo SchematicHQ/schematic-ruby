@@ -18,11 +18,11 @@ module Schematic
 
       DEFAULT_LEASE_DURATION_MS = 5 * 60 * 1000
       DEFAULT_RESERVATION_TTL_MS = 60 * 1000
-      # The API rejects a hold whose expires_at is more than an hour out, so a
+      # The API rejects a hold whose expires_at is more than 24 hours out, so a
       # larger reservation TTL would fail every server-mode check. The SDK
       # clamps to this instead.
-      MAX_RESERVATION_TTL_MS = 60 * 60 * 1000
-      # The API measures that hour against its own clock while the SDK computes
+      MAX_RESERVATION_TTL_MS = 24 * 60 * 60 * 1000
+      # The API measures that cap against its own clock while the SDK computes
       # expires_at against the caller's, so a client running ahead would be
       # rejected at exactly the cap. Hold this much back from it.
       RESERVATION_TTL_SKEW_ALLOWANCE_MS = 60 * 1000

@@ -970,7 +970,7 @@ module Schematic
       :auto
     end
 
-    # The API refuses a hold expiring more than an hour after its own clock, and
+    # The API refuses a hold expiring more than 24 hours after its own clock, and
     # this TTL is applied to the caller's, so clamp a step below the cap to leave
     # room for skew. Only server mode sends the value to the API: in client mode
     # it sizes the local sweep, so clamping there would shorten holds for no
