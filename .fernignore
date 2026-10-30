@@ -9,6 +9,7 @@ WASM_VERSION
 conformance/
 custom.gemspec.rb
 lib/schematic/cache.rb
+lib/schematic/context_signature.rb
 lib/schematic/credits/leases/
 lib/schematic/datastream/
 lib/schematic/event_buffer.rb
@@ -20,6 +21,7 @@ lib/schematic/wasm/
 lib/schematic/webhook_verification.rb
 lib/schematichq.rb
 scripts/
+test/context_signature_test.rb
 test/conformance_test.rb
 test/credits_test.rb
 test/custom.test.rb
