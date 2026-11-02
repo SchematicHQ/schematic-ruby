@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
+require_relative "../../schematic"
+
 module Schematic
   module Types
     class CompanyFeatureUsageExportMetadata < Internal::Types::Model
+      field :cancel_at_period_end, -> { Internal::Types::Boolean }, optional: true, nullable: false
+
       field :company_ids, -> { Internal::Types::Array[String] }, optional: true, nullable: false
 
       field :credit_type_ids, -> { Internal::Types::Array[String] }, optional: true, nullable: false

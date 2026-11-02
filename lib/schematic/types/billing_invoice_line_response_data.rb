@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../schematic"
+
 module Schematic
   module Types
     class BillingInvoiceLineResponseData < Internal::Types::Model
@@ -18,6 +20,8 @@ module Schematic
       field :period_end, -> { String }, optional: true, nullable: false
 
       field :period_start, -> { String }, optional: true, nullable: false
+
+      field :proration_fraction, -> { String }, optional: true, nullable: false
 
       field :quantity, -> { Integer }, optional: true, nullable: false
 

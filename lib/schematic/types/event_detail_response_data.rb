@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../schematic"
+
 module Schematic
   module Types
     class EventDetailResponseData < Internal::Types::Model
@@ -16,6 +18,12 @@ module Schematic
       field :company, -> { Schematic::Types::PreviewObject }, optional: true, nullable: false
 
       field :company_id, -> { String }, optional: true, nullable: false
+
+      field :cost, -> { String }, optional: true, nullable: false
+
+      field :cost_source, -> { Schematic::Types::InferenceCostSource }, optional: true, nullable: false
+
+      field :currency, -> { String }, optional: true, nullable: false
 
       field :enriched_at, -> { String }, optional: true, nullable: false
 

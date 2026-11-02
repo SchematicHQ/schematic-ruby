@@ -4,6 +4,8 @@ module Schematic
   module Companies
     module Types
       class CountCompaniesRequest < Internal::Types::Model
+        field :cancel_at_period_end, -> { Internal::Types::Boolean }, optional: true, nullable: false
+
         field :credit_type_ids, -> { String }, optional: true, nullable: false
 
         field :has_scheduled_downgrade, -> { Internal::Types::Boolean }, optional: true, nullable: false

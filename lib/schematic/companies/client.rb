@@ -17,6 +17,7 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      # @option params [Boolean, nil] :cancel_at_period_end
       # @option params [String, nil] :credit_type_ids
       # @option params [Boolean, nil] :has_scheduled_downgrade
       # @option params [String, nil] :ids
@@ -41,6 +42,7 @@ module Schematic
       #
       # @example
       #   client.companies.list_companies(
+      #     cancel_at_period_end: true,
       #     credit_type_ids: ["credit_type_ids"],
       #     has_scheduled_downgrade: true,
       #     ids: ["ids"],
@@ -68,6 +70,7 @@ module Schematic
       def list_companies(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         query_params = {}
+        query_params["cancel_at_period_end"] = params[:cancel_at_period_end] if params.key?(:cancel_at_period_end)
         query_params["credit_type_ids"] = params[:credit_type_ids] if params.key?(:credit_type_ids)
         query_params["has_scheduled_downgrade"] = params[:has_scheduled_downgrade] if params.key?(:has_scheduled_downgrade)
         query_params["ids"] = params[:ids] if params.key?(:ids)
@@ -267,6 +270,60 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :company_id
+      # @option params [String, nil] :end_time
+      # @option params [String, nil] :start_time
+      #
+      # @example
+      #   client.companies.get_company_inference_cost(
+      #     company_id: "company_id",
+      #     end_time: "2024-01-15T09:30:00Z",
+      #     start_time: "2024-01-15T09:30:00Z"
+      #   )
+      #
+      # @return [Schematic::Companies::Types::GetCompanyInferenceCostResponse]
+      def get_company_inference_cost(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        query_params = {}
+        query_params["end_time"] = params[:end_time] if params.key?(:end_time)
+        query_params["start_time"] = params[:start_time] if params.key?(:start_time)
+
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "GET",
+          path: "companies/#{URI.encode_uri_component(params[:company_id].to_s)}/inference-cost",
+          query: query_params,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetCompanyInferenceCostResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [Boolean, nil] :cancel_at_period_end
       # @option params [String, nil] :credit_type_ids
       # @option params [Boolean, nil] :has_scheduled_downgrade
       # @option params [String, nil] :ids
@@ -291,6 +348,7 @@ module Schematic
       #
       # @example
       #   client.companies.count_companies(
+      #     cancel_at_period_end: true,
       #     credit_type_ids: ["credit_type_ids"],
       #     has_scheduled_downgrade: true,
       #     ids: ["ids"],
@@ -318,6 +376,7 @@ module Schematic
       def count_companies(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         query_params = {}
+        query_params["cancel_at_period_end"] = params[:cancel_at_period_end] if params.key?(:cancel_at_period_end)
         query_params["credit_type_ids"] = params[:credit_type_ids] if params.key?(:credit_type_ids)
         query_params["has_scheduled_downgrade"] = params[:has_scheduled_downgrade] if params.key?(:has_scheduled_downgrade)
         query_params["ids"] = params[:ids] if params.key?(:ids)
@@ -1574,7 +1633,7 @@ module Schematic
       #
       # @example
       #   client.companies.list_plan_changes(
-      #     action: "amendment",
+      #     action: "access_reinstated",
       #     base_plan_action: "fallback",
       #     company_id: "company_id",
       #     company_ids: ["company_ids"],

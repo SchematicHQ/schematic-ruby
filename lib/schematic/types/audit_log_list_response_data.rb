@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../schematic"
+
 module Schematic
   module Types
     class AuditLogListResponseData < Internal::Types::Model
@@ -8,6 +10,10 @@ module Schematic
       field :api_key, -> { Schematic::Types::ApiKeyResponseData }, optional: true, nullable: false
 
       field :api_key_id, -> { String }, optional: true, nullable: false
+
+      field :company, -> { Schematic::Types::AuditLogCompanyResponseData }, optional: true, nullable: false
+
+      field :company_id, -> { String }, optional: true, nullable: false
 
       field :ended_at, -> { String }, optional: true, nullable: false
 

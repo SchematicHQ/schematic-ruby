@@ -154,11 +154,14 @@ module Schematic
       # @return [Schematic::Plans::Types::MarkCustomPlanBillingPaidResponse]
       def mark_custom_plan_billing_paid(request_options: {}, **params)
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        keyword_body = params.except(*%i[custom_plan_billing_id])
+        body_value = params.key?(:request) || keyword_body.empty? ? params[:request] : keyword_body
+
         request = Schematic::Internal::JSON::Request.new(
           base_url: request_options[:base_url],
           method: "PUT",
           path: "custom-plan-billings/#{URI.encode_uri_component(params[:custom_plan_billing_id].to_s)}/mark-paid",
-          body: params[:request],
+          body: body_value,
           request_options: request_options
         )
         begin

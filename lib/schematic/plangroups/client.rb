@@ -77,7 +77,7 @@ module Schematic
       #       plan_id: "plan_id"
       #     }],
       #     ordered_bundle_list: [{
-      #       bundle_id: "bundleId"
+      #       bundleId: "bundleId"
       #     }],
       #     ordered_plans: [{
       #       plan_id: "plan_id"
@@ -150,7 +150,7 @@ module Schematic
       #       plan_id: "plan_id"
       #     }],
       #     ordered_bundle_list: [{
-      #       bundle_id: "bundleId"
+      #       bundleId: "bundleId"
       #     }],
       #     ordered_plans: [{
       #       plan_id: "plan_id"

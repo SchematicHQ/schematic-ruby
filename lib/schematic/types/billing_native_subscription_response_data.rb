@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
+require_relative "../../schematic"
+
 module Schematic
   module Types
     class BillingNativeSubscriptionResponseData < Internal::Types::Model
+      field :balance, -> { Integer }, optional: false, nullable: false
+
       field :cancel_at, -> { String }, optional: true, nullable: false
 
       field :company_id, -> { String }, optional: false, nullable: false

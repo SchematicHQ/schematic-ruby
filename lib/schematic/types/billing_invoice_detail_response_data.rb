@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
+require_relative "../../schematic"
+
 module Schematic
   module Types
     class BillingInvoiceDetailResponseData < Internal::Types::Model
+      field :amount_due, -> { Integer }, optional: false, nullable: false
+
       field :amount_paid, -> { Integer }, optional: false, nullable: false
 
       field :amount_remaining, -> { Integer }, optional: false, nullable: false
@@ -25,6 +29,8 @@ module Schematic
 
       field :due_at, -> { String }, optional: true, nullable: false
 
+      field :ending_balance, -> { Integer }, optional: false, nullable: false
+
       field :external_id, -> { String }, optional: true, nullable: false
 
       field :finalized_at, -> { String }, optional: true, nullable: false
@@ -44,6 +50,8 @@ module Schematic
       field :provider_type, -> { Schematic::Types::BillingProviderType }, optional: false, nullable: false
 
       field :settlements, -> { Internal::Types::Array[Schematic::Types::BillingInvoiceSettlementResponseData] }, optional: false, nullable: false
+
+      field :starting_balance, -> { Integer }, optional: false, nullable: false
 
       field :status, -> { Schematic::Types::InvoiceStatus }, optional: false, nullable: false
 

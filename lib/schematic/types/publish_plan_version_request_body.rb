@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../schematic"
+
 module Schematic
   module Types
     class PublishPlanVersionRequestBody < Internal::Types::Model
@@ -25,7 +27,11 @@ module Schematic
 
       field :excluded_company_ids, -> { Internal::Types::Array[String] }, optional: false, nullable: false
 
+      field :gating_days, -> { Integer }, optional: true, nullable: false
+
       field :migration_strategy, -> { Schematic::Types::PlanVersionMigrationStrategy }, optional: false, nullable: false
+
+      field :payment_gating, -> { Schematic::Types::PaymentGating }, optional: true, nullable: false
 
       field :phone, -> { String }, optional: true, nullable: false
 
