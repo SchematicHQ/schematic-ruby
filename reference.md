@@ -749,6 +749,7 @@ client.accounts.count_api_keys(
 ```ruby
 client.accounts.list_audit_logs(
   actor_type: "api_key",
+  company_id: "company_id",
   end_time: "2024-01-15T09:30:00Z",
   environment_id: "environment_id",
   q: "q",
@@ -771,6 +772,14 @@ client.accounts.list_audit_logs(
 <dd>
 
 **actor_type:** `Schematic::Types::ActorType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_id:** `String` 
     
 </dd>
 </dl>
@@ -901,6 +910,7 @@ client.accounts.get_audit_log(audit_log_id: "audit_log_id")
 ```ruby
 client.accounts.count_audit_logs(
   actor_type: "api_key",
+  company_id: "company_id",
   end_time: "2024-01-15T09:30:00Z",
   environment_id: "environment_id",
   q: "q",
@@ -923,6 +933,14 @@ client.accounts.count_audit_logs(
 <dd>
 
 **actor_type:** `Schematic::Types::ActorType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**company_id:** `String` 
     
 </dd>
 </dl>
@@ -3861,7 +3879,23 @@ client.billing.update_company_billing_profile(
 <dl>
 <dd>
 
+**currency:** `Schematic::Types::Currency` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **days_until_due:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**gating_days:** `Integer` 
     
 </dd>
 </dl>
@@ -3878,6 +3912,22 @@ client.billing.update_company_billing_profile(
 <dd>
 
 **name:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**overdraft_limit:** `Integer` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_gating:** `Schematic::Types::PaymentGating` 
     
 </dd>
 </dl>
@@ -7342,7 +7392,7 @@ client.credits.reserve_credits(
 <dl>
 <dd>
 
-**expires_at:** `String` — When the hold lapses if no track event settles it; defaults to one minute from now and may be at most one hour out. The unspent hold is refunded on expiry
+**expires_at:** `String` — When the hold lapses if no track event settles it; defaults to one minute from now and may be at most 24 hours out. The unspent hold is refunded on expiry
     
 </dd>
 </dl>
@@ -9812,6 +9862,7 @@ client.checkout.update_customer_subscription_trial_end(subscription_id: "subscri
 
 ```ruby
 client.companies.list_companies(
+  cancel_at_period_end: true,
   credit_type_ids: ["credit_type_ids"],
   has_scheduled_downgrade: true,
   ids: ["ids"],
@@ -9848,6 +9899,14 @@ client.companies.list_companies(
 <dl>
 <dd>
 
+**cancel_at_period_end:** `Internal::Types::Boolean` — If true, filter companies with an active subscription that is set to cancel at the end of the current period; if false, filter companies without one
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **credit_type_ids:** `String` — Filter companies by one or more credit type IDs (each ID starts with bcrd_)
     
 </dd>
@@ -9856,7 +9915,7 @@ client.companies.list_companies(
 <dl>
 <dd>
 
-**has_scheduled_downgrade:** `Internal::Types::Boolean` — Filter companies that have a pending scheduled downgrade
+**has_scheduled_downgrade:** `Internal::Types::Boolean` — If true, filter companies that have a pending scheduled downgrade; if false, filter companies that do not
     
 </dd>
 </dl>
@@ -10194,6 +10253,74 @@ client.companies.delete_company(
 </dl>
 </details>
 
+<details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">get_company_inference_cost</a>(company_id:) -> Schematic::Companies::Types::GetCompanyInferenceCostResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.companies.get_company_inference_cost(
+  company_id: "company_id",
+  end_time: "2024-01-15T09:30:00Z",
+  start_time: "2024-01-15T09:30:00Z"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `String` — company_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_time:** `String` — End of the window (exclusive). Pass together with start_time; when both are omitted, the company's current billing period is used
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_time:** `String` — Start of the window (inclusive). Pass together with end_time; when both are omitted, the company's current billing period is used
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Companies::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.companies.<a href="/lib/schematic/companies/client.rb">count_companies</a>() -> Schematic::Companies::Types::CountCompaniesResponse</code></summary>
 <dl>
 <dd>
@@ -10208,6 +10335,7 @@ client.companies.delete_company(
 
 ```ruby
 client.companies.count_companies(
+  cancel_at_period_end: true,
   credit_type_ids: ["credit_type_ids"],
   has_scheduled_downgrade: true,
   ids: ["ids"],
@@ -10244,6 +10372,14 @@ client.companies.count_companies(
 <dl>
 <dd>
 
+**cancel_at_period_end:** `Internal::Types::Boolean` — If true, filter companies with an active subscription that is set to cancel at the end of the current period; if false, filter companies without one
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **credit_type_ids:** `String` — Filter companies by one or more credit type IDs (each ID starts with bcrd_)
     
 </dd>
@@ -10252,7 +10388,7 @@ client.companies.count_companies(
 <dl>
 <dd>
 
-**has_scheduled_downgrade:** `Internal::Types::Boolean` — Filter companies that have a pending scheduled downgrade
+**has_scheduled_downgrade:** `Internal::Types::Boolean` — If true, filter companies that have a pending scheduled downgrade; if false, filter companies that do not
     
 </dd>
 </dl>
@@ -11962,7 +12098,7 @@ client.companies.count_entity_traits(
 
 ```ruby
 client.companies.list_plan_changes(
-  action: "amendment",
+  action: "access_reinstated",
   base_plan_action: "fallback",
   company_id: "company_id",
   company_ids: ["company_ids"],
@@ -20802,7 +20938,7 @@ client.features.check_and_reserve_flag(key: "key")
 <dl>
 <dd>
 
-**expires_at:** `String` — When the hold lapses if no track or inference event settles it; defaults to one minute from now and may be at most one hour out. The unspent hold is refunded on expiry
+**expires_at:** `String` — When the hold lapses if no track or inference event settles it; defaults to one minute from now and may be at most 24 hours out. The unspent hold is refunded on expiry
     
 </dd>
 </dl>
@@ -22427,7 +22563,7 @@ client.plangroups.create_plan_group(
     plan_id: "plan_id"
   }],
   ordered_bundle_list: [{
-    bundle_id: "bundleId"
+    bundleId: "bundleId"
   }],
   ordered_plans: [{
     plan_id: "plan_id"
@@ -22816,7 +22952,7 @@ client.plangroups.update_plan_group(
     plan_id: "plan_id"
   }],
   ordered_bundle_list: [{
-    bundle_id: "bundleId"
+    bundleId: "bundleId"
   }],
   ordered_plans: [{
     plan_id: "plan_id"

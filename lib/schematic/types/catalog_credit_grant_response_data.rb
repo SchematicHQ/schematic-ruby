@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../schematic"
+
 module Schematic
   module Types
     class CatalogCreditGrantResponseData < Internal::Types::Model
@@ -24,6 +26,8 @@ module Schematic
       field :reset_cadence, -> { Schematic::Types::BillingPlanCreditGrantResetCadence }, optional: true, nullable: false
 
       field :scaling, -> { Schematic::Types::PlanCreditGrantScaling }, optional: false, nullable: false
+
+      field :visible, -> { Internal::Types::Boolean }, optional: false, nullable: false
     end
   end
 end

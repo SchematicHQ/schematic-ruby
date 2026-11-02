@@ -340,6 +340,7 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [Schematic::Types::ActorType, nil] :actor_type
+      # @option params [String, nil] :company_id
       # @option params [String, nil] :end_time
       # @option params [String, nil] :environment_id
       # @option params [String, nil] :q
@@ -350,6 +351,7 @@ module Schematic
       # @example
       #   client.accounts.list_audit_logs(
       #     actor_type: "api_key",
+      #     company_id: "company_id",
       #     end_time: "2024-01-15T09:30:00Z",
       #     environment_id: "environment_id",
       #     q: "q",
@@ -363,6 +365,7 @@ module Schematic
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         query_params = {}
         query_params["actor_type"] = params[:actor_type] if params.key?(:actor_type)
+        query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["end_time"] = params[:end_time] if params.key?(:end_time)
         query_params["environment_id"] = params[:environment_id] if params.key?(:environment_id)
         query_params["q"] = params[:q] if params.key?(:q)
@@ -449,6 +452,7 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
       # @option params [Schematic::Types::ActorType, nil] :actor_type
+      # @option params [String, nil] :company_id
       # @option params [String, nil] :end_time
       # @option params [String, nil] :environment_id
       # @option params [String, nil] :q
@@ -459,6 +463,7 @@ module Schematic
       # @example
       #   client.accounts.count_audit_logs(
       #     actor_type: "api_key",
+      #     company_id: "company_id",
       #     end_time: "2024-01-15T09:30:00Z",
       #     environment_id: "environment_id",
       #     q: "q",
@@ -472,6 +477,7 @@ module Schematic
         params = Schematic::Internal::Types::Utils.normalize_keys(params)
         query_params = {}
         query_params["actor_type"] = params[:actor_type] if params.key?(:actor_type)
+        query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["end_time"] = params[:end_time] if params.key?(:end_time)
         query_params["environment_id"] = params[:environment_id] if params.key?(:environment_id)
         query_params["q"] = params[:q] if params.key?(:q)

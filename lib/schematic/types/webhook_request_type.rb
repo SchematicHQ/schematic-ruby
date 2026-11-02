@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../schematic"
+
 module Schematic
   module Types
     module WebhookRequestType
@@ -32,6 +34,10 @@ module Schematic
       FLAG_DELETED = "flag.deleted"
       FLAG_RULES_UPDATED = "flag_rules.updated"
       FLAG_UPDATED = "flag.updated"
+      INVOICE_FINALIZED = "invoice.finalized"
+      INVOICE_PAID = "invoice.paid"
+      INVOICE_PAST_DUE = "invoice.past_due"
+      INVOICE_VOIDED = "invoice.voided"
       PLAN_CREATED = "plan.created"
       PLAN_DELETED = "plan.deleted"
       PLAN_ENTITLEMENT_CREATED = "plan.entitlement.created"
@@ -40,6 +46,7 @@ module Schematic
       PLAN_UPDATED = "plan.updated"
       PLAN_VERSION_DELETED = "plan_version.deleted"
       RULE_DELETED = "rule.deleted"
+      SUBSCRIPTION_PERIOD_STARTED = "subscription.period.started"
       TEST_SEND = "test.send"
       USER_CREATED = "user.created"
       USER_DELETED = "user.deleted"

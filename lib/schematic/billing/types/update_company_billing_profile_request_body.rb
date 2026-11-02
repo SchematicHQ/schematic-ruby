@@ -8,11 +8,19 @@ module Schematic
 
         field :collection_method, -> { Schematic::Types::BillingCollectionMethod }, optional: false, nullable: false
 
+        field :currency, -> { Schematic::Types::Currency }, optional: true, nullable: false
+
         field :days_until_due, -> { Integer }, optional: true, nullable: false
+
+        field :gating_days, -> { Integer }, optional: true, nullable: false
 
         field :is_default, -> { Internal::Types::Boolean }, optional: true, nullable: false
 
         field :name, -> { String }, optional: true, nullable: false
+
+        field :overdraft_limit, -> { Integer }, optional: true, nullable: false
+
+        field :payment_gating, -> { Schematic::Types::PaymentGating }, optional: true, nullable: false
 
         field :payment_method_id, -> { String }, optional: true, nullable: false
 

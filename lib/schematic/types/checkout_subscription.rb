@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
+require_relative "../../schematic"
+
 module Schematic
   module Types
     class CheckoutSubscription < Internal::Types::Model
+      field :access_revoked_at, -> { String }, optional: true, nullable: false
+
       field :application_id, -> { String }, optional: true, nullable: false
 
       field :cancel_at, -> { Integer }, optional: true, nullable: false

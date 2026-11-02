@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../schematic"
+
 module Schematic
   module Types
     class CreditEventLedgerResponseData < Internal::Types::Model
@@ -66,6 +68,10 @@ module Schematic
       field :quantity_remaining_at_zero_out, -> { Float }, optional: true, nullable: false
 
       field :source_id, -> { Integer }, optional: false, nullable: false
+
+      field :source_id_string, -> { String }, optional: true, nullable: false
+
+      field :source_type, -> { Schematic::Types::CreditLedgerSourceType }, optional: true, nullable: false
 
       field :to_grant_id, -> { String }, optional: true, nullable: false
 

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../schematic"
+
 module Schematic
   module Types
     class PlanVersionDiffResponseData < Internal::Types::Model

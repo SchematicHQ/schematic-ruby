@@ -6,6 +6,8 @@ module Schematic
       class CountAuditLogsRequest < Internal::Types::Model
         field :actor_type, -> { Schematic::Types::ActorType }, optional: true, nullable: false
 
+        field :company_id, -> { String }, optional: true, nullable: false
+
         field :end_time, -> { String }, optional: true, nullable: false
 
         field :environment_id, -> { String }, optional: true, nullable: false

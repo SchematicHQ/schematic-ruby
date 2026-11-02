@@ -1,11 +1,15 @@
 # frozen_string_literal: true
 
+require_relative "../../../schematic"
+
 module Schematic
   module Accounts
     module Types
       # Input parameters
       class ListAuditLogsParams < Internal::Types::Model
         field :actor_type, -> { Schematic::Types::ActorType }, optional: true, nullable: false
+
+        field :company_id, -> { String }, optional: true, nullable: false
 
         field :end_time, -> { String }, optional: true, nullable: false
 
