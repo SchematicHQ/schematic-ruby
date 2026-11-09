@@ -9,6 +9,8 @@ module Schematic
 
       field :add_on_selections, -> { Internal::Types::Array[Schematic::Types::PlanSelection] }, optional: false, nullable: false
 
+      field :align_with_billing_entity, -> { Internal::Types::Boolean }, optional: true, nullable: false
+
       field :base_plan_id, -> { String }, optional: true, nullable: false
 
       field :base_plan_price_id, -> { String }, optional: true, nullable: false

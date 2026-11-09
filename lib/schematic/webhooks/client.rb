@@ -67,7 +67,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -109,7 +109,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -170,7 +170,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -225,7 +225,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -272,7 +272,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -314,7 +314,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -362,7 +362,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -405,7 +405,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -456,7 +456,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -511,7 +511,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
     end

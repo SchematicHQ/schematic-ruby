@@ -23,6 +23,8 @@ module Schematic
 
       field :onboard_url, -> { String }, optional: true, nullable: false
 
+      field :payments_only, -> { Internal::Types::Boolean }, optional: true, nullable: false
+
       field :return_to, -> { String }, optional: true, nullable: false
     end
   end

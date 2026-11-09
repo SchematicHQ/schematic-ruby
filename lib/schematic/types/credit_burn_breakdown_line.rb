@@ -9,6 +9,10 @@ module Schematic
 
       field :key, -> { String }, optional: false, nullable: false
 
+      field :model, -> { String }, optional: true, nullable: false
+
+      field :provider, -> { String }, optional: true, nullable: false
+
       field :quantity, -> { Float }, optional: false, nullable: false
 
       field :rate, -> { Float }, optional: false, nullable: false

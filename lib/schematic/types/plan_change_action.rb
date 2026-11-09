@@ -16,6 +16,7 @@ module Schematic
       INVOICE_PAST_DUE = "invoice_past_due"
       MANAGE_PLAN = "manage_plan"
       MIGRATION = "migration"
+      PAST_DUE_DEFAULT_PLAN = "past_due_default_plan"
       PLAN_BILLING_PRODUCT_CHANGED = "plan_billing_product_changed"
       PLAN_DELETED = "plan_deleted"
       PLAN_TRAIT_CHANGE = "plan_trait_change"

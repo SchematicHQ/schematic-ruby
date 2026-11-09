@@ -41,6 +41,8 @@ module Schematic
 
       field :number, -> { String }, optional: true, nullable: false
 
+      field :payment_method_id, -> { String }, optional: true, nullable: false
+
       field :pdf_url, -> { String }, optional: true, nullable: false
 
       field :period_end, -> { String }, optional: true, nullable: false

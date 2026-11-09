@@ -23,7 +23,17 @@ module Schematic
 
       field :latest_invoice, -> { Schematic::Types::InvoiceResponseData }, optional: true, nullable: false
 
+      field :pause_behavior, -> { Schematic::Types::BillingSubscriptionPauseBehavior }, optional: true, nullable: false
+
+      field :pause_resumes_at, -> { String }, optional: true, nullable: false
+
+      field :paused_at, -> { String }, optional: true, nullable: false
+
       field :payment_method, -> { Schematic::Types::PaymentMethodResponseData }, optional: true, nullable: false
+
+      field :period_end, -> { String }, optional: true, nullable: false
+
+      field :period_start, -> { String }, optional: true, nullable: false
 
       field :products, -> { Internal::Types::Array[Schematic::Types::BillingProductForSubscriptionResponseData] }, optional: false, nullable: false
 

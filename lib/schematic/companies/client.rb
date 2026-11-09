@@ -118,7 +118,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -163,7 +163,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -205,7 +205,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -259,7 +259,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -312,7 +312,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -424,7 +424,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -469,7 +469,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -514,7 +514,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -568,7 +568,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -615,7 +615,97 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :company_id
+      #
+      # @example
+      #   client.companies.get_billing_entity_settings(company_id: "company_id")
+      #
+      # @return [Schematic::Companies::Types::GetBillingEntitySettingsResponse]
+      def get_billing_entity_settings(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "GET",
+          path: "company-billing-entity-settings/#{URI.encode_uri_component(params[:company_id].to_s)}",
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::GetBillingEntitySettingsResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Schematic::Companies::Types::UpdateBillingEntitySettingsRequestBody]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :company_id
+      #
+      # @example
+      #   client.companies.update_billing_entity_settings(company_id: "company_id")
+      #
+      # @return [Schematic::Companies::Types::UpdateBillingEntitySettingsResponse]
+      def update_billing_entity_settings(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request_data = Schematic::Companies::Types::UpdateBillingEntitySettingsRequestBody.new(params).to_h
+        non_body_param_names = %w[company_id]
+        body = request_data.except(*non_body_param_names)
+
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "PUT",
+          path: "company-billing-entity-settings/#{URI.encode_uri_component(params[:company_id].to_s)}",
+          body: body,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Companies::Types::UpdateBillingEntitySettingsResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -662,7 +752,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -720,7 +810,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -766,7 +856,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -809,7 +899,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -867,7 +957,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -915,7 +1005,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -976,7 +1066,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1019,7 +1109,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1080,7 +1170,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1138,7 +1228,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1205,7 +1295,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1252,7 +1342,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1294,7 +1384,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1345,7 +1435,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1388,7 +1478,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1430,7 +1520,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1497,7 +1587,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1555,7 +1645,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1613,7 +1703,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1677,7 +1767,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1719,7 +1809,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1783,7 +1873,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1825,7 +1915,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1875,7 +1965,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1939,7 +2029,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1987,7 +2077,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -2002,6 +2092,8 @@ module Schematic
       # @option params [String, nil] :ids
       # @option params [String, nil] :plan_id
       # @option params [String, nil] :q
+      # @option params [String, nil] :sort_order_column
+      # @option params [Schematic::Types::SortDirection, nil] :sort_order_direction
       # @option params [Integer, nil] :limit
       # @option params [Integer, nil] :offset
       #
@@ -2011,6 +2103,8 @@ module Schematic
       #     ids: ["ids"],
       #     plan_id: "plan_id",
       #     q: "q",
+      #     sort_order_column: "sort_order_column",
+      #     sort_order_direction: "asc",
       #     limit: 1000000,
       #     offset: 1000000
       #   )
@@ -2023,6 +2117,8 @@ module Schematic
         query_params["ids"] = params[:ids] if params.key?(:ids)
         query_params["plan_id"] = params[:plan_id] if params.key?(:plan_id)
         query_params["q"] = params[:q] if params.key?(:q)
+        query_params["sort_order_column"] = params[:sort_order_column] if params.key?(:sort_order_column)
+        query_params["sort_order_direction"] = params[:sort_order_direction] if params.key?(:sort_order_direction)
         query_params["limit"] = params[:limit] if params.key?(:limit)
         query_params["offset"] = params[:offset] if params.key?(:offset)
 
@@ -2051,7 +2147,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -2096,7 +2192,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -2138,7 +2234,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -2181,7 +2277,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -2245,7 +2341,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -2290,7 +2386,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -2335,7 +2431,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -2383,7 +2479,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
     end

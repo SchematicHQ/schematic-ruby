@@ -7,6 +7,10 @@ module Schematic
     class PublishPreviewResponseData < Internal::Types::Model
       field :billing_email, -> { String }, optional: true, nullable: false
 
+      field :billing_entity_id, -> { String }, optional: true, nullable: false
+
+      field :billing_entity_name, -> { String }, optional: true, nullable: false
+
       field :currency, -> { Schematic::Types::Currency }, optional: true, nullable: false
 
       field :current_period_end, -> { String }, optional: true, nullable: false

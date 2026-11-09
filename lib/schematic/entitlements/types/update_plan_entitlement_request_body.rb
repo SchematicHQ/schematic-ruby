@@ -20,6 +20,8 @@ module Schematic
 
         field :metric_period_month_reset, -> { Schematic::Types::MetricPeriodMonthReset }, optional: true, nullable: false
 
+        field :model_rates, -> { Internal::Types::Array[Schematic::Types::CreditModelRate] }, optional: true, nullable: false
+
         field :monthly_metered_price_id, -> { String }, optional: true, nullable: false
 
         field :monthly_price_tiers, -> { Internal::Types::Array[Schematic::Types::CreatePriceTierRequestBody] }, optional: true, nullable: false

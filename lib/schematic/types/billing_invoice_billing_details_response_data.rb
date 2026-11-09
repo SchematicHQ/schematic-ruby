@@ -9,6 +9,8 @@ module Schematic
 
       field :email, -> { String }, optional: true, nullable: false
 
+      field :legal_name, -> { String }, optional: true, nullable: false
+
       field :phone, -> { String }, optional: true, nullable: false
 
       field :tax_ids, -> { Internal::Types::Array[Schematic::Types::BillingInvoiceTaxIdResponseData] }, optional: false, nullable: false

@@ -9,7 +9,11 @@ module Schematic
 
       field :address, -> { Schematic::Types::CustomerBillingAddress }, optional: true, nullable: false
 
+      field :align_with_billing_entity, -> { Internal::Types::Boolean }, optional: true, nullable: false
+
       field :billing_cycle_anchor, -> { String }, optional: true, nullable: false
+
+      field :billing_entity_id, -> { String }, optional: true, nullable: false
 
       field :billing_start_date, -> { String }, optional: true, nullable: false
 
