@@ -12,6 +12,10 @@ module Schematic
 
         field :q, -> { String }, optional: true, nullable: false
 
+        field :sort_order_column, -> { String }, optional: true, nullable: false
+
+        field :sort_order_direction, -> { Schematic::Types::SortDirection }, optional: true, nullable: false
+
         field :limit, -> { Integer }, optional: true, nullable: false
 
         field :offset, -> { Integer }, optional: true, nullable: false

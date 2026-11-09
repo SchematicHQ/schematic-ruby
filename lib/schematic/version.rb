@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module Schematic
-  VERSION = "1.5.7"
+  VERSION = "1.5.8"
 end

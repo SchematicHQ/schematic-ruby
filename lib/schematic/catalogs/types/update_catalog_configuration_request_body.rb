@@ -10,6 +10,8 @@ module Schematic
 
         field :custom_plan_cta_url, -> { String }, optional: true, nullable: false
 
+        field :custom_plan_id, -> { String }, optional: true, nullable: false
+
         field :custom_plan_price_text, -> { String }, optional: true, nullable: false
 
         field :custom_plans_visible, -> { Internal::Types::Boolean }, optional: true, nullable: false

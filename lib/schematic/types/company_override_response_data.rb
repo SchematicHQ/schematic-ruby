@@ -27,6 +27,8 @@ module Schematic
 
       field :metric_period_month_reset, -> { Schematic::Types::MetricPeriodMonthReset }, optional: true, nullable: false
 
+      field :model_rates, -> { Internal::Types::Array[Schematic::Types::CreditModelRate] }, optional: true, nullable: false
+
       field :notes, -> { Internal::Types::Array[Schematic::Types::CompanyOverrideNoteResponseData] }, optional: false, nullable: false
 
       field :quantity_rates, -> { Internal::Types::Hash[String, Float] }, optional: true, nullable: false

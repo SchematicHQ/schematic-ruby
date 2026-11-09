@@ -73,7 +73,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -116,7 +116,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -183,7 +183,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -225,7 +225,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -279,7 +279,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -339,7 +339,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -399,7 +399,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -442,7 +442,96 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Schematic::Checkout::Types::PauseSubscriptionRequest]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.checkout.pause_subscription(
+      #     company_id: "company_id",
+      #     months: 1000000
+      #   )
+      #
+      # @return [Schematic::Checkout::Types::PauseSubscriptionResponse]
+      def pause_subscription(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "POST",
+          path: "manage-plan/subscription/pause",
+          body: Schematic::Checkout::Types::PauseSubscriptionRequest.new(params).to_h,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Checkout::Types::PauseSubscriptionResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Schematic::Checkout::Types::ResumeSubscriptionRequest]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.checkout.resume_subscription(company_id: "company_id")
+      #
+      # @return [Schematic::Checkout::Types::ResumeSubscriptionResponse]
+      def resume_subscription(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "POST",
+          path: "manage-plan/subscription/resume",
+          body: Schematic::Checkout::Types::ResumeSubscriptionRequest.new(params).to_h,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Checkout::Types::ResumeSubscriptionResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -490,7 +579,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
     end

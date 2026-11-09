@@ -6,7 +6,11 @@ module Schematic
       class UpdateCompanyBillingProfileRequestBody < Internal::Types::Model
         field :billing_profile_id, -> { String }, optional: false, nullable: false
 
+        field :billing_details, -> { Schematic::Types::ContractBillingDetailsRequestBody }, optional: true, nullable: false
+
         field :collection_method, -> { Schematic::Types::BillingCollectionMethod }, optional: false, nullable: false
+
+        field :collector, -> { Schematic::Types::Collector }, optional: true, nullable: false
 
         field :currency, -> { Schematic::Types::Currency }, optional: true, nullable: false
 
@@ -25,6 +29,8 @@ module Schematic
         field :payment_method_id, -> { String }, optional: true, nullable: false
 
         field :proration_behavior, -> { Schematic::Types::ProrationBehavior }, optional: true, nullable: false
+
+        field :purchase_order, -> { String }, optional: true, nullable: false
       end
     end
   end

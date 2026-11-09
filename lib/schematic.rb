@@ -5,6 +5,7 @@ require "net/http"
 require "securerandom"
 require "time"
 
+require_relative "schematic/version"
 require_relative "schematic/internal/json/serializable"
 require_relative "schematic/internal/types/type"
 require_relative "schematic/internal/types/utils"
@@ -67,6 +68,7 @@ require_relative "schematic/billing/types/list_billing_products_request"
 require_relative "schematic/billing/types/count_billing_products_request"
 require_relative "schematic/billing/types/list_company_billing_profiles_request"
 require_relative "schematic/billing/types/update_company_billing_profile_request_body"
+require_relative "schematic/billing/types/upload_contract_document_request"
 require_relative "schematic/billing/types/update_billing_settings_request_body"
 require_relative "schematic/billing/types/create_billing_subscription_request_body"
 require_relative "schematic/billing/types/list_billing_invoices_request"
@@ -111,6 +113,8 @@ require_relative "schematic/checkout/client"
 require_relative "schematic/checkout/types/checkout_data_request_body"
 require_relative "schematic/checkout/types/update_company_billing_details_request_body"
 require_relative "schematic/checkout/types/cancel_subscription_request"
+require_relative "schematic/checkout/types/pause_subscription_request"
+require_relative "schematic/checkout/types/resume_subscription_request"
 require_relative "schematic/checkout/types/update_trial_end_request_body"
 require_relative "schematic/companies/client"
 require_relative "schematic/companies/types/list_companies_request"
@@ -119,6 +123,7 @@ require_relative "schematic/companies/types/get_company_inference_cost_request"
 require_relative "schematic/companies/types/count_companies_request"
 require_relative "schematic/companies/types/lookup_company_request"
 require_relative "schematic/companies/types/get_company_billing_entity_request"
+require_relative "schematic/companies/types/update_billing_entity_settings_request_body"
 require_relative "schematic/companies/types/get_billing_entity_child_subscriptions_request"
 require_relative "schematic/companies/types/list_company_memberships_request"
 require_relative "schematic/companies/types/get_or_create_company_membership_request_body"
@@ -189,6 +194,11 @@ require_relative "schematic/planbundle/client"
 require_relative "schematic/planbundle/types/create_custom_plan_bundle_request_body"
 require_relative "schematic/planbundle/types/create_plan_bundle_request_body"
 require_relative "schematic/planbundle/types/update_plan_bundle_request_body"
+require_relative "schematic/customplangrouprollouts/client"
+require_relative "schematic/customplangrouprollouts/types/list_group_rollouts_request"
+require_relative "schematic/customplangrouprollouts/types/copy_custom_plan_request_body"
+require_relative "schematic/customplangrouprollouts/types/preview_group_rollout_request"
+require_relative "schematic/customplangrouprollouts/types/start_group_rollout_request_body"
 require_relative "schematic/dataexports/client"
 require_relative "schematic/dataexports/types/list_data_exports_request"
 require_relative "schematic/dataexports/types/create_data_export_request_body"
@@ -196,6 +206,9 @@ require_relative "schematic/events/client"
 require_relative "schematic/events/types/create_event_batch_request_body"
 require_relative "schematic/events/types/get_event_summaries_request"
 require_relative "schematic/events/types/list_events_request"
+require_relative "schematic/events/types/list_account_inference_cost_rates_request"
+require_relative "schematic/events/types/create_account_inference_cost_rate_request_body"
+require_relative "schematic/events/types/update_account_inference_cost_rate_request_body"
 require_relative "schematic/events/types/upsert_otlp_environment_settings_request_body"
 require_relative "schematic/features/client"
 require_relative "schematic/features/types/list_features_request"
@@ -308,13 +321,18 @@ module Schematic
     autoload :PaymentGating, ::File.join(__dir__, "schematic/types/payment_gating")
     autoload :ProrationBehavior, ::File.join(__dir__, "schematic/types/proration_behavior")
     autoload :CompanyBillingProfileResponseData, ::File.join(__dir__, "schematic/types/company_billing_profile_response_data")
-    autoload :BillingSettingsResponseData, ::File.join(__dir__, "schematic/types/billing_settings_response_data")
-    autoload :BillingSubscriptionTrialEndSetting, ::File.join(__dir__, "schematic/types/billing_subscription_trial_end_setting")
-    autoload :BillingSubscriptionResponseData, ::File.join(__dir__, "schematic/types/billing_subscription_response_data")
     autoload :BillingInvoiceAddressResponseData, ::File.join(__dir__, "schematic/types/billing_invoice_address_response_data")
     autoload :TaxIdType, ::File.join(__dir__, "schematic/types/tax_id_type")
     autoload :BillingInvoiceTaxIdResponseData, ::File.join(__dir__, "schematic/types/billing_invoice_tax_id_response_data")
     autoload :BillingInvoiceBillingDetailsResponseData, ::File.join(__dir__, "schematic/types/billing_invoice_billing_details_response_data")
+    autoload :CompanyBillingProfileDocumentResponseData, ::File.join(__dir__, "schematic/types/company_billing_profile_document_response_data")
+    autoload :ContractPostpaidCreditResponseData, ::File.join(__dir__, "schematic/types/contract_postpaid_credit_response_data")
+    autoload :ContractPostpaidResponseData, ::File.join(__dir__, "schematic/types/contract_postpaid_response_data")
+    autoload :CompanyBillingProfileContractResponseData, ::File.join(__dir__, "schematic/types/company_billing_profile_contract_response_data")
+    autoload :BillingSettingsResponseData, ::File.join(__dir__, "schematic/types/billing_settings_response_data")
+    autoload :BillingSubscriptionPauseBehavior, ::File.join(__dir__, "schematic/types/billing_subscription_pause_behavior")
+    autoload :BillingSubscriptionTrialEndSetting, ::File.join(__dir__, "schematic/types/billing_subscription_trial_end_setting")
+    autoload :BillingSubscriptionResponseData, ::File.join(__dir__, "schematic/types/billing_subscription_response_data")
     autoload :BillingInvoiceTermsResponseData, ::File.join(__dir__, "schematic/types/billing_invoice_terms_response_data")
     autoload :ChargeTiming, ::File.join(__dir__, "schematic/types/charge_timing")
     autoload :LineKind, ::File.join(__dir__, "schematic/types/line_kind")
@@ -327,6 +345,9 @@ module Schematic
     autoload :BillingStatementResponseData, ::File.join(__dir__, "schematic/types/billing_statement_response_data")
     autoload :SubscriptionStatus, ::File.join(__dir__, "schematic/types/subscription_status")
     autoload :BillingNativeSubscriptionResponseData, ::File.join(__dir__, "schematic/types/billing_native_subscription_response_data")
+    autoload :BillingMovedToDefaultPlanResponseData, ::File.join(__dir__, "schematic/types/billing_moved_to_default_plan_response_data")
+    autoload :BillingUpcomingInvoiceResponseData, ::File.join(__dir__, "schematic/types/billing_upcoming_invoice_response_data")
+    autoload :BillingUpcomingInvoicesResponseData, ::File.join(__dir__, "schematic/types/billing_upcoming_invoices_response_data")
     autoload :InvoiceDocumentState, ::File.join(__dir__, "schematic/types/invoice_document_state")
     autoload :InvoiceCollectionState, ::File.join(__dir__, "schematic/types/invoice_collection_state")
     autoload :BillingInvoiceResponseData, ::File.join(__dir__, "schematic/types/billing_invoice_response_data")
@@ -392,6 +413,7 @@ module Schematic
     autoload :ChargeType, ::File.join(__dir__, "schematic/types/charge_type")
     autoload :ComparableOperator, ::File.join(__dir__, "schematic/types/comparable_operator")
     autoload :ConditionType, ::File.join(__dir__, "schematic/types/condition_type")
+    autoload :CreditModelRate, ::File.join(__dir__, "schematic/types/credit_model_rate")
     autoload :CustomPlanViewConfigResponseData, ::File.join(__dir__, "schematic/types/custom_plan_view_config_response_data")
     autoload :EntitlementCurrencyPricesResponseData, ::File.join(__dir__, "schematic/types/entitlement_currency_prices_response_data")
     autoload :EntitlementPriceBehavior, ::File.join(__dir__, "schematic/types/entitlement_price_behavior")
@@ -508,6 +530,7 @@ module Schematic
     autoload :CompanyInferenceCostResponseData, ::File.join(__dir__, "schematic/types/company_inference_cost_response_data")
     autoload :CompanyResponseData, ::File.join(__dir__, "schematic/types/company_response_data")
     autoload :CompanyBillingEntityResponseData, ::File.join(__dir__, "schematic/types/company_billing_entity_response_data")
+    autoload :CompanyBillingEntitySettingsResponseData, ::File.join(__dir__, "schematic/types/company_billing_entity_settings_response_data")
     autoload :CompanyBillingEntitySubscriptionResponseData, ::File.join(__dir__, "schematic/types/company_billing_entity_subscription_response_data")
     autoload :CompanyMembershipDetailResponseData, ::File.join(__dir__, "schematic/types/company_membership_detail_response_data")
     autoload :EntityTraitDefinitionUsage, ::File.join(__dir__, "schematic/types/entity_trait_definition_usage")
@@ -586,6 +609,12 @@ module Schematic
     autoload :UpcomingInvoiceResponseData, ::File.join(__dir__, "schematic/types/upcoming_invoice_response_data")
     autoload :ComponentPreviewResponseData, ::File.join(__dir__, "schematic/types/component_preview_response_data")
     autoload :PlanBundleResponseData, ::File.join(__dir__, "schematic/types/plan_bundle_response_data")
+    autoload :GroupRolloutCompanyResultResponseData, ::File.join(__dir__, "schematic/types/group_rollout_company_result_response_data")
+    autoload :GroupRolloutResponseData, ::File.join(__dir__, "schematic/types/group_rollout_response_data")
+    autoload :GroupRolloutChangeResponseData, ::File.join(__dir__, "schematic/types/group_rollout_change_response_data")
+    autoload :GroupRolloutChangesResponseData, ::File.join(__dir__, "schematic/types/group_rollout_changes_response_data")
+    autoload :GroupRolloutCompanyResponseData, ::File.join(__dir__, "schematic/types/group_rollout_company_response_data")
+    autoload :GroupRolloutPreviewResponseData, ::File.join(__dir__, "schematic/types/group_rollout_preview_response_data")
     autoload :DataExportStatus, ::File.join(__dir__, "schematic/types/data_export_status")
     autoload :DataExportType, ::File.join(__dir__, "schematic/types/data_export_type")
     autoload :AuditLogExportMetadata, ::File.join(__dir__, "schematic/types/audit_log_export_metadata")
@@ -603,6 +632,7 @@ module Schematic
     autoload :EventStatus, ::File.join(__dir__, "schematic/types/event_status")
     autoload :InferenceCostSource, ::File.join(__dir__, "schematic/types/inference_cost_source")
     autoload :EventDetailResponseData, ::File.join(__dir__, "schematic/types/event_detail_response_data")
+    autoload :AccountInferenceCostRateResponseData, ::File.join(__dir__, "schematic/types/account_inference_cost_rate_response_data")
     autoload :OtlpEnvironmentSettingsResponseData, ::File.join(__dir__, "schematic/types/otlp_environment_settings_response_data")
     autoload :SegmentStatusResp, ::File.join(__dir__, "schematic/types/segment_status_resp")
     autoload :FlagResponseData, ::File.join(__dir__, "schematic/types/flag_response_data")
@@ -716,6 +746,9 @@ module Schematic
     autoload :ConditionView, ::File.join(__dir__, "schematic/types/condition_view")
     autoload :ConditionGroupView, ::File.join(__dir__, "schematic/types/condition_group_view")
     autoload :ConditionResponseData, ::File.join(__dir__, "schematic/types/condition_response_data")
+    autoload :CustomerBillingAddress, ::File.join(__dir__, "schematic/types/customer_billing_address")
+    autoload :TaxIdInput, ::File.join(__dir__, "schematic/types/tax_id_input")
+    autoload :ContractBillingDetailsRequestBody, ::File.join(__dir__, "schematic/types/contract_billing_details_request_body")
     autoload :CouponRequestBody, ::File.join(__dir__, "schematic/types/coupon_request_body")
     autoload :CreditAutoTopupAmountType, ::File.join(__dir__, "schematic/types/credit_auto_topup_amount_type")
     autoload :CreditGrantPriceTierRequestBody, ::File.join(__dir__, "schematic/types/credit_grant_price_tier_request_body")
@@ -752,7 +785,6 @@ module Schematic
     autoload :CreditsWebhookCompanySummary, ::File.join(__dir__, "schematic/types/credits_webhook_company_summary")
     autoload :CreditsWebhookCreditSummary, ::File.join(__dir__, "schematic/types/credits_webhook_credit_summary")
     autoload :CreditsCreditPurchaseSuccess, ::File.join(__dir__, "schematic/types/credits_credit_purchase_success")
-    autoload :CustomerBillingAddress, ::File.join(__dir__, "schematic/types/customer_billing_address")
     autoload :DataEventPayload, ::File.join(__dir__, "schematic/types/data_event_payload")
     autoload :DeleteBillingPlanCreditGrantRequestBody, ::File.join(__dir__, "schematic/types/delete_billing_plan_credit_grant_request_body")
     autoload :EntityKeyResponseData, ::File.join(__dir__, "schematic/types/entity_key_response_data")
@@ -762,6 +794,7 @@ module Schematic
     autoload :FlagView, ::File.join(__dir__, "schematic/types/flag_view")
     autoload :FeatureView, ::File.join(__dir__, "schematic/types/feature_view")
     autoload :FeatureUsageLegacyResponseData, ::File.join(__dir__, "schematic/types/feature_usage_legacy_response_data")
+    autoload :GroupRolloutVersionsRequestBody, ::File.join(__dir__, "schematic/types/group_rollout_versions_request_body")
     autoload :InstallIntegrationRequestBody, ::File.join(__dir__, "schematic/types/install_integration_request_body")
     autoload :InvoiceRequestBody, ::File.join(__dir__, "schematic/types/invoice_request_body")
     autoload :KeysRequestBody, ::File.join(__dir__, "schematic/types/keys_request_body")
@@ -776,7 +809,6 @@ module Schematic
     autoload :PlanBundleCreditGrantRequestBody, ::File.join(__dir__, "schematic/types/plan_bundle_credit_grant_request_body")
     autoload :PlanBundleEntitlementRequestBody, ::File.join(__dir__, "schematic/types/plan_bundle_entitlement_request_body")
     autoload :PlanCurrencyPriceRequestBody, ::File.join(__dir__, "schematic/types/plan_currency_price_request_body")
-    autoload :TaxIdInput, ::File.join(__dir__, "schematic/types/tax_id_input")
     autoload :PublishPlanVersionRequestBody, ::File.join(__dir__, "schematic/types/publish_plan_version_request_body")
     autoload :RuleConditionGroupResponseData, ::File.join(__dir__, "schematic/types/rule_condition_group_response_data")
     autoload :RuleConditionResponseData, ::File.join(__dir__, "schematic/types/rule_condition_response_data")
@@ -890,14 +922,22 @@ module Schematic
       autoload :ListCompanyBillingProfilesParams, ::File.join(__dir__, "schematic/billing/types/list_company_billing_profiles_params")
       autoload :ListCompanyBillingProfilesResponse, ::File.join(__dir__, "schematic/billing/types/list_company_billing_profiles_response")
       autoload :UpdateCompanyBillingProfileResponse, ::File.join(__dir__, "schematic/billing/types/update_company_billing_profile_response")
+      autoload :GetCompanyContractResponse, ::File.join(__dir__, "schematic/billing/types/get_company_contract_response")
+      autoload :UploadContractDocumentResponse, ::File.join(__dir__, "schematic/billing/types/upload_contract_document_response")
+      autoload :DeleteContractDocumentResponse, ::File.join(__dir__, "schematic/billing/types/delete_contract_document_response")
       autoload :GetBillingSettingsResponse, ::File.join(__dir__, "schematic/billing/types/get_billing_settings_response")
       autoload :UpdateBillingSettingsResponse, ::File.join(__dir__, "schematic/billing/types/update_billing_settings_response")
       autoload :UpsertBillingSubscriptionResponse, ::File.join(__dir__, "schematic/billing/types/upsert_billing_subscription_response")
       autoload :GetCompanyNativeSubscriptionResponse, ::File.join(__dir__, "schematic/billing/types/get_company_native_subscription_response")
+      autoload :MoveToDefaultPlanResponse, ::File.join(__dir__, "schematic/billing/types/move_to_default_plan_response")
+      autoload :GetCompanyUpcomingInvoicesResponse, ::File.join(__dir__, "schematic/billing/types/get_company_upcoming_invoices_response")
       autoload :ListBillingInvoicesParams, ::File.join(__dir__, "schematic/billing/types/list_billing_invoices_params")
       autoload :ListBillingInvoicesResponse, ::File.join(__dir__, "schematic/billing/types/list_billing_invoices_response")
       autoload :GetBillingInvoiceResponse, ::File.join(__dir__, "schematic/billing/types/get_billing_invoice_response")
+      autoload :ChargeNativeInvoiceResponse, ::File.join(__dir__, "schematic/billing/types/charge_native_invoice_response")
       autoload :FinalizeNativeInvoiceResponse, ::File.join(__dir__, "schematic/billing/types/finalize_native_invoice_response")
+      autoload :ReissueNativeInvoiceLinkResponse, ::File.join(__dir__, "schematic/billing/types/reissue_native_invoice_link_response")
+      autoload :RevokeNativeInvoiceLinkResponse, ::File.join(__dir__, "schematic/billing/types/revoke_native_invoice_link_response")
       autoload :MarkBillingInvoicePaidResponse, ::File.join(__dir__, "schematic/billing/types/mark_billing_invoice_paid_response")
       autoload :VoidNativeInvoiceResponse, ::File.join(__dir__, "schematic/billing/types/void_native_invoice_response")
       autoload :CountBillingInvoicesParams, ::File.join(__dir__, "schematic/billing/types/count_billing_invoices_params")
@@ -997,6 +1037,8 @@ module Schematic
       autoload :ManagePlanResponse, ::File.join(__dir__, "schematic/checkout/types/manage_plan_response")
       autoload :PreviewManagePlanResponse, ::File.join(__dir__, "schematic/checkout/types/preview_manage_plan_response")
       autoload :CancelSubscriptionResponse, ::File.join(__dir__, "schematic/checkout/types/cancel_subscription_response")
+      autoload :PauseSubscriptionResponse, ::File.join(__dir__, "schematic/checkout/types/pause_subscription_response")
+      autoload :ResumeSubscriptionResponse, ::File.join(__dir__, "schematic/checkout/types/resume_subscription_response")
       autoload :UpdateCustomerSubscriptionTrialEndResponse, ::File.join(__dir__, "schematic/checkout/types/update_customer_subscription_trial_end_response")
     end
   end
@@ -1019,6 +1061,8 @@ module Schematic
       autoload :LookupCompanyResponse, ::File.join(__dir__, "schematic/companies/types/lookup_company_response")
       autoload :GetCompanyBillingEntityParams, ::File.join(__dir__, "schematic/companies/types/get_company_billing_entity_params")
       autoload :GetCompanyBillingEntityResponse, ::File.join(__dir__, "schematic/companies/types/get_company_billing_entity_response")
+      autoload :GetBillingEntitySettingsResponse, ::File.join(__dir__, "schematic/companies/types/get_billing_entity_settings_response")
+      autoload :UpdateBillingEntitySettingsResponse, ::File.join(__dir__, "schematic/companies/types/update_billing_entity_settings_response")
       autoload :GetBillingEntityChildSubscriptionsParams, ::File.join(__dir__, "schematic/companies/types/get_billing_entity_child_subscriptions_params")
       autoload :GetBillingEntityChildSubscriptionsResponse, ::File.join(__dir__, "schematic/companies/types/get_billing_entity_child_subscriptions_response")
       autoload :ListCompanyMembershipsParams, ::File.join(__dir__, "schematic/companies/types/list_company_memberships_params")
@@ -1181,6 +1225,18 @@ module Schematic
     end
   end
 
+  module Customplangrouprollouts
+    module Types
+      autoload :ListGroupRolloutsParams, ::File.join(__dir__, "schematic/customplangrouprollouts/types/list_group_rollouts_params")
+      autoload :ListGroupRolloutsResponse, ::File.join(__dir__, "schematic/customplangrouprollouts/types/list_group_rollouts_response")
+      autoload :GetGroupRolloutResponse, ::File.join(__dir__, "schematic/customplangrouprollouts/types/get_group_rollout_response")
+      autoload :CopyCustomPlanResponse, ::File.join(__dir__, "schematic/customplangrouprollouts/types/copy_custom_plan_response")
+      autoload :PreviewGroupRolloutParams, ::File.join(__dir__, "schematic/customplangrouprollouts/types/preview_group_rollout_params")
+      autoload :PreviewGroupRolloutResponse, ::File.join(__dir__, "schematic/customplangrouprollouts/types/preview_group_rollout_response")
+      autoload :StartGroupRolloutResponse, ::File.join(__dir__, "schematic/customplangrouprollouts/types/start_group_rollout_response")
+    end
+  end
+
   module Dataexports
     module Types
       autoload :ListDataExportsParams, ::File.join(__dir__, "schematic/dataexports/types/list_data_exports_params")
@@ -1199,6 +1255,11 @@ module Schematic
       autoload :ListEventsResponse, ::File.join(__dir__, "schematic/events/types/list_events_response")
       autoload :CreateEventResponse, ::File.join(__dir__, "schematic/events/types/create_event_response")
       autoload :GetEventResponse, ::File.join(__dir__, "schematic/events/types/get_event_response")
+      autoload :ListAccountInferenceCostRatesParams, ::File.join(__dir__, "schematic/events/types/list_account_inference_cost_rates_params")
+      autoload :ListAccountInferenceCostRatesResponse, ::File.join(__dir__, "schematic/events/types/list_account_inference_cost_rates_response")
+      autoload :CreateAccountInferenceCostRateResponse, ::File.join(__dir__, "schematic/events/types/create_account_inference_cost_rate_response")
+      autoload :UpdateAccountInferenceCostRateResponse, ::File.join(__dir__, "schematic/events/types/update_account_inference_cost_rate_response")
+      autoload :DeleteAccountInferenceCostRateResponse, ::File.join(__dir__, "schematic/events/types/delete_account_inference_cost_rate_response")
       autoload :GetOtlpEnvironmentSettingsResponse, ::File.join(__dir__, "schematic/events/types/get_otlp_environment_settings_response")
       autoload :UpsertOtlpEnvironmentSettingsResponse, ::File.join(__dir__, "schematic/events/types/upsert_otlp_environment_settings_response")
       autoload :DeleteOtlpEnvironmentSettingsResponse, ::File.join(__dir__, "schematic/events/types/delete_otlp_environment_settings_response")

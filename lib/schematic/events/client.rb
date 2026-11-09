@@ -51,7 +51,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -109,7 +109,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -179,7 +179,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -222,7 +222,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -264,7 +264,211 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String, nil] :provider
+      # @option params [String, nil] :response_model
+      # @option params [Integer, nil] :limit
+      # @option params [Integer, nil] :offset
+      #
+      # @example
+      #   client.events.list_account_inference_cost_rates(
+      #     provider: "provider",
+      #     response_model: "response_model",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
+      # @return [Schematic::Events::Types::ListAccountInferenceCostRatesResponse]
+      def list_account_inference_cost_rates(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        query_params = {}
+        query_params["provider"] = params[:provider] if params.key?(:provider)
+        query_params["response_model"] = params[:response_model] if params.key?(:response_model)
+        query_params["limit"] = params[:limit] if params.key?(:limit)
+        query_params["offset"] = params[:offset] if params.key?(:offset)
+
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "GET",
+          path: "inference-rate-sheet",
+          query: query_params,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Events::Types::ListAccountInferenceCostRatesResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Schematic::Events::Types::CreateAccountInferenceCostRateRequestBody]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.events.create_account_inference_cost_rate(
+      #     provider: "provider",
+      #     rates: {
+      #       key: 1.1
+      #     },
+      #     response_model: "response_model",
+      #     starting_at: "2024-01-15T09:30:00Z"
+      #   )
+      #
+      # @return [Schematic::Events::Types::CreateAccountInferenceCostRateResponse]
+      def create_account_inference_cost_rate(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "POST",
+          path: "inference-rate-sheet",
+          body: Schematic::Events::Types::CreateAccountInferenceCostRateRequestBody.new(params).to_h,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Events::Types::CreateAccountInferenceCostRateResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Schematic::Events::Types::UpdateAccountInferenceCostRateRequestBody]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :inference_rate_sheet_id
+      #
+      # @example
+      #   client.events.update_account_inference_cost_rate(
+      #     inference_rate_sheet_id: "inference_rate_sheet_id",
+      #     rates: {
+      #       key: 1.1
+      #     }
+      #   )
+      #
+      # @return [Schematic::Events::Types::UpdateAccountInferenceCostRateResponse]
+      def update_account_inference_cost_rate(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request_data = Schematic::Events::Types::UpdateAccountInferenceCostRateRequestBody.new(params).to_h
+        non_body_param_names = %w[inference_rate_sheet_id]
+        body = request_data.except(*non_body_param_names)
+
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "PUT",
+          path: "inference-rate-sheet/#{URI.encode_uri_component(params[:inference_rate_sheet_id].to_s)}",
+          body: body,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Events::Types::UpdateAccountInferenceCostRateResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :inference_rate_sheet_id
+      #
+      # @example
+      #   client.events.delete_account_inference_cost_rate(inference_rate_sheet_id: "inference_rate_sheet_id")
+      #
+      # @return [Schematic::Events::Types::DeleteAccountInferenceCostRateResponse]
+      def delete_account_inference_cost_rate(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "DELETE",
+          path: "inference-rate-sheet/#{URI.encode_uri_component(params[:inference_rate_sheet_id].to_s)}",
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Events::Types::DeleteAccountInferenceCostRateResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -304,7 +508,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -347,7 +551,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -388,7 +592,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -428,7 +632,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
     end

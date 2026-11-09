@@ -35,6 +35,12 @@ module Schematic
 
       field :metadata, -> { Internal::Types::Hash[String, Object] }, optional: true, nullable: false
 
+      field :pause_behavior, -> { Schematic::Types::BillingSubscriptionPauseBehavior }, optional: true, nullable: false
+
+      field :pause_resumes_at, -> { Integer }, optional: true, nullable: false
+
+      field :paused_at, -> { String }, optional: true, nullable: false
+
       field :payment_method, -> { Schematic::Types::PaymentMethodResponseData }, optional: true, nullable: false
 
       field :period_end, -> { Integer }, optional: false, nullable: false

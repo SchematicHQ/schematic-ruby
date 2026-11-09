@@ -64,7 +64,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -116,7 +116,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -159,7 +159,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -202,7 +202,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -252,7 +252,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -316,7 +316,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -380,7 +380,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -441,7 +441,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -492,7 +492,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -535,7 +535,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -590,7 +590,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -638,7 +638,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -696,7 +696,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -743,7 +743,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -786,7 +786,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -886,7 +886,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -942,7 +942,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -985,7 +985,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1085,7 +1085,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1128,7 +1128,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1174,7 +1174,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1259,7 +1259,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1344,7 +1344,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1405,7 +1405,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1456,7 +1456,188 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :billing_profile_id
+      #
+      # @example
+      #   client.billing.get_company_contract(billing_profile_id: "billing_profile_id")
+      #
+      # @return [Schematic::Billing::Types::GetCompanyContractResponse]
+      def get_company_contract(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "GET",
+          path: "billing/profiles/#{URI.encode_uri_component(params[:billing_profile_id].to_s)}/contract",
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::GetCompanyContractResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :billing_profile_id
+      #
+      # @example
+      #   client.billing.download_contract_document(billing_profile_id: "billing_profile_id")
+      #
+      # @return [String]
+      def download_contract_document(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "GET",
+          path: "billing/profiles/#{URI.encode_uri_component(params[:billing_profile_id].to_s)}/document",
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        return response.body if code.between?(200, 299)
+
+        error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+        error_types = {
+          401 => Schematic::Types::ApiError,
+          403 => Schematic::Types::ApiError,
+          404 => Schematic::Types::ApiError,
+          500 => Schematic::Types::ApiError
+        }
+        error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+      end
+
+      # @param request_options [Hash]
+      # @param params [void]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :billing_profile_id
+      #
+      # @example
+      #   client.billing.upload_contract_document(
+      #     billing_profile_id: "billing_profile_id",
+      #     file: "/path/to/your/file"
+      #   )
+      #
+      # @return [Schematic::Billing::Types::UploadContractDocumentResponse]
+      def upload_contract_document(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        body = Internal::Multipart::FormData.new
+
+        if params[:file]
+          body.add_file(
+            name: "file",
+            file: params[:file]
+          )
+        end
+
+        request = Schematic::Internal::Multipart::Request.new(
+          base_url: request_options[:base_url],
+          method: "PUT",
+          path: "billing/profiles/#{URI.encode_uri_component(params[:billing_profile_id].to_s)}/document",
+          body: body,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::UploadContractDocumentResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :billing_profile_id
+      #
+      # @example
+      #   client.billing.delete_contract_document(billing_profile_id: "billing_profile_id")
+      #
+      # @return [Schematic::Billing::Types::DeleteContractDocumentResponse]
+      def delete_contract_document(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "DELETE",
+          path: "billing/profiles/#{URI.encode_uri_component(params[:billing_profile_id].to_s)}/document",
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::DeleteContractDocumentResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1496,7 +1677,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1539,7 +1720,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1604,7 +1785,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1646,7 +1827,92 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :company_id
+      #
+      # @example
+      #   client.billing.move_to_default_plan(company_id: "company_id")
+      #
+      # @return [Schematic::Billing::Types::MoveToDefaultPlanResponse]
+      def move_to_default_plan(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "POST",
+          path: "companies/#{URI.encode_uri_component(params[:company_id].to_s)}/native-subscription/move-to-default-plan",
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::MoveToDefaultPlanResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :company_id
+      #
+      # @example
+      #   client.billing.get_company_upcoming_invoices(company_id: "company_id")
+      #
+      # @return [Schematic::Billing::Types::GetCompanyUpcomingInvoicesResponse]
+      def get_company_upcoming_invoices(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "GET",
+          path: "companies/#{URI.encode_uri_component(params[:company_id].to_s)}/upcoming-invoices",
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::GetCompanyUpcomingInvoicesResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1719,7 +1985,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1761,7 +2027,50 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :invoice_id
+      #
+      # @example
+      #   client.billing.charge_native_invoice(invoice_id: "invoice_id")
+      #
+      # @return [Schematic::Billing::Types::ChargeNativeInvoiceResponse]
+      def charge_native_invoice(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "POST",
+          path: "invoices/#{URI.encode_uri_component(params[:invoice_id].to_s)}/charge",
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::ChargeNativeInvoiceResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1802,7 +2111,7 @@ module Schematic
           500 => Schematic::Types::ApiError
         }
         error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-        raise error_class.new(response.body, code: code, body: error_body)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
 
       # @param request_options [Hash]
@@ -1844,7 +2153,93 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :invoice_id
+      #
+      # @example
+      #   client.billing.reissue_native_invoice_link(invoice_id: "invoice_id")
+      #
+      # @return [Schematic::Billing::Types::ReissueNativeInvoiceLinkResponse]
+      def reissue_native_invoice_link(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "POST",
+          path: "invoices/#{URI.encode_uri_component(params[:invoice_id].to_s)}/link/reissue",
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::ReissueNativeInvoiceLinkResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String] :invoice_id
+      #
+      # @example
+      #   client.billing.revoke_native_invoice_link(invoice_id: "invoice_id")
+      #
+      # @return [Schematic::Billing::Types::RevokeNativeInvoiceLinkResponse]
+      def revoke_native_invoice_link(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "POST",
+          path: "invoices/#{URI.encode_uri_component(params[:invoice_id].to_s)}/link/revoke",
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Billing::Types::RevokeNativeInvoiceLinkResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1895,7 +2290,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -1936,7 +2331,7 @@ module Schematic
           500 => Schematic::Types::ApiError
         }
         error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-        raise error_class.new(response.body, code: code, body: error_body)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
 
       # @param request_options [Hash]
@@ -1978,7 +2373,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
 
@@ -2051,7 +2446,7 @@ module Schematic
             500 => Schematic::Types::ApiError
           }
           error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
-          raise error_class.new(response.body, code: code, body: error_body)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
     end

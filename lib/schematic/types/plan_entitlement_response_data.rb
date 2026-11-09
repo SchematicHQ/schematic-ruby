@@ -33,6 +33,8 @@ module Schematic
 
       field :metric_period_month_reset, -> { Schematic::Types::MetricPeriodMonthReset }, optional: true, nullable: false
 
+      field :model_rates, -> { Internal::Types::Array[Schematic::Types::CreditModelRate] }, optional: true, nullable: false
+
       field :overage_billing_cadence, -> { Schematic::Types::BillingArrearsCadence }, optional: true, nullable: false
 
       field :overage_invoice_anchor, -> { Schematic::Types::BillingArrearsAnchor }, optional: true, nullable: false

@@ -18,6 +18,10 @@ module Schematic
         field :plan_id, -> { String }, optional: true, nullable: false
 
         field :q, -> { String }, optional: true, nullable: false
+
+        field :sort_order_column, -> { String }, optional: true, nullable: false
+
+        field :sort_order_direction, -> { Schematic::Types::SortDirection }, optional: true, nullable: false
       end
     end
   end

@@ -35,7 +35,7 @@ module Schematic
           @default_headers = {
             "X-Fern-Language": "Ruby",
             "X-Fern-SDK-Name": "schematic",
-            "X-Fern-SDK-Version": "0.0.1"
+            "X-Fern-SDK-Version": Schematic::VERSION
           }.merge(headers)
           @overridable_headers = overridable_headers.to_set { |name| name.to_s.downcase }
         end

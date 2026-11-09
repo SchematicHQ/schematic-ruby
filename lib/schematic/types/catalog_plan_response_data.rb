@@ -15,6 +15,10 @@ module Schematic
 
       field :currency_prices, -> { Internal::Types::Array[Schematic::Types::CatalogCurrencyPricesResponseData] }, optional: false, nullable: false
 
+      field :custom, -> { Internal::Types::Boolean }, optional: false, nullable: false
+
+      field :custom_plan_cta, -> { Schematic::Types::CatalogCustomPlanCtaResponseData }, optional: true, nullable: false
+
       field :description, -> { String }, optional: false, nullable: false
 
       field :entitlements, -> { Internal::Types::Array[Schematic::Types::CatalogPlanEntitlementResponseData] }, optional: false, nullable: false
