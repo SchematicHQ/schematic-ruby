@@ -2515,7 +2515,7 @@ describe "Replicator mode - cache readiness gate" do
       assert_predicate ds, :connected?
     end
 
-    it "sets not ready and keeps the previous cache_version when unreachable" do
+    it "stays ready and keeps the cache_version when a poll is unreachable" do
       stub_health(200, { ready: true, cache_version: "v1" })
       ds = build_ds
       ds.send(:check_replicator_health)
@@ -2526,20 +2526,71 @@ describe "Replicator mode - cache readiness gate" do
       stub_request(:get, REPLICATOR_TEST_HEALTH_URL).to_raise(Errno::ECONNREFUSED)
       ds.send(:check_replicator_health)
 
-      refute_predicate ds, :cache_ready?
+      assert_predicate ds, :cache_ready?
       assert_equal "v1", ds.instance_variable_get(:@cache_version)
     end
 
-    it "sets not ready and keeps the previous cache_version on an unparseable body" do
+    it "stays ready when a poll times out or returns no readiness answer" do
       stub_health(200, { ready: true, cache_version: "v1" })
       ds = build_ds
       ds.send(:check_replicator_health)
 
-      stub_request(:get, REPLICATOR_TEST_HEALTH_URL).to_return(status: 502, body: "<html>Bad Gateway</html>")
+      WebMock.reset!
+      stub_request(:get, REPLICATOR_TEST_HEALTH_URL).to_timeout
+      ds.send(:check_replicator_health)
+
+      assert_predicate ds, :cache_ready?
+
+      [
+        { status: 502, body: "<html>Bad Gateway</html>" },
+        { status: 200, body: "not json" },
+        { status: 200, body: "[]" },
+        { status: 200, body: '{"cache_version": "v2"}' }
+      ].each do |response|
+        WebMock.reset!
+        stub_request(:get, REPLICATOR_TEST_HEALTH_URL).to_return(**response)
+        ds.send(:check_replicator_health)
+
+        assert_predicate ds, :cache_ready?, "after #{response.inspect}"
+        assert_equal "v1", ds.instance_variable_get(:@cache_version)
+      end
+    end
+
+    it "stays not ready when a poll fails after a not-ready answer" do
+      stub_health(503, { ready: false, cache_version: "v1" })
+      ds = build_ds
+      ds.send(:check_replicator_health)
+
+      WebMock.reset!
+      stub_request(:get, REPLICATOR_TEST_HEALTH_URL).to_raise(Errno::ECONNREFUSED)
       ds.send(:check_replicator_health)
 
       refute_predicate ds, :cache_ready?
       assert_equal "v1", ds.instance_variable_get(:@cache_version)
+    end
+
+    it "stays not ready when the first poll fails" do
+      stub_request(:get, REPLICATOR_TEST_HEALTH_URL).to_raise(Errno::ECONNREFUSED)
+      ds = build_ds
+      ds.send(:check_replicator_health)
+
+      refute_predicate ds, :cache_ready?
+      refute_predicate ds, :connected?
+    end
+
+    it "becomes not ready when a ready replicator answers ready: false" do
+      stub_health(200, { ready: true, cache_version: "v1" })
+      ds = build_ds
+      ds.send(:check_replicator_health)
+
+      assert_predicate ds, :cache_ready?
+
+      stub_health(503, { ready: false, cache_version: "v2" })
+      ds.send(:check_replicator_health)
+
+      refute_predicate ds, :cache_ready?
+      refute_predicate ds, :connected?
+      assert_equal "v2", ds.instance_variable_get(:@cache_version)
     end
 
     it "reports the cache ready outside replicator mode" do

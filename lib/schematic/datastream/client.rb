@@ -141,8 +141,9 @@ module Schematic
       # Whether the cache is ready to serve flag checks. In replicator mode this
       # is the `ready` field from the replicator's health endpoint, which is true
       # only once the replicator has fully loaded the cache for its current
-      # cache_version. It is false until the first successful health check and
-      # after any failed one. Outside replicator mode it is always true: the SDK
+      # cache_version. It is false until the first answer from the health
+      # endpoint, and a failed poll leaves it as the last answer set it.
+      # Outside replicator mode it is always true: the SDK
       # fills its own cache over the WebSocket, so there is nothing to wait for.
       def cache_ready?
         @replicator_mode ? @replicator_ready : true
@@ -516,10 +517,13 @@ module Schematic
 
       # Polls the replicator health endpoint. The body is read whatever the
       # HTTP status: a replicator that is still loading its cache answers 503
-      # with {"ready": false, "cache_version": "..."}. Readiness comes from the
-      # `ready` field, and any non-empty cache_version is recorded. A failed
-      # poll (connection error, timeout, unparseable body) marks the replicator
-      # not ready and keeps the last known cache_version.
+      # with {"ready": false, "cache_version": "..."}. Only an explicit answer
+      # changes state: a body with a boolean `ready` sets readiness from it and
+      # records any non-empty cache_version. A failed poll (connection error,
+      # timeout, or a body with no boolean `ready`) changes nothing, because
+      # it says nothing about whether the cache is complete, and flipping every
+      # check to the API on one blip would send the whole fleet to the API at
+      # once. Before the first answer the replicator counts as not ready.
       def check_replicator_health
         uri = URI.parse(@replicator_health_url)
         http = Net::HTTP.new(uri.host, uri.port)
@@ -530,17 +534,15 @@ module Schematic
 
         body = parse_health_body(response.body)
         unless body
-          update_replicator_ready(false)
-          @logger.warn("Replicator health check returned an unparseable body (HTTP #{response.code})")
+          @logger.warn("Replicator health check returned no readiness answer (HTTP #{response.code})")
           return
         end
 
         cache_version = body[:cache_version].to_s
         update_cache_version(cache_version) unless cache_version.empty?
-        update_replicator_ready(body[:ready] == true)
+        update_replicator_ready(body[:ready])
         @logger.debug("Replicator not ready (HTTP #{response.code})") unless @replicator_ready
       rescue StandardError => e
-        update_replicator_ready(false)
         @logger.warn("Replicator health check error: #{e.message}")
       end
 
@@ -557,7 +559,7 @@ module Schematic
 
       def parse_health_body(raw)
         body = JSON.parse(raw.to_s, symbolize_names: true)
-        body.is_a?(Hash) ? body : nil
+        body.is_a?(Hash) && [true, false].include?(body[:ready]) ? body : nil
       rescue JSON::ParserError
         nil
       end
