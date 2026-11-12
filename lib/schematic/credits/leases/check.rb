@@ -149,7 +149,7 @@ module Schematic
         def datastream_unavailable?
           return false if @deps.datastream
 
-          @logger.debug("Credit-lease check requested without datastream, falling back to plain check")
+          @logger.debug("Credit-lease check requested without a ready DataStream cache, falling back to plain check")
           true
         end
 
