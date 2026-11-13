@@ -14,7 +14,8 @@ module Schematic
       raise NotImplementedError
     end
 
-    def set(key, value)
+    # Must accept `keepttl: true` (redis gem 4.2+), used by RedisCacheProvider#set_keep_ttl.
+    def set(key, value, **options)
       raise NotImplementedError
     end
 
@@ -60,6 +61,14 @@ module Schematic
       else
         @client.set(full_key, serialized)
       end
+    end
+
+    # Overwrites the value but leaves the key's current expiry alone (Redis
+    # SET ... KEEPTTL, 6.0+). A key with no expiry, or a new key, gets none.
+    def set_keep_ttl(key, value)
+      full_key = prefixed_key(key)
+      serialized = JSON.generate(value.respond_to?(:to_h) ? value.to_h : value)
+      @client.set(full_key, serialized, keepttl: true)
     end
 
     def delete(key)

@@ -14,6 +14,9 @@ module Schematic
       raise NotImplementedError
     end
 
+    # Optional: `set_keep_ttl(key, value)` overwrites a value without changing
+    # its expiry. Providers that don't define it are written with `set`.
+
     # Remove all keys matching `scope` that are NOT in `keys_to_keep`.
     # `scope:` is required so shared caches (e.g. Redis) only prune their own
     # namespace instead of wiping sibling caches that share a base key_prefix.
@@ -69,6 +72,20 @@ module Schematic
       end
     end
 
+    # Overwrites the value but keeps a live entry's expiry. A missing or
+    # expired entry gets the default TTL.
+    def set_keep_ttl(key, value)
+      kept = @mutex.synchronize do
+        entry = @cache[key]
+        next false unless entry && !entry.expired?
+
+        @cache.delete(key)
+        @cache[key] = CacheEntry.new(value, entry.ttl, created_at: entry.created_at)
+        true
+      end
+      set(key, value) unless kept
+    end
+
     def delete(key)
       @mutex.synchronize do
         @cache.delete(key)
@@ -122,10 +139,10 @@ module Schematic
     class CacheEntry
       attr_reader :value, :ttl, :created_at
 
-      def initialize(value, ttl)
+      def initialize(value, ttl, created_at: nil)
         @value = value
         @ttl = ttl
-        @created_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+        @created_at = created_at || Process.clock_gettime(Process::CLOCK_MONOTONIC)
       end
 
       def expired?

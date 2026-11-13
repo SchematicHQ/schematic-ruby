@@ -1137,6 +1137,24 @@ end
 # Additional LocalCache Tests
 # =============================================================================
 describe "LocalCache - TTL Expiration and Refresh" do
+  it "set_keep_ttl keeps a live entry's expiry" do
+    cache = Schematic::LocalCache.new(max_size: 10, ttl: 60)
+    cache.set("key1", "value1", ttl: 600)
+    entries = cache.instance_variable_get(:@cache)
+    before = entries["key1"]
+
+    cache.set_keep_ttl("key1", "value2")
+
+    assert_equal "value2", cache.get("key1")
+    assert_equal 600, entries["key1"].ttl
+    assert_equal before.created_at, entries["key1"].created_at
+
+    cache.set_keep_ttl("key2", "new")
+
+    assert_equal 60, entries["key2"].ttl
+    cache.stop
+  end
+
   it "refreshes value after TTL expiration" do
     cache = Schematic::LocalCache.new(max_size: 10, ttl: 0.1)
     cache.set("key1", "value1")
@@ -3134,6 +3152,15 @@ describe "RedisCacheProvider" do
     assert_equal 300, @ttls["test:key1"]
   end
 
+  it "set_keep_ttl writes with KEEPTTL" do
+    calls = []
+    @mock_redis.define_singleton_method(:set) { |key, value, **opts| calls << [key, value, opts] }
+
+    @cache.set_keep_ttl("key1", { value: true })
+
+    assert_equal [["test:key1", '{"value":true}', { keepttl: true }]], calls
+  end
+
   it "supports custom TTL override" do
     @cache.set("key1", { value: true }, ttl: 600)
 
@@ -3777,11 +3804,19 @@ end
 describe "SchematicClient - track metric update while not connected" do
   TRACK_TEST_HEALTH_URL = "http://replicator.test/ready"
 
-  def build_redis(store)
+  # Tracks TTLs the way Redis does: SET clears a key's TTL unless KEEPTTL is
+  # given, SETEX replaces it.
+  def build_redis(store, ttls = {})
     redis = Object.new
     redis.define_singleton_method(:get) { |key| store[key] }
-    redis.define_singleton_method(:set) { |key, value| store[key] = value }
-    redis.define_singleton_method(:setex) { |key, _ttl, value| store[key] = value }
+    redis.define_singleton_method(:set) do |key, value, keepttl: false|
+      store[key] = value
+      ttls.delete(key) unless keepttl
+    end
+    redis.define_singleton_method(:setex) do |key, ttl, value|
+      store[key] = value
+      ttls[key] = ttl
+    end
     redis.define_singleton_method(:del) { |*keys| keys.flatten.each { |k| store.delete(k) } }
     redis
   end
@@ -3803,7 +3838,7 @@ describe "SchematicClient - track metric update while not connected" do
     company[:metrics].find { |m| m[:event_subtype] == "api_call" }[:value]
   end
 
-  def build_replicator_client(store)
+  def build_replicator_client(store, ttls = {})
     Schematic::SchematicClient.new(
       api_key: "api_test_key_123",
       use_data_stream: true,
@@ -3812,7 +3847,7 @@ describe "SchematicClient - track metric update while not connected" do
         replicator_mode: true,
         replicator_health_url: TRACK_TEST_HEALTH_URL,
         replicator_health_interval: 3600,
-        redis_client: build_redis(store)
+        redis_client: build_redis(store, ttls)
       }
     )
   end
@@ -3847,6 +3882,21 @@ describe "SchematicClient - track metric update while not connected" do
     client.track({ event: "api_call", company: { "org_id" => "acme" }, quantity: 5 })
 
     assert_equal 15, cached_metric_value(@store, "v1")
+  ensure
+    close_client(client) if client
+  end
+
+  it "keeps each key's existing TTL when it rewrites the company" do
+    seed_company(@store, "v1")
+    ttls = { "schematic:company:v1:org_id:acme" => 600 }
+    client = build_replicator_client(@store, ttls)
+    client.instance_variable_get(:@datastream_client).send(:update_cache_version, "v1")
+
+    client.track({ event: "api_call", company: { "org_id" => "acme" }, quantity: 5 })
+
+    assert_equal 15, cached_metric_value(@store, "v1")
+    refute ttls.key?("schematic:company:v1:comp_1"), "a key with no TTL should still have none"
+    assert_equal 600, ttls["schematic:company:v1:org_id:acme"]
   ensure
     close_client(client) if client
   end

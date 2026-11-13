@@ -224,7 +224,10 @@ module Schematic
         end
 
         company[:metrics] = metrics
-        @company_cache.cache_entity(company, ttl: @cache_ttl)
+        # The replicator owns these keys and usually writes them with no
+        # expiry; applying our TTL here would make them vanish if the
+        # replicator doesn't rewrite the company in time.
+        @company_cache.cache_entity(company, ttl: @cache_ttl, keep_ttl: @replicator_mode)
       end
 
       private
