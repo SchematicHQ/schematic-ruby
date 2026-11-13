@@ -14,17 +14,19 @@ module Schematic
 
       attr_writer :cache_version
 
-      def cache_entity(entity, ttl: nil)
+      # With keep_ttl, each key keeps its current expiry instead of taking
+      # `ttl`, on providers that support it.
+      def cache_entity(entity, ttl: nil, keep_ttl: false)
         id = @get_id.call(entity)
         return unless id
 
         id_key = build_id_key(id)
-        @primary_cache.set(id_key, entity, ttl: ttl)
+        write(@primary_cache, id_key, entity, ttl, keep_ttl)
 
         keys = @get_keys.call(entity)
         keys&.each do |k, v|
           lookup_key = build_lookup_key(k, v)
-          @lookup_cache.set(lookup_key, id, ttl: ttl)
+          write(@lookup_cache, lookup_key, id, ttl, keep_ttl)
         end
       end
 
@@ -61,6 +63,14 @@ module Schematic
       end
 
       private
+
+      def write(cache, key, value, ttl, keep_ttl)
+        if keep_ttl && cache.respond_to?(:set_keep_ttl)
+          cache.set_keep_ttl(key, value)
+        else
+          cache.set(key, value, ttl: ttl)
+        end
+      end
 
       def build_id_key(id)
         "#{@key_prefix}:#{@cache_version}:#{id}"
