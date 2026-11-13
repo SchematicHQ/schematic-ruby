@@ -1651,6 +1651,62 @@ class CreditLeaseClientWiringTest < Minitest::Test
     client&.close
   end
 
+  # The client-lease flow reads the flag and company from the DataStream cache,
+  # so in replicator mode it waits on the same readiness as a plain flag check.
+  # Until the cache is ready, a check with usage runs as a plain API check that
+  # holds nothing, and settling its nil reservation records nothing.
+  def test_a_client_lease_check_waits_for_the_cache_to_be_ready
+    logger = Object.new
+    errors = []
+    logger.define_singleton_method(:error) { |message| errors << message }
+    %i[warn debug info].each { |level| logger.define_singleton_method(level) { |_message| nil } }
+    client = build_client(credit_leases: { mode: :client }, logger: logger)
+    api = stub_request(:post, "https://api.schematichq.test/flags/inference/check")
+          .to_return(status: 200,
+                     body: JSON.generate({ "data" => { "flag" => "inference", "value" => true, "reason" => "plan" } }),
+                     headers: { "Content-Type" => "application/json" })
+    stub_request(:post, "https://c.schematichq.com/batch").to_return(status: 200, body: "")
+
+    ready = false
+    flag_reads = 0
+    metrics = []
+    datastream = Object.new
+    datastream.define_singleton_method(:cache_ready?) { ready }
+    datastream.define_singleton_method(:connected?) { ready }
+    datastream.define_singleton_method(:get_flag) do |_key|
+      flag_reads += 1
+      nil
+    end
+    datastream.define_singleton_method(:check_flag) do |*|
+      raise Schematic::DataStream::EvaluationError, "flag not in cache"
+    end
+    datastream.define_singleton_method(:update_company_metrics) { |*args| metrics << args }
+    def datastream.close = nil
+    client.instance_variable_set(:@datastream_client, datastream)
+
+    result = client.check("inference", company: { "id" => "co_1" }, usage: 10, event_subtype: "inference_tokens")
+
+    assert_predicate result, :allowed?
+    assert_nil result.reservation
+    assert_equal 0, flag_reads, "a cache that is not ready is never read"
+    assert_requested api, times: 1
+
+    client.track_with_reservation(result.reservation, 10)
+
+    assert_empty metrics
+    events = client.instance_variable_get(:@event_buffer).instance_variable_get(:@events)
+
+    assert_empty(events.select { |event| event[:event_type] == "track" })
+    assert(errors.any? { |message| message.include?("without a reservation") })
+
+    ready = true
+    client.check("inference", company: { "id" => "co_1" }, usage: 10, event_subtype: "inference_tokens")
+
+    assert_equal 1, flag_reads, "a ready cache enters the lease flow"
+  ensure
+    client&.close
+  end
+
   # { "ct_1": {} } is the symbol :ct_1, and a caller who writes it means the
   # credit type, so both spellings have to reach the same slot, knobs included.
   def test_an_override_written_either_way_resolves_the_same_knobs
