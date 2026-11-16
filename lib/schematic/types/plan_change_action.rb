@@ -23,6 +23,7 @@ module Schematic
       PLAN_VERSION_MIGRATION = "plan_version_migration"
       QUICKSTART = "quickstart"
       SUBSCRIPTION_CHANGE = "subscription_change"
+      TRIAL = "trial"
     end
   end
 end

@@ -11,6 +11,8 @@ module Schematic
 
       field :interval, -> { String }, optional: false, nullable: false
 
+      field :interval_count, -> { Integer }, optional: false, nullable: false
+
       field :metered_usage, -> { Internal::Types::Boolean }, optional: false, nullable: false
 
       field :per_unit_price, -> { Integer }, optional: false, nullable: false

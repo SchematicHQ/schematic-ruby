@@ -19,7 +19,11 @@ module Schematic
 
       field :interval, -> { String }, optional: false, nullable: false
 
+      field :interval_count, -> { Integer }, optional: false, nullable: false
+
       field :scheduled_interval, -> { String }, optional: true, nullable: false
+
+      field :scheduled_interval_count, -> { Integer }, optional: true, nullable: false
 
       field :scheduled_price, -> { Integer }, optional: true, nullable: false
 

@@ -15,6 +15,8 @@ module Schematic
 
       field :scheduled_interval, -> { String }, optional: true, nullable: false
 
+      field :scheduled_interval_count, -> { Integer }, optional: true, nullable: false
+
       field :scheduled_price, -> { Integer }, optional: true, nullable: false
 
       field :to_plan, -> { Schematic::Types::PlanSnapshotView }, optional: true, nullable: false

@@ -25,6 +25,8 @@ module Schematic
 
       field :plan_id, -> { String }, optional: false, nullable: false
 
+      field :quarterly_price_id, -> { String }, optional: true, nullable: false
+
       field :trial_days, -> { Integer }, optional: true, nullable: false
 
       field :yearly_price_id, -> { String }, optional: true, nullable: false

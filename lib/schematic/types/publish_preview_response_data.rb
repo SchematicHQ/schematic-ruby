@@ -31,6 +31,8 @@ module Schematic
 
       field :immediate_invoice_amount, -> { Integer }, optional: true, nullable: false
 
+      field :interval_change, -> { Schematic::Types::PublishPreviewIntervalChangeResponseData }, optional: true, nullable: false
+
       field :lands_on, -> { Schematic::Types::AmendmentProrationLandsOn }, optional: false, nullable: false
 
       field :new_recurring_amount, -> { Integer }, optional: true, nullable: false

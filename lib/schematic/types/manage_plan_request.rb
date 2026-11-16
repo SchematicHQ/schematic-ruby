@@ -23,6 +23,8 @@ module Schematic
 
       field :billing_entity_id, -> { String }, optional: true, nullable: false
 
+      field :billing_period, -> { Schematic::Types::PlanPriceCadence }, optional: true, nullable: false
+
       field :cancel_immediately, -> { Internal::Types::Boolean }, optional: true, nullable: false
 
       field :collection_method, -> { Schematic::Types::BillingCollectionMethod }, optional: true, nullable: false

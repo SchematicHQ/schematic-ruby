@@ -11,6 +11,8 @@ module Schematic
 
       field :problems, -> { Internal::Types::Array[Schematic::Types::CheckoutProblemResponseData] }, optional: false, nullable: false
 
+      field :scheduled_change_at, -> { String }, optional: true, nullable: false
+
       field :success, -> { Internal::Types::Boolean }, optional: false, nullable: false
     end
   end

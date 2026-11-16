@@ -4072,6 +4072,14 @@ client.billing.upsert_billing_subscription(
 <dl>
 <dd>
 
+**billing_cycle_anchor:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **cancel_at:** `Integer` 
     
 </dd>
@@ -4330,6 +4338,306 @@ client.billing.get_company_native_subscription(company_id: "company_id")
 
 ```ruby
 client.billing.move_to_default_plan(company_id: "company_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `String` — company_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Billing::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">get_company_trial</a>(company_id:) -> Schematic::Billing::Types::GetCompanyTrialResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.billing.get_company_trial(company_id: "company_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `String` — company_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Billing::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">start_company_trial</a>(company_id:, request) -> Schematic::Billing::Types::StartCompanyTrialResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.billing.start_company_trial(
+  company_id: "company_id",
+  cadence: "day",
+  plan_id: "plan_id"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `String` — company_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cadence:** `Schematic::Types::BillingProductPriceInterval` — The unit of how often the plan bills once the trial converts: month or year.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cadence_interval_count:** `Integer` — How many cadence units one billing period spans. Defaults to 1; use 3 with month for quarterly.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_behavior:** `Schematic::Types::BillingSubscriptionTrialEndSetting` — What happens when the trial reaches its end date: subscribe starts billing, cancel moves the company off the plan. Defaults to the plan group's trial setting.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**plan_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trial_end:** `String` — When the trial ends. Defaults to the plan's trial length, then the plan group's, then 14 days. Setting it grants the trial even when the company has used its trial before.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Billing::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">update_company_trial</a>(company_id:, request) -> Schematic::Billing::Types::UpdateCompanyTrialResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.billing.update_company_trial(company_id: "company_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `String` — company_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_behavior:** `Schematic::Types::BillingSubscriptionTrialEndSetting` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trial_end:** `String` — Moves the end of the trial, and the first billing date with it.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Billing::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">convert_company_trial</a>(company_id:) -> Schematic::Billing::Types::ConvertCompanyTrialResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.billing.convert_company_trial(company_id: "company_id")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**company_id:** `String` — company_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Billing::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.billing.<a href="/lib/schematic/billing/client.rb">end_company_trial</a>(company_id:) -> Schematic::Billing::Types::EndCompanyTrialResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.billing.end_company_trial(company_id: "company_id")
 ```
 </dd>
 </dl>
@@ -9591,6 +9899,14 @@ client.checkout.get_checkout_data(company_id: "company_id")
 <dd>
 
 **selected_plan_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**selected_plan_version_id:** `String` 
     
 </dd>
 </dl>
