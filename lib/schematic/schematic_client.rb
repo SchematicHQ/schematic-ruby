@@ -394,7 +394,12 @@ module Schematic
       Credits::Leases.check_with_lease(
         Credits::Leases::CheckDeps.new(
           lease_store: @lease_store, reservations: @reservations, manager: @credit_lease_manager,
-          datastream: @datastream_client, logger: @logger,
+          # The lease flow reads the flag, company and user from the DataStream
+          # cache, so it waits on the same readiness as the plain flag checks.
+          # Until the replicator reports its cache ready, it gets no DataStream
+          # and runs the plain check, as it does on a cache miss, holding
+          # nothing.
+          datastream: @datastream_client&.cache_ready? ? @datastream_client : nil, logger: @logger,
           # Lease-path checks must stay visible to flag-check analytics and
           # company last-seen, the same as every plain check path.
           enqueue_flag_check_event: ->(body) { enqueue_lease_flag_check_event(body) }
