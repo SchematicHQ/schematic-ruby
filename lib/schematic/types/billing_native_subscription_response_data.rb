@@ -30,6 +30,10 @@ module Schematic
       field :status, -> { Schematic::Types::SubscriptionStatus }, optional: false, nullable: false
 
       field :terms, -> { Schematic::Types::BillingInvoiceTermsResponseData }, optional: true, nullable: false
+
+      field :trial_end, -> { String }, optional: true, nullable: false
+
+      field :trial_end_setting, -> { Schematic::Types::BillingSubscriptionTrialEndSetting }, optional: true, nullable: false
     end
   end
 end

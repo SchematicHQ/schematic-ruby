@@ -8,6 +8,7 @@ module Schematic
       extend Schematic::Internal::Types::Enum
 
       AMBIGUOUS_SUBSCRIPTION_ITEM = "ambiguous_subscription_item"
+      MIXED_BILLING_INTERVALS = "mixed_billing_intervals"
       MULTIPLE_SUBSCRIPTIONS = "multiple_subscriptions"
       NO_PRICE_FOR_INTERVAL = "no_price_for_interval"
       NOT_ON_ORIGIN_VERSION = "not_on_origin_version"

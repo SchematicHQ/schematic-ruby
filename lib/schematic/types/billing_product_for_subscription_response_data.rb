@@ -47,6 +47,8 @@ module Schematic
 
       field :subscription_item_external_id, -> { String }, optional: true, nullable: false
 
+      field :tiers_mode, -> { Schematic::Types::BillingTiersMode }, optional: true, nullable: false
+
       field :updated_at, -> { String }, optional: false, nullable: false
 
       field :usage_type, -> { Schematic::Types::BillingPriceUsageType }, optional: false, nullable: false

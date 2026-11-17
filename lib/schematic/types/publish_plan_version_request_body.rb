@@ -50,6 +50,10 @@ module Schematic
       field :send_invoice, -> { Internal::Types::Boolean }, optional: true, nullable: false
 
       field :tax_id, -> { Schematic::Types::TaxIdInput }, optional: true, nullable: false
+
+      field :trial_end, -> { String }, optional: true, nullable: false
+
+      field :trial_end_behavior, -> { Schematic::Types::BillingSubscriptionTrialEndSetting }, optional: true, nullable: false
     end
   end
 end

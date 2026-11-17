@@ -6,6 +6,8 @@ module Schematic
       class CreateBillingSubscriptionRequestBody < Internal::Types::Model
         field :application_id, -> { String }, optional: true, nullable: false
 
+        field :billing_cycle_anchor, -> { String }, optional: true, nullable: false
+
         field :cancel_at, -> { Integer }, optional: true, nullable: false
 
         field :cancel_at_period_end, -> { Internal::Types::Boolean }, optional: false, nullable: false

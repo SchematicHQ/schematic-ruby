@@ -9,6 +9,8 @@ module Schematic
         field :currency, -> { Schematic::Types::Currency }, optional: true, nullable: false
 
         field :selected_plan_id, -> { String }, optional: true, nullable: false
+
+        field :selected_plan_version_id, -> { String }, optional: true, nullable: false
       end
     end
   end

@@ -25,6 +25,8 @@ module Schematic
 
       field :base_plan_version, -> { Schematic::Types::PlanVersionSnapshotView }, optional: true, nullable: false
 
+      field :billing_interval, -> { String }, optional: true, nullable: false
+
       field :company, -> { Schematic::Types::CompanyResponseData }, optional: true, nullable: false
 
       field :company_id, -> { String }, optional: false, nullable: false
@@ -44,6 +46,8 @@ module Schematic
       field :previous_base_plan, -> { Schematic::Types::PlanSnapshotView }, optional: true, nullable: false
 
       field :previous_base_plan_version, -> { Schematic::Types::PlanVersionSnapshotView }, optional: true, nullable: false
+
+      field :previous_billing_interval, -> { String }, optional: true, nullable: false
 
       field :request_id, -> { String }, optional: true, nullable: false
 

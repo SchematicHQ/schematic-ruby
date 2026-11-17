@@ -71,6 +71,8 @@ require_relative "schematic/billing/types/update_company_billing_profile_request
 require_relative "schematic/billing/types/upload_contract_document_request"
 require_relative "schematic/billing/types/update_billing_settings_request_body"
 require_relative "schematic/billing/types/create_billing_subscription_request_body"
+require_relative "schematic/billing/types/start_company_trial_request_body"
+require_relative "schematic/billing/types/update_company_trial_request_body"
 require_relative "schematic/billing/types/list_billing_invoices_request"
 require_relative "schematic/billing/types/mark_invoice_paid_request_body"
 require_relative "schematic/billing/types/count_billing_invoices_request"
@@ -346,6 +348,9 @@ module Schematic
     autoload :SubscriptionStatus, ::File.join(__dir__, "schematic/types/subscription_status")
     autoload :BillingNativeSubscriptionResponseData, ::File.join(__dir__, "schematic/types/billing_native_subscription_response_data")
     autoload :BillingMovedToDefaultPlanResponseData, ::File.join(__dir__, "schematic/types/billing_moved_to_default_plan_response_data")
+    autoload :CompanyTrialStatus, ::File.join(__dir__, "schematic/types/company_trial_status")
+    autoload :TrialSource, ::File.join(__dir__, "schematic/types/trial_source")
+    autoload :CompanyTrialResponseData, ::File.join(__dir__, "schematic/types/company_trial_response_data")
     autoload :BillingUpcomingInvoiceResponseData, ::File.join(__dir__, "schematic/types/billing_upcoming_invoice_response_data")
     autoload :BillingUpcomingInvoicesResponseData, ::File.join(__dir__, "schematic/types/billing_upcoming_invoices_response_data")
     autoload :InvoiceDocumentState, ::File.join(__dir__, "schematic/types/invoice_document_state")
@@ -582,6 +587,7 @@ module Schematic
     autoload :PlanVersionPriceChangeResponseData, ::File.join(__dir__, "schematic/types/plan_version_price_change_response_data")
     autoload :PlanVersionDiffResponseData, ::File.join(__dir__, "schematic/types/plan_version_diff_response_data")
     autoload :AmendmentProrationLandsOn, ::File.join(__dir__, "schematic/types/amendment_proration_lands_on")
+    autoload :PublishPreviewIntervalChangeResponseData, ::File.join(__dir__, "schematic/types/publish_preview_interval_change_response_data")
     autoload :PublishPreviewPayInAdvanceResponseData, ::File.join(__dir__, "schematic/types/publish_preview_pay_in_advance_response_data")
     autoload :PublishPreviewPaymentMethodResponseData, ::File.join(__dir__, "schematic/types/publish_preview_payment_method_response_data")
     autoload :PublishPreviewProrationLineResponseData, ::File.join(__dir__, "schematic/types/publish_preview_proration_line_response_data")
@@ -621,6 +627,8 @@ module Schematic
     autoload :CompanyFeatureUsageExportMetadataSortOrderDirection, ::File.join(__dir__, "schematic/types/company_feature_usage_export_metadata_sort_order_direction")
     autoload :CompanyFeatureUsageExportMetadataVisibleColumnsItem, ::File.join(__dir__, "schematic/types/company_feature_usage_export_metadata_visible_columns_item")
     autoload :CompanyFeatureUsageExportMetadata, ::File.join(__dir__, "schematic/types/company_feature_usage_export_metadata")
+    autoload :CreditLedgerExportMetadataEventType, ::File.join(__dir__, "schematic/types/credit_ledger_export_metadata_event_type")
+    autoload :CreditLedgerExportMetadata, ::File.join(__dir__, "schematic/types/credit_ledger_export_metadata")
     autoload :EventExportMetadataEventTypesItem, ::File.join(__dir__, "schematic/types/event_export_metadata_event_types_item")
     autoload :EventExportMetadata, ::File.join(__dir__, "schematic/types/event_export_metadata")
     autoload :DataExportMetadata, ::File.join(__dir__, "schematic/types/data_export_metadata")
@@ -930,6 +938,11 @@ module Schematic
       autoload :UpsertBillingSubscriptionResponse, ::File.join(__dir__, "schematic/billing/types/upsert_billing_subscription_response")
       autoload :GetCompanyNativeSubscriptionResponse, ::File.join(__dir__, "schematic/billing/types/get_company_native_subscription_response")
       autoload :MoveToDefaultPlanResponse, ::File.join(__dir__, "schematic/billing/types/move_to_default_plan_response")
+      autoload :GetCompanyTrialResponse, ::File.join(__dir__, "schematic/billing/types/get_company_trial_response")
+      autoload :StartCompanyTrialResponse, ::File.join(__dir__, "schematic/billing/types/start_company_trial_response")
+      autoload :UpdateCompanyTrialResponse, ::File.join(__dir__, "schematic/billing/types/update_company_trial_response")
+      autoload :ConvertCompanyTrialResponse, ::File.join(__dir__, "schematic/billing/types/convert_company_trial_response")
+      autoload :EndCompanyTrialResponse, ::File.join(__dir__, "schematic/billing/types/end_company_trial_response")
       autoload :GetCompanyUpcomingInvoicesResponse, ::File.join(__dir__, "schematic/billing/types/get_company_upcoming_invoices_response")
       autoload :ListBillingInvoicesParams, ::File.join(__dir__, "schematic/billing/types/list_billing_invoices_params")
       autoload :ListBillingInvoicesResponse, ::File.join(__dir__, "schematic/billing/types/list_billing_invoices_response")
