@@ -214,14 +214,17 @@ module Schematic
 
         company = Merge.deep_copy(company)
         metrics = company[:metrics] || company["metrics"] || []
+        matched = false
 
         metrics.each do |metric|
           subtype = metric[:event_subtype] || metric["event_subtype"]
           next unless subtype == event_name
 
+          matched = true
           current = metric[:value] || metric["value"] || 0
           metric[:value] = current + (quantity || 1)
         end
+        return unless matched
 
         company[:metrics] = metrics
         # The replicator owns these keys and usually writes them with no
