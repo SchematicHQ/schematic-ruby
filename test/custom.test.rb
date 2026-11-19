@@ -3828,6 +3828,37 @@ describe "DataStream Client - update_company_metrics" do
 
     ds.close
   end
+
+  it "does not write to the cache when a matching event has a quantity of 0" do
+    ctx = build_ds_client
+    ds = ctx[:client]
+
+    ds.send(:handle_message, {
+      entity_type: Schematic::DataStream::ENTITY_TYPE_COMPANY,
+      message_type: Schematic::DataStream::MESSAGE_TYPE_FULL,
+      data: {
+        id: "comp_zero",
+        keys: { "org_id" => "zero-org" },
+        metrics: [{ event_subtype: "api_call", period: "monthly", value: 100 }]
+      }
+    })
+
+    company_cache = ds.instance_variable_get(:@company_cache)
+    writes = []
+    company_cache.define_singleton_method(:cache_entity) do |entity, **opts|
+      writes << entity
+      super(entity, **opts)
+    end
+
+    ds.update_company_metrics({ "org_id" => "zero-org" }, "api_call", 0)
+
+    assert_empty writes
+    metric = company_cache.get_by_keys({ "org_id" => "zero-org" })[:metrics].first
+
+    assert_equal 100, (metric[:value] || metric["value"])
+
+    ds.close
+  end
 end
 
 # =============================================================================

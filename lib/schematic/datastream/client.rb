@@ -209,6 +209,9 @@ module Schematic
       end
 
       def update_company_metrics(company_keys, event_name, quantity)
+        quantity ||= 1
+        return if quantity.zero?
+
         company = @company_cache.get_by_keys(company_keys)
         return unless company
 
@@ -222,7 +225,7 @@ module Schematic
 
           matched = true
           current = metric[:value] || metric["value"] || 0
-          metric[:value] = current + (quantity || 1)
+          metric[:value] = current + quantity
         end
         return unless matched
 
