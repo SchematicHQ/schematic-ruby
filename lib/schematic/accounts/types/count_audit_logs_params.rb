@@ -13,6 +13,8 @@ module Schematic
 
         field :end_time, -> { String }, optional: true, nullable: false
 
+        field :end_user_id, -> { String }, optional: true, nullable: false
+
         field :environment_id, -> { String }, optional: true, nullable: false
 
         field :limit, -> { Integer }, optional: true, nullable: false

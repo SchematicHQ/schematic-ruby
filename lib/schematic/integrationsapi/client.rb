@@ -621,6 +621,46 @@ module Schematic
           raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
         end
       end
+
+      # @param request_options [Hash]
+      # @param _params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      #
+      # @example
+      #   client.integrationsapi.get_zuora_connection_health
+      #
+      # @return [Schematic::Integrationsapi::Types::GetZuoraConnectionHealthResponse]
+      def get_zuora_connection_health(request_options: {}, **_params)
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "GET",
+          path: "integrations/zuora/health",
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Integrationsapi::Types::GetZuoraConnectionHealthResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+        end
+      end
     end
   end
 end

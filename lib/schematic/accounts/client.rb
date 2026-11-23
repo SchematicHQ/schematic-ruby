@@ -342,6 +342,7 @@ module Schematic
       # @option params [Schematic::Types::ActorType, nil] :actor_type
       # @option params [String, nil] :company_id
       # @option params [String, nil] :end_time
+      # @option params [String, nil] :end_user_id
       # @option params [String, nil] :environment_id
       # @option params [String, nil] :q
       # @option params [String, nil] :start_time
@@ -353,6 +354,7 @@ module Schematic
       #     actor_type: "api_key",
       #     company_id: "company_id",
       #     end_time: "2024-01-15T09:30:00Z",
+      #     end_user_id: "end_user_id",
       #     environment_id: "environment_id",
       #     q: "q",
       #     start_time: "2024-01-15T09:30:00Z",
@@ -367,6 +369,7 @@ module Schematic
         query_params["actor_type"] = params[:actor_type] if params.key?(:actor_type)
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["end_time"] = params[:end_time] if params.key?(:end_time)
+        query_params["end_user_id"] = params[:end_user_id] if params.key?(:end_user_id)
         query_params["environment_id"] = params[:environment_id] if params.key?(:environment_id)
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["start_time"] = params[:start_time] if params.key?(:start_time)
@@ -454,6 +457,7 @@ module Schematic
       # @option params [Schematic::Types::ActorType, nil] :actor_type
       # @option params [String, nil] :company_id
       # @option params [String, nil] :end_time
+      # @option params [String, nil] :end_user_id
       # @option params [String, nil] :environment_id
       # @option params [String, nil] :q
       # @option params [String, nil] :start_time
@@ -465,6 +469,7 @@ module Schematic
       #     actor_type: "api_key",
       #     company_id: "company_id",
       #     end_time: "2024-01-15T09:30:00Z",
+      #     end_user_id: "end_user_id",
       #     environment_id: "environment_id",
       #     q: "q",
       #     start_time: "2024-01-15T09:30:00Z",
@@ -479,6 +484,7 @@ module Schematic
         query_params["actor_type"] = params[:actor_type] if params.key?(:actor_type)
         query_params["company_id"] = params[:company_id] if params.key?(:company_id)
         query_params["end_time"] = params[:end_time] if params.key?(:end_time)
+        query_params["end_user_id"] = params[:end_user_id] if params.key?(:end_user_id)
         query_params["environment_id"] = params[:environment_id] if params.key?(:environment_id)
         query_params["q"] = params[:q] if params.key?(:q)
         query_params["start_time"] = params[:start_time] if params.key?(:start_time)

@@ -13,9 +13,13 @@ module Schematic
 
       member -> { Schematic::Types::CompanyFeatureUsageExportMetadata }, key: "COMPANY_FEATURE_USAGE"
 
+      member -> { Schematic::Types::CreditBalanceExportMetadata }, key: "CREDIT_BALANCE"
+
       member -> { Schematic::Types::CreditLedgerExportMetadata }, key: "CREDIT_LEDGER"
 
       member -> { Schematic::Types::EventExportMetadata }, key: "EVENT"
+
+      member -> { Schematic::Types::UserExportMetadata }, key: "USER"
     end
   end
 end

@@ -16,6 +16,8 @@ module Schematic
 
         field :plan_version_id, -> { String }, optional: true, nullable: false
 
+        field :renewal_destination, -> { Schematic::Types::RenewalDestinationRequestBody }, optional: true, nullable: false
+
         field :renewal_policy, -> { Schematic::Types::RenewalPolicy }, optional: true, nullable: false
       end
     end

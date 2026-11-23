@@ -13,6 +13,7 @@ module Schematic
       STRIPE = "stripe"
       UNKNOWN = "unknown"
       WORKOS = "workos"
+      ZUORA = "zuora"
     end
   end
 end

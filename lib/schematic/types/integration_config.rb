@@ -18,6 +18,8 @@ module Schematic
       member -> { Schematic::Types::StripeIntegrationConfig }, key: "STRIPE"
 
       member -> { Schematic::Types::WorkOsIntegrationConfig }, key: "WORKOS"
+
+      member -> { Schematic::Types::ZuoraIntegrationConfig }, key: "ZUORA"
     end
   end
 end

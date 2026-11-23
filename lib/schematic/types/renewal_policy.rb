@@ -10,6 +10,7 @@ module Schematic
       AUTO_RENEW = "auto_renew"
       EXPIRE_TO_DEFAULT = "expire_to_default"
       HOLD_WITH_GRACE = "hold_with_grace"
+      MIGRATE_TO_PLAN = "migrate_to_plan"
     end
   end
 end

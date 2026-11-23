@@ -15,6 +15,10 @@ module Schematic
 
       field :company_id, -> { String }, optional: true, nullable: false
 
+      field :end_user, -> { Schematic::Types::AuditLogEndUserResponseData }, optional: true, nullable: false
+
+      field :end_user_id, -> { String }, optional: true, nullable: false
+
       field :ended_at, -> { String }, optional: true, nullable: false
 
       field :environment, -> { Schematic::Types::EnvironmentResponseData }, optional: true, nullable: false

@@ -208,6 +208,8 @@ require_relative "schematic/events/client"
 require_relative "schematic/events/types/create_event_batch_request_body"
 require_relative "schematic/events/types/get_event_summaries_request"
 require_relative "schematic/events/types/list_events_request"
+require_relative "schematic/events/types/get_inference_cost_request"
+require_relative "schematic/events/types/list_inference_cost_rates_request"
 require_relative "schematic/events/types/list_account_inference_cost_rates_request"
 require_relative "schematic/events/types/create_account_inference_cost_rate_request_body"
 require_relative "schematic/events/types/update_account_inference_cost_rate_request_body"
@@ -282,6 +284,7 @@ module Schematic
     autoload :ApiKeyResponseData, ::File.join(__dir__, "schematic/types/api_key_response_data")
     autoload :ActorType, ::File.join(__dir__, "schematic/types/actor_type")
     autoload :AuditLogCompanyResponseData, ::File.join(__dir__, "schematic/types/audit_log_company_response_data")
+    autoload :AuditLogEndUserResponseData, ::File.join(__dir__, "schematic/types/audit_log_end_user_response_data")
     autoload :AuditLogListResponseData, ::File.join(__dir__, "schematic/types/audit_log_list_response_data")
     autoload :AuditLogResponseData, ::File.join(__dir__, "schematic/types/audit_log_response_data")
     autoload :OnboardingMilestone, ::File.join(__dir__, "schematic/types/onboarding_milestone")
@@ -450,6 +453,7 @@ module Schematic
     autoload :WarningTierResponseData, ::File.join(__dir__, "schematic/types/warning_tier_response_data")
     autoload :PlanEntitlementResponseData, ::File.join(__dir__, "schematic/types/plan_entitlement_response_data")
     autoload :PlanPriceCadence, ::File.join(__dir__, "schematic/types/plan_price_cadence")
+    autoload :RenewalDestinationResponseData, ::File.join(__dir__, "schematic/types/renewal_destination_response_data")
     autoload :RenewalPolicy, ::File.join(__dir__, "schematic/types/renewal_policy")
     autoload :PlanVersionResponseData, ::File.join(__dir__, "schematic/types/plan_version_response_data")
     autoload :PlanGroupPlanDetailResponseData, ::File.join(__dir__, "schematic/types/plan_group_plan_detail_response_data")
@@ -627,10 +631,12 @@ module Schematic
     autoload :CompanyFeatureUsageExportMetadataSortOrderDirection, ::File.join(__dir__, "schematic/types/company_feature_usage_export_metadata_sort_order_direction")
     autoload :CompanyFeatureUsageExportMetadataVisibleColumnsItem, ::File.join(__dir__, "schematic/types/company_feature_usage_export_metadata_visible_columns_item")
     autoload :CompanyFeatureUsageExportMetadata, ::File.join(__dir__, "schematic/types/company_feature_usage_export_metadata")
+    autoload :CreditBalanceExportMetadata, ::File.join(__dir__, "schematic/types/credit_balance_export_metadata")
     autoload :CreditLedgerExportMetadataEventType, ::File.join(__dir__, "schematic/types/credit_ledger_export_metadata_event_type")
     autoload :CreditLedgerExportMetadata, ::File.join(__dir__, "schematic/types/credit_ledger_export_metadata")
     autoload :EventExportMetadataEventTypesItem, ::File.join(__dir__, "schematic/types/event_export_metadata_event_types_item")
     autoload :EventExportMetadata, ::File.join(__dir__, "schematic/types/event_export_metadata")
+    autoload :UserExportMetadata, ::File.join(__dir__, "schematic/types/user_export_metadata")
     autoload :DataExportMetadata, ::File.join(__dir__, "schematic/types/data_export_metadata")
     autoload :DataExportOutputFileType, ::File.join(__dir__, "schematic/types/data_export_output_file_type")
     autoload :DataExportResponseData, ::File.join(__dir__, "schematic/types/data_export_response_data")
@@ -640,6 +646,9 @@ module Schematic
     autoload :EventStatus, ::File.join(__dir__, "schematic/types/event_status")
     autoload :InferenceCostSource, ::File.join(__dir__, "schematic/types/inference_cost_source")
     autoload :EventDetailResponseData, ::File.join(__dir__, "schematic/types/event_detail_response_data")
+    autoload :InferenceCostResponseData, ::File.join(__dir__, "schematic/types/inference_cost_response_data")
+    autoload :InferenceCostRateScope, ::File.join(__dir__, "schematic/types/inference_cost_rate_scope")
+    autoload :InferenceCostRateResponseData, ::File.join(__dir__, "schematic/types/inference_cost_rate_response_data")
     autoload :AccountInferenceCostRateResponseData, ::File.join(__dir__, "schematic/types/account_inference_cost_rate_response_data")
     autoload :OtlpEnvironmentSettingsResponseData, ::File.join(__dir__, "schematic/types/otlp_environment_settings_response_data")
     autoload :SegmentStatusResp, ::File.join(__dir__, "schematic/types/segment_status_resp")
@@ -672,6 +681,7 @@ module Schematic
     autoload :OrbIntegrationConfig, ::File.join(__dir__, "schematic/types/orb_integration_config")
     autoload :StripeIntegrationConfig, ::File.join(__dir__, "schematic/types/stripe_integration_config")
     autoload :WorkOsIntegrationConfig, ::File.join(__dir__, "schematic/types/work_os_integration_config")
+    autoload :ZuoraIntegrationConfig, ::File.join(__dir__, "schematic/types/zuora_integration_config")
     autoload :IntegrationConfig, ::File.join(__dir__, "schematic/types/integration_config")
     autoload :IntegrationsListResponseData, ::File.join(__dir__, "schematic/types/integrations_list_response_data")
     autoload :IntegrationWebhookUrlResponseData, ::File.join(__dir__, "schematic/types/integration_webhook_url_response_data")
@@ -684,6 +694,7 @@ module Schematic
     autoload :StripeSandboxKeysResponseData, ::File.join(__dir__, "schematic/types/stripe_sandbox_keys_response_data")
     autoload :StripeSandboxInstallResponseData, ::File.join(__dir__, "schematic/types/stripe_sandbox_install_response_data")
     autoload :StripeSandboxCountriesResponseData, ::File.join(__dir__, "schematic/types/stripe_sandbox_countries_response_data")
+    autoload :ZuoraConnectionHealth, ::File.join(__dir__, "schematic/types/zuora_connection_health")
     autoload :LicenseResponseData, ::File.join(__dir__, "schematic/types/license_response_data")
     autoload :CheckoutFieldResponseData, ::File.join(__dir__, "schematic/types/checkout_field_response_data")
     autoload :CheckoutSettingsResponseData, ::File.join(__dir__, "schematic/types/checkout_settings_response_data")
@@ -818,6 +829,7 @@ module Schematic
     autoload :PlanBundleEntitlementRequestBody, ::File.join(__dir__, "schematic/types/plan_bundle_entitlement_request_body")
     autoload :PlanCurrencyPriceRequestBody, ::File.join(__dir__, "schematic/types/plan_currency_price_request_body")
     autoload :PublishPlanVersionRequestBody, ::File.join(__dir__, "schematic/types/publish_plan_version_request_body")
+    autoload :RenewalDestinationRequestBody, ::File.join(__dir__, "schematic/types/renewal_destination_request_body")
     autoload :RuleConditionGroupResponseData, ::File.join(__dir__, "schematic/types/rule_condition_group_response_data")
     autoload :RuleConditionResponseData, ::File.join(__dir__, "schematic/types/rule_condition_response_data")
     autoload :RuleResponseData, ::File.join(__dir__, "schematic/types/rule_response_data")
@@ -1268,6 +1280,10 @@ module Schematic
       autoload :ListEventsResponse, ::File.join(__dir__, "schematic/events/types/list_events_response")
       autoload :CreateEventResponse, ::File.join(__dir__, "schematic/events/types/create_event_response")
       autoload :GetEventResponse, ::File.join(__dir__, "schematic/events/types/get_event_response")
+      autoload :GetInferenceCostParams, ::File.join(__dir__, "schematic/events/types/get_inference_cost_params")
+      autoload :GetInferenceCostResponse, ::File.join(__dir__, "schematic/events/types/get_inference_cost_response")
+      autoload :ListInferenceCostRatesParams, ::File.join(__dir__, "schematic/events/types/list_inference_cost_rates_params")
+      autoload :ListInferenceCostRatesResponse, ::File.join(__dir__, "schematic/events/types/list_inference_cost_rates_response")
       autoload :ListAccountInferenceCostRatesParams, ::File.join(__dir__, "schematic/events/types/list_account_inference_cost_rates_params")
       autoload :ListAccountInferenceCostRatesResponse, ::File.join(__dir__, "schematic/events/types/list_account_inference_cost_rates_response")
       autoload :CreateAccountInferenceCostRateResponse, ::File.join(__dir__, "schematic/events/types/create_account_inference_cost_rate_response")
@@ -1340,6 +1356,7 @@ module Schematic
       autoload :InstallStripeClaimableSandboxResponse, ::File.join(__dir__, "schematic/integrationsapi/types/install_stripe_claimable_sandbox_response")
       autoload :ListStripeSandboxCountriesResponse, ::File.join(__dir__, "schematic/integrationsapi/types/list_stripe_sandbox_countries_response")
       autoload :UninstallIntegrationResponse, ::File.join(__dir__, "schematic/integrationsapi/types/uninstall_integration_response")
+      autoload :GetZuoraConnectionHealthResponse, ::File.join(__dir__, "schematic/integrationsapi/types/get_zuora_connection_health_response")
     end
   end
 
