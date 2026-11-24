@@ -7,6 +7,8 @@ module Schematic
         field :lookup, -> { Internal::Types::Hash[String, String] }, optional: false, nullable: false
 
         field :resource_type, -> { String }, optional: false, nullable: false
+
+        field :user_lookup, -> { Internal::Types::Hash[String, String] }, optional: true, nullable: false
       end
     end
   end

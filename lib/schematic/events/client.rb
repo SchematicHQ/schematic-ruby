@@ -275,6 +275,118 @@ module Schematic
       # @option request_options [Hash{String => Object}] :additional_query_parameters
       # @option request_options [Hash{String => Object}] :additional_body_parameters
       # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String, nil] :end_time
+      # @option params [String, nil] :start_time
+      #
+      # @example
+      #   client.events.get_inference_cost(
+      #     end_time: "2024-01-15T09:30:00Z",
+      #     start_time: "2024-01-15T09:30:00Z"
+      #   )
+      #
+      # @return [Schematic::Events::Types::GetInferenceCostResponse]
+      def get_inference_cost(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        query_params = {}
+        query_params["end_time"] = params[:end_time] if params.key?(:end_time)
+        query_params["start_time"] = params[:start_time] if params.key?(:start_time)
+
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "GET",
+          path: "inference-cost",
+          query: query_params,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Events::Types::GetInferenceCostResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
+      # @option params [String, nil] :provider
+      # @option params [String, nil] :response_model
+      # @option params [Schematic::Types::InferenceCostRateScope, nil] :scope
+      # @option params [Integer, nil] :limit
+      # @option params [Integer, nil] :offset
+      #
+      # @example
+      #   client.events.list_inference_cost_rates(
+      #     provider: "provider",
+      #     response_model: "response_model",
+      #     scope: "account",
+      #     limit: 1000000,
+      #     offset: 1000000
+      #   )
+      #
+      # @return [Schematic::Events::Types::ListInferenceCostRatesResponse]
+      def list_inference_cost_rates(request_options: {}, **params)
+        params = Schematic::Internal::Types::Utils.normalize_keys(params)
+        query_params = {}
+        query_params["provider"] = params[:provider] if params.key?(:provider)
+        query_params["response_model"] = params[:response_model] if params.key?(:response_model)
+        query_params["scope"] = params[:scope] if params.key?(:scope)
+        query_params["limit"] = params[:limit] if params.key?(:limit)
+        query_params["offset"] = params[:offset] if params.key?(:offset)
+
+        request = Schematic::Internal::JSON::Request.new(
+          base_url: request_options[:base_url],
+          method: "GET",
+          path: "inference-cost-rates",
+          query: query_params,
+          request_options: request_options
+        )
+        begin
+          response = @client.send(request)
+        rescue Net::HTTPRequestTimeout
+          raise Schematic::Errors::TimeoutError
+        end
+        code = response.code.to_i
+        if code.between?(200, 299)
+          (response.body.to_s.empty? ? nil : Schematic::Events::Types::ListInferenceCostRatesResponse.load(response.body))
+        else
+          error_class = Schematic::Errors::ResponseError.subclass_for_code(code)
+          error_types = {
+            400 => Schematic::Types::ApiError,
+            401 => Schematic::Types::ApiError,
+            403 => Schematic::Types::ApiError,
+            404 => Schematic::Types::ApiError,
+            500 => Schematic::Types::ApiError
+          }
+          error_body = Schematic::Errors::ResponseError.load_error_body(code, response.body, error_types)
+          raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+        end
+      end
+
+      # @param request_options [Hash]
+      # @param params [Hash]
+      # @option request_options [String] :base_url
+      # @option request_options [Hash{String => Object}] :additional_headers
+      # @option request_options [Hash{String => Object}] :additional_query_parameters
+      # @option request_options [Hash{String => Object}] :additional_body_parameters
+      # @option request_options [Integer] :timeout_in_seconds
       # @option params [String, nil] :provider
       # @option params [String, nil] :response_model
       # @option params [Integer, nil] :limit

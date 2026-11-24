@@ -19,6 +19,8 @@ module Schematic
 
       field :interval, -> { String }, optional: false, nullable: false
 
+      field :interval_count, -> { Integer }, optional: true, nullable: false
+
       field :is_initial, -> { Internal::Types::Boolean }, optional: false, nullable: false
 
       field :latest_invoice, -> { Schematic::Types::InvoiceResponseData }, optional: true, nullable: false

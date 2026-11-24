@@ -37,6 +37,8 @@ module Schematic
 
       field :trial_end, -> { String }, optional: true, nullable: false
 
+      field :unbilled_usage_feature_ids, -> { Internal::Types::Array[String] }, optional: false, nullable: false
+
       field :usage_violations, -> { Internal::Types::Array[Schematic::Types::FeatureUsageResponseData] }, optional: false, nullable: false
     end
   end

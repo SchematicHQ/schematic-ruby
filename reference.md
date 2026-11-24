@@ -479,6 +479,7 @@ client.accounts.list_audit_logs(
   actor_type: "api_key",
   company_id: "company_id",
   end_time: "2024-01-15T09:30:00Z",
+  end_user_id: "end_user_id",
   environment_id: "environment_id",
   q: "q",
   start_time: "2024-01-15T09:30:00Z",
@@ -516,6 +517,14 @@ client.accounts.list_audit_logs(
 <dd>
 
 **end_time:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_user_id:** `String` — Only entries made with a temporary access token issued for this user
     
 </dd>
 </dl>
@@ -640,6 +649,7 @@ client.accounts.count_audit_logs(
   actor_type: "api_key",
   company_id: "company_id",
   end_time: "2024-01-15T09:30:00Z",
+  end_user_id: "end_user_id",
   environment_id: "environment_id",
   q: "q",
   start_time: "2024-01-15T09:30:00Z",
@@ -677,6 +687,14 @@ client.accounts.count_audit_logs(
 <dd>
 
 **end_time:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_user_id:** `String` — Only entries made with a temporary access token issued for this user
     
 </dd>
 </dl>
@@ -15523,7 +15541,7 @@ client.entitlements.create_plan_entitlement(
 <dl>
 <dd>
 
-**overage_billing_cadence:** `Schematic::Types::BillingArrearsCadence` — How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
+**overage_billing_cadence:** `Schematic::Types::BillingArrearsCadence` — How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. A monthly allowance on a plan with a quarterly or yearly price is billed monthly instead, because the provider would apply one allowance to the whole period; an allowance that resets daily or weekly is refused when Stripe bills the overage. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
     
 </dd>
 </dl>
@@ -15918,7 +15936,7 @@ client.entitlements.update_plan_entitlement(
 <dl>
 <dd>
 
-**overage_billing_cadence:** `Schematic::Types::BillingArrearsCadence` — How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
+**overage_billing_cadence:** `Schematic::Types::BillingArrearsCadence` — How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. A monthly allowance on a plan with a quarterly or yearly price is billed monthly instead, because the provider would apply one allowance to the whole period; an allowance that resets daily or weekly is refused when Stripe bills the overage. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
     
 </dd>
 </dl>
@@ -16316,7 +16334,7 @@ client.entitlements.upsert_plan_entitlement_for_billing_product(
 <dl>
 <dd>
 
-**overage_billing_cadence:** `Schematic::Types::BillingArrearsCadence` — How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
+**overage_billing_cadence:** `Schematic::Types::BillingArrearsCadence` — How often overage charges are assessed and invoiced. Defaults to end_of_billing_period, where the billing provider aggregates usage over the subscription's own period and bills it at period end. A monthly allowance on a plan with a quarterly or yearly price is billed monthly instead, because the provider would apply one allowance to the whole period; an allowance that resets daily or weekly is refused when Stripe bills the overage. Set to monthly or quarterly to have overage assessed each month or quarter and billed on its own invoice, which is the point of the setting on annual plans. A quarter charges each month's usage against that month's allowance. Only applies to overage price behavior.
     
 </dd>
 </dl>
@@ -19503,6 +19521,14 @@ client.planbundle.create_custom_plan_bundle(
 <dl>
 <dd>
 
+**renewal_destination:** `Schematic::Types::RenewalDestinationRequestBody` — Where the company moves at term end when renewal_policy is migrate_to_plan. Required for that policy and refused for any other.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **renewal_policy:** `Schematic::Types::RenewalPolicy` 
     
 </dd>
@@ -19688,6 +19714,14 @@ client.planbundle.update_plan_bundle(
 <dd>
 
 **plan_version_id:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**renewal_destination:** `Schematic::Types::RenewalDestinationRequestBody` — Where the company moves at term end when the version's renewal_policy is migrate_to_plan. Left out, the version keeps the destination it has; refused for any other policy.
     
 </dd>
 </dl>
@@ -20581,6 +20615,151 @@ client.events.get_event(event_id: "event_id")
 <dd>
 
 **event_id:** `String` — event_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Events::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.events.<a href="/lib/schematic/events/client.rb">get_inference_cost</a>() -> Schematic::Events::Types::GetInferenceCostResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.events.get_inference_cost(
+  end_time: "2024-01-15T09:30:00Z",
+  start_time: "2024-01-15T09:30:00Z"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**end_time:** `String` — End of the window (exclusive). Pass together with start_time; when both are omitted, the current calendar month in UTC is used
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_time:** `String` — Start of the window (inclusive). Pass together with end_time; when both are omitted, the current calendar month in UTC is used
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Events::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.events.<a href="/lib/schematic/events/client.rb">list_inference_cost_rates</a>() -> Schematic::Events::Types::ListInferenceCostRatesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.events.list_inference_cost_rates(
+  provider: "provider",
+  response_model: "response_model",
+  scope: "account",
+  limit: 1000000,
+  offset: 1000000
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**provider:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**response_model:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scope:** `Schematic::Types::InferenceCostRateScope` — Only list rates from this sheet: list_price for Schematic's list prices, account for the environment's own rate sheet.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Integer` — Page limit (default 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `Integer` — Page offset (default 0)
     
 </dd>
 </dl>
@@ -23676,6 +23855,46 @@ client.integrationsapi.uninstall_integration(integration_id: "integration_id")
 </dl>
 </details>
 
+<details><summary><code>client.integrationsapi.<a href="/lib/schematic/integrationsapi/client.rb">get_zuora_connection_health</a>() -> Schematic::Integrationsapi::Types::GetZuoraConnectionHealthResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.integrationsapi.get_zuora_connection_health
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `Schematic::Integrationsapi::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## licenses
 <details><summary><code>client.licenses.<a href="/lib/schematic/licenses/client.rb">list_licenses</a>() -> Schematic::Licenses::Types::ListLicensesResponse</code></summary>
 <dl>
@@ -25896,7 +26115,7 @@ client.accesstokens.issue_temporary_access_token(
 <dl>
 <dd>
 
-**lookup:** `Internal::Types::Hash[String, String]` 
+**lookup:** `Internal::Types::Hash[String, String]` — Key-value pairs that identify the company the token is for, such as {"id": "your-company-id"}.
     
 </dd>
 </dl>
@@ -25905,6 +26124,14 @@ client.accesstokens.issue_temporary_access_token(
 <dd>
 
 **resource_type:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**user_lookup:** `Internal::Types::Hash[String, String]` — Optional key-value pairs that identify the user of your app the token is for, such as {"email": "user@example.com"}. The user must belong to the company named by lookup. Writes made with the token are attributed to this user in the audit log; the token's access is the same either way.
     
 </dd>
 </dl>

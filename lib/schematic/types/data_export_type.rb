@@ -9,8 +9,10 @@ module Schematic
 
       AUDIT_LOG = "audit-log"
       COMPANY_FEATURE_USAGE = "company-feature-usage"
+      CREDIT_BALANCE = "credit-balance"
       CREDIT_LEDGER = "credit-ledger"
       EVENT = "event"
+      USER = "user"
     end
   end
 end

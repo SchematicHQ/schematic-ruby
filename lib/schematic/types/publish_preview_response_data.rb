@@ -23,6 +23,8 @@ module Schematic
 
       field :default_send_invoice, -> { Internal::Types::Boolean }, optional: false, nullable: false
 
+      field :earliest_end_date, -> { String }, optional: true, nullable: false
+
       field :effective_at, -> { String }, optional: true, nullable: false
 
       field :ends_at, -> { String }, optional: true, nullable: false

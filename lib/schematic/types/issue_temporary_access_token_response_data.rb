@@ -22,6 +22,8 @@ module Schematic
       field :token, -> { String }, optional: false, nullable: false
 
       field :updated_at, -> { String }, optional: false, nullable: false
+
+      field :user_id, -> { String }, optional: true, nullable: false
     end
   end
 end
