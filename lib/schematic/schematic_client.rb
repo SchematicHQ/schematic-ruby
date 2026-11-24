@@ -55,6 +55,7 @@ module Schematic
     DEFAULT_CACHE_TTL = 5.0 # seconds
     DEFAULT_CACHE_MAX_SIZE = 1000
     DEFAULT_EVENT_BUFFER_PERIOD = 5.0 # seconds (canonical Go value)
+    READINESS_TIMEOUT_SECONDS = 5
 
     # Optional event metadata accepted via the `options:` keyword on track/identify.
     # identify only honors :idempotency_key; track also honors :sent_at,
@@ -636,15 +637,15 @@ module Schematic
     # - Otherwise flag checks go to the API, so this calls GET /whoami with the
     #   API key and returns true if it succeeds.
     #
-    # In API mode each call makes one network request, so call it from a
-    # probe, not on every request.
+    # In API mode each call makes one network request, with a 5-second
+    # timeout and no retries, so call it from a probe, not on every request.
     #
     # @return [Boolean]
     def ready?
       return true if @offline
       return true if use_datastream_cache?
 
-      @api_client.accounts.get_who_am_i
+      readiness_api_client.accounts.get_who_am_i
       true
     rescue StandardError => e
       @logger.warn("Readiness check failed: #{e.message}")
@@ -679,6 +680,13 @@ module Schematic
     end
 
     private
+
+    # The generated transport reads max_retries only per client, not per request.
+    def readiness_api_client
+      @readiness_api_client ||= Schematic::Client.new(
+        api_key: @api_key, base_url: @base_url, max_retries: 0, timeout: READINESS_TIMEOUT_SECONDS
+      )
+    end
 
     # --- Internal Flag Checking ---
 

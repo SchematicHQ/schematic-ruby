@@ -4410,6 +4410,22 @@ describe "SchematicClient - ready?" do
     refute_predicate @client, :ready?
   end
 
+  it "returns false on a 5xx without retrying" do
+    stub_request(:get, @whoami_url).to_return(status: 503, body: "unavailable")
+    @client = Schematic::SchematicClient.new(api_key: "api_test_key_123", log_level: :error)
+
+    refute_predicate @client, :ready?
+    assert_requested(:get, @whoami_url, times: 1)
+  end
+
+  it "bounds the whoami call to a 5-second timeout" do
+    @client = Schematic::SchematicClient.new(api_key: "api_test_key_123", log_level: :error)
+    raw_client = @client.send(:readiness_api_client).instance_variable_get(:@raw_client)
+
+    assert_in_delta 5.0, raw_client.instance_variable_get(:@timeout)
+    assert_equal 0, raw_client.instance_variable_get(:@max_retries)
+  end
+
   it "returns false when whoami times out" do
     stub_request(:get, @whoami_url).to_timeout
     @client = Schematic::SchematicClient.new(api_key: "api_test_key_123", log_level: :error)
