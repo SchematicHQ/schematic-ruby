@@ -4332,3 +4332,95 @@ describe "SchematicClient - cached flag responses from a serializing provider" d
     client.close
   end
 end
+
+# =============================================================================
+# SchematicClient - ready?
+# =============================================================================
+describe "SchematicClient - ready?" do
+  before do
+    @whoami_url = "https://api.schematichq.com/whoami"
+  end
+
+  after do
+    @client&.close
+    WebMock.reset!
+  end
+
+  def stub_datastream(usable:)
+    mock_ds = Object.new
+    mock_ds.define_singleton_method(:connected?) { usable }
+    mock_ds.define_singleton_method(:cache_ready?) { usable }
+    mock_ds.define_singleton_method(:close) { nil }
+    @client.instance_variable_set(:@datastream_client, mock_ds)
+  end
+
+  def whoami_body
+    {
+      data: {
+        account_id: "acct_1",
+        account_name: "Test",
+        actor_type: "api_key",
+        environments: [],
+        onboarding_complete: true
+      },
+      params: {}
+    }.to_json
+  end
+
+  it "returns true in offline mode without a network call" do
+    @client = Schematic::SchematicClient.new(offline: true)
+
+    assert_predicate @client, :ready?
+    assert_not_requested(:get, @whoami_url)
+  end
+
+  it "returns true without a network call when flag checks use the DataStream cache" do
+    @client = Schematic::SchematicClient.new(api_key: "api_test_key_123", log_level: :error)
+    stub_datastream(usable: true)
+
+    assert_predicate @client, :ready?
+    assert_not_requested(:get, @whoami_url)
+  end
+
+  it "calls whoami when the DataStream cache is not usable" do
+    stub_request(:get, @whoami_url)
+      .to_return(status: 200, headers: { "Content-Type" => "application/json" }, body: whoami_body)
+    @client = Schematic::SchematicClient.new(api_key: "api_test_key_123", log_level: :error)
+    stub_datastream(usable: false)
+
+    assert_predicate @client, :ready?
+    assert_requested(:get, @whoami_url, times: 1)
+  end
+
+  it "returns true when whoami succeeds" do
+    stub_request(:get, @whoami_url)
+      .with(headers: { "X-Schematic-Api-Key" => "api_test_key_123" })
+      .to_return(status: 200, headers: { "Content-Type" => "application/json" }, body: whoami_body)
+    @client = Schematic::SchematicClient.new(api_key: "api_test_key_123", log_level: :error)
+
+    assert_predicate @client, :ready?
+    assert_requested(:get, @whoami_url, times: 1)
+  end
+
+  it "returns false when whoami rejects the API key" do
+    stub_request(:get, @whoami_url)
+      .to_return(status: 401, headers: { "Content-Type" => "application/json" }, body: { error: "bad key" }.to_json)
+    @client = Schematic::SchematicClient.new(api_key: "api_test_key_123", log_level: :error)
+
+    refute_predicate @client, :ready?
+  end
+
+  it "returns false when whoami times out" do
+    stub_request(:get, @whoami_url).to_timeout
+    @client = Schematic::SchematicClient.new(api_key: "api_test_key_123", log_level: :error)
+
+    refute_predicate @client, :ready?
+  end
+
+  it "returns false when the connection fails" do
+    stub_request(:get, @whoami_url).to_raise(Errno::ECONNREFUSED)
+    @client = Schematic::SchematicClient.new(api_key: "api_test_key_123", log_level: :error)
+
+    refute_predicate @client, :ready?
+  end
+end

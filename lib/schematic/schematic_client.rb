@@ -626,6 +626,31 @@ module Schematic
       @api_client&.webhooks
     end
 
+    # --- Readiness ---
+
+    # Reports whether the client loaded and can serve flag checks, for use as a
+    # readiness probe. Never raises; any error returns false.
+    #
+    # - Offline mode: true, since flag checks answer from flag defaults.
+    # - Flag checks evaluating from the DataStream cache: true, with no network call.
+    # - Otherwise flag checks go to the API, so this calls GET /whoami with the
+    #   API key and returns true if it succeeds.
+    #
+    # In API mode each call makes one network request, so call it from a
+    # probe, not on every request.
+    #
+    # @return [Boolean]
+    def ready?
+      return true if @offline
+      return true if use_datastream_cache?
+
+      @api_client.accounts.get_who_am_i
+      true
+    rescue StandardError => e
+      @logger.warn("Readiness check failed: #{e.message}")
+      false
+    end
+
     # --- Lifecycle ---
 
     # Credit leases: with the per-process in-memory backend this process is the
