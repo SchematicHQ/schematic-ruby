@@ -738,6 +738,18 @@ The same gate applies to `check` with `usage` in client credit-lease mode: while
 
 The DataStream client's `cache_ready?` reports the same readiness the flag checks use.
 
+## Startup Check
+
+`client.ready?` returns true once the client can serve flag checks, and false otherwise. It never raises. In offline mode it returns true. When DataStream has loaded flags (or the replicator cache is ready) and the rules engine has loaded, it returns true with no network call. Otherwise it calls the Schematic API once, with a 5-second timeout and no retries.
+
+Use it as a start-up check: a Kubernetes `startupProbe`, or a gate before your app serves traffic. Set the probe's `timeoutSeconds` above 5. Don't use it for liveness or ongoing readiness. It depends on Schematic's API, so an outage would pull every pod, while flag checks would have kept serving defaults or cached values.
+
+```ruby
+get "/startup" do
+  client.ready? ? [200, {}, ["ok"]] : [503, {}, ["not ready"]]
+end
+```
+
 ## Testing
 
 ### Offline Mode

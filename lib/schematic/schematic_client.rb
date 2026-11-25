@@ -116,7 +116,7 @@ module Schematic
       # the process. Nothing has started yet at this point.
       validated_leases = validated_credit_lease_config(credit_leases)
 
-      # Initialize Fern-generated API client
+      # Initialize Fern-generated API client. readiness_api_client mirrors these options.
       @api_client = if @offline
                       nil
                     else
@@ -629,21 +629,27 @@ module Schematic
 
     # --- Readiness ---
 
-    # Reports whether the client loaded and can serve flag checks, for use as a
-    # readiness probe. Never raises; any error returns false.
+    # Reports whether the client started up and can serve flag checks. Never
+    # raises; any error, or a closed client, returns false.
     #
     # - Offline mode: true, since flag checks answer from flag defaults.
-    # - Flag checks evaluating from the DataStream cache: true, with no network call.
+    # - DataStream serving flag checks locally (flags loaded, or the replicator
+    #   cache ready, and the rules engine loaded): true, with no network call.
     # - Otherwise flag checks go to the API, so this calls GET /whoami with the
     #   API key and returns true if it succeeds.
     #
-    # In API mode each call makes one network request, with a 5-second
-    # timeout and no retries, so call it from a probe, not on every request.
+    # Use it as a start-up check, such as a Kubernetes startupProbe or a gate
+    # before serving traffic, with a probe timeoutSeconds above 5. In API mode
+    # each call makes one request with a 5-second timeout and no retries. Don't
+    # use it for liveness or ongoing readiness: it depends on Schematic's API,
+    # so an outage would pull every pod while flag checks keep serving
+    # defaults or cached values.
     #
     # @return [Boolean]
     def ready?
+      return false if @closed
       return true if @offline
-      return true if use_datastream_cache?
+      return true if datastream_serving_flags?
 
       readiness_api_client.accounts.get_who_am_i
       true
@@ -681,7 +687,12 @@ module Schematic
 
     private
 
+    def datastream_serving_flags?
+      use_datastream_cache? && @datastream_client.flags_loaded? && @rules_engine&.initialized?
+    end
+
     # The generated transport reads max_retries only per client, not per request.
+    # Built with the same options as @api_client; keep the two in step.
     def readiness_api_client
       @readiness_api_client ||= Schematic::Client.new(
         api_key: @api_key, base_url: @base_url, max_retries: 0, timeout: READINESS_TIMEOUT_SECONDS
