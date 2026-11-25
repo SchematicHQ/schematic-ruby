@@ -43,6 +43,7 @@ module Schematic
         @replicator_health_interval = replicator_health_interval
         @max_frame_size = max_frame_size
         @replicator_ready = false
+        @flags_loaded = false
         @cache_version = ""
         @mutex = Mutex.new
         @stopped = false
@@ -147,6 +148,13 @@ module Schematic
       # fills its own cache over the WebSocket, so there is nothing to wait for.
       def cache_ready?
         @replicator_mode ? @replicator_ready : true
+      end
+
+      # Whether a full flag set has been cached. Over the WebSocket this turns
+      # true on the first bulk flags message, which arrives after the handshake
+      # that sets connected?. In replicator mode it is cache_ready?.
+      def flags_loaded?
+        @replicator_mode ? cache_ready? : @flags_loaded
       end
 
       def close
@@ -386,6 +394,7 @@ module Schematic
         @flag_cache.delete_missing(keys_to_keep, scope: "flags:") if @flag_cache.respond_to?(:delete_missing)
 
         @logger.debug("Cached #{data.size} flags from DataStream")
+        @flags_loaded = true
 
         notify_pending_flags
       end

@@ -4332,3 +4332,183 @@ describe "SchematicClient - cached flag responses from a serializing provider" d
     client.close
   end
 end
+
+# =============================================================================
+# SchematicClient - ready?
+# =============================================================================
+describe "SchematicClient - ready?" do
+  before do
+    @whoami_url = "https://api.schematichq.com/whoami"
+  end
+
+  after do
+    @client&.close
+    WebMock.reset!
+  end
+
+  def new_client
+    @client = Schematic::SchematicClient.new(api_key: "api_test_key_123", log_level: :error)
+  end
+
+  def stub_datastream(connected: true, cache_ready: true, flags_loaded: true, rules_engine_loaded: true)
+    mock_ds = Object.new
+    mock_ds.define_singleton_method(:connected?) { connected }
+    mock_ds.define_singleton_method(:cache_ready?) { cache_ready }
+    mock_ds.define_singleton_method(:flags_loaded?) { flags_loaded }
+    mock_ds.define_singleton_method(:close) { nil }
+    rules_engine = Object.new
+    rules_engine.define_singleton_method(:initialized?) { rules_engine_loaded }
+    @client.instance_variable_set(:@datastream_client, mock_ds)
+    @client.instance_variable_set(:@rules_engine, rules_engine)
+  end
+
+  def stub_whoami_success
+    body = {
+      data: {
+        account_id: "acct_1",
+        account_name: "Test",
+        actor_type: "api_key",
+        environments: [],
+        onboarding_complete: true
+      },
+      params: {}
+    }.to_json
+    stub_request(:get, @whoami_url)
+      .with(headers: { "X-Schematic-Api-Key" => "api_test_key_123" })
+      .to_return(status: 200, headers: { "Content-Type" => "application/json" }, body: body)
+  end
+
+  it "returns true in offline mode without a network call" do
+    @client = Schematic::SchematicClient.new(offline: true)
+
+    assert_predicate @client, :ready?
+    assert_not_requested(:get, @whoami_url)
+  end
+
+  it "returns true without a network call when DataStream serves flag checks" do
+    new_client
+    stub_datastream
+
+    assert_predicate @client, :ready?
+    assert_not_requested(:get, @whoami_url)
+  end
+
+  it "calls whoami when DataStream is connected but flags have not loaded" do
+    stub_whoami_success
+    new_client
+    stub_datastream(flags_loaded: false)
+
+    assert_predicate @client, :ready?
+    assert_requested(:get, @whoami_url, times: 1)
+  end
+
+  it "calls whoami when the replicator cache is not ready" do
+    stub_whoami_success
+    new_client
+    stub_datastream(cache_ready: false, flags_loaded: false)
+
+    assert_predicate @client, :ready?
+    assert_requested(:get, @whoami_url, times: 1)
+  end
+
+  it "calls whoami when the rules engine did not load" do
+    stub_whoami_success
+    new_client
+    stub_datastream(rules_engine_loaded: false)
+
+    assert_predicate @client, :ready?
+    assert_requested(:get, @whoami_url, times: 1)
+  end
+
+  it "returns true when whoami succeeds" do
+    stub_whoami_success
+    new_client
+
+    assert_predicate @client, :ready?
+    assert_requested(:get, @whoami_url, times: 1)
+  end
+
+  it "returns false once the client is closed" do
+    stub_whoami_success
+    new_client
+    @client.close
+
+    refute_predicate @client, :ready?
+    assert_not_requested(:get, @whoami_url)
+  end
+
+  it "returns false when whoami rejects the API key" do
+    stub_request(:get, @whoami_url)
+      .to_return(status: 401, headers: { "Content-Type" => "application/json" }, body: { error: "bad key" }.to_json)
+    new_client
+
+    refute_predicate @client, :ready?
+  end
+
+  it "returns false on a 5xx without retrying" do
+    stub_request(:get, @whoami_url).to_return(status: 503, body: "unavailable")
+    new_client
+
+    refute_predicate @client, :ready?
+    assert_requested(:get, @whoami_url, times: 1)
+  end
+
+  it "builds the whoami client with a 5-second timeout and no retries" do
+    new_client
+    built_with = nil
+    accounts = Object.new
+    accounts.define_singleton_method(:get_who_am_i) { nil }
+    fake_client = Object.new
+    fake_client.define_singleton_method(:accounts) { accounts }
+    capture = ->(**kwargs) { (built_with = kwargs) && fake_client }
+
+    Schematic::Client.stub(:new, capture) do
+      assert_predicate @client, :ready?
+    end
+
+    assert_equal 5, built_with[:timeout]
+    assert_equal 0, built_with[:max_retries]
+  end
+
+  it "returns false when whoami times out" do
+    stub_request(:get, @whoami_url).to_timeout
+    new_client
+
+    refute_predicate @client, :ready?
+  end
+
+  it "returns false when the connection fails" do
+    stub_request(:get, @whoami_url).to_raise(Errno::ECONNREFUSED)
+    new_client
+
+    refute_predicate @client, :ready?
+  end
+end
+
+describe "DataStream Client - flags_loaded?" do
+  it "turns true over the WebSocket only once the bulk flags message arrives" do
+    logger = Schematic::ConsoleLogger.new(level: :error)
+    ds = Schematic::DataStream::Client.new(
+      api_key: "test", base_url: "https://api.schematichq.com", logger: logger,
+      rules_engine: Schematic::RulesEngine.new(logger: logger)
+    )
+
+    refute_predicate ds, :flags_loaded?
+
+    ds.send(:handle_message, { entity_type: Schematic::DataStream::ENTITY_TYPE_FLAGS, data: [] })
+
+    assert_predicate ds, :flags_loaded?
+    ds.close
+  end
+
+  it "follows cache_ready? in replicator mode" do
+    ds = build_ds_client[:client]
+
+    refute_predicate ds, :flags_loaded?
+
+    ds.send(:update_replicator_ready, true)
+
+    assert_predicate ds, :flags_loaded?
+    ds.close
+  end
+end

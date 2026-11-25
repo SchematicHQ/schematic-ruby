@@ -55,6 +55,7 @@ module Schematic
     DEFAULT_CACHE_TTL = 5.0 # seconds
     DEFAULT_CACHE_MAX_SIZE = 1000
     DEFAULT_EVENT_BUFFER_PERIOD = 5.0 # seconds (canonical Go value)
+    READINESS_TIMEOUT_SECONDS = 5
 
     # Optional event metadata accepted via the `options:` keyword on track/identify.
     # identify only honors :idempotency_key; track also honors :sent_at,
@@ -115,7 +116,7 @@ module Schematic
       # the process. Nothing has started yet at this point.
       validated_leases = validated_credit_lease_config(credit_leases)
 
-      # Initialize Fern-generated API client
+      # Initialize Fern-generated API client. readiness_api_client mirrors these options.
       @api_client = if @offline
                       nil
                     else
@@ -626,6 +627,37 @@ module Schematic
       @api_client&.webhooks
     end
 
+    # --- Readiness ---
+
+    # Reports whether the client started up and can serve flag checks. Never
+    # raises; any error, or a closed client, returns false.
+    #
+    # - Offline mode: true, since flag checks answer from flag defaults.
+    # - DataStream serving flag checks locally (flags loaded, or the replicator
+    #   cache ready, and the rules engine loaded): true, with no network call.
+    # - Otherwise flag checks go to the API, so this calls GET /whoami with the
+    #   API key and returns true if it succeeds.
+    #
+    # Use it as a start-up check, such as a Kubernetes startupProbe or a gate
+    # before serving traffic, with a probe timeoutSeconds above 5. In API mode
+    # each call makes one request with a 5-second timeout and no retries. Don't
+    # use it for liveness or ongoing readiness: it depends on Schematic's API,
+    # so an outage would pull every pod while flag checks keep serving
+    # defaults or cached values.
+    #
+    # @return [Boolean]
+    def ready?
+      return false if @closed
+      return true if @offline
+      return true if datastream_serving_flags?
+
+      readiness_api_client.accounts.get_who_am_i
+      true
+    rescue StandardError => e
+      @logger.warn("Readiness check failed: #{e.message}")
+      false
+    end
+
     # --- Lifecycle ---
 
     # Credit leases: with the per-process in-memory backend this process is the
@@ -654,6 +686,18 @@ module Schematic
     end
 
     private
+
+    def datastream_serving_flags?
+      use_datastream_cache? && @datastream_client.flags_loaded? && @rules_engine&.initialized?
+    end
+
+    # The generated transport reads max_retries only per client, not per request.
+    # Built with the same options as @api_client; keep the two in step.
+    def readiness_api_client
+      @readiness_api_client ||= Schematic::Client.new(
+        api_key: @api_key, base_url: @base_url, max_retries: 0, timeout: READINESS_TIMEOUT_SECONDS
+      )
+    end
 
     # --- Internal Flag Checking ---
 
